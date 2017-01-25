@@ -1,0 +1,86 @@
+solid 88cm_115cm_cube
+facet normal 0.0 0.0 -1.0
+  outer loop
+    vertex 114.99999999999999 88.0 0.0
+    vertex 0.0 0.0 0.0
+    vertex 0.0 88.0 0.0
+  endloop
+endfacet
+facet normal 0.0 0.0 -1.0
+  outer loop
+    vertex 0.0 0.0 0.0
+    vertex 114.99999999999999 88.0 0.0
+    vertex 114.99999999999999 0.0 0.0
+  endloop
+endfacet
+facet normal -0.0 -0.0 1.0
+  outer loop
+    vertex 114.99999999999999 0.0 25.0
+    vertex 0.0 88.0 25.0
+    vertex 0.0 0.0 25.0
+  endloop
+endfacet
+facet normal -0.0 -0.0 1.0
+  outer loop
+    vertex 0.0 88.0 25.0
+    vertex 114.99999999999999 0.0 25.0
+    vertex 114.99999999999999 88.0 25.0
+  endloop
+endfacet
+facet normal -0.0 1.0 0.0
+  outer loop
+    vertex 0.0 88.0 25.0
+    vertex 114.99999999999999 88.0 0.0
+    vertex 0.0 88.0 0.0
+  endloop
+endfacet
+facet normal -0.0 1.0 0.0
+  outer loop
+    vertex 114.99999999999999 88.0 0.0
+    vertex 0.0 88.0 25.0
+    vertex 114.99999999999999 88.0 25.0
+  endloop
+endfacet
+facet normal 1.0 0.0 0.0
+  outer loop
+    vertex 114.99999999999999 88.0 0.0
+    vertex 114.99999999999999 0.0 25.0
+    vertex 114.99999999999999 0.0 0.0
+  endloop
+endfacet
+facet normal 1.0 0.0 0.0
+  outer loop
+    vertex 114.99999999999999 0.0 25.0
+    vertex 114.99999999999999 88.0 0.0
+    vertex 114.99999999999999 88.0 25.0
+  endloop
+endfacet
+facet normal -0.0 -1.0 -0.0
+  outer loop
+    vertex 114.99999999999999 0.0 25.0
+    vertex 0.0 0.0 0.0
+    vertex 114.99999999999999 0.0 0.0
+  endloop
+endfacet
+facet normal -0.0 -1.0 -0.0
+  outer loop
+    vertex 0.0 0.0 0.0
+    vertex 114.99999999999999 0.0 25.0
+    vertex 0.0 0.0 25.0
+  endloop
+endfacet
+facet normal -1.0 0.0 0.0
+  outer loop
+    vertex 0.0 88.0 25.0
+    vertex 0.0 0.0 0.0
+    vertex 0.0 0.0 25.0
+  endloop
+endfacet
+facet normal -1.0 0.0 0.0
+  outer loop
+    vertex 0.0 0.0 0.0
+    vertex 0.0 88.0 25.0
+    vertex 0.0 88.0 0.0
+  endloop
+endfacet
+endsolid 88cm_115cm_cube
