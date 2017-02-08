@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<profile name="Original Prusa i3 MK2 RC4" version="2017-01-22 21:34:48" app="S3D-Software 3.1.1">
+<profile name="Original Prusa i3 MK2 RC4" version="2017-02-07 13:12:50" app="S3D-Software 3.1.1">
   <baseProfile>Prusa Mendel (modified)</baseProfile>
   <printMaterial>PLA</printMaterial>
   <printQuality>Spege 0.2mm</printQuality>
@@ -8,7 +8,7 @@
     <toolheadNumber>0</toolheadNumber>
     <diameter>0.4</diameter>
     <autoWidth>0</autoWidth>
-    <width>0.45</width>
+    <width>0.4</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
     <retractionDistance>0.8</retractionDistance>
@@ -45,8 +45,8 @@
   <useSkirt>1</useSkirt>
   <skirtExtruder>0</skirtExtruder>
   <skirtLayers>1</skirtLayers>
-  <skirtOutlines>3</skirtOutlines>
-  <skirtOffset>0</skirtOffset>
+  <skirtOutlines>1</skirtOutlines>
+  <skirtOffset>3</skirtOffset>
   <usePrimePillar>0</usePrimePillar>
   <primePillarExtruder>999</primePillarExtruder>
   <primePillarWidth>12</primePillarWidth>
@@ -62,14 +62,14 @@
   <infillExtruder>0</infillExtruder>
   <internalInfillPattern>Grid</internalInfillPattern>
   <externalInfillPattern>Rectilinear</externalInfillPattern>
-  <infillPercentage>20</infillPercentage>
+  <infillPercentage>60</infillPercentage>
   <outlineOverlapPercentage>21</outlineOverlapPercentage>
   <infillExtrusionWidthPercentage>100</infillExtrusionWidthPercentage>
   <minInfillLength>2</minInfillLength>
   <infillLayerInterval>1</infillLayerInterval>
   <infillAngles>45,-45</infillAngles>
   <overlapInfillAngles>1</overlapInfillAngles>
-  <generateSupport>1</generateSupport>
+  <generateSupport>0</generateSupport>
   <supportExtruder>0</supportExtruder>
   <supportInfillPercentage>30</supportInfillPercentage>
   <supportExtraInflation>1.4</supportExtraInflation>
@@ -92,8 +92,8 @@
     <setpoint layer="1" temperature="215"/>
     <setpoint layer="2" temperature="205"/>
   </temperatureController>
-  <temperatureController name="Heated Bed">
-    <temperatureNumber>1</temperatureNumber>
+  <temperatureController name="Bed">
+    <temperatureNumber>0</temperatureNumber>
     <isHeatedBed>1</isHeatedBed>
     <relayBetweenLayers>0</relayBetweenLayers>
     <relayBetweenLoops>0</relayBetweenLoops>
@@ -144,7 +144,7 @@
   <baudRateOverride>250000</baudRateOverride>
   <overridePrinterModels>1</overridePrinterModels>
   <printerModelsOverride></printerModelsOverride>
-  <startingGcode>M115 U3.0.7 ; tell the printer latest firmware varsion available,G28 W ; home all without mesh bed level,G80 ; mesh bed leveling,G1 Y-3.0 F1000.0 ; go outside printing area,G1 X60.0 E9.0  F1000.0 ; intro line,G1 X100.0 E12.5  F1000.0 ; intro line</startingGcode>
+  <startingGcode>M104 S[extruder0_temperature]  T0,M140 S[bed0_temperature],,M115 U3.0.7 ; tell the printer latest firmware varsion available,G28 W ; home all without mesh bed level,G80 ; mesh bed leveling,,M109 S[extruder0_temperature]  T0,M190 S[bed0_temperature],,G1 Y-3.0 F1000.0 ; go outside printing area,G1 X60.0 E9.0  F1000.0 ; intro line,G1 X100.0 E12.5  F1000.0 ; intro line,,</startingGcode>
   <layerChangeGcode></layerChangeGcode>
   <retractionGcode></retractionGcode>
   <toolChangeGcode></toolChangeGcode>
@@ -312,7 +312,7 @@
   </autoConfigureQuality>
   <autoConfigureQuality name="FAST 0.3mm">
     <layerHeight>0.3</layerHeight>
-    <infillPercentage>35</infillPercentage>
+    <infillPercentage>26</infillPercentage>
     <firstLayerHeightPercentage>66</firstLayerHeightPercentage>
     <firstLayerWidthPercentage>95</firstLayerWidthPercentage>
     <topSolidLayers>3</topSolidLayers>
@@ -338,7 +338,7 @@
   </autoConfigureQuality>
   <autoConfigureQuality name="Spege 0.2mm">
     <layerHeight>0.2</layerHeight>
-    <infillPercentage>20</infillPercentage>
+    <infillPercentage>60</infillPercentage>
     <firstLayerHeightPercentage>100</firstLayerHeightPercentage>
     <firstLayerWidthPercentage>100</firstLayerWidthPercentage>
     <topSolidLayers>5</topSolidLayers>
@@ -349,7 +349,7 @@
       <toolheadNumber>0</toolheadNumber>
       <diameter>0.4</diameter>
       <autoWidth>0</autoWidth>
-      <width>0.45</width>
+      <width>0.4</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
       <retractionDistance>0.8</retractionDistance>
