@@ -5,7 +5,7 @@ $fn=60;
 
 width = 40;
 
-center_width = 17.2;
+center_width = 17.3;
 
 ball_top_side = 6;
 
