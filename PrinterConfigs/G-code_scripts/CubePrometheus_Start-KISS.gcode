@@ -7,6 +7,7 @@ M190 S<BED> ; wait for bed temp
 G28  ; home all without mesh bed level
 G29 ; autolevel
 
+G90
 G1 X128 Y108 F9000      ; move to purge zone
 G1 Z0.2 F1000                 ; move Z close
 G91                                  ; relative positioning

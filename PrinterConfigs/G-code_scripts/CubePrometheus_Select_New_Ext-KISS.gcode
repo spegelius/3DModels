@@ -2,7 +2,7 @@
 M104 S<TEMP>
 T<EXT+0>
 G90                                     ; absolute positioning
-G1 X118 Y112 F9000          ; move to purge zone
+G1 X118 Y112 F9000          ; move to purge zone + 4 mm
 G91                                     ; relative positioning
 
 G1 E123 F1500                  ; 25mm/s feed
