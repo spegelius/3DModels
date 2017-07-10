@@ -143,20 +143,22 @@ module frame(with_knob=true) {
 }
 
 
-module shaft() {
-    side = 10-2*slop;
+module shaft(width=10, long_threads=true) {
+    side = width-2*slop;
     translate([0,80,0]) cube([side, 64, side]);
     intersection() {
-        cube([side, 160, side]);
-        translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=11,multiple=50);
+        cube([side, 146, side]);
+        if (long_threads) {
+            translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=width+1,multiple=50);
+        }
     }
     intersection() {
-        translate([side/2,80+64,0]) rotate([-90,0,0]) cylinder(d=25,h=2); 
-        translate([-7.5+side/2,80+64,0]) cube([15,5,15]);
+        translate([side/2,80+64,0]) rotate([-90,0,0]) cylinder(d=width*2.5,h=2); 
+        translate([-(width+5)/2+side/2,80+64,0]) cube([width+5,5,15]);
     }
     translate([0,146,0]) intersection() {
         cube([side, 14, side]);
-        translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=11,multiple=20);
+        translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=width+1,multiple=20);
     }
 }
 
@@ -299,9 +301,6 @@ module holder_parts_all() {
     translate([-115,15,0]) feet();
 }
 
-
-
-
 //holder_parts_all();
 //foot();
 //frame_nut();
@@ -309,10 +308,11 @@ module holder_parts_all() {
 //big_nut();
 //frame_parts();
 //washer();
-nut();
+//nut();
 //axle();
+shaft(width=7, long_threads=false);
 
-%translate([20, -25, 0]) rotate([0,0,90]) frame();
+//%translate([20, -25, 0]) rotate([0,0,90]) frame();
 
 //tire();
 //foot_dampener();
