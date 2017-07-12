@@ -170,7 +170,7 @@ module frame_nut() {
     
     intersection() {
         translate([0,0,7+4.8]) difference() {
-            outer();
+            outer(nozzle);
             translate([0,0,-4.8]) for(i=[0:5]) {
                 rotate([0,0,i*(360/6)]) for (j = [0:5]) {
                     translate([-5.3+j*2,10,0]) cube([1,19,1], center=true);
@@ -301,6 +301,15 @@ module holder_parts_all() {
     translate([-115,15,0]) feet();
 }
 
+module drill_axle() {
+    
+    translate([0,0,(7-2*slop)/2]) rotate([-90,0,0]) {
+        cylinder(d=7.75, h=30, $fn=6);
+        translate([0,0,40]) cube([7-2*slop, 7-2*slop, 20], center=true);
+    }
+    
+}
+
 //holder_parts_all();
 //foot();
 //frame_nut();
@@ -320,4 +329,3 @@ shaft(width=7, long_threads=false);
 //translate([0,67,0]) filament_quide();
 //translate([20,0,0]) filament_guide_rod();
 //translate([40,0,0]) filament_guide_nut();
-//translate([45,30,0]) filament_guide_roller();

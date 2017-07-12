@@ -19,7 +19,7 @@ module ring2(d=14, h=5) {
     }
 }
 
-module fin() {
+module fin(nozzle=nozzle) {
     
    module sub() {
         rotate([0,0,50]) translate([13,10,0]) difference() {
@@ -35,7 +35,7 @@ module fin() {
     mirror([0,0,1]) translate([0,0,-4.8]) sub();
 }
 
-module outer() {
+module outer(nozzle=nozzle) {
     difference() {
         ring(x=14, d=12);
         //ring(x=3, d=8);
@@ -47,7 +47,7 @@ module outer() {
         }
     }
     for (i=[0:5]) {
-        rotate([0,0,i*360/6]) translate([0,6,0]) fin();
+        rotate([0,0,i*360/6]) translate([0,6,0]) fin(nozzle);
     }
 }
 
