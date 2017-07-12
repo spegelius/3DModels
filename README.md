@@ -1,1 +1,0 @@
-# 3D models for printing. Cubify Cube 2

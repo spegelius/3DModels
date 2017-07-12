@@ -360,6 +360,55 @@ module fan_tunnel_arm2() {
     }
 }
 
+module cable_mount() {
+    difference() {
+        union () {
+            translate([0,-4,2]) cube([50,32,4], center=true);
+            translate([0,9.5,1/2]) hull() {
+                cube([45,5,1], center=true);
+                translate([0,0,50]) cube([15,5,1], center=true);
+            }
+            translate([5/2, 10, 4]) rotate([90,0,-90]) linear_extrude(height=5) polygon(points=[[0,0], [15,0], [0,15]]);
+        }
+        
+        translate([-50/2-7,0,0]) rotate([0,0,19]) cube([20,49.2,50],center=true);
+        translate([50/2+7,0,0]) rotate([0,0,-19]) cube([20,49.2,50],center=true);
+        
+        translate([0,-24.5,-10.3]) rotate([45,0,0]) cube([60,20,50],center=true);
+        
+        translate([-13,3,0]) cylinder(d=2.5,h=10, $fn=30);
+        translate([13,3,0]) cylinder(d=2.5,h=10, $fn=30);
+        
+        translate([-9,-7,0]) cylinder(d=2.5,h=10, $fn=30);
+        translate([9,-7,0]) cylinder(d=2.5,h=10, $fn=30);
+        
+        translate([-5,-17,0]) cylinder(d=2.5,h=10, $fn=30);
+        translate([5,-17,0]) cylinder(d=2.5,h=10, $fn=30);
+        
+        translate([0,-7,0]) cylinder(d=2.5,h=10, $fn=30);
+
+        translate([-12,7,10]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([12,7,10]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        
+        translate([0,7,19]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([-10,7,19]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([10,7,19]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+
+        translate([0,7,28]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([-8,7,28]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([8,7,28]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        
+        translate([0,7,37]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([-6,7,37]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([6,7,37]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+
+        translate([-4,7,46]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+        translate([4,7,46]) rotate([-90,0,0]) cylinder(d=4,h=6, $fn=30);
+
+
+    }
+}
+
 module view_proper() {
     %translate([0,-8/2, 20/2]) mock_slide();
 
@@ -378,11 +427,13 @@ module view_proper() {
     translate([-13,-95.2,37.5]) rotate([90,0,90]) fan_tunnel_arm();
 }
 
-view_proper();
+//view_proper();
 
 //translate([-30,0,30/2]) rotate([180,0,0]) body();
-//translate([0,0,40/2-5]) rotate([180,0,0]) mount();
+//mount();
 //mount_clamp();
 //rotate([90,0,0]) prox_sensor_clamp();
 //fan_tunnel();
 //rotate([-90,0,0]) fan_tunnel_arm2();
+
+cable_mount();

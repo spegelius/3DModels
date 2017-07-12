@@ -1,4 +1,5 @@
 ; START SCRIPT START
+G90
 G92 E0  ; reset extruder position
 M104 S[extruder0_temperature]  T0
 M140 S[bed0_temperature]
@@ -7,7 +8,6 @@ G28                                ;move to endstops
 G29
 M109 S[extruder0_temperature]  T0
 
-G90
 G1 X128 Y108 F9000      ; move to purge zone
 G1 Z0.2 F1000                 ; move Z close
 G91                                  ; relative positioning

@@ -89,7 +89,7 @@ module outer() {
     }
 }
 
-module bearing3() {
+module bearing4() {
     center();
 
     for (i=[0:ball_count-1]) {
@@ -98,13 +98,17 @@ module bearing3() {
 
     difference() {
         outer();
-        rotate_extrude(convexity=7) {
-            translate([23, 5, 0]) circle(d=10);
+        rotate_extrude(convexity=10, $fn=80) {
+            translate([23, 5, 0]) rotate() rotate(45) square(9.5, center=true);
+            //translate([23, 5, 0]) circle(d=10);
         }
     }
 }
 
-bearing3();
-
+//intersection() {
+//    bearing4();
+//    cube([100,100,100]);
+//}
+bearing4();
 //top(10,5);
 
