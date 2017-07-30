@@ -105,7 +105,7 @@ module frame(with_knob=true) {
     
     module hole() {
         for (i = [0:3]) {
-            translate([i*13,i*3+6,0]) cube([7,7,16],center=true);
+            translate([i*13,i*3+11,0]) cube([7,17,16],center=true);
         }
         translate([30,-6,0]) cube([7,7,16],center=true);
         translate([15,-6,0]) cube([7,7,16],center=true);
@@ -143,22 +143,62 @@ module frame(with_knob=true) {
 }
 
 
-module shaft(width=10, long_threads=true) {
+module shaft(width=10, length=160, long_threads=true, double_ends=false) {
+    
+    module end(mirror=false) {
+        // plate
+        intersection() {
+            translate([side/2,-2,0]) rotate([-90,0,0]) cylinder(d=width*2.5,h=2); 
+            translate([-(width+5)/2+side/2,-2,0]) cube([width+5,5,15]);
+        }
+        // end threads
+        intersection() {
+            cube([side, 14, side]);
+            translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=width+1,multiple=20);
+        }
+    }
+    
     side = width-2*slop;
-    translate([0,80,0]) cube([side, 64, side]);
+    // long shaft
     intersection() {
-        cube([side, 146, side]);
-        if (long_threads) {
+        if (double_ends) {
+            translate([0,14,0]) cube([side, 160-2*14, side]);
+        } else {
+            cube([side, 160-14, side]);
+        }
+        if (long_threads && ! double_ends) {
             translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=width+1,multiple=50);
         }
     }
-    intersection() {
-        translate([side/2,80+64,0]) rotate([-90,0,0]) cylinder(d=width*2.5,h=2); 
-        translate([-(width+5)/2+side/2,80+64,0]) cube([width+5,5,15]);
+    translate([0,160-14,0]) end();
+    if (double_ends) {
+        translate([width-2*slop, 14,0]) rotate([0,0,180]) end();
     }
-    translate([0,146,0]) intersection() {
-        cube([side, 14, side]);
-        translate([side/2,0,side/2]) rotate([-90,0,0]) threads(d=width+1,multiple=20);
+}
+
+module shaft2(length=160, width=10, length=160) {
+    
+    module end(mirror=false) {
+
+        // end threads
+        intersection() {
+            translate([1,0,0]) cube([side-2, 14, side-2]);
+            translate([side/2,0,(side-2)/2]) rotate([-90,0,0]) threads(d=width-1,multiple=20);
+        }
+    }
+    
+    side = width-2*slop;
+    // long shaft
+    intersection() {
+        if (double_ends) {
+            translate([0,14,0]) cube([side, length-2*14, side]);
+        } else {
+            cube([side, length-14, side]);
+        }
+    }
+    translate([0,length-14,0]) end();
+    if (double_ends) {
+        translate([width-2*slop, 14,0]) rotate([0,0,180]) end();
     }
 }
 
@@ -319,8 +359,11 @@ module drill_axle() {
 //washer();
 //nut();
 //axle();
-shaft(width=7, long_threads=false);
+//shaft(width=7, long_threads=false);
+//shaft(width=7, double_ends=true);
+shaft2(length=174, width=9, double_ends=true);
 
+//frame(with_knob=false);
 //%translate([20, -25, 0]) rotate([0,0,90]) frame();
 
 //tire();
