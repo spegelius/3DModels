@@ -1,3 +1,4 @@
+use <../lib/includes.scad>;
 
 depth = 8;
 
@@ -25,31 +26,6 @@ module extended_donut(d,h,h2){
             cylinder(d=d, h=h2-h, $fn=100);
             cylinder(d=h*2, h=h2-h, $fn=100);
         }
-    }
-}
-
-module rounded_cube(x,y,z,corner) {
-    fn=50;
-    module rcube(x,y,z,corner) {
-        translate([corner/2,corner/2,corner/2]) hull() {
-            sphere(d=corner, $fn=fn);
-            if (x>corner) translate([x-corner,0,0]) sphere(d=corner, $fn=fn);
-            if (x>corner && y>corner) translate([x-corner,y-corner,0]) sphere(d=corner, $fn=fn);
-            if (y>corner) translate([0,y-corner,0]) sphere(d=corner, $fn=fn);
-            if (z>corner) translate([0,0,z-corner]) sphere(d=corner, $fn=fn);
-            if (z>corner && x>corner) translate([x-corner,0,z-corner]) sphere(d=corner, $fn=fn);
-            if (z>corner && x>corner && y>corner) translate([x-corner,y-corner,z-corner]) sphere(d=corner, $fn=fn);
-            if (z>corner && y>corner)translate([0,y-corner,z-corner]) sphere(d=corner, $fn=fn);
-        }
-    }
-    
-    diff_x = x<corner ? (corner-x)/2 : 0;
-    diff_y = y<corner ? (corner-y)/2 : 0;
-    diff_z = z<corner ? (corner-z)/2 : 0;
-    
-    translate([-diff_x,-diff_y,-diff_z]) intersection() {
-        rcube(x,y,z,corner);
-        translate([diff_x,diff_y,diff_z]) cube([x,y,z]);
     }
 }
 
@@ -239,5 +215,5 @@ module plate1() {
 //test_center();
 
 //body3_inner();
-//body3();
-center3();
+body3();
+//center3();
