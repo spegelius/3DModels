@@ -1,3 +1,10 @@
+m3_nut_side = 5.65;
+m3_nut_height = 2.3;
+m3_bolt_dia = 3.2;
+m4_nut_side = 6.85;
+m4_nut_height = 3.1;
+m4_bolt_dia = 4.2;
+
 module threads(d=8, h=10, z_step=1.8, depth=0.5, direction=0) {
     
     function get_twist(dir) = (direction == 0) ? -360 : 360;
@@ -59,3 +66,60 @@ module rounded_cylinder(d, h, corner) {
         translate([0,0,h-corner/2]) donut(d-corner,corner);
     }
 }
+
+module rounded_tube(d,h,corner) {
+    $fn=100;
+    translate([0,0,corner/2]) union() {
+        difference() {
+            cylinder(d=d+corner, h=h-corner);
+            cylinder(d=d-corner, h=h-corner+1);
+        }
+        donut(d=d, h=corner);
+        translate([0,0,h-corner]) donut(d=d, h=corner);
+    }
+}
+
+module M3_nut(h=2.4, cone=true) {
+    hull() {
+        cylinder(d = 6.5, h=h, $fn=6);
+        if (cone) {
+            translate([0,0,2.4]) cylinder(d=3.2, h=1.2, $fn=20);
+        }
+    }
+}
+
+module M4_nut(h=3.2, cone=true) {
+    hull() {
+        cylinder(d = 7.85, h=h, $fn=6);
+        if (cone) {
+            translate([0,0,2.4]) cylinder(d=4.2, h=1.2, $fn=20);
+        }
+    }
+}
+
+module M8_nut(h=6, cone=true) {
+    hull() {
+        cylinder(d = 14.9, h=h, $fn=6);
+        if (cone) {
+            translate([0,0,2.4]) cylinder(d=3.2, h=1.2, $fn=20);
+        }
+    }
+}
+
+module dovetail(max_width, min_width, depth, height) {
+    angle=atan((max_width/2-min_width/2)/depth);
+	linear_extrude(height=height, convexity=2)
+
+	polygon(paths=[[0,1,2,3,0]], points=[[-min_width/2,0], [-max_width/2,depth], [max_width/2, depth], [min_width/2,0]]);
+
+}
+
+module beweled_cylinder(d, h, b) {
+    hull() {
+        cylinder(d=d-2*b, h=h);
+        translate([0,0,b]) cylinder(d=d, h=h-2*b);
+    }
+}
+
+//dovetail(7, 5, 4, 10);
+//M8_nut();
