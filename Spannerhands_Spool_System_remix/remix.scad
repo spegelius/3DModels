@@ -1,3 +1,4 @@
+// original models from: https://www.thingiverse.com/thing:2119644
 
 use <../lib/includes.scad>;
 use <../Bearings/bearing5.scad>;
