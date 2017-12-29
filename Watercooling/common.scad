@@ -8,11 +8,11 @@ tube1_inner_dia = 10;
 tube2_outer_dia = 10;
 tube2_inner_dia = 8.5;
 
-fitting_thread_dia = 12.9;
+fitting_thread_dia = 13;
 
-passthrough_thread_dia = 15.8;
+passthrough_thread_dia = 16;
 
-wire_pass_thread_dia = 10;
+wire_pass_thread_dia = 12;
 
 module mock_pump() {
     difference() {
