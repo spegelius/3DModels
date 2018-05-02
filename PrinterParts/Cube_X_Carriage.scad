@@ -3,6 +3,8 @@ include <../_downloaded/Dollo/NEW_Long_ties/mockups.scad>;
 include <../_downloaded/Dollo/NEW_Long_ties/globals.scad>;
 include <../_downloaded/Dollo/NEW_Long_ties/include.scad>;
 
+use <Prometheus_hotend_40mm_fan.scad>;
+
 slop = 0.15;
 nozzle=0.4;
 
@@ -14,6 +16,10 @@ module mock_slide() {
         translate([-5,-8/2-0.1,7.5]) rotate([-90,0,0]) cylinder(d=3, h=3.6, $fn=20);
         translate([-5,-8/2-0.1,-7.5]) rotate([-90,0,0]) cylinder(d=3, h=3.6, $fn=20);
     }
+}
+
+module prometheus_hotend() {
+    scale([10,10,10]) import("../_downloaded/Prometheus_Hot_End/Aluminium_Heat_Sink_V2_5mm.stl");
 }
 
 module belt_teeth(){
@@ -66,7 +72,7 @@ module body() {
     
 }
 
-module mount() {
+module mount(hotend="e3dv6") {
     difference() {
         union() {
             cube([50,40,40], center=true);
@@ -95,8 +101,17 @@ module mount() {
         translate([0,-34, 10]) cylinder(d=12, h=20, $fn=40);
         
         // hot end body
-        translate([0,-34, 0]) cylinder(d=27, h=20-5.4, $fn=60);
-        translate([-10,-30.55, 4.6]) cube([20,20,20],center=true);
+        if (hotend == "prometheus") {
+            translate([0,-34, 13.4]) cylinder(d=16.2, h=2, $fn=40);
+            hull() {
+                translate([0,-34, -8]) cylinder(d1=42, d2=20, h=28-5.4, $fn=60);
+                translate([-30,-34, -8]) cylinder(d1=42, d2=20, h=28-5.4, $fn=60);
+                }
+            
+        } else {
+            translate([0,-34, 0]) cylinder(d=27, h=20-5.4, $fn=60);
+            translate([-10,-30.55, 4.6]) cube([20,20,20],center=true);
+        }
         
         // hot end clamp bolt holes
         translate([-50/2+15, -50, 20-5.4/2]) rotate([-90,0,0]) cylinder(d=bolt_hole_dia,h=30, $fn=30);
@@ -105,8 +120,8 @@ module mount() {
         // hot end clamp nut holes
         translate([-50/2+15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) nut(h=2.6, cone=false);
         translate([50/2-15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) nut(h=2.6, cone=false);
-        translate([-50/2+15, -25+2.6/2, 20-0.3]) cube([6.5,2.6,5], center=true);
-        translate([50/2-15, -25+2.6/2, 20-0.3]) cube([6.5,2.6,5], center=true);
+        translate([-50/2+15, -25+2.6/2, 20-0.3]) cube([6.2,2.6,5], center=true);
+        translate([50/2-15, -25+2.6/2, 20-0.3]) cube([6.2,2.6,5], center=true);
 
         // utility holes
         translate([14.5,9,15]) rotate([0,90,-19]) cylinder(d=2.5,h=10, $fn=30);
@@ -148,7 +163,7 @@ module mount() {
 
 }
 
-module mount_clamp(){
+module mount_clamp(hotend="e3dv6"){
     difference() {
         union() {
             cube([29,10,5.4],center=true);
@@ -156,6 +171,9 @@ module mount_clamp(){
         }
         // hot end neck
         translate([0,6, -10]) cylinder(d=12, h=20, $fn=40);
+        if (hotend == "prometheus") {
+            translate([0,6, -3.9]) cylinder(d=16.2, h=2, $fn=40);
+        }
         translate([0,6, 5.4/2]) cylinder(d=18, h=20, $fn=40);
         // hot end clamp bolt holes
         translate([-50/2+15, -10, 0]) rotate([-90,0,0]) cylinder(d=bolt_hole_dia,h=30, $fn=30);
@@ -177,30 +195,32 @@ module prox_sensor_clamp() {
     
     module halfround(d=30, h=5) {
         hull() {
-            cylinder(d=d,h=h);
+            cylinder(d=d,h=h, $fn=50);
             translate([-d/2,-d/2,0]) cube([1,1,h]);
         }
     }
     
     module main() {
-        halfround();
-        translate([-37,-16.5,0]) cube([30,3,28]);
-        translate([-25,-13.5,0]) cube([10,10,28]);
-        translate([-(30-27.2)/2,0,25]) halfround(d=27.2, h=3);
+        translate([-1,5,0]) halfround();
+        translate([-37,-16.5,0]) cube([35,3,28]);
+        translate([-37,-13.5,0]) cube([44,25,28]);
+        translate([-1,5,23]) halfround();
     }
 
     difference() {
         main();
-        cylinder(d=prox_sensor_dia, h=36);
+        translate([-1,5,0]) cylinder(d=prox_sensor_dia, h=36, $fn=50);
 
-        translate([0,0,5]) cylinder(d=prox_sensor_washer_dia+3, h=20, $fn=40);
+        translate([-1,5,5]) cylinder(d=prox_sensor_washer_dia+3, h=19, $fn=50);
         
-        translate([-20,-5.5,5+20/2]) cube([15,16,20], center=true);
-        translate([-25,-3.5,5+20/2]) rotate([0,0,45]) cube([sqrt(200),sqrt(200),31], center=true);
+        translate([-25,-1,5+20/2]) cube([25,25,20], center=true);
+        translate([-30,8.9,5+20/2]) rotate([0,0,49]) cube([55,20,31], center=true);
+        translate([2,-16.4,5+20/2]) rotate([0,0,35]) cube([40,10,31], center=true);
 
         translate([-14,-12.5,23]) rotate([0,-90,90]) cylinder(d=bolt_hole_dia, h=10, $fn=20);
-        translate([-14,11.5,23]) rotate([0,-90,90]) cylinder(d=bolt_head_hole_dia, h=25, $fn=20);
+        translate([-14,21.5,23]) rotate([0,-90,90]) cylinder(d=bolt_head_hole_dia, h=35, $fn=20);
         translate([-14,-12.5,8]) rotate([0,-90,90]) cylinder(d=bolt_hole_dia, h=10, $fn=20);
+        translate([-14,-3.5,8]) rotate([0,-90,90]) cylinder(d=bolt_head_hole_dia, h=10, $fn=20);
         translate([-34.3,-12.5,23]) rotate([0,-90,90]) cylinder(d=bolt_hole_dia, h=10, $fn=20);
         translate([-34.3,-12.5,8]) rotate([0,-90,90]) cylinder(d=bolt_hole_dia, h=10, $fn=20);
     }
@@ -409,31 +429,38 @@ module cable_mount() {
     }
 }
 
+//hotend = "e3dv6";
+hotend = "prometheus";
+
 module view_proper() {
+
     %translate([0,-8/2, 20/2]) mock_slide();
 
     translate([0,-20/2-8,30/2]) body();
-    translate([0,-38.1,40/2-5]) mount();
+    translate([0,-38.1,40/2-5]) mount(hotend=hotend);
     
-    translate([0,-78.2,40-5-5.4/2]) mount_clamp();
+    translate([0,-78.2,40-5-5.4/2]) mount_clamp(hotend=hotend);
     
-    %translate([28,-70,7]) rotate([0,0,-109]) prox_sensor_clamp();
+    //%translate([28,-70,7]) rotate([0,0,-109]) prox_sensor_clamp();
 
-    translate([0,-72.1,-19.4]) e3dv6();
+    //translate([0,-72.1,-19.4]) e3dv6();
+    translate([0,-72.1,-3.7]) rotate([0,0,90]) prometheus_hotend();
 
-    translate([28,-70,-19]) proximity_sensor();
+    //translate([33,-70.5,-19]) proximity_sensor();
     
     translate([0,-115,20]) rotate([-42,180,0]) fan_tunnel();
-    translate([-13,-95.2,37.5]) rotate([90,0,90]) fan_tunnel_arm();
+    //translate([-13,-95.2,37.5]) rotate([90,0,90]) fan_tunnel_arm();
+    
+    translate([-31,-72.1,-3.7]) rotate([0,0,-90]) color("green") fan_shroud();
 }
 
-//view_proper();
+view_proper();
 
 //translate([-30,0,30/2]) rotate([180,0,0]) body();
-//mount();
-//mount_clamp();
-//rotate([90,0,0]) prox_sensor_clamp();
+//rotate([180,0,0]) mount(hotend);
+//mount_clamp(hotend);
+//prox_sensor_clamp();
 //fan_tunnel();
 //rotate([-90,0,0]) fan_tunnel_arm2();
 
-cable_mount();
+//cable_mount();
