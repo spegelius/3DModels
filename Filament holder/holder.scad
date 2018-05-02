@@ -361,9 +361,10 @@ module drill_axle() {
 //axle();
 //shaft(width=7, long_threads=false);
 //shaft(width=7, double_ends=true);
-shaft2(length=174, width=9, double_ends=true);
+//shaft2(length=174, width=9, double_ends=true);
+//shaft2(length=160, width=9, double_ends=true);
 
-//frame(with_knob=false);
+frame(with_knob=false);
 //%translate([20, -25, 0]) rotate([0,0,90]) frame();
 
 //tire();
