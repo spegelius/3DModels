@@ -106,35 +106,28 @@ module beam(left=true) {
     
 }
 
-//%mock_printer_frame();
-
-//%translate([252+25, 20, 0]) rotate([0,0,90]) mock_extruder();
-//%translate([-25, 20, 0]) mirror([10,0,0]) rotate([0,0,90]) mock_extruder();
-//%translate([55, 60, 0]) rotate([0,0,90]) mock_extruder();
-//%translate([195, 60, 0]) mirror([10,0,0]) rotate([0,0,90]) mock_extruder();
-
-// view
-//intersection() {
-//    translate([100,0,0]) cube([80,90,90]);
-//    union() {
-//        translate([0,0,50]) beam();
-//        translate([252,0,50]) mirror([1,0,0]) beam(left=false);
-//    }
-//}
-
-//translate([-80,0,0]) beam(left=true);
-//translate([80,0,0]) beam(left=false);
-
-
-rotate([0,-90,0]) difference() {
-    cube([2.1,18,40]);
-    translate([-1,8,6]) rotate([0,90,0]) cylinder(d=4,h=5, $fn=40);
-    translate([-1,8,40-6]) rotate([0,90,0]) cylinder(d=4,h=5, $fn=40);
+module debug() {
+    //%mock_printer_frame();
+    %translate([252-50, 20, -50]) rotate([0,0,90]) mock_extruder();
+    %translate([-105, 20, -50]) mirror([1,0,0]) rotate([0,0,90]) mock_extruder();
+    %translate([-25, 60, -50]) rotate([0,0,90]) mock_extruder();
+    %translate([125, 60, -50]) mirror([1,0,0]) rotate([0,0,90]) mock_extruder();
+    translate([-80,0,0]) beam(left=true);
+    translate([179,0,0]) beam(left=false);
 }
 
-translate([0,25,0]) rotate([0,-90,0]) difference() {
-    cube([3,18,40]);
-    translate([2.1,0,0]) cube([0.9,20,26]);
-    translate([-1,8,6]) rotate([0,90,0]) cylinder(d=4,h=5, $fn=40);
-    translate([-1,8,40-6]) rotate([0,90,0]) cylinder(d=4,h=5, $fn=40);
+module debug_joint() {
+    intersection() {
+        translate([100,0,0]) cube([80,90,90]);
+        union() {
+            translate([0,0,50]) beam();
+            translate([252,0,50]) mirror([1,0,0]) beam(left=false);
+        }
+    }
 }
+
+//debug();
+//debug_joint();
+
+//beam(left=true);
+beam(left=false);
