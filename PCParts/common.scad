@@ -64,6 +64,27 @@ module mock_ssd() {
 
 }
 
+
+hd_width = 102;
+hd_height = 26.1;
+
+screw_dia = 3.6;
+
+module mock_hd() {
+    color("white") difference() {
+        cube([hd_width,146,26]);
+        translate([0,28.3,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+        translate([0,69.8,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+        translate([0,129.8,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+
+        translate([hd_width-5,28.3,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+        translate([hd_width-5,69.8,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+        translate([hd_width-5,129.8,6.40]) rotate([0,90,0]) cylinder(d=screw_dia, h=5, $fn=30);
+
+    }
+        
+}
+
 //mock_mobo();
 //mock_card();
 //mock_mobo_card();
