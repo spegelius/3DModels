@@ -30,7 +30,7 @@ module thread(cube_side=4, resolution=steps) {
     }
 }
 
-module star(h) {
+module _star(h) {
     arms = 10;
     d = 10;
     total = PI*d;
@@ -50,6 +50,13 @@ module star(h) {
     cylinder(d=d,h=h);
 }
 
+module star(h) {
+    scale([0.95,0.95,1]) {
+        _star(h);
+        cylinder(d=10,h=h);
+    }
+}
+
 module shaft(h=10) {
     d = thread_d + r-1;
     height = h*r;
@@ -59,7 +66,7 @@ module shaft(h=10) {
             translate([0,0,i*r-r/2]) thread(pellet+slop);
         }
         //translate([0,0,height/2]) cube([10,10,height],center=true);
-        star(height);
+        _star(height);
     }
 }
 
@@ -147,7 +154,9 @@ module view_intersection() {
 //view_intersection();
 
 //ballnut(1);
-shaft(4);
+//shaft(8);
+
+star(40);
 
 //cube_donut(9, pellet);
 //slice(20,pellet,25);

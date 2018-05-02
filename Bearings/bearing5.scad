@@ -73,12 +73,17 @@ module center_square_hole() {
     }
 }
 
-module center_circle_hole() {
+module center_circle_hole(dent=false) {
     difference() {
         _center();
-        _center_block();
+        if (dent) {
+            translate([ball_position+0.8,0,0]) cylinder(d=ball_size+1, h=center_height/2);
+        } else {
+            _center_block();
+        }
         cylinder(d=8, h=9);
     }
+    %translate([ball_position,0,center_height/2]) sphere(d=ball_size);
 }
 
 module center_block() {
@@ -88,7 +93,7 @@ module center_block() {
     }
 }
 
-module roll(height, diameter, wall=1.8, edges=true) {
+module roll(height, diameter, wall=1.8, edges=true, dent=false) {
     intersection() {
         union() {
             difference() {
@@ -120,7 +125,13 @@ module roll(height, diameter, wall=1.8, edges=true) {
 
                 // ball paths
                 translate([0,0,center_height/2]) ball_path(ball_size);
+                if (dent) {
+                    translate([ball_position-0.8,0,0]) cylinder(d=ball_size+1, h=center_height/2);
+                }
                 translate([0,0,height-center_height/2]) ball_path(ball_size);
+                if (dent) {
+                    translate([ball_position-0.8,0,height-center_height/2]) cylinder(d=ball_size+1, h=center_height/2); 
+        }
             }
         }
         //cube([30,30,height]);
@@ -128,11 +139,14 @@ module roll(height, diameter, wall=1.8, edges=true) {
     %translate([ball_position,0,center_height/2]) sphere(d=ball_size); 
 }
 
-module bearing5(height, diameter) {
+module bearing5(height, diameter, dent=false) {
     difference() {
         cylinder(d=diameter, h=height);
         cylinder(d=ball_position*2, h=height+1);
         translate([0,0,height/2]) ball_path(ball_size);
+        if (dent) {
+            translate([ball_position-0.8,0,0]) cylinder(d=ball_size+1, h=height/2); 
+        }
     }
     degree = 360/ball_count;
     for (i = [0:ball_count-1]) {
@@ -157,12 +171,12 @@ intersection() {
 
 
 //roll(roll_height, width, edges=false);
-//roll(roll_height, width, edges=false);
+roll(roll_height, width, edges=false, dent=true);
 //center_square_hole();
-//center_circle_hole();
-center_block();
+//center_circle_hole(dent=true);
+//center_block();
 
-//bearing5(7, 50);
+//bearing5(7, 50, dent=true);
 
 module washer() {
     difference() {
