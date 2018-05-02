@@ -183,6 +183,52 @@ module new_lid2() {
     }
 }
 
+module new_lid2_window() {
+    module bolt_head() {
+        union() {
+            cylinder(d1=3,d2=6.5,h=2, $fn=30);
+            translate([0,0,2]) cylinder(d=6.5,h=10, $fn=30);
+        }
+    }
+
+    difference() {
+        new_lid2();
+        translate([-5,-25,-111.1]) cylinder(d=3,h=5, $fn=30);
+        translate([-5,-25,-110]) bolt_head();
+        translate([45,-25,-111.1]) cylinder(d=3,h=5, $fn=30);
+        translate([45,-25,-110]) bolt_head();
+        translate([-5,25,-111.1]) cylinder(d=3,h=9, $fn=30);
+        translate([-5,25,-110]) bolt_head();
+        translate([45,25,-111.1]) cylinder(d=3,h=9, $fn=30);
+        translate([45,25,-110]) bolt_head();
+
+        translate([-1,-21,-111.1]) cube([42,42,10]);
+    }
+}
+
+module window_frame() {
+    union() {
+        difference() {
+            translate([0,0,1/2]) hull() {
+                cube([58,58,1], center=true);
+                translate([0,0,3.4-0.4/2-1/2]) cube([63,63,0.4], center=true);
+            }
+            translate([-25,-25,2]) cylinder(d=3.2,h=4, $fn=20);
+            translate([25,-25,2]) cylinder(d=3.2,h=4, $fn=20);
+            translate([25,25,2]) cylinder(d=3.2,h=4, $fn=20);
+            translate([-25,25,2]) cylinder(d=3.2,h=4, $fn=20);
+            
+            translate([-25,-25,-0.2]) M3_nut(2, cone=false);
+            translate([25,-25,-0.2]) M3_nut(2, cone=false);
+            translate([25,25,-0.2]) M3_nut(2, cone=false);
+            translate([-25,25,-0.2]) M3_nut(2, cone=false);
+            
+            cube([42,42,10], center=true);
+            translate([0,0,10/2+2.4]) cube([47,47,10], center=true);
+        }
+    }
+}
+
 module nut_cylinder(d1=11, d2=9, h=2.6) {
     difference() {
         cylinder(d1=d1, d2=d2, h=h, $fn=30);
@@ -287,19 +333,19 @@ module bolt() {
 core_wall = 1.8;
 
 module new_core_750g_52mm() {
-    roll(55, 52, wall=core_wall, edges=false);
+    roll(55, 52, wall=core_wall, edges=false, dent=true);
 }
 
 module new_core_1kg_50mm() {
-    roll(87.50, 50, wall=core_wall, edges=false);
+    roll(87.50, 50, wall=core_wall, edges=false, dent=true);
 }
 
 module new_core_1kg_52mm() {
-    roll(87.50, 52, wall=core_wall, edges=false);
+    roll(87.50, 52, wall=core_wall, edges=false, dent=true);
 }
 
 module new_core_1kg_54mm() {
-    roll(87.50, 54, wall=core_wall, edges=false);
+    roll(87.50, 54, wall=core_wall, edges=false, dent=true);
 }
 
 //new_base();
@@ -310,8 +356,11 @@ module new_core_1kg_54mm() {
 //translate([0,0,110]) new_base2();
 //translate([0,0,110]) new_lid1();
 //translate([0,0,110]) new_lid2();
+//translate([0,0,110]) new_lid2_window();
 //nut();
 //bolt();
+
+window_frame();
 
 //new_base_bracket();
 //new_lid_bracket();
