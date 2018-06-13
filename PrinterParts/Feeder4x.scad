@@ -8,7 +8,7 @@ use <../_downloaded/ISOThreads/uploads_6f_12_f1_10_d2_ISOThread.scad>;
 
 //ProFeeder();
 
-dia = 400;
+dia = 350;
 tube_d = 2.4;
 fitting_d = 5;
 fitting_h = 6;
@@ -88,7 +88,7 @@ module tubex4() {
 module feeder() {
 
     difference() {
-        cylinder(d1=15,d2=20,h=h1+h2+h3 + fitting_h);
+        cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h);
         tubex4();
     }
 }
