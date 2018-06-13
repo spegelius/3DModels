@@ -28,10 +28,8 @@ module fitting_thread_M6() {
 //translate([20,0]) fitting_thread_M6();
 
 module tube(h=60) {
-    render() intersection() {
-        rotate([-90,0,0]) translate([-dia/2,0,0]) donut(dia,tube_d,$fn=200);
-        cylinder(d=30,h=h,$fn=10);
-    }
+    angle = asin(h/(dia/2));
+    rotate([90,0,0]) translate([-dia/2,0,0]) donut(dia,tube_d,angle=angle,rotation=0,$fn=150);
 }
 
 module tubex2(h=60) {
@@ -43,7 +41,7 @@ module tubex2(h=60) {
 
 h1 = fitting_h + 5;
 h2 = 18;
-h3 = 38;
+h3 = 36;
 
 module tubex4() {
 
@@ -53,8 +51,9 @@ module tubex4() {
     
     module fitting() {
         union() {
-            fitting_thread_M6();
-            translate([0,0,fitting_h]) cylinder(d=20,h=5, $fn=20);
+            cylinder(d1=2, d2=3.3,h=3, $fn=40);
+            translate([0,0,2.99]) fitting_thread_M6();
+            translate([0,0,fitting_h+2.98]) cylinder(d=20,h=5, $fn=20);
         }
     }
     
@@ -88,7 +87,7 @@ module tubex4() {
 module feeder() {
 
     difference() {
-        cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h);
+        cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h+3);
         tubex4();
     }
 }

@@ -53,7 +53,7 @@ module rounded_cube_side(x,y,z,corner) {
 }
 
 module donut(d, h, angle=360, rotation=45) {
-    rotate_extrude(angle=angle, convexity=10, $fn=100) translate([d/2,0,0]) rotate([0,0,rotation]) circle(d=h);
+    rotate([0,0,rotation]) rotate_extrude(angle=angle, convexity=10) translate([d/2,0,0]) circle(d=h);
 }
 
 module cube_donut(d, h, angle=360, rotation=45) {
