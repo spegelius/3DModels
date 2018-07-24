@@ -7,9 +7,9 @@ module preload() {
 
 module destring() {
 
-    translate([-30,0,0]) cylinder(d=10, h=40);
-    cylinder(d=10, h=40);
-    translate([40,0,0]) cylinder(d=10, h=40);
+    translate([-30,10,0]) cylinder(d=10, h=40);
+    translate([-30,-20,0])cylinder(d=10, h=40);
+    translate([80,0,0]) cylinder(d=10, h=40);
 }
 
 module seam_example() {
@@ -46,7 +46,7 @@ module numbered(number) {
 //numbered(7);
 //numbered(8);
 //numbered(9);
-numbered(10);
+//numbered(10);
 //numbered(11);
 //numbered(12);
 //numbered(13);
@@ -57,3 +57,5 @@ numbered(10);
 //numbered(18);
 //numbered(19);
 //numbered(20);
+
+destring();
