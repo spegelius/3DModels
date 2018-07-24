@@ -1,3 +1,5 @@
+atx_psu_width = 150;
+atx_psu_height = 86;
 
 card_spacing = 20.32;
 
@@ -85,7 +87,30 @@ module mock_hd() {
         
 }
 
+module minus_atx_psu_holes(hole=3.2) {
+    difference() {
+        children();
+        translate([-138/2,0,6]) rotate([-90,0,0]) cylinder(d=hole, h=5, $fn=30);
+        translate([138/2,0,6]) rotate([-90,0,0]) cylinder(d=hole, h=5, $fn=30);
+        translate([138/2,0,6+64]) rotate([-90,0,0]) cylinder(d=hole, h=5, $fn=30);
+        translate([-150/2+30,0,atx_psu_height-6]) rotate([-90,0,0]) cylinder(d=hole, h=5, $fn=30);
+    }
+}
+
+module mock_atx_psu(holes=true, slop=0) {
+    w = atx_psu_width+2*slop;
+    h = atx_psu_height+2*slop;
+    if (holes) {
+        minus_atx_psu_holes() {
+            translate([-w/2,0,0]) cube([w, 140, h]);
+        }
+    } else {
+        translate([-w/2,0,0]) cube([w, 140, h]);
+    }
+}
+
 //mock_mobo();
 //mock_card();
 //mock_mobo_card();
 //mock_ssd();
+//mock_atx_psu();
