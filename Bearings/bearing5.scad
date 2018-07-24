@@ -27,9 +27,20 @@ center_cube_side = 9;
 //roll_height = 160 - 2*14 - 2;
 roll_height = 174 - 2*14 - 2;
 
-module ball_path(ball_size) {
-    rotate_extrude(convexity=7) {
-        translate([ball_position, 0, 0]) rotate([0,0,45]) square(ball_size, center=true);
+module ball_path(ball_size=ball_size, ball_position=ball_position, dent=false) {
+    cube_donut(ball_position*2, ball_size);
+    if (dent == true) {
+        h = sqrt(ball_size*ball_size*2);
+        union() {
+            intersection() {
+                translate([ball_position-0.7,0,0]) cylinder(d=ball_size+1, h=h/2+0.1);
+                translate([ball_position,-ball_size,0]) cube([ball_size,2*ball_size,h]);
+            }
+            intersection() {
+                translate([ball_position+0.8,0,0]) cylinder(d=ball_size+1, h=h/2+0.1);
+                translate([ball_position-ball_size,-ball_size,0]) cube([ball_size,2*ball_size,h]);
+            }
+        }
     }
 }
 
@@ -50,7 +61,7 @@ module _center_block(side=5) {
 
 }
 
-module _center() {
+module _center(dent=false) {
     
     difference() {
         union() {
@@ -59,7 +70,7 @@ module _center() {
                     beweled_cylinder(d=center_width+ball_notch, h=center_height, b=bewel);
                     //translate([0,0,center_height+0.4/2]) cube([12,12,0.4], center=true);
                 }
-                translate([0,0,center_height/2]) ball_path(ball_size);
+                translate([0,0,center_height/2]) ball_path(ball_size, dent=dent);
             }
         }
     }
@@ -75,10 +86,8 @@ module center_square_hole() {
 
 module center_circle_hole(dent=false) {
     difference() {
-        _center();
-        if (dent) {
-            translate([ball_position+0.8,0,0]) cylinder(d=ball_size+1, h=center_height/2);
-        } else {
+        _center(dent=dent);
+        if (!dent) {
             _center_block();
         }
         cylinder(d=8, h=9);
@@ -124,14 +133,8 @@ module roll(height, diameter, wall=1.8, edges=true, dent=false) {
                 //translate([0,0,height-center_height-4+bewel]) beweled_cylinder(d=width-8, h=4, b=bewel*3);
 
                 // ball paths
-                translate([0,0,center_height/2]) ball_path(ball_size);
-                if (dent) {
-                    translate([ball_position-0.8,0,0]) cylinder(d=ball_size+1, h=center_height/2);
-                }
-                translate([0,0,height-center_height/2]) ball_path(ball_size);
-                if (dent) {
-                    translate([ball_position-0.8,0,height-center_height/2]) cylinder(d=ball_size+1, h=center_height/2); 
-        }
+                translate([0,0,center_height/2]) ball_path(dent=dent);
+                translate([0,0,height-center_height/2]) ball_path(dent=dent);
             }
         }
         //cube([30,30,height]);
@@ -171,9 +174,9 @@ intersection() {
 
 
 //roll(roll_height, width, edges=false);
-roll(roll_height, width, edges=false, dent=true);
+//roll(roll_height, width, edges=false, dent=true);
 //center_square_hole();
-//center_circle_hole(dent=true);
+center_circle_hole(dent=true);
 //center_block();
 
 //bearing5(7, 50, dent=true);
