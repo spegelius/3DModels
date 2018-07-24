@@ -96,6 +96,14 @@ module ptfe_nozle() {
     import ("Version_2_small_pfte_nozzle_175mm.STL");
 }
 
+module bearing_mount() {
+    color("grey")
+    translate([0,0,6.3])
+    rotate([0,0,0]) 
+    import ("../_downloaded/SPANNERHANDS_Spool_System_Wall_Mounted_Spool_Holder___Dust_Cover/files/608_BEARING_MOUNT_v2_0.stl");
+}
+
+
 module new_base1() {
     rotate([112.5,0,0]) difference() {
         base1();
@@ -332,6 +340,14 @@ module bolt() {
 
 core_wall = 1.8;
 
+module new_core_750g_50mm() {
+    roll(55, 50, wall=core_wall, edges=false, dent=true);
+}
+
+module new_core_750g_51mm() {
+    roll(55, 51, wall=core_wall, edges=false, dent=true);
+}
+
 module new_core_750g_52mm() {
     roll(55, 52, wall=core_wall, edges=false, dent=true);
 }
@@ -340,13 +356,103 @@ module new_core_1kg_50mm() {
     roll(87.50, 50, wall=core_wall, edges=false, dent=true);
 }
 
+module new_core_1kg_51mm() {
+    roll(87.50, 51, wall=core_wall, edges=false, dent=true);
+}
+
 module new_core_1kg_52mm() {
     roll(87.50, 52, wall=core_wall, edges=false, dent=true);
+}
+
+module new_core_1kg_53mm() {
+    roll(87.50, 53, wall=core_wall, edges=false, dent=true);
 }
 
 module new_core_1kg_54mm() {
     roll(87.50, 54, wall=core_wall, edges=false, dent=true);
 }
+
+ball_size = 5.92+0.05;
+
+module small_core_bearing() {
+    // bearing
+    difference() {
+        union() {
+            scale([1,1,1.05]) intersection() {
+                bearing_mount();
+                cylinder(d=50,h=5);
+            }
+            union() {
+                translate([0,0,5*1.05+sqrt(ball_size*ball_size*2)/2]) cube_donut(30,ball_size);
+                translate([0,0,5*1.05]) difference() {
+                    cylinder(d=30,h=sqrt(ball_size*ball_size*2),$fn=100);
+                    cylinder(d=26,h=sqrt(ball_size*ball_size*2)+1,$fn=100);
+                }
+                translate([0,0,5*1.05]) cylinder(d=12,h=sqrt(ball_size*ball_size*2)/2-7/2-0.1);
+            }
+        }
+        translate([0,0,5*1.05 + sqrt(ball_size*ball_size*2)/2]) ball_path(ball_size,dent=true);
+        %translate([0,0,5*1.05+sqrt(ball_size*ball_size*2)/2-7/2]) center_circle_hole(dent=true);
+    }
+}
+
+module small_core_axle() {
+    intersection() {
+        translate([0,0,7.9/2-0.6]) rotate([-90,0,0]) cylinder(d=7.6, h=26.5, $fn=50);
+        translate([-8/2,0,0]) cube([8,26.5,8]);
+    }
+}
+
+small_core_h = 87.50 - sqrt(ball_size*ball_size*2) - 7 + 0.5;
+
+module _small_core(diameter) {
+    // core
+    difference() {
+        cylinder(d=diameter,h=small_core_h,$fn=50);
+        cylinder(d=8,h=20,$fn=50);
+        translate([0,0,small_core_h-20]) cylinder(d=8,h=20,$fn=50);
+
+        translate([0,0,20+0.5]) cylinder(d=diameter-3, h=small_core_h-41, $fn=50);
+    }
+}
+
+module core_1kg_20mm() {
+    _small_core(20);
+}
+
+module core_1kg_16mm() {
+    _small_core(16);
+}
+
+module debug_core_1kg() {
+    translate([0,0,5.7]) new_core_1kg_50mm();
+    bearing_mount();
+    translate([0,0,87.5+2*5.7]) rotate([180,0,0]) bearing_mount();
+}
+
+module debug_small_core() {
+    intersection() {
+        union() {
+            h = 5*1.05+sqrt(ball_size*ball_size*2)/2 + 7/2;
+            translate([0,0,h]) core_1kg_20mm();
+            small_core_bearing();
+            translate([0,0,small_core_h+2*h]) rotate([180,0,0]) small_core_bearing();
+        }
+        cube([40,40,200]);
+    }
+}
+
+module debug_small_core_bearing() {
+    intersection() {
+        small_core_bearing();
+        cube([60,60,60]);
+    }
+}
+
+//debug_core_1kg();
+//translate([40,0,0]) debug_small_core();
+//debug_small_core_bearing();
+
 
 //new_base();
 //new_lid();
@@ -360,14 +466,23 @@ module new_core_1kg_54mm() {
 //nut();
 //bolt();
 
-window_frame();
+//window_frame();
 
 //new_base_bracket();
 //new_lid_bracket();
 //new_clasp_bracket();
 //new_ptfe_nozle();
 
+//new_core_750g_50mm();
+//new_core_750g_51mm();
 //new_core_750g_52mm();
 //new_core_1kg_50mm();
+//new_core_1kg_51mm();
 //new_core_1kg_52mm();
+//new_core_1kg_53mm();
 //new_core_1kg_54mm();
+core_1kg_20mm();
+//core_1kg_16mm();
+
+//small_core_bearing();
+//small_core_axle();
