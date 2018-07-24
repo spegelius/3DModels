@@ -5,6 +5,8 @@ m4_nut_side = 6.85;
 m4_nut_height = 3.1;
 m4_bolt_dia = 4.2;
 
+use <../_downloaded/ISOThreads/uploads_6f_12_f1_10_d2_ISOThread.scad>;
+
 module threads(d=8, h=10, z_step=1.8, depth=0.5, direction=0) {
     
     function get_twist(dir) = (direction == 0) ? -360 : 360;
@@ -146,6 +148,16 @@ module chamfered_cube_side(x,y,z, chamfer, center=false) {
             translate([0,chamfer,0]) cube([x, y-2*chamfer,z], center=center);
             translate([chamfer,00]) cube([x-2*chamfer,y,z], center=center);
         }
+    }
+}
+
+module fitting_thread_M6(fitting_h=6) {
+    translate([0,0,-1]) intersection() {
+        union() {
+            thread_out(6,fitting_h+2,thr=20);
+            cylinder(d=5.16, h=fitting_h+2,$fn=50);
+        }
+        translate([0,0,1]) cylinder(d=6.2,h=fitting_h,$fn=50);
     }
 }
 
