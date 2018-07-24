@@ -15,18 +15,6 @@ fitting_h = 6;
 
 function tube_angle(h) = asin(h/(dia/2));
 
-module fitting_thread_M6() {
-    translate([0,0,-1]) intersection() {
-        union() {
-            thread_out(6,fitting_h+2,$f=40);
-            cylinder(d=5.16, h=fitting_h+2,$fn=50);
-        }
-        translate([0,0,1]) cylinder(d=6.2,h=fitting_h,$fn=50);
-    }
-}
-
-//translate([20,0]) fitting_thread_M6();
-
 module tube(h=60) {
     angle = asin(h/(dia/2));
     rotate([90,0,0]) translate([-dia/2,0,0]) donut(dia,tube_d,angle=angle,rotation=0,$fn=150);
@@ -52,13 +40,10 @@ module tubex4() {
     module fitting() {
         union() {
             cylinder(d1=2, d2=3.3,h=3, $fn=40);
-            translate([0,0,2.99]) fitting_thread_M6();
+            translate([0,0,2.99]) fitting_thread_M6(fitting_h);
             translate([0,0,fitting_h+2.98]) cylinder(d=20,h=5, $fn=20);
         }
     }
-    
-    fitting_thread_M6();
-    translate([0,0,fitting_h + .2]) cylinder(d=tube_d, h=h1-5.2, $fn=40);
 
     // first junction
     rotate([0,0,90]) translate([0,0,h1]) tubex2(h=h2);
@@ -84,11 +69,60 @@ module tubex4() {
 
 }
 
-module feeder() {
+module tubes_push_fitting() {
+    union() {
+        fitting_thread_M6(fitting_h);
+        translate([0,0,fitting_h + .2]) cylinder(d=tube_d, h=h1-5.2, $fn=40);
+        tubex4();
+    }
+}
+
+module tubes_collet() {
+    difference() {
+        union() {
+            cylinder(d=7.5, h=3.5, $fn=30);
+            translate([0,0,1]) donut(6.8,1,$fn=20);
+            translate([0,0,3.5]) cylinder(d1=7.5, d2=4.1, h=2, $fn=30);
+            translate([0,0,7/2]) cube([30,1,7], center=true);
+            translate([0,0,5.5]) cylinder(d=4.1, h=3, $fn=30);
+            translate([0,0,8.7]) cylinder(d=tube_d, h=h1-8.7, $fn=40);
+            tubex4();
+        }
+    }
+}
+
+module feeder_push_fitting() {
 
     difference() {
         cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h+3);
-        tubex4();
+        tubes_push_fitting();
+    }
+}
+
+module feeder_collet() {
+    
+    module ear() {
+        rotate([90,0,0]) intersection() {
+            cylinder(d=8,h=10, $fn=30);
+            translate([0,1,8/2]) cube([8,8,10],center=true);
+        }
+    }
+
+    difference() {
+        union() {
+            cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h+3);
+            translate([7,8/2,3]) ear();
+            translate([-7,8/2,3]) ear();
+        }
+        tubes_collet();
+        translate([7,30/2,3]) rotate([90,0,0]) cylinder(d=3.2, h=30,$fn=30);
+        translate([-7,30/2,3]) rotate([90,0,0]) cylinder(d=3.2, h=30,$fn=30);
+        
+        translate([7,8,3]) rotate([90,0,0]) cylinder(d=6, h=4,$fn=30);
+        translate([-7,8,3]) rotate([90,0,0]) cylinder(d=6, h=4,$fn=30);
+        
+        translate([7,-4,3]) rotate([90,30,0]) M3_nut();
+        translate([-7,-4,3]) rotate([90,30,0]) M3_nut();
     }
 }
 
@@ -108,8 +142,10 @@ module hole_test() {
 //tube();
 //tubex2();
 //tubex4();
-feeder();
-
+//tubes_push_fitting();
+//tubes_collet();
+feeder_push_fitting();
+//feeder_collet();
 
 //translate([20,0,0]) {
 //    thread_out(6,fitting_h);
