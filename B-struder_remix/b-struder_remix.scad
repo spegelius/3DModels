@@ -176,8 +176,8 @@ module filament_holes(height=15, offset=5) {
     //translate([0,29-6,height/2]) rotate([-90,0,0]) fitting_hole_M6();
     //translate([0,-18+6,height/2]) rotate([90,0,0]) fitting_hole_M6();
     
-    translate([0,29-6,height/2]) rotate([-90,0,0]) fitting_thread_M6(6);
-    translate([0,-18+6,height/2]) rotate([90,0,0]) fitting_thread_M6(6);
+    translate([0,29-5.99,height/2]) rotate([-90,0,0]) fitting_thread_M6(6);
+    translate([0,-18+5.99,height/2]) rotate([90,0,0]) fitting_thread_M6(6);
 }
 
 module arm_E3D_HobGoblin_U604zz() {
@@ -192,7 +192,7 @@ module arm_E3D_HobGoblin_U604zz() {
         translate([4.2,0,0]) filament_holes(offset=5);
         
         // idler hole
-        translate([10.5,0,0]) {
+        #translate([10.7,0,0]) {
             cylinder(d=3.5, h=5, $fn=30);
             translate([0,0,5]) cylinder(d=4.2, h=15, $fn=30);
             translate([0,0,15-2.5]) cylinder(d=9, h=3, $fn=30);
@@ -336,15 +336,15 @@ module new_motor_mount() {
         }
         translate([-26, 15,0]) cylinder(d=4.2,h=5,$fn=30);
         translate([-26, -14,0]) cylinder(d=4.2,h=5,$fn=30);
-        translate([31/2,-31/2,1.5]) cylinder(d1=3,d2=6,h=1.5,$fn=30);
-        translate([31/2,31/2,1.5]) cylinder(d=3.2,h=3.5,$fn=30);
+        translate([31/2,-31/2,1.51]) cylinder(d1=3,d2=6,h=1.5,$fn=30);
+        translate([31/2,31/2,1.51]) cylinder(d=3.2,h=3.5,$fn=30);
     }
 }
 
 module new_lock_lever_E3D_HobGoblin() {
     difference() {
         union() {
-            rotate([0,0,-45]) lock_lever();
+            rotate([0,0,55]) lock_lever();
             mirror([0,1,0]) lock_lever();
             cylinder(d=9.6,h=13+3.4,$fn=40);
         }
@@ -374,8 +374,8 @@ module new_spring_cap_8mm_spring() {
     difference() {
         union() {
             difference() {
-                cylinder(d=10,h=6, $fn=30);
-                translate([0,0,1.5]) cylinder(d=8,h=7, $fn=25);
+                cylinder(d=10.2,h=6, $fn=30);
+                translate([0,0,1.5]) cylinder(d=8.2,h=7, $fn=25);
             }
             translate([0,0,1.5]) cylinder(d1=4.5,d2=3.3,h=2, $fn=20);
         }
@@ -386,12 +386,12 @@ module new_spring_cap_8mm_spring() {
 //debug();
 
 //translate([50,0,0]) orig_arm();
-arm_E3D_HobGoblin_U604zz();
+//arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_608zz();
 //arm_E3D_HobGoblin_2x623zz();
 //hinge_support();
 //new_motor_mount();
-//new_lock_lever_E3D_HobGoblin();
+new_lock_lever_E3D_HobGoblin();
 //new_MR105zz_support_E3D_HobGoblin();
 //E3D_HobGoblin_spacer();
 //new_spring_cap_8mm_spring();
