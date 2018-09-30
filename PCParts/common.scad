@@ -3,6 +3,9 @@ atx_psu_height = 86;
 
 card_spacing = 20.32;
 
+fan_connector_width = 6.1;
+fan_connector_length = 7.9;
+
 module mock_mobo() {
     $fn=50;
     difference() {
@@ -109,8 +112,34 @@ module mock_atx_psu(holes=true, slop=0) {
     }
 }
 
+
+module mock_fan_connector_male(slop=0.2) {
+    
+    module pin() {
+        color("grey") cube([0.75,0.75,14.3],center=true);
+    }
+    
+    w = fan_connector_width + slop;
+    l = fan_connector_length + slop;
+    
+    pin_offset = (5.8-0.75)/2;
+    union() {
+        color("white") {
+            translate([0,0,3.2/2]) cube([w, l,3.2], center=true);
+            translate([-w/2+0.9/2,0,3.2+8.5/2]) cube([0.9,5,8.5],center=true);
+            translate([-w/2+0.9+0.3/2,0,1.7/2+5.7]) cube([0.3,5,1.7],center=true);
+        }
+        
+        translate([-w/2+2.4,0,14.3/2-3.6]) pin();
+        translate([-w/2+2.4,pin_offset,14.3/2-3.6]) pin();
+        translate([-w/2+2.4,-pin_offset,14.3/2-3.6]) pin();
+    }
+}
+
+
 //mock_mobo();
 //mock_card();
 //mock_mobo_card();
 //mock_ssd();
 //mock_atx_psu();
+//mock_fan_connector_male();

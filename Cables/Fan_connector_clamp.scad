@@ -1,6 +1,5 @@
 
-fan_connector_width = 6.1;
-fan_connector_length = 7.9;
+include <../PCParts/common.scad>;
 
 connector_spacing = 10;
 
