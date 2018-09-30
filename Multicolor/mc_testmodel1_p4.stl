@@ -34,21 +34,35 @@ solid OpenSCAD_Model
       vertex 12.9289 2.55532e-009 26
     endloop
   endfacet
-  facet normal 0 -0 1
+  facet normal 0 0 1
     outer loop
       vertex 2.55532e-009 12.9289 26
       vertex 7.07107 20 26
       vertex 2.55532e-009 20 26
     endloop
   endfacet
-  facet normal 9.42055e-017 -1 0
+  facet normal -1 0 0
+    outer loop
+      vertex 2.55532e-009 12.9289 20
+      vertex 2.55532e-009 20 26
+      vertex 2.55532e-009 20 20
+    endloop
+  endfacet
+  facet normal -1 -0 0
+    outer loop
+      vertex 2.55532e-009 20 26
+      vertex 2.55532e-009 12.9289 20
+      vertex 2.55532e-009 12.9289 26
+    endloop
+  endfacet
+  facet normal 0 -1 0
     outer loop
       vertex 12.9289 2.55532e-009 20
       vertex 20 2.55532e-009 26
       vertex 12.9289 2.55532e-009 26
     endloop
   endfacet
-  facet normal 9.42055e-017 -1 0
+  facet normal 0 -1 -0
     outer loop
       vertex 20 2.55532e-009 26
       vertex 12.9289 2.55532e-009 20
@@ -95,20 +109,6 @@ solid OpenSCAD_Model
       vertex 20 7.07107 20
       vertex 20 2.55532e-009 26
       vertex 20 2.55532e-009 20
-    endloop
-  endfacet
-  facet normal -1 -6.28037e-017 0
-    outer loop
-      vertex 2.55532e-009 12.9289 20
-      vertex 2.55532e-009 20 26
-      vertex 2.55532e-009 20 20
-    endloop
-  endfacet
-  facet normal -1 -6.28037e-017 0
-    outer loop
-      vertex 2.55532e-009 20 26
-      vertex 2.55532e-009 12.9289 20
-      vertex 2.55532e-009 12.9289 26
     endloop
   endfacet
   facet normal -0.707107 -0.707107 0
