@@ -22,11 +22,12 @@ module threads(d=8, h=10, z_step=1.8, depth=0.5, direction=0) {
     }
 }
 
-module rounded_cube(x,y,z,corner) {
+module rounded_cube(x,y,z,corner,center=false) {
     fn=50;
     module rcube(x,y,z,corner) {
         translate([corner/2,corner/2,corner/2]) hull() {
             sphere(d=corner, $fn=fn);
+            cube([x-corner,y-corner,z-corner]);
             if (x>corner) translate([x-corner,0,0]) sphere(d=corner, $fn=fn);
             if (x>corner && y>corner) translate([x-corner,y-corner,0]) sphere(d=corner, $fn=fn);
             if (y>corner) translate([0,y-corner,0]) sphere(d=corner, $fn=fn);
@@ -36,21 +37,33 @@ module rounded_cube(x,y,z,corner) {
             if (z>corner && y>corner)translate([0,y-corner,z-corner]) sphere(d=corner, $fn=fn);
         }
     }
+
+    module wrap() {
+        diff_x = x<corner ? (corner-x)/2 : 0;
+        diff_y = y<corner ? (corner-y)/2 : 0;
+        diff_z = z<corner ? (corner-z)/2 : 0;
+        
+        translate([-diff_x,-diff_y,-diff_z]) intersection() {
+            rcube(x,y,z,corner);
+            translate([diff_x,diff_y,diff_z]) cube([x,y,z]);
+        }
+    }
     
-    diff_x = x<corner ? (corner-x)/2 : 0;
-    diff_y = y<corner ? (corner-y)/2 : 0;
-    diff_z = z<corner ? (corner-z)/2 : 0;
-    
-    translate([-diff_x,-diff_y,-diff_z]) intersection() {
-        rcube(x,y,z,corner);
-        translate([diff_x,diff_y,diff_z]) cube([x,y,z]);
+    if (center) {
+        translate([-x/2, -y/2, -z/2]) wrap();
+    } else {
+        wrap();
     }
 }
 
-module rounded_cube_side(x,y,z,corner) {
+module rounded_cube_side(x,y,z,corner,center=false) {
     intersection() {
-        cube([x,y,z]);
-        translate([0,0,-corner]) rounded_cube(x,y,z+2*corner,corner);
+        cube([x,y,z], center=center);
+        if (!center) {
+            translate([0,0,-corner]) rounded_cube(x,y,z+2*corner,corner,center);
+        } else {
+            rounded_cube(x,y,z+2*corner,corner,center);
+        }
     }
 }
 
