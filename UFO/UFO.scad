@@ -47,11 +47,22 @@ module leg_peg() {
     cube([2*3.7,4,1.5],center=true);
 }
 
-module body_bottom() {
+module body_bottom(legs=4, detachable_legs=true) {
     difference() {
-        _body_half();
-        for(i=[0:3]) {
-            rotate([0,0,360/4*i+45]) translate([leg_offset,0,12]) _leg_body();
+        if (!detachable_legs) {
+            union() {
+                for(i=[0:legs-1]) {
+                    rotate([0,0,360/legs*i+45])
+                    translate([leg_offset-2,0,11])
+                    rotate([0,17,0]) scale([1.6,1.6,1]) _leg_body();
+                }
+                _body_half();
+            }
+        } else {
+            _body_half();
+            for(i=[0:legs-1]) {
+                rotate([0,0,360/legs*i+45]) translate([leg_offset,0,12]) _leg_body();
+            }
         }
         translate([0,0,13/2-0.01]) cylinder(d1=head_d-5+19,d2=head_d-11,h=21/2,$fn=80);
     }
@@ -62,7 +73,7 @@ module body_top() {
         _body_half();
         translate([0,0,15]) _head_body();
         cylinder(d=head_d-5,h=100,$fn=80);
-        translate([0,0,13/2-0.01]) cylinder(d1=head_d-5+17,d2=head_d-5,h=15/2,$fn=80);
+        translate([0,0,13/2-0.01]) cylinder(d1=head_d-5+19,d2=head_d-5,h=17/2,$fn=80);
     }
 }
 
@@ -150,7 +161,7 @@ module debug2() {
             body_top();
             translate([0,0,-13/2+0.1]) body_screw();
         }
-        cube([100,100,100]);
+        rotate([0,0,150]) cube([100,100,100]);
     }
 }
 
@@ -163,10 +174,11 @@ module debug2() {
 //_body_half();
 //_leg_body();
 //body_bottom();
-//body_top();
+//body_bottom(legs=3, detachable_legs=false);
+body_top();
 //head();
 //pupil();
 //eye();
 //body_screw();
 //leg();
-leg_peg();
+//leg_peg();
