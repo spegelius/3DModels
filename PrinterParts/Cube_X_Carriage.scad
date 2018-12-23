@@ -527,6 +527,76 @@ module prusa_nozzle_fan() {
 
 }
 
+use <../Original-Prusa-i3/Printed-Parts/scad/nozzle-fan.scad>;
+module prusa_nozzle_fan_2() {
+    %translate([9.5,15.6,10.5]) rotate([130,0,180]) import("../_downloaded/50mm_Radial_fan/50mm_fan.stl");
+    
+    difference() {
+        union() {
+            difference() {
+                translate([0,-21.7,53]) nozzle_fan(mount=false);
+                translate([11.3,10,9]) cube([20,20,20]);
+            }
+            translate([13,9.2,8.99]) difference() {
+                cube([5,6,3]);
+                translate([-0.01,1.8,0]) cube([3,2.4,2.2]);
+            }
+            translate([-46,12,0]) intersection() {
+                cube([36,19,5]);
+                translate([0,11,0]) rotate([0,0,-20]) cube([31,17,5]);
+            }
+                
+            translate([-45,26.40,0]) rotate([-40,0,0]) cube([15,4,14]);
+        }
+        translate([-50,16.6,11.65]) rotate([-40,0,0]) cube([50,15,5]);
+        translate([-46,16.6,-5]) cube([20,20,5]);
+        translate([-37.5,35,3.4]) rotate([50,0,0]) cylinder(d=3.8,h=10,$fn=30);
+    }
+}
+
+module prusa_nozzle_fan2_adapter() {
+    difference() {
+        intersection() {
+            union() {
+                cube([10,5,10]);
+                translate([0,0,5]) rotate([-40,0,0]) cube([10,5,10]);
+            }
+            translate([0,0,0]) cube([10,10,10]);
+        }
+        translate([10/2,0,4.15]) rotate([-90,0,0])  cylinder(d=2.8,h=10,$fn=20);
+        translate([10/2,0,11.2]) rotate([-130,0,0])  cylinder(d=2.8,h=15,$fn=20);
+    }
+}
+
+module prusa_nozzle_fan2_holder() {
+    difference() {
+        union()
+        {
+            translate([-4,36.5,-25]) cube([6,45,30]);
+            translate([-4,36.5,-25]) cube([15,10,30]);
+            translate([-4,68,-12]) rotate([50,0,0]) cube([10,15,11.1]);
+            translate([5.5,67.15,-6.65]) rotate([50,0,0])  cylinder(r=6.1,h = 7, $fn=6);
+        }
+
+
+        translate([5.5,42,1]) rotate([90,0,0])  cylinder(r=1.6,h = 10, $fn=30);
+        translate([5.5,46.9,1]) rotate([90,0,0])  cylinder(r=3.1,h = 5, $fn=30);
+
+        //#translate([5.5,70,-7]) rotate([50,0,0])  cylinder(r=1.6,h = 15, $fn=60);
+        translate([5.5,70,-8.5]) rotate([50,0,0])  cylinder(r=1.6,h = 15, $fn=60);
+        translate([5.5,65,-4.2]) rotate([50,0,0])  cylinder(r=3.1,h = 17, $fn=6);
+
+
+        translate([-25,46.1,-55]) rotate([50,0,0]) cube([50,150,15]);
+        translate([-25,46.5,-66]) rotate([50,0,0]) cube([50,150,15]);
+        translate([-25,86,4]) rotate([50+90,0,0]) cube([50,150,15]);
+        translate([-25,86,13.5]) rotate([170,0,0]) cube([50,150,15]);
+        translate([-25,86,-12]) rotate([175,0,0]) cube([50,150,15]);
+
+        translate([-5,35,-25]) cube([20,45,16]);
+    }
+}
+
 module mount_clamp_prusafan(hotend="e3dv6"){
     difference() {
         union() {
@@ -582,6 +652,7 @@ module mount_clamp_prusafan_clip() {
 //hotend = "e3dv6";
 hotend = "prometheus";
 
+use <../Original-Prusa-i3/Printed-Parts/scad/nozzle-fan-holder.scad>;
 module view_proper() {
 
     %translate([0,-8/2, 20/2]) mock_slide();
@@ -597,14 +668,17 @@ module view_proper() {
     //translate([0,-72.1,-19.4]) e3dv6();
     translate([0,-72.1,-3.7]) rotate([0,0,90]) prometheus_hotend();
 
-    translate([33,-70.5,-19]) proximity_sensor();
+    //translate([33,-70.5,-19]) proximity_sensor();
     
     //translate([0,-115,20]) rotate([-42,180,0]) fan_tunnel();
     //translate([-13,-95.2,37.5]) rotate([90,0,90]) fan_tunnel_arm();
     
-    translate([-31,-72.1,-3.7]) rotate([0,0,-90]) color("green") fan_shroud();
+    //translate([-31,-72.1,-3.7]) rotate([0,0,-90]) color("green") fan_shroud();
     
-    translate([0,-76,-17]) rotate([0,0,180]) prusa_nozzle_fan();
+    //translate([0,-76,-17]) rotate([0,0,180]) prusa_nozzle_fan();
+    translate([0,-78,-17]) rotate([0,0,180]) prusa_nozzle_fan_2();
+    translate([42.5,-91.2 ,-6.6]) rotate([0,0,180]) prusa_nozzle_fan2_adapter();
+    translate([0.5,-54.5,35]) rotate([0,0,180]) prusa_nozzle_fan2_holder();
     
     translate([0,-55,43.1]) rotate([180,0,0]) mount_clamp_prusafan_clip();
 }
@@ -620,5 +694,8 @@ module view_proper() {
 //rotate([-90,0,0]) fan_tunnel_arm2();
 //cable_mount();
 //prusa_nozzle_fan();
+//prusa_nozzle_fan_2();
+//prusa_nozzle_fan2_adapter();
 //rotate([90,0,0]) mount_clamp_prusafan(hotend=hotend);
-mount_clamp_prusafan_clip();
+//mount_clamp_prusafan_clip();
+prusa_nozzle_fan2_holder();
