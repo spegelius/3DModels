@@ -281,4 +281,4 @@ module g9_lamp_socket(h=30) {
 
 //chamfered_cube(10,10,10,2, false);
 //chamfered_cube_side(10,10,10,2, true);
-g9_lamp_socket(h=18);
+//g9_lamp_socket(h=18);

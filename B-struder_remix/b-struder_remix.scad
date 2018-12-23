@@ -52,40 +52,6 @@ module E3D_HobGoblin() {
     translate([0,-2,2.9]) rotate([90,0,0]) cylinder(d=3,h=4,$fn=20);
 }
 
-module U604zz() {
-    difference() {
-        cylinder(d=13,h=4, $fn=30);
-        cylinder(d=4,h=5, $fn=20);
-        translate([0,0,4/2]) donut(13,2.1);
-    }
-}
-
-module 608zz() {
-    difference() {
-        cylinder(d=22,h=7,$fn=50);
-        cylinder(d=8,h=8,$fn=50);
-    }
-}
-
-module 623zz() {
-    difference() {
-        hull() {
-            cylinder(d=9,h=4,$fn=40);
-            translate([0,0,0.5]) cylinder(d=10,h=3,$fn=40);
-        }
-        cylinder(d=3,h=5,$fn=30);
-    }
-
-}
-
-module MR105zz() {
-    difference() {
-        cylinder(d=10,h=3,$fn=40);
-        cylinder(d=5,h=5,$fn=30);
-    }
-
-}
-
 module hinge(height=15) {
     module hinge_bearing() {
         union() {
