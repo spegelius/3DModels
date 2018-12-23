@@ -6,20 +6,26 @@ card_spacing = 20.32;
 fan_connector_width = 6.1;
 fan_connector_length = 7.9;
 
+fan_92mm = 92;
+fan_92mm_bolt_offset = 82.5/2;
+
 module mock_mobo() {
     $fn=50;
     difference() {
-        cube([350, 193, 2]);
-        translate([350-16.5,10,0]) cylinder(d=4, h=3);
-        translate([350-16.5,193-27.7,0]) cylinder(d=4, h=3);
+        cube([304.8, 243.84, 2]);
+        translate([6.35+281.94,10.16,0]) cylinder(d=4, h=3);
+        translate([6.35+281.94,10.16+154.94,0]) cylinder(d=4, h=3);
+        translate([6.35+281.94,10.16+227.33,0]) cylinder(d=4, h=3);
 
-        translate([350-95.2,10,0]) cylinder(d=4, h=3);
+        translate([6.35+157.48+45.72,10,0]) cylinder(d=4, h=3);
 
-        translate([350-141,10,0]) cylinder(d=4, h=3);
-        translate([350-141,193-27.7,0]) cylinder(d=4, h=3);
+        translate([6.35+157.48,10.16,0]) cylinder(d=4, h=3);
+        translate([6.35+157.48,10.16+154.94,0]) cylinder(d=4, h=3);
+        translate([6.35+157.48,10.16+227.33,0]) cylinder(d=4, h=3);
 
-        translate([6.3,33.2,0]) cylinder(d=4, h=3);
-        translate([6.3,193-27.7,0]) cylinder(d=4, h=3);
+        translate([6.35,22.86,0]) cylinder(d=4, h=3);
+        translate([6.35,10.16+154.94,0]) cylinder(d=4, h=3);
+        translate([6.35,10.16+227.33,0]) cylinder(d=4, h=3);
     }
 }
 
@@ -46,13 +52,13 @@ module mock_card() {
 module mock_mobo_card() {
     
     mock_mobo();
-    translate([350-142,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+2*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+3*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+4*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+5*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
-    translate([350-142+6*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+2*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+3*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+4*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+5*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
+    translate([304.8-142+6*card_spacing,-1.2,18.8-10.4]) rotate([0,0,90]) mock_card();
 }
 
 module mock_ssd() {
