@@ -129,10 +129,18 @@ module dovetail(max_width, min_width, depth, height) {
 
 }
 
-module beweled_cylinder(d, h, b) {
-    hull() {
-        cylinder(d=d-2*b, h=h);
-        translate([0,0,b]) cylinder(d=d, h=h-2*b);
+module beweled_cylinder(d, h, b, center=false) {
+    module _beweled_cylinder() {
+        hull() {
+            cylinder(d=d-2*b, h=h);
+            translate([0,0,b]) cylinder(d=d, h=h-2*b);
+        }
+    }
+    
+    if (center) {
+        translate([0,0,-h/2]) _beweled_cylinder();
+    } else {
+        _beweled_cylinder();
     }
 }
 
@@ -174,8 +182,103 @@ module fitting_thread_M6(fitting_h=6) {
     }
 }
 
+module U604zz() {
+    difference() {
+        cylinder(d=13,h=4, $fn=30);
+        cylinder(d=4,h=5, $fn=20);
+        translate([0,0,4/2]) donut(13,2.1);
+    }
+}
+
+module 608zz() {
+    difference() {
+        cylinder(d=22,h=7,$fn=50);
+        cylinder(d=8,h=8,$fn=50);
+    }
+}
+
+module 623zz() {
+    difference() {
+        hull() {
+            cylinder(d=9,h=4,$fn=40);
+            translate([0,0,0.5]) cylinder(d=10,h=3,$fn=40);
+        }
+        cylinder(d=3,h=15,$fn=30,center=true);
+    }
+}
+
+module MR105zz() {
+    difference() {
+        cylinder(d=10,h=3,$fn=40);
+        cylinder(d=5,h=5,$fn=30);
+    }
+}
+
+module 625zz() {
+    difference() {
+        hull() {
+            cylinder(d=15,h=5,$fn=40);
+            translate([0,0,0.5]) cylinder(d=16,h=4,$fn=40);
+        }
+        cylinder(d=5,h=15,$fn=30,center=true);
+    }
+}
+
+module mock_g9_lamp() {
+    translate([0,0,-17.2/2]) difference() {
+        union() {
+            cube([14.2,5.2,17.2], center=true);
+            translate([0,0,17.2/2]) cylinder(d=17,h=4.7,$fn=40);
+            translate([0,0,17.2/2+4.7]) cylinder(d1=16.9, d2=15,h=25,$fn=40);
+        }
+        translate([0,2/2+1.85,0]) cube([10,2,17.2],center=true);
+        translate([0,-2/2-1.85,0]) cube([10,2,17.2],center=true);
+        
+        translate([0,0,-17/2+(17.2-12.9)-5/2]) {
+            cube([5,5,5],center=true);
+            translate([0,3/2+1.2/2,0]) cube([25,3,5],center=true);
+            translate([0,-3/2-1.2/2,0]) cube([25,3,5],center=true);
+        }
+    }
+}
+
+module g9_lamp_socket(h=30) {
+    
+    module _wire_hole(h) {
+        hull() {
+            cylinder(d=3.3,h=h,$fn=30);
+            cylinder(d=0.1,h=h+4,$fn=30);
+        }
+    }
+    
+    bolt_z = h - 17.2 + 4.3/2;
+    
+    difference() {
+        intersection() {
+            union() {
+                cylinder(d=22,h=h,$fn=50);
+                translate([14/2-3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=10,h=10,$fn=30);
+                translate([-14/2+3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=10,h=10,$fn=30);
+            }
+            translate([0,0,h/2]) cube([23,23,h],center=true);
+        }
+        translate([0,0,h]) mock_g9_lamp();
+
+        translate([14/2-3.3/2,1.15,-0.1]) _wire_hole(h-12);
+        translate([-14/2+3.3/2,1.15,-0.1]) _wire_hole(h-12);
+        
+        translate([14/2-3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=2.7,h=10,$fn=20);
+        translate([-14/2+3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=2.7,h=10,$fn=20);
+        
+        translate([14/2-3/2,6,bolt_z]) rotate([-90,0,0]) cylinder(d=6.4,h=10,$fn=20);
+        translate([-14/2+3/2,6,bolt_z]) rotate([-90,0,0]) cylinder(d=6.4,h=10,$fn=20);
+
+    }
+}
+
 //dovetail(7, 5, 4, 10);
 //M8_nut();
 
 //chamfered_cube(10,10,10,2, false);
 //chamfered_cube_side(10,10,10,2, true);
+g9_lamp_socket(h=18);
