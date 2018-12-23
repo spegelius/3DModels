@@ -46,6 +46,56 @@ module rounded_gt2_belt(length, dia, height=6, teeth_inside=true) {
     }
 }
 
+module tronxy_z_rod_top_washer() {
+    $fn=50;
+    difference() {
+        union() {
+            cylinder(d1=8, d2=11, h=3.2);
+            translate([0,0,3.19]) cylinder(d=11, h=6);
+        }
+        cylinder(d=4.2, h=20);
+        translate([-10,3,3.19]) cube([20,6,10]);
+        translate([-10,-3-6,3.19]) cube([20,6,10]);
+    }
+}
+
+module tronxy_board_frame_adapters() {
+    h = 6;
+    
+    module side_adapter(w) {
+        difference() {
+            union() {
+                rounded_cube_side(w,40,h,4);
+                rounded_cube_side(w,21.5,h+2,4);
+            }
+            translate([-0.01,-1,h-0.01]) rounded_cube_side(w+0.02,21,h,5);
+            translate([w/2,10,-0.1]) cylinder(d=4.5,h=10,$fn=30);
+            translate([w/2,10,-0.1]) M4_nut();
+            translate([w/2,30,-0.1]) cylinder(d=4.5,h=10,$fn=30);
+        }
+    }
+    
+    module bottom_adapter() {
+        w = 20.1;
+        difference() {
+            union() {
+                rounded_cube_side(w,40,h,4);
+                rounded_cube_side(w,20,h+2,4);
+            }
+            translate([1.5,-0.01,h-0.01]) rounded_cube_side(w+0.02,20.02,h,5);
+            translate([10+1.5,10,-0.1]) cylinder(d=4.5,h=10,$fn=30);
+            translate([10+1.5,10,-0.1]) M4_nut();
+            translate([w/2,30,-0.1]) cylinder(d=4.5,h=10,$fn=30);
+        }
+    }
+    
+    //side_adapter(17.8);
+    translate([25,0,0]) side_adapter(20.1);
+    
+    translate([-25,0,0]) bottom_adapter();
+}
+
+
 module tronxy_belt_clip_left_top() {
     difference() {
         cube([20,8,19]);
@@ -233,8 +283,52 @@ module tronxy_motor_mount() {
     }
 }
 
+module qnd_motor_mount_fix() {
+    //translate([90,203.5,0]) rotate([0,0,-13]) translate([-90,-203.5,0]) tronxy_motor_mount();
+    //%tronxy_motor_mount();
+
+    difference() {
+        union() {
+            chamfered_cube_side(28,35,20,3);
+            translate([-33.7,30.6]) rotate([0,0,-13]) {
+                cube([40,19.8,20]);
+                translate([20,-5,0]) cube([39,29.8,20]);
+            }
+            translate([0,5.9,0]) rotate([0,0,45]) cube([20,21.65,20]);
+        }
+        translate([30,30,0]) rotate([0,0,60]) cube([20,50,20]);
+        translate([8,7,-0.1]) cube([25,20.2,20+1]);
+        translate([-20,7+20.2/2,20/2]) rotate([0,90,0]) cylinder(d=4.4,h=30,$fn=40);
+        translate([-20,7+20.2/2,20/2]) rotate([0,90,0]) cylinder(d=10,h=21,$fn=40);
+        
+        translate([-33.7,30.6,20/2]) rotate([0,90,-13]) translate([0,19.8/2-1,-1]) cylinder(d=3.7,h=27,$fn=40);
+    }
+}
+
+module tronxy_PTFE_holder() {
+
+    difference() {
+        union() {
+            cube([30,6.5,20]);
+            translate([22-3,-2,0]) cube([6,2.2,20]);
+            rotate([0,0,10]) cube([5,25,20]);
+            rotate([0,0,10]) translate([5/2,25,0]) cylinder(d=8,h=20,$fn=30);
+        }
+        translate([22,-1,20/2]) rotate([-90,0,0]) cylinder(d=4.3,h=10,$fn=30);
+        translate([0,-10.01,3]) chamfered_cube(30,10,14,2);
+        
+        rotate([0,0,10]) translate([5/2,25,0]) cylinder(d1=4.5,d2=2.2,h=16,$fn=20);
+        rotate([0,0,10]) translate([5/2,25,15.99]) cylinder(d=4,h=15,$fn=20);
+        
+        rotate([0,0,45]) cube([4,8,60],center=true);
+        translate([30,6.5]) rotate([0,0,45]) cube([4,4,60],center=true);
+    }
+}
+
 //gt2_belt();
 //rounded_gt2_belt(10, 30);
+//tronxy_z_rod_top_washer();
+//tronxy_board_frame_adapters();
 //tronxy_belt_clip_left_top();
 //tronxy_belt_clip_right_top();
 //tronxy_belt_clip_left_bottom();
@@ -242,4 +336,6 @@ module tronxy_motor_mount() {
 //hotend_pcb();
 //tronxy_cable_pcb_mount();
 //tronxy_bed_spacer();
-tronxy_motor_mount();
+//tronxy_motor_mount();
+//qnd_motor_mount_fix();
+tronxy_PTFE_holder();
