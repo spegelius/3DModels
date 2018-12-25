@@ -1,14 +1,14 @@
 
 // PLA
-//M3_hole = 3.3;
-//PTFE_hole = 4.3;
+M3_hole = 3.3;
+PTFE_hole = 4.3;
 
 // nylon
-M3_hole = 3.5;
-PTFE_hole = 4.5;
+//M3_hole = 3.5;
+//PTFE_hole = 4.5;
 
-use <../Dollo/NEW_long_ties/include.scad>;
-include <../lib/includes.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
+include <../../lib/includes.scad>;
 
 module hinge_623zz() {
     translate([-9.9,-9.9]) import("../_downloaded/ProStruder/Hinge_4.5mm_[3D_Print.stl");
