@@ -70,7 +70,7 @@ module key() {
 }
 
 //translate([20,0,0]) fin();
-//outer();
+outer();
 //translate([30,0,0]) inner();
 
-translate([0,-70,0]) key();
+//translate([0,-70,0]) key();
