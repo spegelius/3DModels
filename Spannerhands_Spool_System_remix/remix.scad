@@ -6,10 +6,10 @@ use <../Bearings/bearing5.scad>;
 w_1kg = 116.71;
 w_thin = 82.7;
 
-// 1kg positioning
+// 1kg positioning aid
 //color("grey") cube([w_1kg,1,1]);
 
-// thin positioning
+// thin positioning aid
 //color("grey") cube([w_thin,1,1]);
 
 module ear(h=3) {
@@ -596,7 +596,7 @@ module small_core_axle() {
     }
 }
 
-small_core_h = 87.50 - sqrt(ball_size*ball_size*2) - 7 + 0.5;
+small_core_h = 89.5 - sqrt(ball_size*ball_size*2) - 7 + 0.5;
 
 module _small_core(diameter) {
     // core
@@ -605,7 +605,39 @@ module _small_core(diameter) {
         cylinder(d=8,h=20,$fn=50);
         translate([0,0,small_core_h-20]) cylinder(d=8,h=20,$fn=50);
 
-        translate([0,0,20+0.5]) cylinder(d=diameter-3, h=small_core_h-41, $fn=50);
+        translate([0,0,20+1]) cylinder(d=diameter-3, h=small_core_h-42, $fn=50);
+    }
+}
+
+module core_universal(h=89.3) {
+    
+    module _wing() {
+        wall = 1;
+        intersection() {
+            difference() {
+                cylinder(d=50,h=h,$fn=50);
+                cylinder(d=50-wall*2,h=h,$fn=50);
+            }
+            cube([26,26,h]);
+        }
+    }
+    
+    module _core() {
+        union() {
+            difference() {
+                cylinder(d=25,h=h,$fn=40);
+                cylinder(d=22.1,h=h,$fn=40);
+            }
+            translate([0,0,7+sqrt(2)]) cube_donut(22,2);
+            translate([0,0,h-(7+sqrt(2))]) cube_donut(22,2);
+        }
+    }
+    wings = 12;
+    union() {
+        _core();
+        for(i = [0:wings-1]) {
+            rotate([0,0,360/wings*i]) translate([1,-13,0]) _wing();
+        }
     }
 }
 
@@ -633,6 +665,19 @@ module debug_small_core() {
         }
         cube([40,40,200]);
     }
+    //translate([0,0,-8]) rotate([0,-90,0]) new_lid1();
+}
+
+module debug_core_universal() {
+    intersection() {
+        union() {
+            translate([0,0,5.7]) core_universal();
+            bearing_mount();
+            translate([0,0,89.2+2*5.7]) rotate([180,0,0]) bearing_mount();
+        }
+        cube([100,100,200]);
+    }
+    translate([0,0,-8]) rotate([0,-90,0]) new_lid1();
 }
 
 module debug_small_core_bearing() {
@@ -645,6 +690,7 @@ module debug_small_core_bearing() {
 //debug_core_1kg();
 //translate([40,0,0]) debug_small_core();
 //debug_small_core_bearing();
+debug_core_universal();
 
 //new_base();
 //new_lid();
@@ -660,7 +706,7 @@ module debug_small_core_bearing() {
 //translate([0,0,110]) new_thin_base2();
 //translate([0,0,110]) new_thin_lid1();
 //translate([0,0,110]) new_thin_lid2();
-translate([0,0,110]) new_thin_lid2_window();
+//translate([0,0,110]) new_thin_lid2_window();
 //nut();
 //bolt();
 
@@ -681,6 +727,8 @@ translate([0,0,110]) new_thin_lid2_window();
 //new_core_1kg_54mm();
 //core_1kg_20mm();
 //core_1kg_16mm();
+
+//core_universal();
 
 //small_core_bearing();
 //small_core_axle();
