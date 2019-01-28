@@ -3,6 +3,7 @@ include <../Dollo/NEW_long_ties/include.scad>;
 
 
 PTFE_tube_d = 4.3;
+screw_d = 14;
 
 module tube_holder() {
     difference() {
@@ -12,10 +13,10 @@ module tube_holder() {
                 translate([0,0,20+13/2]) rounded_cylinder(20-2,8,2, $fn=60);
                 translate([0,0,19.99]) cylinder(d=7,h=1, $fn=50);
             }
-            translate([0,0,20+13/2+7.99]) v_screw(h=20, screw_d=12, pitch=2, direction=0, steps=70);
+            translate([0,0,20+13/2+7.99]) v_screw(h=20, screw_d=screw_d, pitch=2, direction=0, steps=70);
         }
         cylinder(d=PTFE_tube_d, h=60,$fn=50);
-        translate([0,0,20+13/2+8+20/2]) cube([0.8,20,20],center=true);
+        translate([0,0,20+13/2+8+20/2]) cube([1.2,20,20],center=true);
         for(i=[0:19]) {
             rotate([0,0,i*360/20]) translate([20/2+.2,0,20+20/2]) rotate([0,0,45]) cube([2,2,20],center=true);
         }
@@ -24,15 +25,16 @@ module tube_holder() {
 }
 
 module tube_holder_nut() {
+    nut_d = screw_d+3;
     difference() {
-        translate([0,0,2/2]) rounded_cylinder(16-2,20-2,2, $fn=60);
+        translate([0,0,2/2]) rounded_cylinder(nut_d,20-2,2, $fn=60);
         translate([0,0,-0.1]) intersection() {
-            v_screw(h=21, screw_d=12+4*slop, pitch=2, direction=0, steps=70);
-            cylinder(d1=12+4*slop, d2=12-1,h=21, $fn=60);
+            v_screw(h=21, screw_d=screw_d+4*slop, pitch=2, direction=0, steps=70);
+            cylinder(d1=screw_d+4*slop, d2=screw_d-1,h=21, $fn=60);
         }
         cylinder(d1=14,d2=12, h=2, $fn=60);
         for(i=[0:17]) {
-            rotate([0,0,i*360/18]) translate([16/2+.5,0,20/2]) rotate([0,0,45]) cube([2,2,20],center=true);
+            rotate([0,0,i*360/18]) translate([nut_d/2+1.3,0,20/2]) rotate([0,0,45]) cube([2,2,20],center=true);
         }
     }
 }
@@ -66,6 +68,6 @@ module beveler_body() {
 }
 
 
-//tube_holder();
+tube_holder();
 //tube_holder_nut();
-beveler_body();
+//beveler_body();
