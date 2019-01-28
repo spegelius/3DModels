@@ -1,6 +1,6 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 
-slop = 0.10;
+slop = 0.15;
 
 $fn=80;
 
@@ -50,7 +50,7 @@ module center(width, height, ball_notch, bevel) {
             if (!simple)
                 cube_path(ball_top_side, ball_top_side, width, height+1, steps=36, inner=true);
         }
-        translate([0,0,height/2]) chamfered_cylinder(width+ball_notch,height/3+bevel*2-2*slop,bevel,center=true);
+        translate([0,0,height/2]) chamfered_cylinder(width+ball_notch,height/3+bevel*2-slop,bevel,center=true);
     }
 }
 
@@ -73,8 +73,8 @@ module outer(width, height, center_width, ball_notch, ball_d, bevel) {
                 chamfered_cylinder(center_width+ball_d*2+ball_notch, bevel*2, bevel,center=true);
                 translate([0,0,height]) chamfered_cylinder(center_width+ball_d*2+ball_notch, bevel*2, bevel,center=true);
                 
-                chamfered_cylinder(center_width+ball_d*2, height/3+slop, bevel);
-                translate([0,0,height-height/3-slop]) chamfered_cylinder(center_width+ball_d*2, height/3+1, bevel);
+                chamfered_cylinder(center_width+ball_d*2, height/3+slop/2, bevel);
+                translate([0,0,height-height/3-slop/2]) chamfered_cylinder(center_width+ball_d*2, height/3+1, bevel);
                 
                 if (!simple)
                     cube_path(ball_d, ball_d, center_width+2*ball_d, height+1, steps=360, inner=false);
@@ -126,9 +126,37 @@ module bearing3(d, h, center_width, balls, ball_d, print_aid=false) {
 
 }
 
+module key_8mm() {
+    difference() {
+        union() {
+            chamfered_cube(40,8,10,2, center=true);
+            cylinder(d=8,h=25,$fn=50);
+            for (i = [0:5]) {
+                rotate([0,0,360/6*i]) translate([8/2,0,25/2]) cube([0.8,0.8,25],center=true);
+            }
+        }
+        cylinder(d=0.1,h=26,$fn=50);
+    }
+}
+
+module drill_bit_8mm() {
+    difference() {
+        union() {
+            cylinder(d=8,h=10,$fn=50);
+            for (i = [0:5]) {
+                rotate([0,0,360/6*i]) translate([8/2,0,10/2]) cube([0.8,0.8,10],center=true);
+            }
+            translate([0,0,9.99]) cylinder(d1=8,d2=13,h=2.51);
+            translate([0,0,12.49]) cylinder(d=7,h=20,$fn=6);
+        }
+        cylinder(d=0.1,h=35);
+    }
+}
+
 module debug() {
     intersection() {
-        bearing3(100, 20, 30, 10, 10);
+        //bearing3(100, 20, 30, 10, 10);
+        bearing3(22, 7, 10.5, 10, 4, print_aid=true);
         cube([100,100,100]);
     }
 }
@@ -138,9 +166,14 @@ module debug() {
 //608
 module bearing3_608() {
     difference() {
-        bearing3(22, 7, 10.5, 10, 4, print_aid=true);
-        translate([0,0,0.2]) cylinder(d=8+slop,h=20,$fn=50);
+        bearing3(22, 7, 10.5, 10, 4.7, print_aid=true);
+        translate([0,0,0.2]) cylinder(d=8+2*slop,h=20,$fn=50);
+        for (i = [0:5]) {
+            rotate([0,0,360/6*i]) translate([8/2,0,8/2+0.2]) cube([1,1,8],center=true);
+        }
     }
 }
 
-bearing3_608();
+//bearing3_608();
+//key_8mm();
+drill_bit_8mm();
