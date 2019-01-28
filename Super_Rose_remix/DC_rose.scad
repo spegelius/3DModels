@@ -113,11 +113,11 @@ module petals1() {
                 difference() {
                     cylinder(d=24, h=1.4);
                     cylinder(d=20, h=1.5);
-                    translate([12,0,0]) cylinder(d=3, h=5);
-                    translate([-12,0,0]) cylinder(d=3, h=5);
                 }
             }
         }
+        translate([12,0,0]) cylinder(d=3, h=2.5);
+        translate([-12,0,0]) cylinder(d=3, h=2.5);
     }
 }
 
@@ -130,11 +130,11 @@ module petals2() {
                 difference() {
                     cylinder(d=28, h=1.4);
                     cylinder(d=24, h=1.5);
-                    translate([12,0,0]) cylinder(d=3, h=5);
-                    translate([-12,0,0]) cylinder(d=3, h=5);
                 }
             }
         }
+        translate([12,0,0]) cylinder(d=3, h=2.5);
+        translate([-12,0,0]) cylinder(d=3, h=2.5);
     }
 }
 
@@ -254,11 +254,11 @@ intersection () {
 }
 
 //clip();
-nub();
+//nub();
 //stem();
 //center();
 //petals1();
-//petals2();
+petals2();
 //petals3();
 //petals4();
 //petals5();
