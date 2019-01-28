@@ -142,6 +142,17 @@ module mock_fan_connector_male(slop=0.2) {
     }
 }
 
+module pin_header(pins) {
+    color("silver") for (i=[0:pins-1]) {
+        translate([i*2.54,0,0]) cube([0.6,0.6, 11.5]);
+    }
+    w = pins * 2.54;
+    color("black") translate([-2.54/2+0.3,-2.54/2+0.3,3]) cube([w, 2.45, 2.45]);
+}
+
+module pin_connector(pins) {
+    cube([pins*2.54,2.45,14]);
+}
 
 //mock_mobo();
 //mock_card();
