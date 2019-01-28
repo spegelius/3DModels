@@ -2,6 +2,7 @@
 use <../../PCParts/common.scad>;
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
+use <../../Dollo/New_long_ties/mockups.scad>;
 
 module tronxy_z_rod_top_washer() {
     $fn=50;
@@ -50,18 +51,6 @@ module tronxy_board_frame_adapters() {
     translate([25,0,0]) side_adapter(20.1);
     
     translate([-25,0,0]) bottom_adapter();
-}
-
-module pin_header(pins) {
-    color("silver") for (i=[0:pins-1]) {
-        translate([i*2.54,0,0]) cube([0.6,0.6, 11.5]);
-    }
-    w = pins * 2.54;
-    color("black") translate([-2.54/2+0.3,-2.54/2+0.3,3]) cube([w, 2.45, 2.45]);
-}
-
-module pin_connector(pins) {
-    cube([pins*2.54,2.45,14]);
 }
 
 module hotend_pcb() {
@@ -210,6 +199,63 @@ module tronxy_PTFE_holder() {
     }
 }
 
+module tronxy_motor_mount_spacer() {
+    difference() {
+        union() {
+            cube([44,20,7]);
+            translate([0,7,0]) cube([44,6,8.5]);
+        }
+        translate([8,20/2,0]) cylinder(d=4.5,h=20,center=true,$fn=30);
+        translate([8+18,20/2,0]) cylinder(d=4.5,h=20,center=true,$fn=30);
+    }
+}
+
+module tronxy_z_endstop_mount() {
+    difference() {
+        union() {
+            chamfered_cube_side(20,45,5,4);
+            translate([7,0,-1.5]) cube([6,45,5]);
+            translate([6,0,0]) cube([5,20,17]);
+        }
+        %translate([0,0,10]) rotate([90,0,90]) mechanical_endstop();
+        cube([6,20,10]);
+        translate([0,20,0]) rotate([0,0,45]) cube([sqrt(6*6*2),sqrt(6*6*2),10],center=true);
+        translate([10,25,0]) cylinder(d=4.5,h=11,center=true,$fn=20);
+        translate([10,40,0]) cylinder(d=4.5,h=11,center=true,$fn=20);
+        
+        translate([3,5,13]) rotate([0,90,0]) cylinder(d=1.3,h=10,$fn=10);
+        translate([3,15,13]) rotate([0,90,0]) cylinder(d=1.3,h=10,$fn=10);
+    }
+}
+
+module tronxy_z_position_nut() {
+    dents = 26;
+    difference() {
+        union() {
+            translate([0,0,1/2]) rounded_cylinder(23,3,1,$fn=50);
+            cylinder(d=12,h=5,$fn=40);
+        }
+        cylinder(d=3.2,h=5,$fn=20);
+        nut();
+        
+        for(i=[0:dents-1]) {
+            rotate([0,0,360/dents*i]) translate([24/2+0.4,0,0]) rotate([0,0,45]) cube([2,2,10],center=true);
+        }
+    }
+}
+
+module tronxy_wire_chain_support() {
+    difference() {
+        union() {
+            cube([5,60,20]);
+            translate([0,55,0]) cube([20,5,20]);
+            translate([7/2,20/2,20/2]) cube([7,6,20],center=true);
+        }
+        translate([5.01,0,20/2-14/2]) chamfered_cube(6,20,14,2);
+        translate([0,10,20/2]) rotate([0,90,0]) cylinder(d=4.4,h=20,center=true,$fn=40);
+    }
+}
+
 //gt2_belt();
 //rounded_gt2_belt(10, 30);
 //tronxy_z_rod_top_washer();
@@ -219,4 +265,8 @@ module tronxy_PTFE_holder() {
 //tronxy_bed_spacer();
 //tronxy_motor_mount();
 //qnd_motor_mount_fix();
-tronxy_PTFE_holder();
+//tronxy_PTFE_holder();
+//tronxy_motor_mount_spacer();
+//rotate([90,0,0]) tronxy_z_endstop_mount();
+//tronxy_z_position_nut();
+tronxy_wire_chain_support();
