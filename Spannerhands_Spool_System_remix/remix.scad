@@ -505,6 +505,49 @@ module new_lid() {
     }
 }
 
+module new_lid_window() {
+    difference() {
+        translate([w_1kg/2,0,85.38])
+        import("../_downloaded/SPANNERHANDS_Spool_System_Wall_Mounted_Spool_Holder___Dust_Cover/files/LID_v3_0_1kg_Spool.stl");
+    
+        translate([0,68,33.5])
+        rotate([45,0,0]) {
+            translate([w_1kg/2-25,-25,-1.1]) cylinder(d=3,h=5, $fn=30);
+            translate([w_1kg/2-25,-25,0]) _bolt_head();
+            translate([w_1kg/2+25,-25,-1.1]) cylinder(d=3,h=5, $fn=30);
+            translate([w_1kg/2+25,-25,0]) _bolt_head();
+            translate([w_1kg/2-25,25,-1.1]) cylinder(d=3,h=9, $fn=30);
+            translate([w_1kg/2-25,25,0]) _bolt_head();
+            translate([w_1kg/2+25,25,-1.1]) cylinder(d=3,h=9, $fn=30);
+            translate([w_1kg/2+25,25,]) _bolt_head();
+
+            translate([w_1kg/2,0,-1.1]) cube([42,42,10],center=true);
+        }
+    }
+}
+
+module new_thin_lid_window() {
+    difference() {
+        translate([w_1kg/2,0,85.38])
+        import("../_downloaded/SPANNERHANDS_Spool_System_Wall_Mounted_Spool_Holder___Dust_Cover/files/LID_v2_0.stl");
+    
+        translate([0,68,33.5])
+        rotate([45,0,0]) {
+            translate([w_1kg/2-25,-25,-1.1]) cylinder(d=3,h=5, $fn=30);
+            translate([w_1kg/2-25,-25,0]) _bolt_head();
+            translate([w_1kg/2+25,-25,-1.1]) cylinder(d=3,h=5, $fn=30);
+            translate([w_1kg/2+25,-25,0]) _bolt_head();
+            translate([w_1kg/2-25,25,-1.1]) cylinder(d=3,h=9, $fn=30);
+            translate([w_1kg/2-25,25,0]) _bolt_head();
+            translate([w_1kg/2+25,25,-1.1]) cylinder(d=3,h=9, $fn=30);
+            translate([w_1kg/2+25,25,]) _bolt_head();
+
+            translate([w_1kg/2,0,-1.1]) cube([42,42,10],center=true);
+        }
+    }
+}
+
+
 module new_ptfe_nozle() {
     difference() {
         union() {
@@ -830,6 +873,9 @@ module debug_thin() {
 //translate([0,0,110]) new_thin_lid2_window();
 //nut();
 //bolt();
+
+new_lid_window();
+//new_thin_lid_window();
 
 //window_frame();
 
