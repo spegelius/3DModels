@@ -175,10 +175,20 @@ module chamfered_cube_side(x,y,z, chamfer, center=false) {
 module fitting_thread_M6(fitting_h=6) {
     translate([0,0,-1]) intersection() {
         union() {
-            thread_out(6,fitting_h+2,thr=20);
-            cylinder(d=5.16, h=fitting_h+2,$fn=50);
+            thread_out(6,fitting_h+2,thr=30);
+            cylinder(d=5.13, h=fitting_h+2,$fn=30);
         }
         translate([0,0,1]) cylinder(d=6.2,h=fitting_h,$fn=50);
+    }
+}
+
+module fitting_thread_M10(fitting_h=6) {
+    translate([0,0,-1]) intersection() {
+        union() {
+            thread_out_pitch(10,fitting_h+2,0.9,thr=40);
+            cylinder(d=9.25, h=fitting_h+2,$fn=40);
+        }
+        translate([0,0,1]) cylinder(d=10.2,h=fitting_h,$fn=50);
     }
 }
 
