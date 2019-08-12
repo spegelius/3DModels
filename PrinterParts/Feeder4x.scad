@@ -77,6 +77,15 @@ module tubes_push_fitting() {
     }
 }
 
+module tubes_push_fitting_M10() {
+    union() {
+        fitting_thread_M10(fitting_h);
+        translate([0,0,fitting_h + .2]) cylinder(d=4.2, h=3, $fn=40);
+        translate([0,0,fitting_h + 3 + .4]) cylinder(d=tube_d, h=h1-(3.2 + 5.2), $fn=40);
+        tubex4();
+    }
+}
+
 module tubes_collet() {
     difference() {
         union() {
@@ -96,6 +105,14 @@ module feeder_push_fitting() {
     difference() {
         cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h+3);
         tubes_push_fitting();
+    }
+}
+
+module feeder_push_fitting_M10() {
+
+    difference() {
+        cylinder(d1=15,d2=24,h=h1+h2+h3 + fitting_h+3);
+        tubes_push_fitting_M10();
     }
 }
 
@@ -128,26 +145,24 @@ module feeder_collet() {
 
 module hole_test() {
     difference() {
-        cube([20,20,20]);
+        cube([20,20,10]);
         translate([5,5,0]) cylinder(d=2.1,h=21,$fn=40);
         translate([15,5,0]) cylinder(d=2.3,h=21,$fn=40);
         translate([5,15,0]) cylinder(d=2.5,h=21,$fn=40);
         translate([15,15,0]) cylinder(d=2.7,h=21,$fn=40);
-        
     }
 }
 
-//hole_test();
+hole_test();
 
 //tube();
 //tubex2();
 //tubex4();
 //tubes_push_fitting();
+//tubes_push_fitting_M10();
 //tubes_collet();
-feeder_push_fitting();
-//feeder_collet();
 
-//translate([20,0,0]) {
-//    thread_out(6,fitting_h);
-//    thread_out_centre(6,fitting_h);
-//}
+// Printable models
+//feeder_push_fitting();
+//feeder_push_fitting_M10();
+//feeder_collet();
