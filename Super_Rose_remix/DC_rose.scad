@@ -201,8 +201,9 @@ module petals6() {
 module _clip_body(d=8) {
     difference() {
         union() {
-            cylinder(d=d, h=8);
-            translate([0,0,8]) cylinder(d1=d,1, h=6);
+            cylinder(d=d, h=7);
+            translate([0,0,7]) scale([1,(d-1)/d,1]) cylinder(d=d,h=1);
+            translate([0,0,8]) scale([1,(d-1)/d,1]) cylinder(d1=d,1, h=6);
         }
         translate([0,0,6.5]) difference() {
             cube_donut(d, 1.5);
@@ -254,11 +255,11 @@ intersection () {
 }
 
 //clip();
-//nub();
+nub();
 //stem();
 //center();
 //petals1();
-petals2();
+//petals2();
 //petals3();
 //petals4();
 //petals5();
