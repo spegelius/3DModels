@@ -219,8 +219,8 @@ module 623zz() {
 
 module MR105zz() {
     difference() {
-        cylinder(d=10,h=3,$fn=40);
-        cylinder(d=5,h=5,$fn=30);
+        cylinder(d=10,h=4,$fn=40);
+        translate([0,0,-1/2]) cylinder(d=5,h=5,$fn=30);
     }
 }
 
