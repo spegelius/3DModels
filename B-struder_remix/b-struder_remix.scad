@@ -7,15 +7,15 @@ module orig_motor_mount() {
 
 }
 
-module lock_lever() {
+module orig_lock_lever() {
     translate([15.5,15.5,-53]) import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_lock_lever.stl");
 }
 
-module MR105ZZ_support() {
+module orig_MR105ZZ_support() {
     translate([0,0,-71]) import("../_downloaded/B-struder_Bowden_extruder/2017-05-06_B-Struder-B-struder_MR105ZZ_support.stl", convexity=10);
 }
 
-module spring_cap() {
+module orig_spring_cap() {
     translate([-32,9,-60.5]) import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_spring_cap.stl");
 }
 
@@ -323,6 +323,7 @@ module debug() {
     arm = 3;
     
     %translate([0,0,-5]) motor_mount();
+    %translate([-31/2,-31/2,-1]) lock_lever();
     
     if (arm == 0) { 
         intersection() {
@@ -338,9 +339,9 @@ module debug() {
             //translate([-100/2,-40,0]) cube([100,55,40]);
         }
         %translate([0,0,11+4]) rotate([180,0,0]) E3D_HobGoblin();
-        %translate([0,0,15.4]) MR105zz();
+        %translate([0,0,15.2]) MR105zz();
         %rotate([0,0,-13]) translate([10.5,0,5.5]) U604zz();
-        %translate([0,0,20.4]) rotate([0,180,0]) MR105zz_support();
+        %translate([0,0,20.4]) rotate([0,180,0]) MR105zz_support_Hobbgoblin();
     } else if (arm == 2) {
         intersection() {
             arm_E3D_HobGoblin_2x623zz();
@@ -349,23 +350,23 @@ module debug() {
         }
 
         %translate([0,0,15]) rotate([0,180,0]) E3D_HobGoblin();
-        %translate([0,0,15.4]) MR105zz();
+        %translate([0,0,15.2]) MR105zz();
         x_offset = 9.8;
         %rotate([0,0,-13]) translate([x_offset,0,3.5]) 623zz();
         %rotate([0,0,-13]) translate([x_offset,0,7.5]) 623zz();
-        %translate([0,0,20.4]) rotate([0,180,0]) MR105zz_support();
+        %translate([0,0,20.4]) rotate([0,180,0]) MR105zz_support_Hobbgoblin();
     } else if (arm == 3) {
         intersection() {
             arm_Bondtech();
-            translate([-100/2,-100/2,0]) cube([100,100,2+3]);
-            //translate([-100/2,-40,0]) cube([100,55,40]);
+            //translate([-100/2,-100/2,0]) cube([100,100,2+3]);
+            translate([-100/2,-40,0]) cube([100,55,40]);
         }
 
         %translate([0,0,14+2]) rotate([0,180,0]) Bondtech_gear();
-        %translate([0,0,14+2]) MR105zz();
+        %translate([0,0,14+2.2]) MR105zz();
         x_offset = 8.9;
         %rotate([0,0,-13]) translate([x_offset,0,14+2]) rotate([0,180,0]) Bondtech_gear();
-        %translate([0,0,20.4]) rotate([0,180,0]) MR105zz_support();
+        %translate([0,0,21.4]) rotate([0,180,0]) MR105zz_support_Bondtech();
     }    
 }
 
@@ -449,25 +450,26 @@ module motor_mount_extra_mount2() {
 module lock_lever() {
     difference() {
         union() {
-            rotate([0,0,55]) lock_lever();
-            mirror([0,1,0]) lock_lever();
+            rotate([0,0,55]) orig_lock_lever();
+            mirror([0,1,0]) orig_lock_lever();
             cylinder(d=9.6,h=12+3.4,$fn=40);
         }
         cylinder(d=3.3,h=17+5,$fn=20);
     }
 }
 
-module MR105zz_support() {
-    h = 18 + 3.4;
+module _MR105zz_support(h) {
+    
     difference() {
         union() {
-            MR105ZZ_support();
+            orig_MR105ZZ_support();
             translate([31/2,31/2,0]) cylinder(d=9.5,h=h,$fn=40);
+            translate([-31/2,31/2,0])  cylinder(d=9.5,h=h-16.4,$fn=40);
             hull() {
                 translate([-31/2,31/2,0])  cylinder(d=9.5,h=5,$fn=40);
                 translate([10,12,5/2]) rotate([0,0,-45]) cube([2,19,5],center=true);
             }
-            translate([31/2,-31/2,0])  cylinder(d=9.5,h=6,$fn=40);
+            translate([31/2,-31/2,0])  cylinder(d=9.5,h=h-15.4,$fn=40);
             hull() {
                 translate([31/2,-31/2,0])  cylinder(d=9.5,h=5,$fn=40);
                 translate([12,12,5/2]) rotate([0,0,-45]) cube([2,13,5],center=true);
@@ -475,8 +477,8 @@ module MR105zz_support() {
             translate([-31/2,31/2,0]) {
                 //cylinder(d=9.5,h=4+1.2,$fn=40);
                 hull() {
-                    cylinder(d=6,h=5+1.7+0.2,$fn=40);
-                    cylinder(d=3,h=5+3.2+0.2,$fn=40);
+                    cylinder(d=6,h=h-16.4+1.7+0.2,$fn=40);
+                    cylinder(d=3,h=h-16.4+3.2+0.2,$fn=40);
                 }
             }
         }
@@ -487,8 +489,17 @@ module MR105zz_support() {
     //%translate([0,0,1]) MR105zz();
 }
 
+module MR105zz_support_Hobbgoblin() {
+    _MR105zz_support(h = 18 + 3.4);
+}
+
+
+module MR105zz_support_Bondtech() {
+    _MR105zz_support(h = 19 + 3.4);
+}
+
 module spring_cap_8mm_spring() {
-    //spring_cap();
+    //orig_spring_cap();
     difference() {
         union() {
             difference() {
@@ -502,6 +513,7 @@ module spring_cap_8mm_spring() {
 }
 
 module qnd_fix() {
+    // don't use
     difference() {
         union() {
             hull() {
@@ -515,20 +527,9 @@ module qnd_fix() {
     }
 }
 
-module qnd_fix2() {
-    difference() {
-        intersection() {
-            MR105zz_support();
-            translate([10/2,0,0]) cube([10,20,2],center=true);
-        }
-        translate([7,7,0]) cylinder(d=3.2,h=3,center=true);
-        translate([7,-7,0]) cylinder(d=3.2,h=3,center=true);
-    }
-}
-
 //translate([50,0,0]) orig_arm();
 
-debug();
+//debug();
 
 //arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_2x623zz();
@@ -538,5 +539,6 @@ debug();
 //motor_mount_extra_mount();
 //motor_mount_extra_mount2();
 //lock_lever();
-//MR105zz_support();
+//MR105zz_support_Hobbgoblin();
+MR105zz_support_Bondtech();
 //spring_cap_8mm_spring();
