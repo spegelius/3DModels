@@ -1,10 +1,20 @@
 
-width = 150;
-length = 150;
-height = 100;
+//width = 150;
+//length = 150;
+//height = 100;
 
-nozzle = 0.65;
-layer = 0.3;
+//width = 120;
+//length = 120;
+//height = 80;
+
+//width = 180;
+//length = 180;
+//height = 120;
+
+width = 200;
+length = 200;
+height = 150;
+
 wall = 1.7;
 //wall = 2;
 
@@ -25,9 +35,15 @@ fastener_hole_x = width/2-5.7;
 fastener_hole_l = length*0.7;
 fastener_hole_y = -fastener_hole_l/2;
 
-fastener_l = fastener_hole_l-4.9;
+fastener_l = fastener_hole_l-4.8;
+fastener_wall = 1.8;
 
 fastener_dia = 7;
+
+slot_w = 100;
+
+plate_w = slot_w - 3;
+plate_l = 34;
 
 include <../lib/includes.scad>;
 
@@ -88,7 +104,7 @@ module main_body(crevices=false) {
         
         for(i = [0:blocks_x-1]) {
             for(j = [0:blocks_y-1]) {
-                translate([x_offset+i*x,y_offset+j*y,0]) cube([10,10,0.35],center=true);
+                translate([x_offset+i*x,y_offset+j*y,0]) cube([10,10,0.4],center=true);
             }
         }
         
@@ -97,28 +113,29 @@ module main_body(crevices=false) {
 
 //main_body();
 
+// plate slot
 module slot() {
 
     difference() {
         union() {
             difference() {
                 intersection () {
-                    translate([0,0,40/2]) rounded_cube_side(width*0.8, 10, 40, 5, center=true);
+                    translate([0,0,38/2]) rounded_cube_side(slot_w, 6.4, 38, 5, center=true);
                     translate([0,10,26.45]) rotate([-45,0,0]) cube([width,50,50],center=true);
                 }
-                translate([0,0,40/2]) rounded_cube_side(width*0.8-4, 6, 40, 2,center=true);
+                translate([0,0,40/2]) rounded_cube_side(slot_w-2.4, 6.4-2.4, 40, 2,center=true);
             }
-            translate([0,0,2.5]) rotate([-45,0,0]) cube([width*0.8-2,10,2],center=true);
+            translate([0,0,1.94]) rotate([-45,0,0]) cube([slot_w-2.3,6.7,1.2],center=true);
         }
         translate([0,6,0]) cube([width, 10,100], center=true);
-        cube([width*0.8-14, 20,100], center=true);
+        cube([slot_w-14, 20,100], center=true);
     }
 }
 
+//slot();
+
 module fastener_slot() {
-    
     w = fastener_dia;
-    
     difference() {
         union() {
             difference() {
@@ -140,14 +157,13 @@ module fastener_slot() {
             translate([0,0,-4]) cube([2,4,4]);
         }
     }
-       
 }
 
 //fastener_slot();
 
 module box(crevices=false) {
 
-    crevices = 12;
+    crevice_count = 12;
     distance = length/crevices;
     start = length/2 - distance/2;
     
@@ -155,21 +171,22 @@ module box(crevices=false) {
 
     module crevice() {
         rotate([45,0,0]) cube([width, 2, 2], center=true);
-    }    
+    }
+    
+    slot_pos = height > 78 ? 30 : height - 48;
 
     union() {
-        
         if (crevices == true) {
             difference() {
                 main_body(crevices=crevices);
-                for(i=[0:11]) {
+                for(i=[0:crevice_count]) {
                     translate([0, start - i*distance, 0]) crevice();
                 }
             }
         } else {
             main_body(crevices=crevices);
         }
-        translate([0,-length/2, height-40-10]) slot();
+        translate([0,-length/2, slot_pos]) slot();
 
         translate([fastener_x_offset, -fastener_hole_l/2+0.1, height-10]) rotate([0,0,90]) fastener_slot();
         mirror([0,1,0]) translate([fastener_x_offset, -fastener_hole_l/2+0.1, height-10]) rotate([0,0,90]) fastener_slot();
@@ -214,8 +231,8 @@ module fastener(){
     difference() {
         union() {
             cylinder(d=fastener_dia-2, h=fastener_l,$fn=30);
-            translate([0,0,10/2]) cube([wall,fastener_dia/2+2,fastener_l-10]);
-            translate([0,fastener_dia/2+1.5,0]) cube([wall,7,fastener_l]);
+            translate([0,0,10/2]) cube([fastener_wall,fastener_dia/2+2,fastener_l-10]);
+            translate([0,fastener_dia/2+1.7,0]) cube([fastener_wall,6.8,fastener_l]);
             difference() {
                 translate([-3.5,12.5,0]) cylinder(d=11, h=fastener_l,$fn=40);
                 translate([-10,(fastener_dia-1)/2,0]) cube([10,9,fastener_l+1]);
@@ -233,18 +250,30 @@ module fastener(){
                 translate([-6.5,10,-20/2+5/2+0.5]) rotate([0,45,-30]) cube([5,5,5]);
             }
         }
-        translate([-7,4,fastener_l/2]) rotate([-90,0,60]) cylinder(d=20-2*wall,h=10,$fn=50);
-        translate([-3.5,12.5,0]) cylinder(d=11-2*wall, h=fastener_l+1,$fn=40);
+        cylinder(d=0.5, h=fastener_l,$fn=30);
+        translate([-7,4,fastener_l/2]) rotate([-90,0,60]) cylinder(d=20-2*fastener_wall,h=10,$fn=50);
+        translate([-3.5,12.5,0]) cylinder(d=11-2*fastener_wall, h=fastener_l+1,$fn=40);
+    }
+}
+
+module fasteners(brim=true) {
+    if (brim) {
+        union() {
+            translate([-5,0,0]) fastener();
+            translate([10,0,0]) fastener();
+            translate([-16,-7,0]) cube([30,30,0.2]);
+        }
+    } else {
+        translate([-5,0,0]) fastener();
+        translate([10,0,0]) fastener();
     }
 }
 
 module plate(text) {
-    if (layer == 0.3) {
-        translate([0,0,1.5/2]) rounded_cube_side(width*0.8-6,40,1.5,5,center=true);
-    } else {
-        translate([0,0,1.5/2]) rounded_cube_side(width*0.8-6,40,1.4,5,center=true);
+    union() {
+        translate([0,0,1.5/2]) rounded_cube_side(plate_w,plate_l,1.5,5,center=true);
+        translate([0,0,1.5]) linear_extrude(1) text(size=14, text=text, halign="center", valign="center");
     }
-    translate([0,0,1.5]) linear_extrude(1) text(size=14, text="Crap", halign="center", valign="center");
 }
 
 module view_proper() {
@@ -258,6 +287,7 @@ module view_proper() {
     }
     
     translate([width/2+5/2,(fastener_l)/2,height-11]) rotate([90,0,0]) fastener();
+    color("white") translate([0,-length/2,34+plate_l/2]) rotate([90,0,0]) plate("Crap");
 }
 
 
@@ -268,7 +298,8 @@ module view_proper() {
 //    cube([100,100,100]);
 //}
 
-//box();
-lid();
+box();
+//lid();
 //fastener();
-//plate();
+//fasteners();
+//plate("Crap");
