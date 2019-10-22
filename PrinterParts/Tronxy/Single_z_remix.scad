@@ -374,7 +374,7 @@ module z_motor_mount_arm() {
     %translate([-185,0,6.5]) rotate([0,180,0]) z_motor_mount_arm_center();
 }
 
-module z_motor_mount_arm_center() {
+module z_motor_mount_arm_cap() {
     
     difference() {
         intersection() {
@@ -585,7 +585,7 @@ module debug() {
 //translate([20,-10,0]) z_bottom_centering_peg();
 //rotate([0,-90,0]) z_motor_mount();
 //z_motor_mount_arm();
-z_motor_mount_arm_center();
+z_motor_mount_arm_cap();
 //z_motor_mount_arm_stopper();
 //623zz_idler_pulley();
 //pulley_washer();
