@@ -26,8 +26,8 @@ module _bearing_hole() {
 
 module _long_nut() {
     hull() {
-        rotate([0,0,360/6/2]) nut(h=2.7, cone=false);
-        translate([0,6,0]) rotate([0,0,360/6/2]) nut(h=2.7, cone=false);
+        rotate([0,0,360/6/2]) M3_nut(h=2.7, cone=false);
+        translate([0,6,0]) rotate([0,0,360/6/2]) M3_nut(h=2.7, cone=false);
     }
 }
 
@@ -244,8 +244,8 @@ module z_motor_mount() {
         translate([-36,14,h-15]) cylinder(d=3.2,h=30,$fn=30);
         translate([-36,-14,h-15]) cylinder(d=3.2,h=30,$fn=30);
         
-        translate([-365,14,h-8.1]) nut(cone=false);
-        translate([-36,-14,h-8.1]) nut(cone=false);
+        translate([-365,14,h-8.1]) M3_nut(cone=false);
+        translate([-36,-14,h-8.1]) M3_nut(cone=false);
         
         translate([0,65/2,20/2+5]) chamfered_cube(100,10,20,3,center=true);
         translate([0,-65/2,20/2+5]) chamfered_cube(100,10,20,3,center=true);
@@ -274,12 +274,12 @@ module z_motor_mount() {
 module z_motor_mount_arm() {
     
     module _arm() {
-        translate([-15,0,0]) difference() {
-            chamfered_cube(120,10,20,3,center=true);
-            // reinforcement
-            cube([121,0.1,0.2],center=true);
-            translate([0,0,6]) cube([121,0.1,0.2],center=true);
-            translate([0,0,-6]) cube([121,0.1,0.2],center=true);
+        translate([-75.5,0,0]) difference() {
+            chamfered_cube(241,10,20,2,center=true);
+            translate([-241/2+11,0,5]) rotate([90,0,0]) cylinder(d=10.1,h=150,center=true,$fn=50);
+            translate([-241/2+11,0,10/2+5]) cube([22,15,10],center=true);
+            translate([-241/2+11+8,0,0]) cylinder(d=2.9,h=16,center=true,$fn=20);
+            translate([-241/2+11-8,0,0]) cylinder(d=2.9,h=16,center=true,$fn=20);
         }
     }
 
@@ -287,8 +287,11 @@ module z_motor_mount_arm() {
         union() {
             translate([0,65/2,0]) _arm();
             translate([0,-65/2,0]) _arm();
-            translate([90/2-5/2,0,5/2]) cube([5,115,25],center=true);
-            translate([90/2+20/2,0,-20/2+5/2]) cube([20,75,5],center=true);
+            translate([90/2-5/2,0,5/2]) cube([5,135,25],center=true);
+            translate([90/2+20/2,0,-20/2+5/2]) hull() {
+                cube([20,75,5],center=true);
+                translate([-20/2-1/2,0,0]) cube([1,135,5],center=true);
+            }
             translate([90/2-5/2,32.5,15/2]) hull() {
                 cube([5,4,15],center=true);
                 translate([-25/2,0,-5/2]) cube([25,4,10],center=true);
@@ -298,17 +301,18 @@ module z_motor_mount_arm() {
                 translate([-25/2,0,-5/2]) cube([25,4,10],center=true);
             }
             
-            translate([90/2-5/2,115/2-27/2,-20/2+5/2]) hull() {
-                cube([5,27,5],center=true);
-                translate([-140/2,-20/2,0]) cube([25,1,5],center=true);
+            translate([90/2-5/2,125/2-27/2,-20/2+4/2]) hull() {
+                cube([5,37,4],center=true);
+                translate([-180/2,-30/2,0]) cube([25,1,4],center=true);
             }
-            translate([90/2-5/2,-115/2+27/2,-20/2+5/2]) hull() {
-                cube([5,27,5],center=true);
-                translate([-140/2,20/2,0]) cube([25,1,5],center=true);
+            translate([90/2-5/2,-125/2+27/2,-20/2+4/2]) hull() {
+                cube([5,37,4],center=true);
+                translate([-180/2,30/2,0]) cube([25,1,4],center=true);
             }
         }
-        translate([90/2,-23,5]) rotate([0,90,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
-        translate([90/2,23,5]) rotate([0,90,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
+        translate([90/2,0,5]) rotate([0,90,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
+        translate([90/2,-55,5]) rotate([0,90,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
+        translate([90/2,55,5]) rotate([0,90,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
         
         translate([90/2+20/2,27,-10]) hull() {
             cylinder(d=4.2,h=10,center=true,$fn=30);
@@ -319,16 +323,14 @@ module z_motor_mount_arm() {
             translate([30,0,0]) cylinder(d=4.2,h=10,center=true,$fn=30);
         }
         
-        for(i = [0:12]) {
-            translate([-24-i*3.35,0,0]) rotate([90,0,0]) cylinder(d=4.2,h=100,center=true,$fn=30);
+        hull() {
+            translate([-20,0,0]) rotate([90,0,0]) cylinder(d=4.3,h=100,center=true,$fn=30);
+            translate([-20-45,0,0]) rotate([90,0,0]) cylinder(d=4.3,h=100,center=true,$fn=30);
         }
         
-        intersection() {
-            translate([-24,0,0]) rotate([90,0,0]) hull() {
-                cylinder(d=4.2,h=100,center=true,$fn=30);
-                translate([-40,0,0]) cylinder(d=4.2,h=100,center=true,$fn=30);
-            }
-            translate([0,0,5/2]) cube([200,100,5],center=true);
+        for (i = [0:34]) {
+            translate([-17-i*1.5,65/2+5,0]) rotate([0,0,45]) cube([1,1,12],center=true);
+            translate([-17-i*1.5,-65/2-5,0]) rotate([0,0,45]) cube([1,1,12],center=true);
         }
         
         // reinforcement
@@ -336,8 +338,92 @@ module z_motor_mount_arm() {
         translate([90/2-5/2,0,5/2]) cube([0.1,0.1,40],center=true);
         translate([90/2-5/2,-30,5/2]) cube([0.1,0.1,40],center=true);
         
-        translate([0,35,-8]) rotate([0,0,18]) cube([141,0.1,0.2],center=true);
-        translate([0,-35,-8]) rotate([0,0,-18]) cube([141,0.1,0.2],center=true);
+        translate([90/2-5/2,0,-5]) cube([0.1,150,0.2],center=true);
+        translate([90/2-5/2,0,10]) cube([0.1,150,0.2],center=true);
+        
+        translate([0,35,-8.5]) rotate([0,0,20]) cube([141,0.1,0.2],center=true);
+        translate([0,45,-8.5]) rotate([0,0,20]) cube([141,0.1,0.2],center=true);
+        translate([0,-35,-8.5]) rotate([0,0,-20]) cube([141,0.1,0.2],center=true);
+        translate([0,-45,-8.5]) rotate([0,0,-20]) cube([141,0.1,0.2],center=true);
+        
+        // arm reinforcement
+        translate([0,65/2,0]) {
+            cube([151,0.1,0.2],center=true);
+            translate([0,0,6]) cube([151,0.1,0.2],center=true);
+            translate([0,0,-6]) cube([551,0.1,0.2],center=true);
+        }
+        
+        translate([0,-65/2,0]) {
+            cube([151,0.1,0.2],center=true);
+            translate([0,0,6]) cube([151,0.1,0.2],center=true);
+            translate([0,0,-6]) cube([551,0.1,0.2],center=true);
+        }
+    }
+    
+    // supports
+    module _support() {
+        difference() {
+            cube([45,10,3.9],center=true);
+            translate([0,0,-0.2]) cube([45,10-2*0.45,3.5],center=true);
+        }
+    }
+    
+    translate([-20-45/2,65/2,0]) _support();
+    translate([-20-45/2,-65/2,0]) _support();
+    
+    %translate([-185,0,6.5]) rotate([0,180,0]) z_motor_mount_arm_center();
+}
+
+module z_motor_mount_arm_center() {
+    
+    difference() {
+        intersection() {
+            union() {
+                chamfered_cube(12,75,10,2,center=true);
+                translate([0,-75/2+10/2,-2]) chamfered_cube(22,10,12,2,center=true);
+                translate([0,75/2-10/2,-2]) chamfered_cube(22,10,12,2,center=true);
+            }
+            translate([0,0,-3.5/2]) cube([22,75,6.5],center=true);
+        }
+        translate([0,0,1.7]) rotate([90,0,0]) hull() {
+            cylinder(d=10.1,h=80,center=true,$fn=50);
+            translate([0,5,0]) cylinder(d=10.1,h=80,center=true,$fn=50);
+        }
+        translate([8,-75/2+10/2]) {
+            cylinder(d=3.2,h=12,center=true,$fn=30);
+            translate([0,0,-10/2]) cylinder(d1=5.2,d2=3.2,h=1,$fn=30);
+        }
+        translate([-8,-75/2+10/2]) {
+            cylinder(d=3.2,h=12,center=true,$fn=30);
+            translate([0,0,-10/2]) cylinder(d1=5.2,d2=3.2,h=1,$fn=30);
+        }
+        translate([8,75/2-10/2]) {
+            cylinder(d=3.2,h=12,center=true,$fn=30);
+            translate([0,0,-10/2]) cylinder(d1=5.2,d2=3.2,h=1,$fn=30);
+        }
+        translate([-8,75/2-10/2]) {
+            cylinder(d=3.2,h=12,center=true,$fn=30);
+            translate([0,0,-10/2]) cylinder(d1=5.2,d2=3.2,h=1,$fn=30);
+        }
+    }
+}
+
+module z_motor_mount_arm_stopper() {
+    
+    difference() {
+        union() {
+            difference() {
+                translate([0,0,3/2]) cube([11.5,12,3],center=true);
+                for (i = [0:10]) {
+                    translate([0,-12/2+i*1.5,3]) rotate([45,0,0]) cube([12,1,1],center=true);
+                }
+            }
+            hull() {
+                translate([0,4,0]) cylinder(d=4,h=6,$fn=30);
+                translate([0,-4,0]) cylinder(d=4,h=6,$fn=30);
+            }
+        }
+        cylinder(d=4.3,h=10,$fn=30);
     }
 }
 
@@ -499,10 +585,12 @@ module debug() {
 //translate([20,-10,0]) z_bottom_centering_peg();
 //rotate([0,-90,0]) z_motor_mount();
 //z_motor_mount_arm();
+z_motor_mount_arm_center();
+//z_motor_mount_arm_stopper();
 //623zz_idler_pulley();
 //pulley_washer();
 //center_rod_mount();
 //z_rod_support();
 //z_pulley_40t();
-z_pulley_40t_retainer();
+//z_pulley_40t_retainer();
 //support_rod_nut();
