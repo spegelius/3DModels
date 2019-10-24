@@ -223,8 +223,8 @@ module z_motor_mount() {
     
     difference() {
         union() {
-            translate([-68/2+43/2,0,h/2]) cube([68,60,h],center=true);
-            translate([-25/2-68+43/2+25,0,(h+12)/2]) cube([25,60,h+12],center=true);
+            translate([-68/2+43/2,0,h/2]) cube([68,58,h],center=true);
+            translate([-25/2-68+43/2+25,0,(h+12)/2]) cube([25,58,h+12],center=true);
         }
         translate([0,0,(h-4)/2]) cube([43.1,43.1,h-4],center=true);
         translate([-26,0,2]) rotate([0,-30,0]) cube([10,20,20],center=true);
@@ -232,8 +232,8 @@ module z_motor_mount() {
         // bearing hole
         translate([0,0,9/2+h]) cube([103.1,53,9],center=true);
         translate([-43,0,9/2+h]) hull() {
-            cube([1,53,9],center=true);
-            translate([-6,0,0]) cube([1,63,9],center=true);
+            cube([1,51,9],center=true);
+            translate([-6,0,0]) cube([1,60,9],center=true);
         }
         
         translate([0,0,(h-12)/2+4]) cube([103.1,43.1,h-12],center=true);
@@ -247,8 +247,8 @@ module z_motor_mount() {
         translate([-365,14,h-8.1]) M3_nut(cone=false);
         translate([-36,-14,h-8.1]) M3_nut(cone=false);
         
-        translate([0,65/2,20/2+5]) chamfered_cube(100,10,20,3,center=true);
-        translate([0,-65/2,20/2+5]) chamfered_cube(100,10,20,3,center=true);
+        translate([0,65/2,20/2+5]) chamfered_cube(100,10,20,2,center=true);
+        translate([0,-65/2,20/2+5]) chamfered_cube(100,10,20,2,center=true);
         
         translate([-22,-43/2,15]) rotate([90,0,0]) {
             M4_nut(cone=false);
@@ -371,7 +371,7 @@ module z_motor_mount_arm() {
     translate([-20-45/2,65/2,0]) _support();
     translate([-20-45/2,-65/2,0]) _support();
     
-    %translate([-185,0,6.5]) rotate([0,180,0]) z_motor_mount_arm_center();
+    %translate([-185,0,6.5]) rotate([0,180,0]) z_motor_mount_arm_cap();
 }
 
 module z_motor_mount_arm_cap() {
@@ -583,9 +583,9 @@ module debug() {
 //z_screw_clip();
 //translate([20,10,0]) z_bottom_centering_peg();
 //translate([20,-10,0]) z_bottom_centering_peg();
-//rotate([0,-90,0]) z_motor_mount();
+rotate([0,-90,0]) z_motor_mount();
 //z_motor_mount_arm();
-z_motor_mount_arm_cap();
+//z_motor_mount_arm_cap();
 //z_motor_mount_arm_stopper();
 //623zz_idler_pulley();
 //pulley_washer();
