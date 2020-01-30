@@ -1,3 +1,29 @@
+include <../lib/includes.scad>;
+
+////// VARIABLES //////
+$fn=60;
+
+////// VIEW //////
+//translate([50,0,0]) orig_arm();
+
+//debug();
+
+//arm_E3D_HobGoblin_U604zz();
+arm_E3D_HobGoblin_U604zz(threads=false);
+//arm_E3D_HobGoblin_2x623zz();
+//arm_Bondtech(threads=false);
+//arm_Bondtech();
+//hinge_support();
+//motor_mount();
+//motor_mount_extra_mount();
+//motor_mount_extra_mount2();
+//lock_lever();
+//MR105zz_support_Hobbgoblin();
+//MR105zz_support_Bondtech();
+//spring_cap_8mm_spring();
+
+
+////// MODULES //////
 module orig_arm() {
     translate([0,0,-55]) import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_arm_40Tgear+U604_M6ends.stl", convexity=10);
 }
@@ -18,10 +44,6 @@ module orig_MR105ZZ_support() {
 module orig_spring_cap() {
     translate([-32,9,-60.5]) import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_spring_cap.stl");
 }
-
-include <../lib/includes.scad>;
-
-$fn=60;
 
 module arm_body(height=15) {
     difference() {
@@ -155,7 +177,7 @@ module E3D_HobGoblin_hole(height=15) {
     translate([0,0,7.5+3]) cylinder(d=8+5,h=6);
 }
 
-module filament_holes(x_offset, height=15, offset=5) {
+module filament_holes(x_offset, height=15, offset=5, threads=true) {
     // filament tube and fitting holes
     rotate([0,0,-13]) union() {
         translate([x_offset,offset,height/2]) rotate([-90,0,0]) cylinder(d=2,h=30, $fn=30);
@@ -163,11 +185,13 @@ module filament_holes(x_offset, height=15, offset=5) {
         translate([x_offset,-offset,height/2]) rotate([90,0,0]) cylinder(d=2,h=60, $fn=30);
         translate([x_offset,30,height/2]) rotate([90,0,0]) cylinder(d=0.8,h=60, $fn=30);
 
-        //translate([x_offset,29-6,height/2]) rotate([-90,0,0]) fitting_hole_M6();
-        //translate([x_offset,-18+6,height/2]) rotate([90,0,0]) fitting_hole_M6();
-    
-        translate([x_offset,29-5.79,height/2]) rotate([-90,0,0]) fitting_thread_M6(6);
-        translate([x_offset,-18+6.19,height/2]) rotate([90,0,0]) fitting_thread_M6(6);
+        if (threads) {
+            translate([x_offset,29-5.79,height/2]) rotate([-90,0,0]) fitting_thread_M6(6);
+            translate([x_offset,-18+6.19,height/2]) rotate([90,0,0]) fitting_thread_M6(6);
+        } else {
+            translate([x_offset,29-5.79,height/2]) rotate([-90,0,0]) cylinder(d=6,h=6,$fn=30);
+            translate([x_offset,-18+6.19,height/2]) rotate([90,0,0]) cylinder(d=6,h=6,$fn=30);
+        }
     }
 }
 
@@ -175,27 +199,44 @@ module idler_hole_E3D_HobGoblin_U604zz() {
     // idler hole
     rotate([0,0,-13]) translate([10.7,0,0]) {
         cylinder(d=3.5, h=5, $fn=30);
-        translate([0,0,5]) cylinder(d=4.2, h=15, $fn=30);
-        translate([0,0,15-2.5]) cylinder(d=9, h=3, $fn=30);
-        translate([0,0,5]) difference() {
+
+        translate([0,0,5])
+        cylinder(d=4.2, h=5, $fn=30);
+        
+        translate([0,0,10.2])
+        cylinder(d=4.2, h=15, $fn=30);
+
+        translate([0,0,15-2.5])
+        cylinder(d=9, h=3, $fn=30);
+
+        translate([0,0,5])
+        difference() {
             difference() {
                 hull() {
                     cylinder(d=13.3,h=5,$fn=60);
-                    translate([20,-18/2+8,0]) cube([1,18,5]);
+                    translate([20,-18/2+8,0])
+                    cube([1,18,5]);
                 }
-                translate([0,0,5/2]) donut(13.5,2,110,125);
+                translate([0,0,5/2])
+                donut(13.5,2,110,125);
             }
             difference() {
                 cylinder(d=5.2,h=5,$fn=30);
-                translate([0,0,0.5+4/2]) rotate([0,0,45]) cube([2,8,4], center=true);
-                translate([0,0,0.5+4/2]) rotate([0,0,-45]) cube([2,8,4], center=true);
+
+                translate([0,0,0.5+4/2])
+                rotate([0,0,45])
+                cube([2,8,4], center=true);
+
+                translate([0,0,0.5+4/2])
+                rotate([0,0,-45])
+                cube([2,8,4], center=true);
             }
         }
         
     }
 }
 
-module arm_E3D_HobGoblin_U604zz() {
+module arm_E3D_HobGoblin_U604zz(threads=true) {
 
     difference() {
         arm_body();
@@ -204,7 +245,7 @@ module arm_E3D_HobGoblin_U604zz() {
         
         E3D_HobGoblin_hole();
         
-        filament_holes(4.2, offset=5);
+        filament_holes(4.2, offset=5, threads=threads);
         
         idler_hole_E3D_HobGoblin_U604zz();
     }
@@ -232,7 +273,7 @@ module idler_hole_E3D_HobGoblin_2x623zz(h, idler_z) {
     translate([0,0,12.5]) cylinder(d=12, h=10, $fn=40);
 }
 
-module arm_E3D_HobGoblin_2x623zz() {
+module arm_E3D_HobGoblin_2x623zz(threads=true) {
     h = 15;
     idler_z = (h - 9)/2;
     
@@ -243,7 +284,7 @@ module arm_E3D_HobGoblin_2x623zz() {
         
         E3D_HobGoblin_hole(h);
         
-        filament_holes(4.2, height=h, offset=5);
+        filament_holes(4.2, height=h, offset=5, threads=threads);
         
         idler_hole_E3D_HobGoblin_2x623zz(h, idler_z);
     }
@@ -261,11 +302,11 @@ module hole_bondtech() {
         rotate([0,0,26]) translate([11.9/2,0,2+3]) rotate([-90,0,0]) cylinder(d=4,h=5);
     }
     hull() {
-        translate([0,0,1.8+14-5]) cylinder(d=12,h=15,$fn=50);
+        translate([0,0,1.8+14-5]) cylinder(d=12.2,h=15,$fn=50);
         translate([-15,-30/2,2+14-5]) cube([1,40,15]);
     }
     hull() {
-        translate([0,0,2+14/2-3/2]) cylinder(d=9.8,h=4,$fn=50);
+        translate([0,0,2+14/2-3/2]) cylinder(d=10,h=4,$fn=50);
         translate([-15,-30/2,2+14/2-3/2]) cube([1,42,4]);
     }
 }
@@ -295,7 +336,7 @@ module idler_hole_Bondtech() {
 
 }
 
-module arm_Bondtech() {
+module arm_Bondtech(threads=true) {
 
     difference() {
         difference() {
@@ -303,16 +344,28 @@ module arm_Bondtech() {
                 arm_body(height=19.2);
                 rotate([0,0,-13]) translate([8.9,0,19]) cylinder(d1=7,d2=5,h=1);
             }
-            translate([-20,6,15]) cube([50,40,10]);
-            translate([-10,-38,15]) cube([50,30,10]);
+            translate([-22,6,15]) chamfered_cube(52,42,10,4.2);
+            translate([-10,-38,15]) chamfered_cube(50,30,10,4.2);
             translate([-9,-15,15]) rotate([0,0,-13]) cube([10.6,30,10]);
+            
+            // extra infill
+            translate([9,5.7,10]) cylinder(d=0.1,h=10);
+            translate([13,5.7,10]) cylinder(d=0.1,h=10);
+            translate([17,5.7,10]) cylinder(d=0.1,h=10);
+            translate([21,6,10]) cylinder(d=0.1,h=10);
+            
+            translate([6,-7.4,10]) cylinder(d=0.1,h=10);
+            translate([10,-7.6,10]) cylinder(d=0.1,h=10);
+            translate([14,-7.8,10]) cylinder(d=0.1,h=10);
+            translate([18,-8,10]) cylinder(d=0.1,h=10);
+
         }
         hinge(height=15);
         spring_notch();
         
         hole_bondtech();
         
-        filament_holes(4.4, height=(2+3)*2,offset=5);
+        filament_holes(4.4, height=(2+3)*2,offset=5, threads=threads);
         
         idler_hole_Bondtech();
 
@@ -320,7 +373,7 @@ module arm_Bondtech() {
 }
 
 module debug() {
-    arm = 3;
+    arm = 1;
     
     %translate([0,0,-5]) motor_mount();
     %translate([-31/2,-31/2,-1]) lock_lever();
@@ -455,6 +508,7 @@ module lock_lever() {
             cylinder(d=9.6,h=12+3.4,$fn=40);
         }
         cylinder(d=3.3,h=17+5,$fn=20);
+        translate([0,-30/2-13.5,7]) rotate([0,90,0]) cylinder(d=30,h=10,center=true,$fn=30);
     }
 }
 
@@ -504,9 +558,9 @@ module spring_cap_8mm_spring() {
         union() {
             difference() {
                 cylinder(d=10.2,h=6, $fn=30);
-                translate([0,0,1.5]) cylinder(d=8.2,h=7, $fn=25);
+                translate([0,0,2]) cylinder(d=8.2,h=7, $fn=25);
             }
-            translate([0,0,1.5]) cylinder(d1=4.5,d2=3.3,h=2, $fn=20);
+            translate([0,0,2]) cylinder(d1=4.5,d2=3.3,h=2, $fn=20);
         }
         cylinder(d=2.5,h=2.5, $fn=25);
     }
@@ -527,18 +581,4 @@ module qnd_fix() {
     }
 }
 
-//translate([50,0,0]) orig_arm();
 
-//debug();
-
-//arm_E3D_HobGoblin_U604zz();
-//arm_E3D_HobGoblin_2x623zz();
-//arm_Bondtech();
-//hinge_support();
-//motor_mount();
-//motor_mount_extra_mount();
-//motor_mount_extra_mount2();
-//lock_lever();
-//MR105zz_support_Hobbgoblin();
-MR105zz_support_Bondtech();
-//spring_cap_8mm_spring();
