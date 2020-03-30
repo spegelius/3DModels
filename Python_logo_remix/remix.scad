@@ -8,8 +8,8 @@ view_text = "python";
 
 // text is sliced in 0.2mm slices,
 // for blending colors
-sliced_text = true;
-scaling = 1;
+sliced_text = false;
+scaling = 0.6;
 width = 116;
 depth = 91;
 height = 163;
@@ -18,15 +18,15 @@ rounding = 33;
 
 ////// VIEW //////
 //_back_curve();
-stand_1();
+//stand_1();
 //stand_1(with_brim=true, with_wall=true);
-//stand_text();
+stand_text();
 
 
 
 ////// MODULES //////
 module logo() {
-    scale([scaling, scaling, scaling]) {
+    union() {
         import("../_downloaded/Python_Logo_Assembly/T-PythonBOTTOM-yellow.stl",
           convexity=10);
         import("../_downloaded/Python_Logo_Assembly/T-PythonTOP-blue.stl",
@@ -36,7 +36,7 @@ module logo() {
 
 module enlarged_logo() {
     translate([0,0,-6])
-    linear_extrude(20)
+    linear_extrude(20.5)
     offset(0.2)
     projection()
     logo();
@@ -85,27 +85,40 @@ module stand_brim() {
     // brim, mainly to be used with the wall as it sticks to it
     difference() {
         translate([-5,-5,0])
-        rounded_cube_side(width+10,depth+10,0.2,rounding-5);
+        rounded_cube_side(width+10,depth+10,0.2/scaling,rounding-5);
         _stand_form();
     }
 }
 
 module stand_wall() {
     // experimental wall, meant to keep heat inside when printing with ABS
-    translate([-5.5,-5.5,0])
+    wall = 0.5/scaling;
+    translate([-5-wall,-5-wall,0])
     difference() {
         hull() {
-            rounded_cube_side(width+11,depth+11,0.2,rounding-5);
+            rounded_cube_side(width+10+2*wall,
+                              depth+10+2*wall,
+                              0.2/scaling,
+                              rounding-5);
 
             translate([0,84,height])
-            rounded_cube_side(width+11,17,0.2,4);
+            rounded_cube_side(width+10+2*wall,
+                              17,
+                              0.2/scaling,
+                              4);
         }
-        translate([0.5,0.6,0])
+        translate([wall,wall,0])
         hull() {
-            rounded_cube_side(width+10,depth+10,0.2,rounding-5);
+            rounded_cube_side(width+10,
+                              depth+10,
+                              0.2/scaling,
+                              rounding-5-wall);
 
-            translate([0,84,height])
-            rounded_cube_side(width+10,15.7,0.2,4);
+            translate([0,84+(wall*1.2-wall),height])
+            rounded_cube_side(width+10,
+                              17-2*wall*1.2,
+                              0.2/scaling,
+                              4-wall);
         }
 
     }
@@ -114,22 +127,24 @@ module stand_wall() {
 module stand_1(with_brim=false,
                with_wall=false) {
 
-    difference() {
-        _stand_form();
+    scale([scaling, scaling, scaling]) {
+        difference() {
+            _stand_form();
 
-        translate([-15,76.7,158.3])
-        rotate([70,0,0])
-        scale([1,1,1.05])
-        enlarged_logo();
+            translate([-15,76.7,158.3])
+            rotate([70,0,0])
+            scale([1,1,1.05])
+            enlarged_logo();
 
-        #stand_text();
-    }
+            #_stand_text();
+        }
 
-    if (with_brim) {
-        stand_brim();
-    }
-    if (with_wall) {
-        stand_wall();
+        if (with_brim) {
+            stand_brim();
+        }
+        if (with_wall) {
+            stand_wall();
+        }
     }
 }
 
@@ -149,14 +164,15 @@ module _back_curve() {
     }
 }
 
-module stand_text() {
+module _stand_text() {
     translate([23,17.9,11])
     intersection() {
         if (sliced_text) {
             slice(view_text,
                   size=17,
                   height=20,
-                  true,
+                  even=true,
+                  slice_h=0.2/scaling,
                   $fn=50);
         } else {
             thetext(view_text,
@@ -170,4 +186,9 @@ module stand_text() {
         rotate([-20,0,0])
         cube([70,3,40]);
     }
+}
+
+module stand_text() {
+    scale([scaling,scaling,scaling])
+    _stand_text();
 }
