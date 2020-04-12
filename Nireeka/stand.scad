@@ -1,6 +1,4 @@
 
-use <../Dollo/NEW_long_ties/include.scad>;
-
 // length of the foot part
 length = 125;
 
