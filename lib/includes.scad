@@ -5,7 +5,9 @@ m4_nut_side = 6.85;
 m4_nut_height = 3.1;
 m4_bolt_dia = 4.2;
 
-use <../_downloaded/ISOThreads/uploads_6f_12_f1_10_d2_ISOThread.scad>;
+//use <../_downloaded/ISOThreads/uploads_6f_12_f1_10_d2_ISOThread.scad>;
+//http://dkprojects.net/openscad-threads/
+use <../_downloaded/ISOThreads/threads.scad>;
 
 module threads(d=8, h=10, z_step=1.8, depth=0.5, direction=0) {
     
@@ -68,8 +70,14 @@ module rounded_cube_side(x,y,z,corner,center=false) {
 }
 
 module donut(d, h, angle=360, rotation=45) {
-    rotate([0,0,rotation]) rotate_extrude(angle=angle, convexity=10) translate([d/2,0,0]) circle(d=h);
+    rotate([0,0,rotation])
+    rotate_extrude(angle=angle, convexity=10)
+    intersection() {
+        translate([d/2,0,0]) circle(d=h);
+        translate([0,-h/2,0]) square([max([d,h])+1,h]);
+    }
 }
+//donut(5,10,$fn=50);
 
 module cube_donut(d, h, angle=360, rotation=45) {
     rotate_extrude(angle=angle, convexity=10, $fn=100) translate([d/2,0,0]) rotate([0,0,rotation]) square([h,h], center=true);
@@ -172,26 +180,6 @@ module chamfered_cube_side(x,y,z, chamfer, center=false) {
     }
 }
 
-module fitting_thread_M6(fitting_h=6) {
-    translate([0,0,-1]) intersection() {
-        union() {
-            thread_out(6,fitting_h+2,thr=30);
-            cylinder(d=5.13, h=fitting_h+2,$fn=30);
-        }
-        translate([0,0,1]) cylinder(d=6.2,h=fitting_h,$fn=50);
-    }
-}
-
-module fitting_thread_M10(fitting_h=6) {
-    translate([0,0,-1]) intersection() {
-        union() {
-            thread_out_pitch(10,fitting_h+2,0.9,thr=40);
-            cylinder(d=9.25, h=fitting_h+2,$fn=40);
-        }
-        translate([0,0,1]) cylinder(d=10.2,h=fitting_h,$fn=50);
-    }
-}
-
 module U604zz() {
     difference() {
         cylinder(d=13,h=4, $fn=30);
@@ -284,6 +272,20 @@ module g9_lamp_socket(h=30) {
         translate([-14/2+3/2,6,bolt_z]) rotate([-90,0,0]) cylinder(d=6.4,h=10,$fn=20);
 
     }
+}
+
+module tube(d=10,h=10,wall=1,center=false) {
+    difference() {
+        cylinder(d=d,h=h,center=center);
+        translate([0,0,-1/2]) cylinder(d=d-2*wall,h=h+2,center=center);
+    }
+}
+
+module holee(slop, h) {
+    linear_extrude(h)
+        offset(delta=slop)
+        projection(cut=true)
+        children();
 }
 
 //dovetail(7, 5, 4, 10);
