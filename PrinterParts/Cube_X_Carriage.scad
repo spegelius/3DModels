@@ -90,8 +90,8 @@ module mount(hotend="e3dv6") {
         translate([50/2-5, 10+5, 40/2-2.5]) cylinder(d=bolt_head_hole_dia,h=60, $fn=30);
         
         // nuts
-        translate([-50/2+5, 10+5, -40/2]) nut();
-        translate([50/2-5, 10+5, -40/2]) nut();
+        translate([-50/2+5, 10+5, -40/2]) M3_nut();
+        translate([50/2-5, 10+5, -40/2]) M3_nut();
 
         // sides
         translate([-50/2-7,0,0]) rotate([0,0,19]) cube([20,49.2,50],center=true);
@@ -120,8 +120,8 @@ module mount(hotend="e3dv6") {
         translate([50/2-15, -50, 20-5.4/2]) rotate([-90,0,0]) cylinder(d=bolt_hole_dia,h=30, $fn=30);
         
         // hot end clamp nut holes
-        translate([-50/2+15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) nut(h=2.6, cone=false);
-        translate([50/2-15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) nut(h=2.6, cone=false);
+        translate([-50/2+15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) M3_nut(h=2.6, cone=false);
+        translate([50/2-15, -25, 20-5.4/2-0.1]) rotate([-90,0,0]) M3_nut(h=2.6, cone=false);
         translate([-50/2+15, -25+2.6/2, 20-0.3]) cube([6.2,2.6,5], center=true);
         translate([50/2-15, -25+2.6/2, 20-0.3]) cube([6.2,2.6,5], center=true);
 
@@ -686,7 +686,7 @@ module view_proper() {
 //view_proper();
 
 //translate([-30,0,30/2]) rotate([180,0,0]) body();
-//rotate([180,0,0]) mount(hotend);
+rotate([180,0,0]) mount(hotend);
 //mount_clamp(hotend);
 //prox_sensor_clamp();
 //fan_tunnel();
@@ -698,4 +698,4 @@ module view_proper() {
 //prusa_nozzle_fan2_adapter();
 //rotate([90,0,0]) mount_clamp_prusafan(hotend=hotend);
 //mount_clamp_prusafan_clip();
-prusa_nozzle_fan2_holder();
+//prusa_nozzle_fan2_holder();
