@@ -1,5 +1,5 @@
-use <../Dollo/NEW_long_ties/include.scad>;
 use <../lib/includes.scad>;
+use <../Dollo/NEW_long_ties/include.scad>;
 
 module stand() {
     
@@ -37,6 +37,33 @@ module center() {
     }
 }
 
+module screw_cap() {
+    h = 8;
+    d = 7;
+    difference() {
+        intersection() {
+            union() {
+                cylinder(d=d,h=h,$fn=30);
+                for(i=[0:9]) {
+                    rotate([0,0,360/10*i])
+                    translate([d/2,0,0]) cylinder(d=3,h=h,$fn=20);
+                }
+            }
+            chamfered_cylinder(d+3,h,0.8,$fn=30);
+        }
+        M3_nut(3.4,cone=false, bridging=true);
+        cylinder(d=3.3,h=h+1,$fn=20);
+        translate([0,0,4.6]) cylinder(d=6.5,h=h,$fn=30);
+    }
+}
+
+module screw_washer() {
+    difference() {
+        cylinder(d=6.2,h=3,$fn=40);
+        cylinder(d=2.9,h=3,$fn=40);
+    }
+}
+
 //import("../_downloaded/Christmas_tree/tree_trunk_texture.stl");
 //import("../_downloaded/Christmas_tree/short_base_set.stl");
 //import("../_downloaded/Christmas_tree/short_base_center.stl");
@@ -44,5 +71,7 @@ module center() {
 
 //mock_g9_lamp();
 //g9_lamp_socket();
-stand();
+//stand();
 //center();
+screw_cap();
+//screw_washer();
