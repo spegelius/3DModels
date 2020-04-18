@@ -1,4 +1,6 @@
-
+include <../../Dollo/New_long_ties/globals.scad>;
+use <../../Dollo/New_long_ties/include.scad>;
+use <../../Dollo/New_long_ties/mockups.scad>;
 
 module original() {
     translate([-17,38,114.57])
@@ -155,6 +157,23 @@ module debug() {
     
 }
 
+difference() {
+    union() {
+        middle_support();
+        translate([65,0,0]) intersection() {
+            tube(33,6,2,$fn=40);
+            translate([-30/2,0,0]) cube([30,20,20],center=true);
+        }
+        translate([-65,0,0]) intersection() {
+            tube(33,6,2,$fn=40);
+            translate([30/2,0,0]) cube([30,20,20],center=true);
+        }
+
+    }
+    translate([-65,0,0]) cylinder(d=30.1,h=20,center=true,$fn=50);
+    translate([65,0,0]) cylinder(d=30.1,h=20,center=true,$fn=50);
+}
+
 //debug();
 //height_block();
-rotate([0,0,45]) new_z_support(final_render=true);
+//rotate([0,0,45]) new_z_support(final_render=true);

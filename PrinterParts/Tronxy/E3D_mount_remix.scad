@@ -48,7 +48,7 @@ module rounded_gt2_belt(length, dia, height=6, teeth_inside=true) {
 module tronxy_belt_clip_left_top() {
     difference() {
         cube([20,8,19]);
-        translate([0,5/2+0.5,13]) rotate([0,0,18]) mirror([0,1,0]) rounded_gt2_belt(14, 50, 7, teeth_inside=false);
+        translate([0,5/2+0.5,11]) rotate([0,0,18]) mirror([0,1,0]) rounded_gt2_belt(14, 50, 9, teeth_inside=false);
         translate([13.5,0,0]) cube([3.5,3,20]);
         translate([13.5,1,0]) cube([4.5,2,20]);
         translate([15,0,14.5]) cube([6,3,10]);
@@ -57,7 +57,7 @@ module tronxy_belt_clip_left_top() {
         
         rotate([0,45,0]) cube([10,20,10],center=true);
         
-        translate([-0.5,26,0]) cylinder(d=40,h=30,$fn=70);
+        translate([-0.5,26,0]) cylinder(d=39,h=30,$fn=70);
         translate([23.5,20,0]) cylinder(d=30,h=30,$fn=70);
     }
 }
@@ -72,7 +72,7 @@ module tronxy_belt_clip_right_top() {
         translate([18,-33.7,0]) cylinder(d=50,h=25,$fn=50);
         translate([20,11.5,0]) cylinder(d=30,h=25,$fn=50);
         translate([-12+5.1,-12,15.5]) cube([12,18,10]);
-        translate([1,-11/2-4.05,20-7]) rotate([0,0,16]) mirror([0,0,0]) rounded_gt2_belt(18, 60, 7);
+        #translate([1,-11/2-4.05,20-8]) rotate([0,0,16]) mirror([0,0,0]) rounded_gt2_belt(18, 60, 9);
         
         //%translate([18,0,0]) cylinder(d=11,h=5,$fn=30);
     }
@@ -102,7 +102,7 @@ module tronxy_belt_clip_left_bottom() {
 module tronxy_belt_clip_right_bottom() {
     difference() {
         cube([20,8,16]);
-        translate([6,5/2+5.1,3]) rotate([0,0,-18]) mirror([0,1,0]) rounded_gt2_belt(14, 50, 7, teeth_inside=false);
+        translate([6,5/2+5.1,2]) rotate([0,0,-18]) mirror([0,1,0]) rounded_gt2_belt(14, 50, 8, teeth_inside=false);
         translate([3,0,0]) cube([3.5,3,20]);
         cube([3.5,3,2]);
         translate([2,1,0]) cube([4.5,2,20]);
@@ -130,8 +130,8 @@ module tronxy_E3D_mount() {
     %translate([62.5,6,0]) rotate([-90,0,0]) tronxy_belt_clip_right_bottom();
 }
 
-tronxy_belt_clip_left_top();
+//tronxy_belt_clip_left_top();
 //tronxy_belt_clip_right_top();
 //tronxy_belt_clip_left_bottom();
 //tronxy_belt_clip_right_bottom();
-//tronxy_E3D_mount();
+tronxy_E3D_mount();
