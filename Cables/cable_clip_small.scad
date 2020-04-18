@@ -44,7 +44,25 @@ module cable_screw_collar() {
     }
 }
 
+module another_clip(d) {
+    union() {
+        intersection() {
+            difference() {
+                cylinder(d=d,h=10,$fn=2*d);
+                cylinder(d=d-3,h=10,$fn=2*(d-3));
+            }
+            translate([-d,0,0]) cube([2*d, d,10]);
+        }
+        translate([d/2-1,0,0]) difference() {
+            cube([20,1.5,10]);
+            translate([15,0,10/2]) rotate([-90,0,0]) cylinder(d=4,h=7, center=true);
+        }
+    }
+}
+
 //cable_clip_small(10, 8);
 //cable_clip_small(12, 10);
 
-cable_screw_collar();
+//cable_screw_collar();
+
+another_clip(10);
