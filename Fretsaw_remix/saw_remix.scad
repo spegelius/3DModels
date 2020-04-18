@@ -116,8 +116,8 @@ module saw_tensioner_150mm() {
         translate([-1,-5.3,0]) cylinder(d=3.2,h=15,$fn=50);
         translate([-1,5.3,0]) cylinder(d=3.2,h=15,$fn=50);
 
-        translate([-1,-5.3,0]) nut();
-        translate([-1,5.3,0]) nut();
+        translate([-1,-5.3,0]) M3_nut();
+        translate([-1,5.3,0]) M3_nut();
 
         
         translate([0.75,0,-4.4]) hull() {
