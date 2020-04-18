@@ -25,13 +25,14 @@ module mock_unit() {
 
 module _holder() {
     difference() {
-        rounded_cube_side(45,18,10,6,center=true);
+        translate([0,0,0.5]) rounded_cube(45,18,11,5,center=true);
+        //rounded_cube_side(45,18,10,6,center=true);
         rotate([-90,0,0]) mock_unit();
         
         rounded_cube_side(30,11,15,2,center=true);
         
-        translate([18.4,0,3]) rounded_cube_side(3.5,15.4,5,1,center=true);
-        translate([-18.4,0,3]) rounded_cube_side(3.5,15.4,5,1,center=true);
+        translate([18.4,0,4]) rounded_cube_side(3.5,15.4,7,1,center=true);
+        translate([-18.4,0,4]) rounded_cube_side(3.5,15.4,7,1,center=true);
         
         translate([0,0,4]) cube([34,14.5,5],center=true);
         translate([0,0,2]) cube([8.2,26,8],center=true);
