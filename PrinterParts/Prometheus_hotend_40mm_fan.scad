@@ -106,4 +106,14 @@ module fan_shroud() {
     }
 }
 
+module debug() {
+    intersection() {
+        fan_shroud();
+        translate([-50,-10,0]) cube([100,100,15]);
+        //translate([-50,-10,0]) cube([100,20,100]);
+    }
+}
+
+//debug();
+
 rotate([90,0,0]) fan_shroud();
