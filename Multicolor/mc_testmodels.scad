@@ -27,9 +27,9 @@ module testmodel1_part4() {
 module testmodel1_part1() {
     difference() {
         cube([20,20,26]);
-        part2();
-        part3();
-        part4();
+        testmodel1_part2();
+        testmodel1_part3();
+        testmodel1_part4();
     }
 }
 
@@ -40,7 +40,7 @@ module debug_testmodel1() {
     translate([63,0,0]) testmodel1_part4(); 
 }
 
-debug_testmodel1();
+//debug_testmodel1();
 
 //testmodel1_part1();
 //testmodel1_part2();
@@ -198,3 +198,20 @@ module testmodel6_part3() {
 //testmodel6_part1();
 //testmodel6_part2();
 //testmodel6_part3();
+
+module testmodel7_part1() {
+    difference(){
+        union() {
+            cylinder(d=15,h=40,$fn=60);
+            translate([0,0,40/2]) sphere(d=23,$fn=60);
+        }
+        testmodel7_part2();
+    }
+}
+
+module testmodel7_part2() {
+    translate([0,0,40/2]) rotate([90,0,0]) cylinder(d=15,h=40,center=true,$fn=60);
+}
+
+//testmodel7_part1();
+testmodel7_part2();
