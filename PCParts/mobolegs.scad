@@ -130,7 +130,7 @@ module view_proper() {
 
 //leg();
 //card_plate();
-//view_proper();
+view_proper();
 //ssd_attachment();
 //ssd_attachment(slot=2);
-fixit();
+//fixit();

@@ -1,3 +1,5 @@
+use <../lib/includes.scad>;
+
 atx_psu_width = 150;
 atx_psu_height = 86;
 
@@ -8,6 +10,7 @@ fan_connector_length = 7.9;
 
 fan_92mm = 92;
 fan_92mm_bolt_offset = 82.5/2;
+
 
 module mock_mobo() {
     $fn=50;
@@ -142,17 +145,77 @@ module mock_fan_connector_male(slop=0.2) {
     }
 }
 
-module pin_header(pins) {
-    color("silver") for (i=[0:pins-1]) {
-        translate([i*2.54,0,0]) cube([0.6,0.6, 11.5]);
-    }
-    w = pins * 2.54;
-    color("black") translate([-2.54/2+0.3,-2.54/2+0.3,3]) cube([w, 2.45, 2.45]);
+module connector_pin(center=false) {
+    cube([0.6,0.6, 11.5],center=center);
 }
 
-module pin_connector(pins) {
-    cube([pins*2.54,2.45,14]);
+module pin_header(pins_x, pins_y=1) {
+    color("silver") {
+        for (j=[0:pins_y-1]) {
+            for (i=[0:pins_x-1]) {
+                translate([i*2.54,j*2.54,0]) connector_pin();
+            }
+        }
+    }
+
+    translate([0,0,3]) pin_connector(pins_x, pins_y,h=2.45);
 }
+
+module pin_connector(pins_x, pins_y=1,h=14,center=false) {
+    module _block() {
+        translate([0,0,h/2]) cube([2.54,2.54,h],center=true);
+    }
+
+    module _form() {
+        color("black") translate([0.3,0.3,0]) hull() {
+            _block();
+            translate([pins_x*2.54-2.54,0])
+                _block();
+            translate([0,pins_y*2.54-2.54])
+                _block();
+            translate([pins_x*2.54-2.54,pins_y*2.54-2.54])
+                _block();
+        }
+    }
+    
+    if (center) {
+        translate([-(pins_x*2.54)/2+2.54/2-0.3,-(pins_y*2.54)/2+2.54/2-0.3]) _form();
+    } else {
+        _form();
+    }
+}
+
+module pin_connector_hole(pins_x, pins_y, h=14, center=false) {
+    holee(0.2,h) pin_connector(pins_x, pins_y, h=h, center=center);
+}
+
+module pcb_with_holes(w,l,h=1.6) {
+    pins_x = ceil(w/2.54);
+    pins_y = ceil(l/2.54);
+    
+    color("lightyellow") difference() {
+        cube([w,l,h]);
+        for (x=[0:pins_x-1]) {
+            for (y=[0:pins_y-1]) {
+                translate([x*2.54,y*2.54,0]) connector_pin(center=true);
+            }
+        }
+    }
+}
+
+module mock_fan_80mm() {
+    difference() {
+        cube([80,80,25],center=true);
+        cylinder(d=79,h=55,center=true,$fn=90);
+        for (i = [0:3]) {
+            rotate([0,0,i*360/4])
+            translate([72/2, 72/2,0]) {
+                cylinder(d=4,h=55,center=true,$fn=30);
+            }
+        }
+    }
+}
+
 
 //mock_mobo();
 //mock_card();
@@ -160,3 +223,4 @@ module pin_connector(pins) {
 //mock_ssd();
 //mock_atx_psu();
 //mock_fan_connector_male();
+//mock_fan_80mm();
