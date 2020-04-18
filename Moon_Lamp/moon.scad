@@ -1,11 +1,18 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../lib/includes.scad>;
 
-module to_the_moon() {
+module to_the_moon(debug=false) {
     difference() {
         union() {
             intersection() {
-                translate([0,0,250/2-25]) import("../_downloaded/Moon_lamp/moon_lamp_10_inches_refinement_level_360.stl", convexity=3);
+                if (debug) {
+                    translate([0,0,250/2-25]) difference() {
+                        sphere(d=245,$fn=100);
+                        sphere(d=240,$fn=100);
+                    }
+                } else {
+                    translate([0,0,250/2-25]) import("../_downloaded/Moon_lamp/moon_lamp_10_inches_refinement_level_360.stl", convexity=3);
+                }
                 translate([0,0,254/2]) cube([254,254,254],center=true);
             }
             cylinder(d=138,h=10,$fn=80);
@@ -16,24 +23,42 @@ module to_the_moon() {
     }
 }
 
-//to_the_moon();
+module moon_support() {
+    union() {
+        difference() {
+            cylinder(d1=80,d2=159, h=190);
+            cylinder(d1=78.8,d2=157.8, h=190);
+        }
+        difference() {
+            cylinder(d=90,h=0.2);
+            cylinder(d=79,h=0.2);
+        }
+        translate([0,0,190]) difference() {
+            cylinder(d=159,h=3);
+            cylinder(d1=157.8,d2=157.8-4,h=2.4);
+        }
+    }
+}
+
+screw_d = 119;
 
 module bottom_thread() {
     difference() {
-        cylinder(d=117,h=10,$fn=100);
-        translate([0,0,-1]) v_screw(h=13, screw_d=107, pitch=3, direction=0, steps=100);
+        cylinder(d1=screw_d+10,d2=screw_d+30,h=10,$fn=100);
+        translate([0,0,-1]) v_screw(h=13, screw_d=screw_d, pitch=3, direction=0, steps=200);
     }
 }
 
 module moon_stand(){
+    outer_d = screw_d+30;
     difference() {
         union() {
-            cylinder(d1=135,d2=120,h=15,$fn=100);
-            translate([0,0,14.99]) v_screw(h=10.02, screw_d=106.4, pitch=3, direction=0, steps=100);
+            cylinder(d1=outer_d,d2=outer_d-20,h=15,$fn=100);
+            translate([0,0,14.99]) v_screw(h=10.02, screw_d=screw_d-0.6, pitch=3, direction=0, steps=200);
         }
         //cylinder(d=15,h=25,$fn=30);
         translate([0,0,-0.1]) difference() {
-            cylinder(d1=131,d2=116,h=13.6,$fn=100);
+            cylinder(d1=outer_d-4,d2=outer_d-24,h=13.6,$fn=100);
             cylinder(d=80,h=28,center=true,$fn=100);
         }
         
@@ -54,9 +79,28 @@ module moon_stand(){
     translate([0,0,13.6]) g9_lamp_socket(h=41);
 }
 
+module debug() {
+    intersection() {
+        translate([0,0,10]) {
+            to_the_moon(true);
+            //to_the_moon(false);
+        }
+        translate([0,250/2,250/2]) cube([250,250,250],center=true);
+    }
+    moon_support();
+}
+
+//debug();
+
+//moon_support();
+
+//bottom_thread();
+
 //scaling = 1/0.8;
 //scale(scaling) bottom_thread();
 
+
+//to_the_moon();
 moon_stand();
 
 //difference() {
