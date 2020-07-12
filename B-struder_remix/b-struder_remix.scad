@@ -1,12 +1,14 @@
 include <../lib/includes.scad>;
+include <../lib/fittings.scad>;
 
 ////// VARIABLES //////
 $fn=60;
 
 ////// VIEW //////
-//translate([50,0,0]) orig_arm();
+//translate([50,0,0])
+//orig_arm();
 
-//debug();
+debug();
 
 //arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_U604zz(threads=false);
@@ -17,6 +19,7 @@ $fn=60;
 //motor_mount();
 //motor_mount_extra_mount();
 //motor_mount_extra_mount2();
+//motor_mount_extra_mount3();
 //lock_lever();
 //MR105zz_support_Hobbgoblin();
 //MR105zz_support_Bondtech();
@@ -523,7 +526,9 @@ module debug() {
     arm = 1;
     
     %translate([0,0,-5])
-    motor_mount();
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
 
     %translate([-31/2,-31/2,-1])
     lock_lever();
@@ -732,7 +737,7 @@ module motor_mount_extra_mount() {
 module motor_mount_extra_mount2() {
     difference() {
         union() {
-            new_motor_mount();
+            motor_mount();
 
             translate([18.5,-21.15,0])
             chamfered_cube_side(35.5,42.3,4,4);
@@ -747,6 +752,35 @@ module motor_mount_extra_mount2() {
         cylinder(d=4.2,h=5,$fn=30);
 
         translate([49.5, -14,0])
+        cylinder(d=4.2,h=5,$fn=30);
+
+        _motor_mount_infill();
+    }
+}
+
+module motor_mount_extra_mount3() {
+    difference() {
+        union() {
+            motor_mount();
+
+            difference() {
+                translate([-21.15,-13-28.3,0])
+                chamfered_cube_side(42.2,28.3,4,4);
+
+                translate([-31/2,-31/2,-0.1])
+                cylinder(d=5,h=5,$fn=8);
+
+                translate([31/2,-31/2,-0.1])
+                cylinder(d=7,h=5,$fn=8);
+            }
+        }
+        translate([-15, -37,-0.1])
+        cylinder(d=4.2,h=5,$fn=30);
+
+        translate([-15+9, -37,-0.1])
+        cylinder(d=4.2,h=5,$fn=30);
+
+        translate([-15+29, -37,-0.1])
         cylinder(d=4.2,h=5,$fn=30);
 
         _motor_mount_infill();
