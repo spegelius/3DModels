@@ -1,8 +1,3 @@
-
-module ProFeeder() {
-    import("../_downloaded/ProFeeder/Dual_Feeder_[3D_Print.stl", convexity=10);
-}
-
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../_downloaded/ISOThreads/uploads_6f_12_f1_10_d2_ISOThread.scad>;
 use <../lib/fittings.scad>;
@@ -29,7 +24,7 @@ function tube_angle(d, h) = asin(h/(d/2));
 //tube(straight=10);
 //junction1();
 //junction1(d=200,h=32,fittings=true);
-tubex4();
+//tubex4();
 //tubex6();
 //tubex8();
 //tubes4x_push_fitting();
@@ -48,18 +43,23 @@ tubex4();
 
 // Printable models
 //hole_test();
-//feeder4x_push_fitting();
-//feeder4x_push_fitting_M10();
-//feeder4x_collet();
+//feeder4x_M6();
+//feeder4x_M10_M6();
+//feeder4x_collet_M6();
 
-//feeder6x_push_fitting();
-//feeder6x_push_fitting_M10();
-//feeder6x_push_collet();
+feeder6x_M6();
+//feeder6x_M10_M6();
+//feeder6x_collet_M6();
 
 //feeder8x_push_fitting();
 
 
 ////// MODULES //////
+
+module ProFeeder() {
+    import("../_downloaded/ProFeeder/Dual_Feeder_[3D_Print.stl",
+           convexity=10);
+}
 
 module PTFE_tube() {
     tube(d=150, td=4.4, h=30, straight=10, fitting=false, nut=false);
@@ -383,21 +383,21 @@ module _push_fitting_M6() {
     translate([0,0,fitting_h + .2]) cylinder(d=tube_d, h=h1-5.2, $fn=40);
 }
 
-module tubes4x_push_fitting() {
+module tubes4x_M6() {
     union() {
         _push_fitting_M6();
         tubex4();
     }
 }
 
-module tubes6x_push_fitting() {
+module tubes6x_M6() {
     union() {
         _push_fitting_M6();
         tubex6();
     }
 }
 
-module tubes8x_push_fitting() {
+module tubes8x_M6() {
     union() {
         if (render_threads) {
             fitting_thread_M6(fitting_h);
@@ -419,21 +419,21 @@ module _push_fitting_M10() {
     translate([0,0,fitting_h + 3 + .4]) cylinder(d=tube_d, h=h1-(3.2 + 5.2), $fn=40);
 }
 
-module tubes4x_push_fitting_M10() {
+module tubes4x_M10_M6() {
     union() {
         _push_fitting_M10();
         tubex4();
     }
 }
 
-module tubes6x_push_fitting_M10() {
+module tubes6x_M10_M6() {
     union() {
         _push_fitting_M10();
         tubex6();
     }
 }
 
-module tubes8x_push_fitting_M10() {
+module tubes8x_M10_M6() {
     union() {
         _push_fitting_M10();
         tubex8();
@@ -503,47 +503,47 @@ module _feeder8x_body() {
     }
 }
 
-module feeder4x_push_fitting() {
+module feeder4x_M6() {
 
     difference() {
         _feeder4x_body();
-        tubes4x_push_fitting();
+        tubes4x_M6();
     }
 }
 
-module feeder6x_push_fitting() {
+module feeder6x_M6() {
 
     difference() {
         _feeder6x_body();
-        tubes6x_push_fitting();
+        tubes6x_M6();
     }
 }
 
-module feeder8x_push_fitting() {
+module feeder8x_M6() {
 
     difference() {
         _feeder8x_body();
-        tubes8x_push_fitting();
+        tubes8x_M6();
     }
 }
 
-module feeder4x_push_fitting_M10() {
+module feeder4x_M10_M6() {
 
     difference() {
         _feeder4x_body();
-        tubes4x_push_fitting_M10();
+        tubes4x_M10_M6();
     }
 }
 
-module feeder6x_push_fitting_M10() {
+module feeder6x_M10_M6() {
 
     difference() {
         _feeder6x_body();
-        tubes6x_push_fitting_M10();
+        tubes6x_M10_M6();
     }
 }
 
-module feeder4x_collet() {
+module feeder4x_collet_M6() {
     
     module ear() {
         rotate([90,0,0]) intersection() {
