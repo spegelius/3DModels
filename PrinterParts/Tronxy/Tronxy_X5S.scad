@@ -171,40 +171,7 @@ module tronxy_bed_spacer() {
     }
 }
 
-module tronxy_motor_mount() {
-    h = 20;
-    
-    d = 199.7;
-    
-    difference() {
-        union() {
-            difference() {
-                intersection() {
-                    translate([d/2-25,d/3+25,0]) difference() {
-                        cylinder(d=d,h=h,$fn=100);
-                        cylinder(d=d-50,h=h*2.1,$fn=100,center=true);
-                    }
-                    translate([-28,0,0]) cube([d/2+10,210,h]);
-                }
-                translate([87,205,0]) rotate([0,0,-40]) cube([40,40,h*2.1],center=true);
-            }
-            chamfered_cube_side(28,35,h,3);
-            translate([87,200,7.6/2]) rotate([0,0,-40]) hull() {
-                rounded_cube_side(42,50,7.6,8, center=true);
-                translate([-2,-45,0]) cube([5,1,7.6],center=true);
-            }
-             
-        }
-        translate([8,7,-0.1]) cube([25,20.2,h+1]);
-        translate([28,-0.1,-0.1]) cube([70,50,h+1]);
-        translate([0,7+20.2/2,h/2]) rotate([0,90,0]) cylinder(d=4.4,h=10,$fn=40);
-                
-        translate([57,204,7.6]) rotate([45,0,-40]) cube([50,40,40]);
-        translate([69,125.9,-0.1]) rotate([0,0,8.6]) cube([40,40,40]);
-        
-        translate([87,200,-0.1]) rotate([0,0,-40]) translate([0,4.5,0]) motor_plate_holes(8, center_chamfer=false);
-    }
-}
+
 
 module qnd_motor_mount_fix() {
     //translate([90,203.5,0]) rotate([0,0,-13]) translate([-90,-203.5,0]) tronxy_motor_mount();
@@ -465,18 +432,17 @@ module gt2_idler_625zz_retainer() {
 //rounded_gt2_belt(10, 30);
 //tronxy_z_rod_top_washer();
 //tronxy_board_frame_adapters();
-//hotend_pcb();
+hotend_pcb();
 //tronxy_cable_pcb_mount();
 //tronxy_cable_pcb_mount_fasterner();
 //tronxy_bed_spacer();
-//tronxy_motor_mount();
 //qnd_motor_mount_fix();
 //motor_mount_adapter_dollo();
 //tronxy_PTFE_holder();
 //tronxy_motor_mount_spacer();
 //rotate([90,0,0]) tronxy_z_endstop_mount();
 //tronxy_z_position_nut();
-tronxy_wire_chain_support();
+//tronxy_wire_chain_support();
 //tronxy_corner_bearing_mount_right();
 //tronxy_corner_bearing_mount_left();
 //gt2_idler_625zz();

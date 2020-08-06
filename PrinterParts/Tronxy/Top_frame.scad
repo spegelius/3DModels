@@ -65,45 +65,92 @@ module frame_mount() {
 }
 
 module middle_extention(support=true) {
-    rotate([90,0,0]) extention_base(230, support);
+    rotate([90,0,0])
+    extention_base(230, support);
 }
 
 module extention_t_part_back() {
-    extention_t(offset=0);
+    extention_t(_offset=0, supports=false);
 }
 
 module extention_t_part_front() {
-    extention_t(offset=30);
+    extention_t(_offset=-30, supports=false);
 }
 
 module top_frame_assembly() {
-    translate([-530/2+75,500/2-10,0]) frame_mount();
-    translate([-530/2+75-15,500/2+30,120]) extention(2,support=false);
-    translate([-530/2+75+30/2,500/2+17,267]) rotate([0,135,-90]) corner_90(corner_len=70,extra_stiff=true, support=false);
-    
-    translate([530/2-75,500/2-10,0]) frame_mount();
-    translate([530/2-75-15,500/2+30,120]) extention(2,support=false);
-    translate([530/2-75+30/2,500/2+17,267]) rotate([0,135,-90]) corner_90(corner_len=70,extra_stiff=true, support=false);
-    
-    translate([-530/2+75,-500/2+10,0]) rotate([0,0,180]) frame_mount();
-    translate([-530/2+75-15,-500/2,120]) extention(2,support=false);
-    translate([-530/2+75-30/2,-500/2-17,267]) rotate([0,135,90]) corner_90(corner_len=70,extra_stiff=true, support=false);
-    
-    translate([530/2-75,-500/2+10,0]) rotate([0,0,180]) frame_mount();
-    translate([530/2-75-15,-500/2,120]) extention(2,support=false);
-    translate([530/2-75-30/2,-500/2-17,267]) rotate([0,135,90]) corner_90(corner_len=70,extra_stiff=true, support=false);
-    
-    translate([-530/2+75-15,500/2-130,265]) rotate([0,-90,180]) extention_t_part();
-    translate([-530/2+75-15,500/2-190,280]) rotate([90,0,0]) extention(support=false);
-    translate([-530/2+75-15,500/2-370,265]) rotate([0,90,0]) extention_t_part();
+    translate([-530/2+75,500/2-10,0])
+    frame_mount();
 
-    translate([530/2-75+15,500/2-130,265]) rotate([0,90,180]) extention_t_part();
-    translate([530/2-75-15,500/2-190,280]) rotate([90,0,0]) extention(support=false);
-    translate([530/2-75+15,500/2-370,265]) rotate([0,-90,0]) extention_t_part();
+    translate([-530/2+75-15,500/2+30,120])
+    extention(2,support=false);
+
+    translate([-530/2+75+30/2,500/2+17,267])
+    rotate([0,135,-90])
+    corner_90(corner_len=70,extra_stiff=true, support=false);
     
-    translate([-115,155,280]) rotate([0,90,0]) middle_extention(support=false);
-    translate([-115,-125,280]) rotate([0,90,0]) middle_extention(support=false);
+    translate([530/2-75,500/2-10,0])
+    frame_mount();
+
+    translate([530/2-75-15,500/2+30,120])
+    extention(2,support=false);
+
+    translate([530/2-75+30/2,500/2+17,267])
+    rotate([0,135,-90])
+    corner_90(corner_len=70,extra_stiff=true, support=false);
     
+    translate([-530/2+75,-500/2+10,0])
+    rotate([0,0,180])
+    frame_mount();
+
+    translate([-530/2+75-15,-500/2,120])
+    extention(2,support=false);
+
+    translate([-530/2+75-30/2,-500/2-17,267])
+    rotate([0,135,90])
+    corner_90(corner_len=70,extra_stiff=true, support=false);
+
+    translate([530/2-75,-500/2+10,0])
+    rotate([0,0,180])
+    frame_mount();
+
+    translate([530/2-75-15,-500/2,120])
+    extention(2,support=false);
+
+    translate([530/2-75-30/2,-500/2-17,267])
+    rotate([0,135,90])
+    corner_90(corner_len=70,extra_stiff=true, support=false);
+
+    translate([-530/2+75-15,500/2-130,265])
+    rotate([0,-90,180])
+    extention_t_part_back();
+
+    translate([-530/2+75-15,500/2-190,280])
+    rotate([90,0,0])
+    extention(support=false);
+
+    translate([-530/2+75-15,500/2-370,265])
+    rotate([0,90,0])
+    extention_t_part_front();
+
+    translate([530/2-75+15,500/2-130,265])
+    rotate([0,90,180])
+    extention_t_part_back();
+
+    translate([530/2-75-15,500/2-190,280])
+    rotate([90,0,0])
+    extention(support=false);
+
+    translate([530/2-75+15,500/2-370,265])
+    rotate([0,-90,0])
+    extention_t_part_front();
+
+    translate([-115,135,280])
+    rotate([0,90,0])
+    middle_extention(support=false);
+
+    translate([-115,-135,280])
+    rotate([0,90,0])
+    middle_extention(support=false);
 }
 
 //top_frame_assembly();

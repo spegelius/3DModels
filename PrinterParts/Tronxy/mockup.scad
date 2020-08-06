@@ -22,8 +22,8 @@ X5S_frame_mockup();
 //debug_gantry_plates();
 //debug_corner_bearing_mounts();
 //debug_motor_mount_remix();
-//debug_top_frame();
-debug_purge_bucket();
+debug_top_frame();
+//debug_purge_bucket();
 
 
 ////// MODULES \\\\\\
