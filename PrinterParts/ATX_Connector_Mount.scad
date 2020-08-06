@@ -1,4 +1,7 @@
-    
+include <../PCParts/common.scad>;
+
+
+////// VARIABLES //////
 atx_connector_w = 52.15;
 atx_connector_l = 10;
 atx_connector_h = 13;
@@ -20,10 +23,19 @@ echo(mount_w);
 
 y_offset = 2.2;
 
+
+////// VIEW //////
+//debug();
+//mock_atx_connector();
+//mock_pcie_connector();
+//mock_connector_pcb();
+
+mount();
+//mount_top();
+
+////// MODULES //////
 function pin_spacing(w,pin_d,pins) = (w-pin_d)/(pins/2);
 function x_offset(w,pins_w) = (w-pins_w)/2;
-
-include <../PCParts/common.scad>;
 
 module _mock_connector(w,l,h,pins,pins_w) {
     module bent_pin(pin_l) {
@@ -104,20 +116,39 @@ module mount() {
         d1 = 4;
         d2 = 3;
         cylinder(d1=d1,d2=d2,h=2);
-        translate([0,5.5,0]) cylinder(d1=d1,d2=d2,h=2);
-        translate([0,9/2-2,20/2+1.99]) cube([2,9,20],center=true);
+
+        translate([0,5.5,0])
+        cylinder(d1=d1,d2=d2,h=2);
+
+        translate([0,9/2-2,20/2+1.99])
+        cube([2,9,20],center=true);
     }
     
     difference() {
         union() {
-            translate([0,1,0]) cube([mount_w,mount_l,atx_connector_l+1.1]);
-            translate([0,mount_l/2+1,atx_connector_l-2]) _side_notch(mount_l);
-            translate([mount_w,mount_l/2+1,atx_connector_l-2]) _side_notch(mount_l);
-            translate([-2,1,0]) cube([3,mount_l,1.8]);
-            translate([mount_w-1,1,0]) cube([3,mount_l,1.8]);
+            translate([0,1,0])
+            cube([mount_w,mount_l,atx_connector_l+1.1]);
+
+            translate([0,mount_l/2+1,atx_connector_l-2])
+            _side_notch(mount_l);
+
+            translate([mount_w,mount_l/2+1,atx_connector_l-2])
+            _side_notch(mount_l);
+
+            translate([-2,1,0])
+            cube([3,mount_l,1.8]);
+
+            translate([mount_w-1,1,0])
+            cube([3,mount_l,1.8]);
+
+            translate([mount_w/2,50,0])
+            _connector_pcb_mount();
         }
-        translate([1.9,-0.01,1]) cube([atx_connector_w+0.1,atx_connector_h+0.2,atx_connector_l+2]);
-        translate([6.9+atx_connector_w,-0.01,1]) cube([pcie_connector_w+0.2,pcie_connector_h+0.1,pcie_connector_l+2]);
+        translate([1.9,-0.01,1])
+        cube([atx_connector_w+0.1,atx_connector_h+0.2,atx_connector_l+2]);
+
+        translate([6.9+atx_connector_w,-0.01,1])
+        cube([pcie_connector_w+0.2,pcie_connector_h+0.1,pcie_connector_l+2]);
         
         for (i = [0:(atx_connector_pins/2)-1]) {
             translate([x_off_a+i*spacing_a,atx_connector_h+0.9,0]) hole();
@@ -126,7 +157,6 @@ module mount() {
         for (i = [0:(pcie_connector_pins/2)-1]) {
             translate([x_off_p+i*spacing_p,pcie_connector_h+0.9,0]) hole();
         }
-        
     }
     
     %translate([2,0,1+atx_connector_l]) rotate([-90,0,0]) mock_atx_connector();
@@ -149,24 +179,41 @@ module mount_top() {
     }
 }
 
-module connector_pcb_mount() {
+module _connector_pcb_mount() {
     
     module mount_texts() {
-        translate([8,-12.8,0.59]) rotate([180,0,0]) linear_extrude(0.6) text("5V", size=7);
-        translate([4,19.7,0.59]) rotate([180,0,0]) linear_extrude(0.6) text("12V", size=7);
+        translate([8,12.8,1.8-0.59])
+        linear_extrude(0.6)
+        text("5V", size=7);
+
+        translate([4,-19.7,1.8-0.59])
+        linear_extrude(0.6)
+        text("12V", size=7);
         
-        translate([-27,1.5,0.59]) rotate([180,0,90]) linear_extrude(0.6) text("5VSB", size=4);
-        translate([-21,1.5,0.59]) rotate([180,0,90]) linear_extrude(0.6) text("PS_ON", size=4, style="Bold", name="Arial");
-        translate([-16,1.5,0.59]) rotate([180,0,90]) linear_extrude(0.6) text("GND", size=4);
+        translate([-27,-1.5,1.8-0.59])
+        rotate([0,0,-90])
+        linear_extrude(0.6)
+        text("5VSB", size=4);
+
+        translate([-21,-1.5,1.8-0.59])
+        rotate([0,0,-90])
+        linear_extrude(0.6)
+        text("PS_ON", size=4, style="Bold", name="Arial");
+
+        translate([-16,-1.5,1.8-0.59])
+        rotate([0,0,-90])
+        linear_extrude(0.6)
+        text("GND", size=4);
         
     }
     
     difference(){
-        union() {
-            translate([0,0,1.8/2]) cube([mount_w+4, 42, 1.8],center=true);
-            translate([0,0,1.8/2+1.8]) cube([mount_w, 40, 1.8],center=true);
-        }
-        translate([0,0,2*1.8+0.01]) rotate([180,0,0]) mock_connector_pcb();
+        translate([0,-7/2,1.8/2])
+        cube([mount_w+4, 49, 1.8],center=true);
+
+        translate([0,0,-1.8-0.01])
+        mock_connector_pcb();
+
         mount_texts();
     }
 }
@@ -176,11 +223,3 @@ module debug() {
     translate([mount_w/2,50,1.8]) rotate([180,0,0]) connector_pcb_mount();
 }
 
-//debug();
-//mock_atx_connector();
-//mock_pcie_connector();
-//mock_connector_pcb();
-
-//mount();
-//mount_top();
-connector_pcb_mount();
