@@ -160,9 +160,14 @@ module chamfered_cube(x,y,z, chamfer, center=false) {
             cube([x-2*chamfer,y,z-2*chamfer], center=center);
             cube([x-2*chamfer,y-2*chamfer,z], center=center);
         } else {
-            translate([0,chamfer,chamfer]) cube([x, y-2*chamfer,z-2*chamfer], center=center);
-            translate([chamfer,0,chamfer]) cube([x-2*chamfer,y,z-2*chamfer], center=center);
-            translate([chamfer,chamfer,0]) cube([x-2*chamfer,y-2*chamfer,z], center=center);
+            translate([0,chamfer,chamfer])
+            cube([x, y-2*chamfer,z-2*chamfer], center=center);
+
+            translate([chamfer,0,chamfer])
+            cube([x-2*chamfer,y,z-2*chamfer], center=center);
+
+            translate([chamfer,chamfer,0])
+            cube([x-2*chamfer,y-2*chamfer,z], center=center);
         }
     }
 }
