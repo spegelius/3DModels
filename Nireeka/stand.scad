@@ -44,7 +44,7 @@ module stand_leg() {
             // leg
             hull() {
                 rotate([90,0,0])
-                _stand_form(20, h=4);
+                _stand_form(21, h=4);
 
                 // foot
                 rotate([58,0,0])
@@ -58,7 +58,7 @@ module stand_leg() {
             }
             // stand body
             rotate([90,0,0])
-            _stand_form(20, h=length);
+            _stand_form(21, h=length);
             
             // level bottom
             translate([0,-length/2,1/2])
