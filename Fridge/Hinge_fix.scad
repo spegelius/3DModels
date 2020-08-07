@@ -2,6 +2,10 @@ include <../lib/includes.scad>;
 
 $fn=60;
 
+w = 28;
+l = 24;
+
+
 module ver1() {
     intersection() {
         rotate([0,-90,0]) difference() {
@@ -19,38 +23,73 @@ module ver1() {
     }
 }
 
-module ver2() {
-    w = 25;
-    l = 29;
-    module clip() {
-        difference() {
-            hull() {
-                cylinder(d=w-3,h=2);
-                translate([-w/2, l-1,0]) cube([w,1,2]);
+
+module clip(nut=false) {
+    difference() {
+        hull() {
+            cylinder(d=w,h=3);
+
+            translate([-w/2, l-8,0])
+            cube([w,8,3]);
+        }
+        cylinder(d=12,h=10,center=true);
+
+        translate([0,l/2,0])
+        cube([10.5,30,8], center=true);
+
+        translate([-w/2+4.5,l-4,0]) {
+            cylinder(d=3.2,h=10,center=true);
+
+            if (nut) {
+                translate([0,0,1.6])
+                M3_nut();
+            } else {
+                translate([0,0,1.6])
+                cylinder(d=6.5,h=2);
             }
-            cylinder(d=12,h=3);
-            translate([0,l/2,0]) cube([10.5,30,6], center=true);
-            translate([-w/2+3.8,l-4,0]) cylinder(d=3.2,h=3);
-            translate([w/2-3.8,l-4,0]) cylinder(d=3.2,h=3);
+        }
+
+        translate([w/2-4.5,l-4,0]) {
+            cylinder(d=3.2,h=10,center=true);
+
+            if (nut) {
+                translate([0,0,1.6])
+                M3_nut();
+            } else {
+                translate([0,0,1.6])
+                cylinder(d=6.5,h=2);
+            }
         }
     }
-    
-    //clip();
-    //translate([-30,0,0]) clip();
-    
-    rotate([-90,0,0]) translate([30,-l,0]) {
+}
+
+module ver2() {
+
+    rotate([-90,0,0])
+    translate([30,-l,0]) {
         difference() {
             union() {
-                translate([0,l/2,9/2]) cube([10.5,l,9], center=true);
-                translate([0,l/2+1,9/2]) cube([w,l-2,4.5], center=true);
+                translate([0,l/2,9/2])
+                cube([10.5,l,9], center=true);
+
+                translate([0,l/2+1,9/2])
+                cube([w,l-2,4.5], center=true);
             }
-            cylinder(d=12,h=9);
-            translate([0,0,(9-4.5)/2]) cylinder(d=17,h=4.5);
-            translate([-w/2+3.8,l-4,0]) cylinder(d=3.2,h=9);
-            translate([w/2-3.8,l-4,0]) cylinder(d=3.2,h=9);
+            cylinder(d=12,h=20,center=true);
+
+            translate([0,0,(9-4.5)/2])
+            cylinder(d=17,h=4.5);
+
+            translate([-w/2+4.5,l-4,0])
+            cylinder(d=3.2,h=9);
+
+            translate([w/2-4.5,l-4,0])
+            cylinder(d=3.2,h=9);
         }
     }
 }
 
 
-ver2();
+//ver2();
+//clip();
+clip(true);
