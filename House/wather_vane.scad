@@ -8,22 +8,32 @@ module bearing_block() {
             hull() {
                 cylinder(d=15, h=3, $fn=40);
 
-                translate([13,0,0])
-                cylinder(d=11,h=3,$fn=30);
+                translate([16,0,0])
+                cylinder(d=12,h=3,$fn=30);
 
-                translate([-13,0,0])
-                cylinder(d=11,h=3,$fn=30);
+                translate([-16,0,0])
+                cylinder(d=12,h=3,$fn=30);
             }
             cylinder(d=13,h=8,$fn=40);
         }
 
         cylinder(d=10.5,h=40,center=true,$fn=40);
 
-        translate([-13,0,0])
-        v_screw(h=10, screw_d=8.4, pitch=1.25, direction=0, steps=thread_steps, depth=0);
+        translate([-16,0,0])
+        v_screw(h=10,
+                screw_d=8.4,
+                pitch=1.25,
+                direction=0,
+                steps=thread_steps,
+                depth=0);
 
-        translate([13,0,0])
-        v_screw(h=10, screw_d=8.4, pitch=1.25, direction=0, steps=thread_steps, depth=0);
+        translate([16,0,0])
+        v_screw(h=10,
+                screw_d=8.4,
+                pitch=1.25,
+                direction=0,
+                steps=thread_steps,
+                depth=0);
     }
 }
 
@@ -33,7 +43,13 @@ module bolt() {
             hexagon(13,4);
 
             translate([0,0,3.99])
-            v_screw(h=6, screw_d=8, pitch=1.25, direction=0, steps=thread_steps, depth=0, chamfer=true);
+            v_screw(h=6,
+                    screw_d=8,
+                    pitch=1.25,
+                    direction=0,
+                    steps=thread_steps,
+                    depth=0,
+                    chamfer=true);
         }
         cylinder(d=1,h=10,$fn=10);
     }
@@ -45,20 +61,20 @@ module drill_aid() {
             hull() {
                 cylinder(d=13, h=1.4, $fn=40);
 
-                translate([13,0,0])
+                translate([16,0,0])
                 cylinder(d=6,h=1.4,$fn=30);
 
-                translate([-13,0,0])
+                translate([-16,0,0])
                 cylinder(d=6,h=1.4,$fn=30);
             }
             cylinder(d=13,h=3.4,$fn=40);
         }
         cylinder(d=9.3,h=40,center=true,$fn=40);
 
-        translate([13,0,0])
+        translate([16,0,0])
         cylinder(d=3,h=4,$fn=30);
 
-        translate([-13,0,0])
+        translate([-16,0,0])
         cylinder(d=3,h=4,$fn=30);
     }
 }
