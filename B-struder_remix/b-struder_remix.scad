@@ -15,7 +15,7 @@ $fn=60;
 //arm_E3D_HobGoblin_U604zz(threads=false);
 //arm_E3D_HobGoblin_2x623zz();
 //arm_Bondtech(threads=false);
-//arm_Bondtech();
+arm_Bondtech();
 //hinge_support();
 //motor_mount();
 //motor_mount_extra_mount();
@@ -25,7 +25,7 @@ $fn=60;
 //MR105zz_support_Hobbgoblin();
 //MR105zz_support_Bondtech();
 //spring_cap_8mm_spring();
-bondtech_position_tool();
+//bondtech_position_tool();
 
 
 ////// MODULES //////
@@ -403,12 +403,13 @@ module hole_bondtech() {
     // gear indent
     difference() {
         hull() {
-            cylinder(d=8.5,h=height,$fn=40);
+            translate([0,-0.2,-1])
+            cylinder(d=9,h=height+1,$fn=40);
 
-            translate([-15,-35/2,0])
-            cube([1,54,height]);
+            translate([-15,-35/2,-1])
+            cube([1,54,height+1]);
         }
-        translate([0,0,2+3])
+        translate([0,-0.2,2+3])
         donut(11.9,4,93,-90/2-20);
 
         rotate([0,0,26])
@@ -472,6 +473,7 @@ module arm_Bondtech(threads=true) {
         difference() {
             union() {
                 arm_body(height=19.2);
+
                 rotate([0,0,-13])
                 translate([8.9,0,19])
                 cylinder(d1=7,d2=5,h=1);
@@ -514,13 +516,12 @@ module arm_Bondtech(threads=true) {
         }
         hinge(height=15);
         spring_notch();
-        
-        hole_bondtech();
-        
-        filament_holes(4.4, height=(2+3)*2,offset=5, threads=threads);
-        
-        idler_hole_Bondtech();
 
+        hole_bondtech();
+
+        filament_holes(4.4, height=(2+3)*2,offset=5, threads=threads);
+
+        idler_hole_Bondtech();
     }
 }
 
@@ -815,7 +816,7 @@ module bondtech_position_tool() {
 }
 
 module debug() {
-    arm = 1;
+    arm = 3;
 
     %translate([0,0,-5])
     //motor_mount();
@@ -891,11 +892,11 @@ module debug() {
         intersection() {
             arm_Bondtech();
 
-            //translate([-100/2,-100/2,0])
-            //cube([100,100,2+3]);
+            translate([-100/2,-100/2,0])
+            cube([100,100,2+3]);
 
-            translate([-100/2,-40,0])
-            cube([100,55,40]);
+//            translate([-100/2,-40,0])
+//            cube([100,55,40]);
         }
 
         %translate([0,0,14+2])
