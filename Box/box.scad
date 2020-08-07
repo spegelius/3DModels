@@ -1,21 +1,23 @@
+include <../lib/includes.scad>;
 
+////// VARIABLES //////
 //width = 150;
 //length = 150;
 //height = 100;
 
-//width = 120;
-//length = 120;
-//height = 80;
+width = 120;
+length = 120;
+height = 80;
 
 //width = 180;
 //length = 180;
 //height = 120;
 
-width = 200;
-length = 200;
-height = 150;
+//width = 200;
+//length = 200;
+//height = 150;
 
-wall = 1.7;
+wall = 1.5;
 //wall = 2;
 
 slop = 0.4;
@@ -45,9 +47,23 @@ slot_w = 100;
 plate_w = slot_w - 3;
 plate_l = 34;
 
-include <../lib/includes.scad>;
+
+////// VIEW //////
+//view_proper();
+
+//intersection() {
+//    box();
+//    cube([100,100,100]);
+//}
+
+//box();
+//lid();
+//fastener();
+fasteners();
+//plate("Crap");
 
 
+////// MODULES //////
 module main_body(crevices=false) {
     
     module form(w, d, l, h) {
@@ -139,27 +155,49 @@ module fastener_slot() {
     difference() {
         union() {
             difference() {
+                // main form
                 hull() {
-                    rotate([0,90,0]) cylinder(d=w, h=7,$fn=30);
+                    rotate([0,90,0])
+                    cylinder(d=w, h=7,$fn=30);
+
                     cube([7,w/2,w/2]);
-                    translate([7/2,0,-4/2-1/2-1]) cube([7,w,1],center=true);
-                    translate([7/2,w/2-0.1/2,-4/2-1/2-12]) cube([7,0.1,0.1],center=true);
+
+                    translate([7/2,0,-4/2-1/2-1])
+                    cube([7,w,1],center=true);
+
+                    translate([7/2,w/2-0.1/2,-4/2-1/2-12])
+                    cube([7,0.1,0.1],center=true);
                 }
+
+                // hole
                 hull() {
-                    translate([2,1,-1]) rotate([0,90,0]) cylinder(d=w-1.5,h=7, $fn=30);
-                    translate([(7-1.5)/2+2,1,-3/2-13]) cube([7-1.5,w-1,1],center=true);
+                    translate([2,1,-1])
+                    rotate([0,90,0])
+                    cylinder(d=w-1.5,h=7, $fn=30);
+
+                    translate([(7-1.5)/2+2,1,-3/2-13])
+                    cube([7-1.5,w-1,1],center=true);
                 }
             }
-            translate([1.5,-w/2+1,-2.4]) rotate([0,90,0]) cylinder(d=2,h=7-1.5,$fn=30);
+            // stopper
+            translate([1.5,-w/2+2.4/2,-2.8])
+            rotate([0,90,0])
+            cylinder(d=2.4,h=7-1.5,$fn=30);
         }
-        translate([2,-4,-6.5]) union() {
-            rotate([0,45,0]) cube([4,4,8]);
-            translate([0,0,-4]) cube([2,4,4]);
+
+        // chamfer
+        translate([2,-4,-6.5])
+        union() {
+            rotate([0,45,0])
+            cube([4,4,8]);
+
+            translate([0,0,-4])
+            cube([2,4,4]);
         }
     }
 }
 
-//fastener_slot();
+//!fastener_slot();
 
 module box(crevices=false) {
 
@@ -291,15 +329,3 @@ module view_proper() {
 }
 
 
-//view_proper();
-
-//intersection() {
-//    box();
-//    cube([100,100,100]);
-//}
-
-box();
-//lid();
-//fastener();
-//fasteners();
-//plate("Crap");
