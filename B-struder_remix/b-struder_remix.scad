@@ -8,7 +8,8 @@ $fn=60;
 //translate([50,0,0])
 //orig_arm();
 
-debug();
+//debug();
+//debug_bondtech_gear();
 
 //arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_U604zz(threads=false);
@@ -24,6 +25,7 @@ debug();
 //MR105zz_support_Hobbgoblin();
 //MR105zz_support_Bondtech();
 //spring_cap_8mm_spring();
+bondtech_position_tool();
 
 
 ////// MODULES //////
@@ -522,109 +524,6 @@ module arm_Bondtech(threads=true) {
     }
 }
 
-module debug() {
-    arm = 1;
-    
-    %translate([0,0,-5])
-    //motor_mount();
-    //motor_mount_extra_mount2();
-    motor_mount_extra_mount3();
-
-    %translate([-31/2,-31/2,-1])
-    lock_lever();
-    
-    if (arm == 0) { 
-        intersection() {
-            orig_arm();
-
-            translate([-100/2,-100/2,0])
-            cube([100,100,15/2]);
-        }
-        %cylinder(d=11,h=11, $fn=40);
-        %translate([12.9,0,5.5]) U604zz();
-    } else if (arm == 1) {
-        intersection() {
-            arm_E3D_HobGoblin_U604zz();
-            translate([-100/2,-100/2,0])
-            cube([100,100,15/2]);
-
-            //translate([-100/2,-40,0])
-            //cube([100,55,40]);
-        }
-        %translate([0,0,11+4])
-        rotate([180,0,0])
-        E3D_HobGoblin();
-
-        %translate([0,0,15.2])
-        MR105zz();
-
-        %rotate([0,0,-13])
-        translate([10.5,0,5.5])
-        U604zz();
-
-        %translate([0,0,20.4])
-        rotate([0,180,0])
-        MR105zz_support_Hobbgoblin();
-    } else if (arm == 2) {
-        intersection() {
-            arm_E3D_HobGoblin_2x623zz();
-
-            //translate([-100/2,-100/2,0])
-            //cube([100,100,15/2]);
-
-            translate([-100/2,-40,0])
-            cube([100,55,40]);
-        }
-
-        %translate([0,0,15])
-        rotate([0,180,0])
-        E3D_HobGoblin();
-
-        %translate([0,0,15.2])
-        MR105zz();
-
-        x_offset = 9.8;
-        %rotate([0,0,-13])
-        translate([x_offset,0,3.5])
-        623zz();
-
-        %rotate([0,0,-13])
-        translate([x_offset,0,7.5])
-        623zz();
-
-        %translate([0,0,20.4])
-        rotate([0,180,0])
-        MR105zz_support_Hobbgoblin();
-    } else if (arm == 3) {
-        intersection() {
-            arm_Bondtech();
-
-            //translate([-100/2,-100/2,0])
-            //cube([100,100,2+3]);
-
-            translate([-100/2,-40,0])
-            cube([100,55,40]);
-        }
-
-        %translate([0,0,14+2])
-        rotate([0,180,0])
-        Bondtech_gear();
-
-        %translate([0,0,14+2.2])
-        MR105zz();
-
-        x_offset = 8.9;
-        %rotate([0,0,-13])
-        translate([x_offset,0,14+2])
-        rotate([0,180,0])
-        Bondtech_gear();
-
-        %translate([0,0,21.4])
-        rotate([0,180,0])
-        MR105zz_support_Bondtech();
-    }    
-}
-
 module _motor_mount_base() {
     union() {
         translate([0,0,6])
@@ -898,4 +797,138 @@ module qnd_fix() {
         cylinder(d=3.2,h=8);
         _hinge_bearing();
     }
+}
+
+module bondtech_position_tool() {
+    difference() {
+        translate([0,0,3/2])
+        cube([12,40,3], center=true);
+
+        translate([12/2-4,0,0])
+        hull() {
+            cylinder(d=5.5,h=12,center=true,$fn=40);
+
+            translate([4,0,0])
+            cylinder(d=5.5,h=12,center=true,$fn=40);
+        }
+    }
+}
+
+module debug() {
+    arm = 1;
+
+    %translate([0,0,-5])
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
+
+    %translate([-31/2,-31/2,-1])
+    lock_lever();
+
+    if (arm == 0) {
+        intersection() {
+            orig_arm();
+
+            translate([-100/2,-100/2,0])
+            cube([100,100,15/2]);
+        }
+        %cylinder(d=11,h=11, $fn=40);
+        %translate([12.9,0,5.5]) U604zz();
+    } else if (arm == 1) {
+        intersection() {
+            arm_E3D_HobGoblin_U604zz();
+            translate([-100/2,-100/2,0])
+            cube([100,100,15/2]);
+
+            //translate([-100/2,-40,0])
+            //cube([100,55,40]);
+        }
+        %translate([0,0,11+4])
+        rotate([180,0,0])
+        E3D_HobGoblin();
+
+        %translate([0,0,15.2])
+        MR105zz();
+
+        %rotate([0,0,-13])
+        translate([10.5,0,5.5])
+        U604zz();
+
+        %translate([0,0,20.4])
+        rotate([0,180,0])
+        MR105zz_support_Hobbgoblin();
+    } else if (arm == 2) {
+        intersection() {
+            arm_E3D_HobGoblin_2x623zz();
+
+            //translate([-100/2,-100/2,0])
+            //cube([100,100,15/2]);
+
+            translate([-100/2,-40,0])
+            cube([100,55,40]);
+        }
+
+        %translate([0,0,15])
+        rotate([0,180,0])
+        E3D_HobGoblin();
+
+        %translate([0,0,15.2])
+        MR105zz();
+
+        x_offset = 9.8;
+        %rotate([0,0,-13])
+        translate([x_offset,0,3.5])
+        623zz();
+
+        %rotate([0,0,-13])
+        translate([x_offset,0,7.5])
+        623zz();
+
+        %translate([0,0,20.4])
+        rotate([0,180,0])
+        MR105zz_support_Hobbgoblin();
+    } else if (arm == 3) {
+        intersection() {
+            arm_Bondtech();
+
+            //translate([-100/2,-100/2,0])
+            //cube([100,100,2+3]);
+
+            translate([-100/2,-40,0])
+            cube([100,55,40]);
+        }
+
+        %translate([0,0,14+2])
+        rotate([0,180,0])
+        Bondtech_gear();
+
+        %translate([0,0,14+2.2])
+        MR105zz();
+
+        x_offset = 8.9;
+        %rotate([0,0,-13])
+        translate([x_offset,0,14+2])
+        rotate([0,180,0])
+        Bondtech_gear();
+
+        %translate([0,0,21.4])
+        rotate([0,180,0])
+        MR105zz_support_Bondtech();
+    }
+}
+
+module debug_bondtech_gear() {
+
+    %translate([0,0,-5])
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
+
+    %translate([0,0,14+2])
+    rotate([0,180,0])
+    Bondtech_gear();
+
+    rotate([0,0,-140])
+    translate([-2,0,-1])
+    bondtech_position_tool();
 }
