@@ -14,17 +14,19 @@ slop = 0.25;
 // section values
 wall = 1.2;
 bracket_wall = 1.6;
-section_hole_w = 166;
+//section_hole_w = 166;
+section_hole_w = 220;
 section_hole_l = 16;
 section_w = section_hole_w;
-//section_w = 220;
 section_l = section_hole_l-2*slop;
 section_y_pos = 20 + (section_hole_l + 4)/2;
 section_head_outer_d = section_hole_l - 2*wall - 0.4;
 section_head_d = 11 + slop;
 section_quide_1 = 10+(166-15) / 3;
 section_quide_2 = 166 - section_quide_1;
-//section_quide_3 = 220 - 35;
+
+// uncomment if section is over ~200mm
+section_quide_3 = section_hole_w - 35;
 
 echo("Guide positions:")
 echo(section_quide_1);
@@ -58,7 +60,8 @@ x_pos_4 = x_pos_3 + 10;
 //shelf_section_280(configuration=3);
 //shelf_section_300();
 //shelf_section_300(configuration=1);
-shelf_section_330(configuration=2);
+shelf_section_330(configuration=1);
+//shelf_section_330(configuration=2);
 //shelf_section_400();
 //test_shelf_section_bottom();
 
