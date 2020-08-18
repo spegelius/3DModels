@@ -627,28 +627,28 @@ module PTFE_2x_tubes_M4() {
     union() {
         cylinder(d=4.3,h=4,$fn=tube_smooth);
 
-        translate([0,0,4]) {
+        translate([0,0,4.5]) {
             PTFE_tube();
 
             mirror([1,0,0])
             PTFE_tube();
         }
-        translate([0,0,1])
+        translate([0,0,1.3])
         rotate([0,0,30])
         scale([1.01,1.01,1.01])
         M4_nut(cone=false);
         
         // nuts
-        translate([0,0,4]) {
-            _tube_translate(150, 20, straight=4)
+        translate([0,0,4.5]) {
+            _tube_translate(150, 20, straight=3.5)
             rotate([0,0,30])
-            scale([1.01,1.01,1.01])
+            scale([1.02,1.02,1.02])
             M4_nut(cone=false);
 
             mirror([1,0,0])
-            _tube_translate(150, 20, straight=4)
+            _tube_translate(150, 20, straight=3.5)
             rotate([0,0,30])
-            scale([1.01,1.01,1.01])
+            scale([1.02,1.02,1.02])
             M4_nut(cone=false);
         }
         
@@ -686,16 +686,16 @@ module _PTFE_2x_cover() {
                     cylinder(d=8,h=12/2,$fn=6);
                 }
                 translate([7,6,0])
-                cylinder(d=8,h=12,$fn=20);
+                cylinder(d=8.3,h=12,$fn=20);
 
                 translate([-7,6,0])
-                cylinder(d=8,h=12,$fn=20);
+                cylinder(d=8.3,h=12,$fn=20);
 
                 translate([9,24,0])
-                cylinder(d=8,h=12,$fn=20);
+                cylinder(d=8.3,h=12,$fn=20);
 
                 translate([-9,24,0])
-                cylinder(d=8,h=12,$fn=20);
+                cylinder(d=8.3,h=12,$fn=20);
             }
             translate([0,38/2,0])
             cube([30,38,12],center=true);
@@ -744,22 +744,22 @@ module PTFE_2x_cover_2() {
         
         translate([7,6,0]) {
             cylinder(d=3.3,h=10,$fn=40);
-            cylinder(d1=5.9,d2=3.3,h=1.3,$fn=40);
+            cylinder(d1=6.3,d2=3.3,h=1.5,$fn=40);
         }
 
         translate([-7,6,0]) {
             cylinder(d=3.3,h=10,$fn=40);
-            cylinder(d1=5.9,d2=3.3,h=1.3,$fn=40);
+            cylinder(d1=6.3,d2=3.3,h=1.5,$fn=40);
         }
 
         translate([9,24,0]) {
             cylinder(d=3.3,h=10,$fn=40);
-            cylinder(d1=5.9,d2=3.3,h=1.3,$fn=40);
+            cylinder(d1=6.3,d2=3.3,h=1.5,$fn=40);
         }
 
         translate([-9,24,0]) {
             cylinder(d=3.3,h=10,$fn=40);
-            cylinder(d1=5.9,d2=3.3,h=1.3,$fn=40);
+            cylinder(d1=6.3,d2=3.3,h=1.5,$fn=40);
         }
     }
 }
@@ -783,7 +783,7 @@ module PTFE_cutting_jig_1() {
         translate([0,-44/2,5/2+2-4.3/2-0.2])
         cube([11,0.5,5],center=true);
         
-        translate([0,-44/2+24,2])
+        translate([0,-44/2+23.5,2])
         rotate([-90,30,0])
         scale([1.01,1.01,1.01])
         M4_nut(cone=false);
@@ -792,19 +792,19 @@ module PTFE_cutting_jig_1() {
 
 module PTFE_cutting_jig_2() {
     difference() {
-        translate([-2,-0.5,32/2])
-        cube([15,11,32],center=true);
+        translate([-2,-0.5,30/2])
+        cube([15,11,30],center=true);
 
         translate([0,-1.5,5])
         PTFE_tube(td=4.4);
         
         translate([0,-1.5,5])
-        _tube_translate(150, 20, straight=4)
+        _tube_translate(150, 20, straight=3.5)
         rotate([0,0,30])
-        scale([1.01,1.01,1.01])
+        scale([1.03,1.03,1.01])
         M4_nut(5, cone=false);
         
-        translate([0,-1,30/2+4.5])
+        translate([-0.1,-1.5,30/2+4.5])
         cube([0.5,10,30],center=true);
     }
 }
@@ -827,18 +827,18 @@ module PTFE_M4_tool() {
         cylinder(d=4.4,h=21,$fn=tube_smooth);
 
         translate([0,0,20-3.5])
-        scale([1.01,1.01,1.01])
+        scale([1.04,1.04,1])
         M4_nut(4,cone=false);
     }
 
     translate([0,15,0]) {
         difference() {
-            cylinder(d=15,h=8,$fn=6);
+            cylinder(d=16,h=8,$fn=6);
             cylinder(d=4.4,h=10,center=true,$fn=tube_smooth);
 
             translate([0,0,1.6])
             v_screw(h=8.4,
-                    screw_d=12,
+                    screw_d=12.4,
                     pitch=1.5,
                     direction=0,
                     steps=70,
@@ -860,7 +860,7 @@ module debug_PTFE_cutting_jig_2() {
     PTFE_tube(td=4, h=44,straight=24);
     
     translate([0,-1.5,5])
-    _tube_translate(150, 20, straight=4)
+    _tube_translate(150, 20, straight=3.5)
     rotate([0,0,30])
     M4_nut(cone=false);
 }
@@ -868,22 +868,22 @@ module debug_PTFE_cutting_jig_2() {
 module debug_PTFE_covers() {
     PTFE_2x_cover_1();
     
-    translate([0,-20+3.9,12/2])
+    translate([0,-20+4.4,12/2])
     rotate([-90,0,0])
     cylinder(d=4,h=20,$fn=tube_smooth);
 
-    translate([0,4,12/2])
+    translate([0,4.5,12/2])
     rotate([-90,0,0])
     PTFE_tube(td=4, h=44,straight=24);
     
-    translate([0,4,0])
+    translate([0,4.5,0])
     rotate([-90,0,0])
     _tube_translate(150, 20, straight=20)
     rotate([90,0,0])
     PTFE_2x_cover_1();
 
     mirror([1,0,0])
-    translate([0,4,0])
+    translate([0,4.5,0])
     rotate([-90,0,0])
     _tube_translate(150, 20, straight=20)
     rotate([90,0,0])
