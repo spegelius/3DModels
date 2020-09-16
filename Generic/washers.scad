@@ -43,6 +43,10 @@ module washer_7_5_2_5() {
     _washer(7, 5.3, 2.5);
 }
 
+module washer_20_5_20() {
+    _washer(20, 5.3, 20);
+}
+
 module washer_plate(count_side, outer_d, inner_d, h) {
     union() {
         for (i = [0:count_side-1]) {
@@ -76,5 +80,6 @@ module washer_plate(count_side, outer_d, inner_d, h) {
 //washer_13_8_1();
 //washer_7_5_2();
 //washer_7_5_2_5();
+washer_20_5_20();
 
-washer_plate(4, 8.5, 3.2, 0.8);
+//washer_plate(4, 8.5, 3.2, 0.8);
