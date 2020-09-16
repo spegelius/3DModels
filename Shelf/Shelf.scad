@@ -44,6 +44,7 @@ x_pos_4 = x_pos_3 + 10;
 ////// VIEW //////
 //debug_section();
 //debug();
+//debug_3x100();
 
 //shelf_top_bracket();
 //shelf_section_bracket_1();
@@ -56,13 +57,19 @@ x_pos_4 = x_pos_3 + 10;
 //shelf_section_bracket_support_small();
 //shelf_section_joiner_1();
 //shelf_section_joiner_2();
-//shelf_section_200();
-//shelf_section_280(configuration=3);
-//shelf_section_300();
-//shelf_section_300(configuration=1);
-shelf_section_330(configuration=1);
-//shelf_section_330(configuration=2);
-//shelf_section_400();
+//shelf_section(170, configuration=2);
+//shelf_section(170, configuration=3);
+//shelf_section(200, configuration=1);
+//shelf_section(200, configuration=4);
+//shelf_section(200, configuration=2);
+//shelf_section(250, configuration=2);
+//shelf_section(280, configuration=3);
+//shelf_section(300);
+//shelf_section(300, configuration=1);
+//shelf_section(300, configuration=2);
+//shelf_section(330, configuration=1);
+//shelf_section(330, configuration=2);
+//shelf_section(400);
 //test_shelf_section_bottom();
 
 //%translate([0,-200,0])
@@ -162,14 +169,14 @@ module _section_form(width,depth,height) {
     }
 }
 
-module _backet_mount_hole() {
+module _bracket_mount_hole() {
     translate([0,0,h/2])
     rotate([0,90,0])
-    cylinder(d=5,h=20,center=true,$f=30);
+    cylinder(d=5,h=20,center=true,$fn=8);
 
     translate([80/2,0,h/2])
     rotate([0,90,0])
-    cylinder(d=12,h=80,center=true,$f=30);
+    cylinder(d=12,h=80,center=true,$fn=20);
 }
 
 module _shelf_section_bracket_base(open=false) {
@@ -208,10 +215,10 @@ module _shelf_section_bracket_base(open=false) {
                 
                 // mount holes
                 translate([0,8,0])
-                _backet_mount_hole();
+                _bracket_mount_hole();
 
                 translate([0,180-10,0])
-                _backet_mount_hole();
+                _bracket_mount_hole();
 
                 // infill
                 translate([0,200/2-10,7])
@@ -489,7 +496,7 @@ module _shelf_section_quides(height, length=7, extra=0) {
 // 2 = rod tubes 2 and 4
 // 3 = rod tubes 1 and 3 + joint tubes 2 and 4
 // 4 = rod tubes 2 and 4 + joint tubes 1 and 3
-module _shelf_section(height, configuration=0) {
+module _shelf_section(height, configuration=0, supports=true) {
     
     module _rod_tube(h, nut=false) {
         cylinder(d=bolt_d+2.2,h=h,$fn=40);
@@ -518,17 +525,19 @@ module _shelf_section(height, configuration=0) {
         h = 7-0.2;
         y = section_l / 4;
 
-        union() {
-            tube(7,h,1.5);
+        if (supports) {
+            union() {
+                tube(7,h,1.5);
 
-            translate([0,y,h/2])
-            cube([12,0.5,h],center=true);
+                translate([0,y,h/2])
+                cube([12,0.5,h],center=true);
 
-            translate([0,-y,h/2])
-            cube([12,0.5,h],center=true);
+                translate([0,-y,h/2])
+                cube([12,0.5,h],center=true);
 
-            translate([0,0,0.25/2])
-            cube([12,section_l/2,.25],center=true);
+                translate([0,0,0.25/2])
+                cube([12,section_l/2,.25],center=true);
+            }
         }
     }
 
@@ -809,29 +818,9 @@ module shelf_section_joiner_2() {
     }
 }
 
-module shelf_section_200() {
+module shelf_section(height, configuration=0) {
     rotate([0,0,-45])
-    _shelf_section(200);
-}
-
-module shelf_section_280(configuration=0) {
-    rotate([0,0,-45])
-    _shelf_section(280, configuration=configuration);
-}
-
-module shelf_section_300(configuration=0) {
-    rotate([0,0,-45])
-    _shelf_section(300, configuration=configuration);
-}
-
-module shelf_section_330(configuration=0) {
-    rotate([0,0,-45])
-    _shelf_section(330, configuration=configuration);
-}
-
-module shelf_section_400() {
-    rotate([0,0,-45])
-    _shelf_section(400);
+    _shelf_section(height, configuration=configuration);
 }
 
 module test_shelf_section_bottom() {
@@ -931,3 +920,70 @@ module debug() {
     cylinder(d=4,h=h);
 }
 
+module debug_3x100() {
+
+    #translate([x_pos_2,0,0])
+    cylinder(d=4,h=1000);
+
+    #translate([x_pos_1,0,1000-30])
+    cylinder(d=4,h=1000);
+
+    #translate([x_pos_2,0,2000-60])
+    cylinder(d=4,h=1000);
+
+    intersection() {
+        union() {
+            translate([0,0,1000])
+            rotate([180,0,0]) {
+                _shelf_section(200, configuration=4, supports=false);
+
+                translate([0,0,200])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,400])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,600])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,800])
+                _shelf_section(200, configuration=2, supports=false);
+            }
+
+            translate([0,0,1970.1])
+            rotate([180,0,0]) {
+                _shelf_section(170, configuration=3, supports=false);
+
+                translate([0,0,170])
+                _shelf_section(200, configuration=1, supports=false);
+
+                translate([0,0,370])
+                _shelf_section(200, configuration=1, supports=false);
+
+                translate([0,0,570])
+                _shelf_section(200, configuration=1, supports=false);
+
+                translate([0,0,770])
+                _shelf_section(200, configuration=1, supports=false);
+            }
+
+            translate([0,0,1970+970.2])
+            rotate([180,0,0]) {
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,200])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,400])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,600])
+                _shelf_section(200, configuration=2, supports=false);
+
+                translate([0,0,800])
+                _shelf_section(170, configuration=2, supports=false);
+            }
+        }
+        cube([300,20,5000]);
+    }
+}
