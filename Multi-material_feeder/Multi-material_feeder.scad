@@ -57,9 +57,9 @@ function tube_angle(d, h) = asin(h/(d/2));
 
 //PTFE_2x_cover_1();
 //PTFE_2x_cover_2();
-//PTFE_cutting_jig_1();
+PTFE_cutting_jig_1();
 //PTFE_cutting_jig_2();
-PTFE_M4_tool();
+//PTFE_M4_tool();
 
 ////// MODULES //////
 
@@ -766,7 +766,15 @@ module PTFE_2x_cover_2() {
 
 module PTFE_cutting_jig_1() {
     difference() {
-        cube([10,50,6],center=true);
+        union() {
+            cube([10,50,6],center=true);
+
+            translate([0,50/2-6/2,9/2-6/2])
+            cube([10,6,9],center=true);
+
+            translate([0,-50/2+6/2,9/2-6/2])
+            cube([10,6,9],center=true);
+        }
 
         translate([0,0,2])
         hull() {
@@ -777,11 +785,11 @@ module PTFE_cutting_jig_1() {
             cube([4.3,55,1],center=true);
         }
         
-        translate([0,44/2,5/2+2-4.3/2-0.2])
-        cube([11,0.5,5],center=true);
+        translate([0,44/2,8/2+2-4.3/2-0.2])
+        cube([11,0.5,8],center=true);
 
-        translate([0,-44/2,5/2+2-4.3/2-0.2])
-        cube([11,0.5,5],center=true);
+        translate([0,-44/2,8/2+2-4.3/2-0.2])
+        cube([11,0.5,8],center=true);
         
         translate([0,-44/2+23.5,2])
         rotate([-90,30,0])
