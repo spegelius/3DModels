@@ -22,11 +22,11 @@ section_l = section_hole_l-2*slop;
 section_y_pos = 20 + (section_hole_l + 4)/2;
 section_head_outer_d = section_hole_l - 2*wall - 0.4;
 section_head_d = 11 + slop;
-section_quide_1 = 10+(166-15) / 3;
-section_quide_2 = 166 - section_quide_1;
+section_quide_1 = 55;
+section_quide_2 = 110;
 
 // uncomment if section is over ~200mm
-section_quide_3 = section_hole_w - 35;
+section_quide_3 = 170;
 
 echo("Guide positions:")
 echo(section_quide_1);
@@ -45,6 +45,7 @@ x_pos_4 = x_pos_3 + 10;
 //debug_section();
 //debug();
 //debug_3x100();
+//debug_section_support();
 
 //shelf_top_bracket();
 //shelf_section_bracket_1();
@@ -55,8 +56,8 @@ x_pos_4 = x_pos_3 + 10;
 //shelf_section_bracket_middle(open=true);
 //shelf_section_bracket_support();
 //shelf_section_bracket_support_small();
-//shelf_section_joiner_1();
-//shelf_section_joiner_2();
+//shelf_section_support();
+
 //shelf_section(170, configuration=2);
 //shelf_section(170, configuration=3);
 //shelf_section(200, configuration=1);
@@ -453,30 +454,36 @@ module _shelf_section_quides(height, length=7, extra=0) {
 
     difference() {
         union() {
-            translate([wall+1.5/2,0,height-5+length/2])
-            cube([1.5+extra,g_l,length], center=true);
+            translate([wall+2.5/2,0,height-4+length/2])
+            cube([2.5+extra,g_l,length], center=true);
 
             translate([section_quide_1,0,3+(height-1)/2])
             cube([1+extra,g_l,height-1], center=true);
 
+            translate([section_quide_1,0,height-4+length/2])
+            cube([2+extra,g_l,length], center=true);
+
             translate([section_quide_2,0,3+(height-1)/2])
             cube([1+extra,g_l,height-1], center=true);
 
-            translate([section_w-15/2,0,height-5+length/2])
-            cube([1.5+extra,g_l,length], center=true);
-            
+            translate([section_quide_2,0,height-4+length/2])
+            cube([2+extra,g_l,length], center=true);
+
             if (!is_undef(section_quide_3)) {
                 translate([section_quide_3,0,3+(height-1)/2])
                 cube([1+extra,g_l,height-1], center=true);
 
-                translate([section_w-15/2,0,height-5+length/2])
-                cube([1.5+extra,g_l,length], center=true);
+                translate([section_quide_3,0,height-4+length/2])
+                cube([2+extra,g_l,length], center=true);
             }
+
+            translate([section_w-15/2,0,height-4+length/2])
+            cube([2.5+extra,g_l,length], center=true);
 
             translate([section_w-15/2+(15/2-1+extra)/2,
                        0,
-                       height-5+length/2])
-            cube([15/2-1+extra,1.5+extra,length],center=true);
+                       height-4+length/2])
+            cube([15/2-1+extra,2+extra,length],center=true);
         }
         translate([0,0,height])
         difference() {
@@ -748,73 +755,45 @@ module _shelf_section(height, configuration=0, supports=true) {
     }
 }
 
-module shelf_section_joiner_1() {
-    height = 80;
-    module _base1() {
-        difference() {
-            _section_form(section_w-2*slop,section_l-2*slop,20);
+module shelf_section_support() {
+    h = section_hole_l - 2*wall - 0.5;
 
-            translate([0,0,-20])
-            rotate([0,0,45])
-            shelf_section_200();
-
-            translate([x_pos_2,0,0])
-            cylinder(d=bolt_d+1,h=100,center=true,$fn=25);
-
-            cube([2*x_pos_2,30,100],center=true);
-
-            translate([section_quide_1+section_w/2,0,0])
-            cube([section_w,30,100],center=true);
-        }
-    }
-
-    translate([-28,0,0])
     difference() {
-        linear_extrude(height)
-        offset(delta=-0.2)
-        projection()
-        _base1();
+        union() {
+            hull() {
+                translate([-11,100-1/2,h/2])
+                cube([10,1,h],center=true);
 
-        linear_extrude(height+1)
-        offset(delta=-0.2-wall)
-        projection()
-        _base1();
-    }
-}
+                translate([11,-100+1/2,h/2])
+                cube([10,1,h],center=true);
+            }            
 
-module shelf_section_joiner_2() {
-    height = 80;
+            translate([0,0,h/2])
+            cube([section_quide_2-section_quide_1+1,1,h],center=true);
 
-    module _base2() {
-        difference() {
-            _section_form(section_w-2*slop,section_l-2*slop,20);
-
-            translate([0,0,-20])
-            rotate([0,0,45])
-            shelf_section_200();
-
-            translate([x_pos_3,0,0])
-            cylinder(d=bolt_d+1,h=100,center=true,$fn=25);
-
-            translate([section_quide_2-section_w/2,0,0])
-            cube([section_w,30,100],center=true);
-
-            translate([section_w,0,0])
-            cube([2*(section_l/2+20),30,100],center=true);
+            translate([0,0,h/2])
+            cube([section_quide_2-section_quide_1-1.3,10,h],center=true);
         }
-    }
 
-    translate([-section_w/2-22,0,0])
-    difference() {
-        linear_extrude(height)
-        offset(delta=-0.2)
-        projection()
-        _base2();
+        hull() {
+            translate([-11,100-0.1/2,h])
+            rotate([0,45,0])
+            cube([4,0.1,4],center=true);
 
-        linear_extrude(height+1)
-        offset(delta=-0.2-wall)
-        projection()
-        _base2();
+            translate([11,-100+0.1/2,h])
+            rotate([0,45,0])
+            cube([4,0.1,4],center=true);
+        }    
+
+        hull() {
+            translate([-11,100-0.1/2,0])
+            rotate([0,45,0])
+            cube([4,0.1,4],center=true);
+
+            translate([11,-100+0.1/2,0])
+            rotate([0,45,0])
+            cube([4,0.1,4],center=true);
+        }  
     }
 }
 
@@ -986,4 +965,25 @@ module debug_3x100() {
         }
         cube([300,20,5000]);
     }
+}
+
+module debug_section_support() {
+
+    intersection() {
+        union() {
+
+            translate([2+slop,0,0])
+            _shelf_section(110, configuration=4);
+
+            translate([2+slop,0,110+0.1])
+            _shelf_section(110, configuration=2);
+
+        }
+        translate([0,-29.5,1])
+        cube([240,29,500]);
+    }
+
+    translate([section_quide_1+24.9,0,110+3-1/2])
+    rotate([90,0,0])
+    shelf_section_support();
 }
