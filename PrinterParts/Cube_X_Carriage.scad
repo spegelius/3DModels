@@ -5,17 +5,25 @@ include <../Dollo/NEW_Long_ties/include.scad>;
 
 use <Prometheus_hotend_40mm_fan.scad>;
 
+// use MK3 branch for these
 use <../Original-Prusa-i3/Printed-Parts/scad/nozzle-fan.scad>;
 use <../Original-Prusa-i3/Printed-Parts/scad/nozzle-fan-holder.scad>;
 
 ////// VARIABLES //////
 slop = 0.15;
 nozzle=0.4;
+
 //hotend = "e3dv6";
 hotend = "prometheus";
 
 ////// VIEW //////
-view_proper();
+//debug_mount_assembly();
+//debug_mount_fan_shroud_assembly();
+//debug_mount_fan_assembly();
+//debug_mount_prusa_fan_MK3_assembly();
+//debug_mount_prusa_fan_MK3_45deg_assembly();
+debug_mount_prusa_fan_MK3Sish_assembly();
+//debug_mount_prusa_fan_MK3Sish();
 
 //translate([-30,0,30/2])
 //rotate([180,0,0])
@@ -29,12 +37,14 @@ view_proper();
 //fan_tunnel_arm();
 //rotate([-90,0,0]) fan_tunnel_arm2();
 //cable_mount();
-//prusa_nozzle_fan();
-//prusa_nozzle_fan_2();
-//prusa_nozzle_fan2_adapter();
+//prusa_nozzle_fan_MK3();
+//prusa_nozzle_fan_MK3_45deg();
+//prusa_nozzle_fan_MK3_45deg_adapter();
+//prusa_nozzle_fan_MK3_45deg_holder();
 //rotate([90,0,0]) mount_clamp_prusafan(hotend=hotend);
 //mount_clamp_prusafan_clip();
-//prusa_nozzle_fan2_holder();
+//prusa_nozzle_fan_MK3ish();
+//mount_clamp_prusa_MK3ish(hotend=hotend);
 
 
 ////// MODULES //////
@@ -227,7 +237,7 @@ module mount(hotend="e3dv6") {
         // hot end body
         if (hotend == "prometheus") {
             translate([0,-34, 13.4])
-            cylinder(d=16.2, h=2, $fn=40);
+            cylinder(d=16.5, h=2, $fn=40);
 
             hull() {
                 translate([0,-34, -8])
@@ -837,7 +847,7 @@ module cable_mount() {
     }
 }
 
-module prusa_nozzle_fan() {
+module prusa_nozzle_fan_MK3() {
     %translate([9.5,15.6,7.5])
     rotate([90,0,180])
     import("../_downloaded/50mm_Radial_fan/50mm_fan.stl");
@@ -1019,7 +1029,7 @@ module prusa_nozzle_fan() {
 }
 
 
-module prusa_nozzle_fan_2() {
+module prusa_nozzle_fan_MK3_45deg() {
     %translate([9.5,15.6,10.5])
     rotate([130,0,180])
     import("../_downloaded/50mm_Radial_fan/50mm_fan.stl");
@@ -1066,7 +1076,7 @@ module prusa_nozzle_fan_2() {
     }
 }
 
-module prusa_nozzle_fan2_adapter() {
+module prusa_nozzle_fan_MK3_45deg_adapter() {
     difference() {
         intersection() {
             union() {
@@ -1089,7 +1099,7 @@ module prusa_nozzle_fan2_adapter() {
     }
 }
 
-module prusa_nozzle_fan2_holder() {
+module prusa_nozzle_fan_MK3_45deg_holder() {
     difference() {
         union()
         {
@@ -1241,10 +1251,318 @@ module mount_clamp_prusafan_clip() {
     }
 }
 
+module prusa_nozzle_fan_MK3ish() {
+    %translate([9.5,4.1,4.7])
+    rotate([130,0,180])
+    import("../_downloaded/50mm_Radial_fan/50mm_fan.stl");
+
+    %translate([2.6,0,0])
+    import("../Original-Prusa-i3/Printed-Parts/STL/fan-shroud.stl");
+
+    module _outer() {
+        difference() {
+            union() {
+                // main form
+                hull() {
+                    translate([-4,-6,-8.1])
+                    cylinder(d=27.5,h=12,$fn=60);
+
+                    translate([4,-6,-8.1])
+                    cylinder(d=27.5,h=12,$fn=60);
+
+                    translate([-4,-8.9,-8.1])
+                    cylinder(d=26,h=12,$fn=60);
+
+                    translate([4,-8.9,-8.1])
+                    cylinder(d=26,h=12,$fn=60);
+
+                    translate([0,15,-8])
+                    rotate([-40,0,0])
+                    translate([0,-12/2,5/2])
+                    cube([23,12,5],center=true);
+                }
+                // fan throat
+                translate([0,15,-8])
+                rotate([-40,0,0])
+                translate([0,-18/2,5/2])
+                union() {
+                    cube([22,18,5],center=true);
+
+                    translate([22/2,0,0])
+                    cube([5,5,5],center=true);
+                }
+
+                // fan mount
+                hull() {
+                    translate([-9,3,1/2-8.1])
+                    cube([40,3,1],center=true);
+
+                    translate([-19.4,3,8/2+10.6])
+                    cube([45,3,3],center=true);
+
+                    translate([-7,3,-1/2+47.6])
+                    cube([35,3,1],center=true);
+                }
+
+                rotate([50,0,0])
+                translate([-37.5,13.1,0])
+                hull() {
+                    cylinder(d=10,h=11,$fn=20);
+
+                    translate([1,-6,0])
+                    cylinder(d=2,h=1,$fn=10);
+                }
+
+                rotate([50,0,0])
+                translate([5,51.1,0])
+                cylinder(d=10,h=11,$fn=20);
+
+                rotate([50,0,0])
+                hull() {
+                    translate([5,51.1,0])
+                    cylinder(d=10,h=3,$fn=20);
+
+                    translate([5,8,3/2])
+                    cube([10,1,3],center=true);
+                }
+
+                rotate([50,0,0])
+                hull() {
+                    translate([5,51.1,0])
+                    cylinder(d=10,h=3,$fn=20);
+
+                    translate([-37.5,13.1,0])
+                    cylinder(d=10,h=3,$fn=20);
+                }
+
+                rotate([-40,0,0])
+                translate([5,-22/2,31])
+                cube([10,22,3],center=true);
+
+                rotate([-40,0,0])
+                translate([-18,-22/2,31])
+                cube([10,22,3],center=true);
+            }
+
+            translate([0,-10,12.65])
+            rotate([30.4,0,0])
+            translate([0,-10,0])
+            cube([50,25,20],center=true);
+
+            hull() {
+                translate([-7.9,-10.1,0])
+                cylinder(d=7.1,h=40,center=true,$fn=40);
+
+                translate([7.9,-10.1,0])
+                cylinder(d=7.1,h=40,center=true,$fn=40);
+
+                translate([0,-30,0])
+                cube([2*7.9+7.1,1,40],center=true);
+            }
+
+            translate([-10.68,-19,0])
+            rotate([0,0,-38])
+            cube([5,5,40],center=true);
+
+            translate([10.68,-19,0])
+            rotate([0,0,38])
+            cube([5,5,40],center=true);
+        }
+    }
+
+   module _inner() {
+        difference() {
+            union() {
+                hull() {
+                    translate([-4,-6,-7.1])
+                    cylinder(d=25.5,h=10,$fn=60);
+
+                    translate([4,-6,-7.1])
+                    cylinder(d=25.5,h=10,$fn=60);
+
+                    translate([-4,-8.9,-7.1])
+                    cylinder(d=24,h=10,$fn=60);
+
+                    translate([4,-8.9,-7.1])
+                    cylinder(d=24,h=10,$fn=60);
+
+                    translate([0,14,-7])
+                    rotate([-40,0,0])
+                    translate([0,-9/2,5/2])
+                    cube([19.3,9,5],center=true);
+                }
+                translate([0,14,-7])
+                rotate([-40,0,0])
+                translate([0,-15.3/2,5.1/2])
+                union() {
+                    cube([19.3,15.3,5.1],center=true);
+
+                    translate([19.3/2,0,0])
+                    cube([4,2.5,5],center=true);
+                }
+
+                rotate([50,0,0])
+                translate([-37.5,13.1,0]) {
+                    cylinder(d=3.3,h=25,center=true,$fn=20);
+
+                    translate([0,0,7])
+                    rotate([0,0,30])
+                    M3_nut(6);
+                }
+
+                rotate([50,0,0])
+                translate([5,51.1,0]) {
+                    cylinder(d=3.3,h=25,center=true,$fn=20);
+
+                    translate([0,0,7])
+                    rotate([0,0,30])
+                    M3_nut(6);
+                }
+
+                translate([1,0,43])
+                rotate([90,0,0])
+                cylinder(d=3.3,h=20,center=true,$fn=30);
+
+                translate([-20,0,43])
+                rotate([90,0,0])
+                cylinder(d=3.3,h=20,center=true,$fn=30);
+
+                translate([0,-9,-10/2-4])
+                cube([19,20,10], center=true);
+
+                translate([0,-17,-10/2-4])
+                cube([25.5,20,10], center=true);
+            }
+
+            translate([0,-10,11.35])
+            rotate([30.4,0,0])
+            cube([50,50,20],center=true);
+
+            translate([0,0,40/2-4.1])
+            hull() {
+                translate([-7.9,-10.1,0])
+                cylinder(d=9.1,h=40,center=true,$fn=40);
+
+                translate([7.9,-10.1,0])
+                cylinder(d=9.1,h=40,center=true,$fn=40);
+
+                translate([0,-30,0])
+                cube([2*7.9+9.1,1,40],center=true);
+            }
+
+            translate([0,14,-7])
+            rotate([-40,0,0])
+            translate([0,0,2])
+            cube([20,2,1],center=true);
+
+            translate([0,14,-7])
+            rotate([-40,0,0])
+            translate([0,-15.5,2])
+            cube([20,2,1],center=true);
+        }
+    }
+    
+    module _supports() {
+        translate([11.7,-12.1,3.8/2-8.1])
+        cube([1.6,10,3.8],center=true);
+
+        translate([-11.7,-12.1,3.8/2-8.1])
+        cube([1.6,10,3.8],center=true);
+
+        translate([0,-6,-8.1])
+        hull() {
+            translate([0,0,-1/2+3.8])
+            cube([22,2,1],center=true);
+
+            translate([0,0,1/2])
+            cube([17,2,1],center=true);
+        }
+    }
+
+    difference() {
+        _outer();
+        _inner();
+    }
+    _supports();
+}
+
+module mount_clamp_prusa_MK3ish(hotend="e3dv6"){
+    difference() {
+        hull() {
+            translate([0,-7.4/2,3.6/2])
+            cube([29,17.4,9],center=true);
+
+            translate([10/2,-17.4/2+6/2-7.4/2,3.6/2])
+            cube([39,6,9],center=true);
+        }
+        // hot end neck
+        translate([0,6, -10])
+        cylinder(d=12, h=20, $fn=40);
+
+        if (hotend == "prometheus") {
+            translate([0,6, -3.9])
+            cylinder(d=16.2, h=2, $fn=40);
+        }
+        translate([0,6, 5.4/2])
+        cylinder(d=18, h=20, $fn=40);
+
+        // hot end clamp bolt holes
+        translate([-50/2+15, -14, 0])
+        rotate([-90,0,0])
+        cylinder(d=bolt_hole_dia,h=30, $fn=30);
+
+        //translate([-50/2+12, -14, 0])
+        //cube([7,14,5.4], center=true);
+
+        translate([-50/2+15, -14, 0])
+        rotate([-90,0,0])
+        cylinder(d=bolt_head_hole_dia+1,h=7, $fn=30);
+
+        translate([50/2-15, -14, 0])
+        rotate([-90,0,0])
+        cylinder(d=bolt_hole_dia,h=30, $fn=30);
+
+        //translate([50/2-12, -14, 0])
+        //cube([5,14,5.4], center=true);
+
+        translate([50/2-15, -14, 0])
+        rotate([-90,0,0])
+        cylinder(d=bolt_head_hole_dia+1,h=7, $fn=30);
+
+        translate([50/2-5,-17, 1.7])
+        rotate([-90,0,0])
+        cylinder(d=2.9,h=20, $fn=30);
+
+        translate([50/2-5,-10, 1.7])
+        rotate([-90,0,0])
+        hull() {
+            rotate([0,0,30])
+            M3_nut(2.6, cone=false);
+
+            translate([0,-5,0])
+            rotate([0,0,30])
+            M3_nut(2.6, cone=false);
+        }
+
+        #translate([50/2-26,-17, 1.7])
+        rotate([-90,0,0])
+        cylinder(d=2.9,h=13, $fn=30);
+
+        translate([50/2-26,-10, 1.7])
+        rotate([-90,0,0])
+        hull() {
+            rotate([0,0,30])
+            M3_nut(2.6, cone=false);
+
+            translate([0,-5,0])
+            rotate([0,0,30])
+            M3_nut(2.6, cone=false);
+        }
+    }
+}
 
 
-
-module view_proper() {
+module debug_mount_assembly() {
 
     %translate([0,-8/2, 20/2])
     mock_slide();
@@ -1255,56 +1573,109 @@ module view_proper() {
     translate([0,-38.1,40/2-5])
     mount(hotend=hotend);
 
-    //translate([0,-78.2,40-5-5.4/2])
-    //mount_clamp(hotend=hotend);
-
-    translate([0,-78.2,40-5-5.4/2])
-    mount_clamp_prusafan(hotend=hotend);
-
     %translate([28,-70,7])
     rotate([0,0,-109])
     prox_sensor_clamp();
 
-    //translate([0,-72.1,-19.4])
-    //e3dv6();
+    translate([33,-70.5,-19])
+    proximity_sensor();
 
-    translate([0,-72.1,-3.7])
-    rotate([0,0,90])
-    prometheus_hotend();
+    if (hotend == "e3dv6") {
+        translate([0,-72.1,-23.4])
+        e3dv6();
+    } else {
+        translate([0,-72.1,-3.7])
+        rotate([0,0,90])
+        prometheus_hotend();
+    }
+}
 
-    //translate([33,-70.5,-19])
-    //proximity_sensor();
+module debug_mount_fan_shroud_assembly() {
 
-    //translate([0,-115,20])
-    //rotate([-42,180,0])
-    //fan_tunnel();
+    debug_mount_assembly();
 
-    //translate([-13,-95.2,37.5])
-    //rotate([90,0,90])
-    //fan_tunnel_arm();
+    translate([0,-78.2,40-5-5.4/2])
+    mount_clamp(hotend=hotend);
 
-    //translate([-31,-72.1,-3.7])
-    //rotate([0,0,-90])
-    //color("green")
-    //fan_shroud();
+    translate([-31,-72.1,-3.7])
+    rotate([0,0,-90])
+    color("green")
+    fan_shroud();
+}
 
-    //translate([0,-76,-17])
-    //rotate([0,0,180])
-    //prusa_nozzle_fan();
+module debug_mount_fan_assembly() {
+
+    debug_mount_assembly();
+
+    translate([0,-78.2,40-5-5.4/2])
+    mount_clamp(hotend=hotend);
+
+    translate([0,-115,20])
+    rotate([-42,180,0])
+    fan_tunnel();
+
+    translate([-13,-95.2,37.5])
+    rotate([90,0,90])
+    fan_tunnel_arm();
+
+}
+
+module debug_mount_prusa_fan_MK3_assembly() {
+    debug_mount_assembly();
+
+    translate([0,-76,-17])
+    rotate([0,0,180])
+    prusa_nozzle_fan_MK3();
+
+    // what is this?
+    mount_clamp_prusafan_clip();
+
+    translate([0,-78.2,32.4])
+    mount_clamp_prusafan();
+}
+
+module debug_mount_prusa_fan_MK3_45deg_assembly() {
+    debug_mount_assembly();
+
+    translate([0,-78.2,32.4])
+    mount_clamp_prusafan();
 
     translate([0,-78,-17])
     rotate([0,0,180])
-    prusa_nozzle_fan_2();
+    prusa_nozzle_fan_MK3_45deg();
 
     translate([42.5,-91.2 ,-6.6])
     rotate([0,0,180])
-    prusa_nozzle_fan2_adapter();
+    prusa_nozzle_fan_MK3_45deg_adapter();
 
     translate([0.5,-54.5,35])
     rotate([0,0,180])
-    prusa_nozzle_fan2_holder();
+    prusa_nozzle_fan_MK3_45deg_holder();
+}
 
-    translate([0,-55,43.1])
-    rotate([180,0,0])
-    mount_clamp_prusafan_clip();
+module debug_mount_prusa_fan_MK3Sish_assembly() {
+    debug_mount_assembly();
+
+    translate([-31,-72.1,-3.7])
+    rotate([0,0,-90])
+    color("green")
+    fan_shroud();
+
+    translate([0,-78.1,40-5-5.4/2])
+    mount_clamp_prusa_MK3ish(hotend=hotend);
+
+    translate([0,-89,-9])
+    rotate([0,0,180])
+    prusa_nozzle_fan_MK3ish();
+}
+
+module debug_mount_prusa_fan_MK3Sish() {
+
+    intersection() {
+        prusa_nozzle_fan_MK3ish();
+
+        translate([0,-50/2,-10])
+        cube([50,50,50]);
+    }
+
 }
