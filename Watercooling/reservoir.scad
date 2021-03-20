@@ -78,7 +78,7 @@ inner_l = length-2*wall;
 //gasket();
 //ring_gasket_passthrough();
 //ring_gasket_wire();
-//cork_gasket();
+cork_gasket();
 //bottomvoir();
 
 //washer_passthrough($fn=40);
