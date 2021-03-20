@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<profile name="Cube/Prometheus4x/filaswitch/Duet" version="2019-03-09 19:55:53" app="S3D-Software 4.1.2">
+<profile name="CubePrometheus-filaswitch" version="2021-03-05 20:55:52" app="S3D-Software 4.1.2">
   <baseProfile>Default</baseProfile>
   <printMaterial>PLA</printMaterial>
   <printQuality>Medium</printQuality>
@@ -11,14 +11,14 @@
     <width>0.45</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
-    <retractionDistance>2</retractionDistance>
+    <retractionDistance>3</retractionDistance>
     <extraRestartDistance>0</extraRestartDistance>
     <retractionZLift>0.5</retractionZLift>
-    <retractionSpeed>2400</retractionSpeed>
+    <retractionSpeed>2100</retractionSpeed>
     <useCoasting>0</useCoasting>
     <coastingDistance>0.2</coastingDistance>
     <useWipe>1</useWipe>
-    <wipeDistance>5</wipeDistance>
+    <wipeDistance>2</wipeDistance>
   </extruder>
   <extruder name="Extruder 2">
     <toolheadNumber>1</toolheadNumber>
@@ -27,14 +27,14 @@
     <width>0.45</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
-    <retractionDistance>2</retractionDistance>
+    <retractionDistance>3</retractionDistance>
     <extraRestartDistance>0</extraRestartDistance>
     <retractionZLift>0.5</retractionZLift>
-    <retractionSpeed>2400</retractionSpeed>
+    <retractionSpeed>2100</retractionSpeed>
     <useCoasting>0</useCoasting>
     <coastingDistance>0.2</coastingDistance>
     <useWipe>1</useWipe>
-    <wipeDistance>5</wipeDistance>
+    <wipeDistance>2</wipeDistance>
   </extruder>
   <extruder name="Extruder 3">
     <toolheadNumber>2</toolheadNumber>
@@ -43,14 +43,14 @@
     <width>0.45</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
-    <retractionDistance>2</retractionDistance>
+    <retractionDistance>3</retractionDistance>
     <extraRestartDistance>0</extraRestartDistance>
     <retractionZLift>0.5</retractionZLift>
-    <retractionSpeed>2400</retractionSpeed>
+    <retractionSpeed>2100</retractionSpeed>
     <useCoasting>0</useCoasting>
     <coastingDistance>0.2</coastingDistance>
     <useWipe>1</useWipe>
-    <wipeDistance>5</wipeDistance>
+    <wipeDistance>2</wipeDistance>
   </extruder>
   <extruder name="Extruder 4">
     <toolheadNumber>3</toolheadNumber>
@@ -59,14 +59,14 @@
     <width>0.45</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
-    <retractionDistance>2</retractionDistance>
+    <retractionDistance>3</retractionDistance>
     <extraRestartDistance>0</extraRestartDistance>
     <retractionZLift>0.5</retractionZLift>
-    <retractionSpeed>2400</retractionSpeed>
+    <retractionSpeed>2100</retractionSpeed>
     <useCoasting>0</useCoasting>
     <coastingDistance>0.2</coastingDistance>
     <useWipe>1</useWipe>
-    <wipeDistance>5</wipeDistance>
+    <wipeDistance>2</wipeDistance>
   </extruder>
   <extruder name="Support Extruder">
     <toolheadNumber>5</toolheadNumber>
@@ -75,14 +75,14 @@
     <width>0.45</width>
     <extrusionMultiplier>1</extrusionMultiplier>
     <useRetract>1</useRetract>
-    <retractionDistance>2</retractionDistance>
+    <retractionDistance>3</retractionDistance>
     <extraRestartDistance>0</extraRestartDistance>
     <retractionZLift>0.5</retractionZLift>
-    <retractionSpeed>2400</retractionSpeed>
+    <retractionSpeed>2100</retractionSpeed>
     <useCoasting>0</useCoasting>
     <coastingDistance>0.2</coastingDistance>
     <useWipe>1</useWipe>
-    <wipeDistance>5</wipeDistance>
+    <wipeDistance>2</wipeDistance>
   </extruder>
   <primaryExtruder>0</primaryExtruder>
   <layerHeight>0.2</layerHeight>
@@ -317,14 +317,14 @@
       <width>0.45</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
-      <retractionDistance>2</retractionDistance>
+      <retractionDistance>3</retractionDistance>
       <extraRestartDistance>0</extraRestartDistance>
       <retractionZLift>0.5</retractionZLift>
-      <retractionSpeed>2400</retractionSpeed>
+      <retractionSpeed>2100</retractionSpeed>
       <useCoasting>0</useCoasting>
       <coastingDistance>0.2</coastingDistance>
       <useWipe>1</useWipe>
-      <wipeDistance>5</wipeDistance>
+      <wipeDistance>2</wipeDistance>
     </extruder>
     <extruder name="Extruder 2">
       <toolheadNumber>1</toolheadNumber>
@@ -333,14 +333,14 @@
       <width>0.45</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
-      <retractionDistance>2</retractionDistance>
+      <retractionDistance>3</retractionDistance>
       <extraRestartDistance>0</extraRestartDistance>
       <retractionZLift>0.5</retractionZLift>
-      <retractionSpeed>2400</retractionSpeed>
+      <retractionSpeed>2100</retractionSpeed>
       <useCoasting>0</useCoasting>
       <coastingDistance>0.2</coastingDistance>
       <useWipe>1</useWipe>
-      <wipeDistance>5</wipeDistance>
+      <wipeDistance>2</wipeDistance>
     </extruder>
     <extruder name="Extruder 3">
       <toolheadNumber>2</toolheadNumber>
@@ -349,14 +349,14 @@
       <width>0.45</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
-      <retractionDistance>2</retractionDistance>
+      <retractionDistance>3</retractionDistance>
       <extraRestartDistance>0</extraRestartDistance>
       <retractionZLift>0.5</retractionZLift>
-      <retractionSpeed>2400</retractionSpeed>
+      <retractionSpeed>2100</retractionSpeed>
       <useCoasting>0</useCoasting>
       <coastingDistance>0.2</coastingDistance>
       <useWipe>1</useWipe>
-      <wipeDistance>5</wipeDistance>
+      <wipeDistance>2</wipeDistance>
     </extruder>
     <extruder name="Extruder 4">
       <toolheadNumber>3</toolheadNumber>
@@ -365,14 +365,14 @@
       <width>0.45</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
-      <retractionDistance>2</retractionDistance>
+      <retractionDistance>3</retractionDistance>
       <extraRestartDistance>0</extraRestartDistance>
       <retractionZLift>0.5</retractionZLift>
-      <retractionSpeed>2400</retractionSpeed>
+      <retractionSpeed>2100</retractionSpeed>
       <useCoasting>0</useCoasting>
       <coastingDistance>0.2</coastingDistance>
       <useWipe>1</useWipe>
-      <wipeDistance>5</wipeDistance>
+      <wipeDistance>2</wipeDistance>
     </extruder>
     <extruder name="Support Extruder">
       <toolheadNumber>5</toolheadNumber>
@@ -381,14 +381,14 @@
       <width>0.45</width>
       <extrusionMultiplier>1</extrusionMultiplier>
       <useRetract>1</useRetract>
-      <retractionDistance>2</retractionDistance>
+      <retractionDistance>3</retractionDistance>
       <extraRestartDistance>0</extraRestartDistance>
       <retractionZLift>0.5</retractionZLift>
-      <retractionSpeed>2400</retractionSpeed>
+      <retractionSpeed>2100</retractionSpeed>
       <useCoasting>0</useCoasting>
       <coastingDistance>0.2</coastingDistance>
       <useWipe>1</useWipe>
-      <wipeDistance>5</wipeDistance>
+      <wipeDistance>2</wipeDistance>
     </extruder>
     <fanSpeed>
       <setpoint layer="1" speed="0"/>
