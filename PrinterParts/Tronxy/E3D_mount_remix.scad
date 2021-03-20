@@ -2,123 +2,147 @@ use <../../PCParts/common.scad>;
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
 
+use <../Copperhead/cooling_shroud.scad>;
+
+stl_path = 
+    "../../_downloaded/Tronxy X5s e3d v6 Mount With Belt Aligner/";
+
+
+//debug_copperhead_cooling_shroud();
+
+//tronxy_belt_clip_left_top();
+//tronxy_belt_clip_right_top();
+//tronxy_belt_clip_left_bottom();
+tronxy_belt_clip_right_bottom();
+//tronxy_E3D_mount();
+//tronxy_E3D_mount_cap();
+
+
 module round_tooth(height) {
     hull() {
-        cube([1,1,height]);
+        cube([0.95, 0.95, height]);
 
-        translate([0.5,1,0])
-        cylinder(d=1,h=height,$fn=10);
+        translate([0.5, 1, 0])
+        cylinder(d=0.95, h=height, $fn=10);
     }
 }
     
 module tooth(height) {
-    cube([1,1.55,height]);
+    cube([1.05, 1.55, height]);
 }
 
 module gt2_belt(length=10, height=6) {
-    
-    cube([length,0.9,height]);
+
     teeth = round(length/2);
-    for(i = [0:teeth-1]) {
-        translate([i*2,0,0])
+    
+    cube([length, 0.9, height]);
+
+    for(i = [0:teeth - 1]) {
+        translate([i*2, 0, 0])
         tooth(height);
     }
 }
 
-module rounded_gt2_belt(length, dia, height=6, teeth_inside=true) {
+module rounded_gt2_belt(
+    length, dia, height=6, teeth_inside=true) {
     
     total_len = PI * dia;
     step = 2/(total_len/360);
-    
     steps = round(length/2);
     
-    function tooth_pos() = teeth_inside ? dia/2-1.57+0.9/2 : dia/2-0.9/2;
+    function tooth_pos() = 
+        teeth_inside ? dia/2 - 1.57 + 0.9/2 : dia/2 - 0.9/2;
+
     function start_angle() = -steps/2 * step;
         
-    translate([length/2,-dia/2,0]) union() {
+    translate([length/2, -dia/2, 0])
+    union() {
         difference() {
-            cylinder(d=dia+0.9, h=height,$fn=60);
+            cylinder(d=dia + 0.9, h=height, $fn=60);
 
-            translate([0,0,-0.1])
-            cylinder(d=dia-0.9, h=height+1,$fn=60);
+            translate([0, 0, -0.1])
+            cylinder(d=dia - 0.9, h=height + 1, $fn=60);
 
-            rotate([0,0,start_angle()])
-            translate([0,-(dia+1)/2,-0.1])
-            cube([dia+1,dia+1,height+1]);
+            rotate([0, 0, start_angle()])
+            translate([0, -(dia + 1)/2, -0.1])
+            cube([dia + 1, dia + 1, height + 1]);
 
-            rotate([0,0,-start_angle()])
-            translate([-(dia+1),-(dia+1)/2,-0.1])
-            cube([dia+1,dia+1,height+1]);
+            rotate([0, 0, -start_angle()])
+            translate([-(dia + 1), -(dia + 1)/2, -0.1])
+            cube([dia + 1, dia + 1, height + 1]);
         }
-        for (i = [0:steps-1]) {
-            rotate([0,0,step*i+start_angle()])
-            translate([0,tooth_pos(),0])
-            translate([-1/2,0,0]) tooth(height);
+        for (i = [0:steps - 1]) {
+            rotate([0, 0, step*i + start_angle()])
+            translate([0, tooth_pos(), 0])
+            translate([-1/2, 0, 0])
+            tooth(height);
         }
     }
 }
 
+
 module tronxy_belt_clip_left_top() {
     difference() {
-        cube([20,8,19]);
+        cube([20, 9, 20]);
 
-        translate([0,5/2+0.5,11])
-        rotate([0,0,18])
-        mirror([0,1,0])
-        rounded_gt2_belt(14, 50, 9, teeth_inside=false);
+        translate([0, 3.3, 12.6])
+        rotate([0, 0, 14])
+        mirror([0, 1, 0])
+        rounded_gt2_belt(18, 60, 9, teeth_inside=false);
 
-        translate([13.5,0,0])
-        cube([3.5,3,20]);
+        translate([13.5, -0.1, -0.1])
+        cube([3.5, 3.5, 20.1]);
 
-        translate([13.5,1,0])
-        cube([4.5,2,20]);
+        translate([13.5, 1.35, -0.1])
+        cube([4.5, 2.05, 20.1]);
 
-        translate([15,0,14.5])
-        cube([6,3,10]);
+        translate([15, -0.1, 14.5])
+        cube([6, 3.5, 10]);
 
-        translate([8.5,0,13])
-        cube([6,3,10]);
+        translate([13, -0.1, 13])
+        cube([2, 3.5, 10]);
 
-        translate([8.5,3,13])
-        rotate([0,0,-45])
-        translate([0,-5,0]) cube([6,5,10]);
+        translate([11, -0.1, 13])
+        cube([4, 1.6, 10]);
 
-        rotate([0,45,0])
-        cube([10,20,10],center=true);
+        rotate([0, 45, 0])
+        cube([10, 20, 10], center=true);
 
-        translate([-0.8,26.3,0])
-        cylinder(d=39,h=30,$fn=70);
+        translate([24.5, 20, -0.1])
+        cylinder(d=31, h=30, $fn=70);
 
-        translate([24.5,20,0])
-        cylinder(d=30,h=30,$fn=70);
+        rotate([45, 0, 0])
+        cube([29, 3, 10], center=true);
     }
 }
 
 module tronxy_belt_clip_right_top() {
     difference() {
         hull() {
-            cylinder(d=11,h=20,$fn=30);
+            cylinder(d=11, h=20, $fn=30);
 
-            translate([3,-11/2-6,0])
-            cube([15,12,20]);
+            translate([4, -11/2 - 9, 0])
+            cube([14, 15, 20]);
         }
-        cylinder(d=4.3,h=21, $fn=30);
+        cylinder(d=4.3, h=50, center=true, $fn=30);
 
-        translate([18,-33.7,0])
-        cylinder(d=50,h=25,$fn=50);
+        translate([15.5, -36, -0.1])
+        cylinder(d=50, h=25, $fn=80);
 
-        translate([20,11.5,0])
-        cylinder(d=30,h=25,$fn=50);
+        translate([20, 10.5, -0.1])
+        cylinder(d=30, h=25, $fn=80);
 
-        translate([-12+5.1,-12,15.5])
-        cube([12,18,10]);
+        translate([-12 + 5.1, -8.7, 15.5])
+        cube([12, 18, 10]);
 
-        translate([1,-11/2-4.05,20-8])
-        rotate([0,0,16])
-        mirror([0,0,0])
-        rounded_gt2_belt(18, 60, 9);
-        
-        //%translate([18,0,0]) cylinder(d=11,h=5,$fn=30);
+        translate([0, -9, 20 - 7.8])
+        rotate([0, 0, 8])
+        mirror([0, 0, 0])
+        rounded_gt2_belt(28, 80, 9);
+
+        translate([16, 0, 0])
+        rotate([0, 35, 0])
+        cube([10, 30, 30], center=true);
     }
 }
 
@@ -126,102 +150,187 @@ module tronxy_belt_clip_left_bottom() {
     difference() {
         union() {
             hull() {
-                cylinder(d=11,h=11,$fn=30);
+                cylinder(d=11, h=11, $fn=30);
 
-                translate([3,-6,0])
-                cube([13,18,11]);
+                translate([4.64, -6, 0])
+                cube([13, 20, 11]);
             }
-            cylinder(d=11,h=18.5,$fn=30);
+            cylinder(d=11, h=15.5, $fn=30);
 
-            translate([5,-6,0])
-            cube([8,11,22]);
+            translate([5, -6, 0])
+            cube([8, 11, 19]);
         }
-        cylinder(d=4.3,h=19, $fn=30);
+        cylinder(d=4.3, h=49, center=true, $fn=30);
 
-        translate([17,33.7,0])
-        cylinder(d=50,h=25,$fn=50);
+        translate([13.5, 55, -0.1])
+        cylinder(d=88, h=25, $fn=150);
 
-        translate([21,-10,0])
-        cylinder(d=30,h=25,$fn=50);
+        translate([22, -10, -0.1])
+        cylinder(d=30, h=25, $fn=50);
 
-        translate([-12+5.1,-6,0])
-        cube([12,18,3]);
-
-        translate([13,-6,0])
-        cube([12,18,3]);
-
-        translate([0,11/2+4.05,4])
-        rotate([0,0,-16])
-        mirror([0,1,0])
-        rounded_gt2_belt(18, 60, 7);
-        
-        //%translate([18,0,0]) cylinder(d=11,h=5,$fn=30);
+        translate([0, 8, -0.8])
+        rotate([0, 0, -6])
+        mirror([0, 1, 0])
+        rounded_gt2_belt(18, 120, 8);
     }
 }
 
 module tronxy_belt_clip_right_bottom() {
     difference() {
-        cube([20,8,16]);
+        union() {
+            cube([20, 9, 14]);
 
-        translate([6,5/2+5.1,2])
-        rotate([0,0,-18])
-        mirror([0,1,0])
-        rounded_gt2_belt(14, 50, 8, teeth_inside=false);
+            //translate([10.5, -2, 0])
+            //cube([9.5, 10, 14]);
+        }
 
-        translate([3,0,0])
-        cube([3.5,3,20]);
+        translate([0, 8.1, -0.8])
+        rotate([0, 0, -10])
+        mirror([0, 1, 0])
+        rounded_gt2_belt(30, 60, 8, teeth_inside=false);
 
-        cube([3.5,3,2]);
+        translate([3, -0.1, -0.1])
+        cube([3.5, 3.5, 20]);
 
-        translate([2,1,0])
-        cube([4.5,2,20]);
+        translate([2, 1.35, -0.1])
+        cube([4.5, 2.05, 20]);
 
-        translate([4,-1,0])
-        cube([20,2,20]);
+        translate([4, -1, -0.1])
+        cube([6.5, 2.4, 20]);
         
-        translate([25,22,9.8])
-        cylinder(d=50,h=30,$fn=70);
+        translate([19, 25, -0.1])
+        cylinder(d=33.5, h=30, $fn=70);
 
-        translate([25,21,15])
-        cylinder(d=56,h=30,$fn=70);
-
-        rotate([0,45,0])
-        cube([4,25,4],center=true);
+        translate([20, 0, 14])
+        rotate([0, 45, 0])
+        cube([7, 20, 7], center=true);
     }
 }
 
 module tronxy_E3D_mount() {
-    difference() {
-        import("../../_downloaded/Tronxy X5s e3d v6 Mount With Belt Aligner/tronxy_x5s_e3d_v6_mtg_+_belt_aligner_r1.STL", convexity=3);
 
-        translate([-23.5,3,0])
-        cube([20,50,25]);
+    union() {
+        difference() {
+        
+            import(str(stl_path,
+                    "tronxy_x5s_e3d_v6_mtg_+_belt_aligner_r1.STL"),
+                convexity=10);
 
-        translate([70.5,4,0])
-        cube([20,50,25]);
+            translate([-23.5, 3, 0])
+            cube([20, 50, 25]);
 
-        translate([72.5,-4,0])
-        cube([20,50,25]);
+            translate([70.5, 4, 0])
+            cube([20, 50, 25]);
+
+            translate([72.5, -4, 0])
+            cube([20, 50, 25]);
+
+            translate([14, -17.2, 9.10])
+            cube([40, 10, 25]);
+
+            translate([14, -11.3, 5])
+            rotate([45, 0, 0])
+            cube([40, 5.8, 25]);
+
+            translate([0, 30, 0])
+            rotate([45, 0, 0])
+            cube([200, 9, 9], center=true);
+
+        }
+
+        translate([1.5, 2.61, 11.5])
+        rotate([90, 0, 0])
+        tube(12, 0.6, 3.8, $fn=100);
+
+        hull() {
+            translate([8, 15, 12.95])
+            cube([0.8, 20, 0.1], center=true);
+
+            translate([1.61, 15, 19.95])
+            cube([0.1, 20, 0.1], center=true);
+
+            translate([8.35, 15, 19.95])
+            cube([0.1, 20, 0.1], center=true);
+        }
+
+        hull() {
+            translate([8, 15, 12.95])
+            cube([0.8, 20, 0.1], center=true);
+
+            translate([8, 15, 2.95])
+            cube([0.8, 20, 0.1], center=true);
+        }
+
+        hull() {
+            translate([67, 15, 2.5])
+            cube([1, 22.1, 1], center=true);
+
+            translate([65, 15, 5])
+            cube([1, 22.1, 1], center=true);
+
+            translate([72.45, 15, 7.28])
+            cube([0.1, 22.1, 1], center=true);
+
+            translate([72.45, 15, 2.5])
+            cube([0.1, 22.1, 1], center=true);
+        }
     }
-    %translate([1.5,3,11.5])
-    rotate([-90,180,0])
+
+    // debug
+    %translate([1.5, 6, 11.5])
+    rotate([-90, 180, 0])
     tronxy_belt_clip_left_bottom();
 
-    %translate([65.5,6,11.5])
-    rotate([-90,0,0])
+    %translate([65.5, 6, 11.5])
+    rotate([-90, 0, 0])
     tronxy_belt_clip_right_top();
 
-    %translate([-15,3,0])
-    rotate([-90,0,0])
+    %translate([-16.4, 5.5, 3.3])
+    rotate([-90, 0, 0])
     tronxy_belt_clip_left_top();
 
-    %translate([62.5,6,0])
-    rotate([-90,0,0])
+    %translate([63.4, 6, 3.3])
+    rotate([-90, 0, 0])
     tronxy_belt_clip_right_bottom();
+
+    // hole pos debug
+    %translate([13.5, 8.5, 0])
+    cylinder(d=4.5, h=20, center=true, $fn=30);
+
+    %translate([53.5, 8.5, 0])
+    cylinder(d=4.5, h=20, center=true, $fn=30);
+
+    %translate([26.5, -11.5, 0])
+    cylinder(d=3, h=20, center=true, $fn=30);
+
+    %translate([40.5, -11.5, 0])
+    cylinder(d=3, h=20, center=true, $fn=30);
+
 }
 
-tronxy_belt_clip_left_top();
-//tronxy_belt_clip_right_top();
-//tronxy_belt_clip_left_bottom();
-//tronxy_belt_clip_right_bottom();
-//tronxy_E3D_mount();
+module tronxy_E3D_mount_cap() {
+    difference() {
+        import(str(stl_path,
+                "tronxy_x5s_e3d_v6_mtg_cap_r1.STL"),
+            convexity=10);
+
+        translate([10, 27.7, 25])
+        cube([50, 20, 20], center=true);
+    }
+}
+
+module debug_copperhead_cooling_shroud() {
+    rotate([90, 0, 0])
+    tronxy_E3D_mount();
+
+    %translate([33.5, -20, -59.25])
+    rotate([0, 0, -90])
+    copperhead(block_rotation=90);
+
+    translate([33.5, -41, -56.25])
+    new_duct(supports=false);
+
+    translate([26.65, -53, 10.5])
+    rotate([-90,0,0])
+    tronxy_E3D_mount_cap();
+}
