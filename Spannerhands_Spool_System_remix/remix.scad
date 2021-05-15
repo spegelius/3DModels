@@ -1,7 +1,7 @@
 // original models from: https://www.thingiverse.com/thing:2119644
 
-use <../lib/includes.scad>;
-//use <../Dollo/NEW_long_ties/include.scad>;
+//use <../lib/includes.scad>;
+use <../Dollo/NEW_long_ties/include.scad>;
 use <../Bearings/bearing5.scad>;
 
 
@@ -75,7 +75,7 @@ w_thin = 82.7;
 //new_base_bracket();
 //new_lid_bracket();
 //new_clasp_bracket();
-new_ptfe_nozle();
+//new_ptfe_nozle();
 
 //new_core_750g_50mm();
 //new_core_750g_51mm();
@@ -94,6 +94,7 @@ new_ptfe_nozle();
 //small_core_bearing();
 //small_core_axle();
 
+sunlu_core_adapter();
 //lip();
 //lip_thin();
 
@@ -764,7 +765,7 @@ module window_frame() {
         difference() {
             translate([0,0,1/2])
             hull() {
-                cube([58,58,1], center=true);
+                cube([59,59,1], center=true);
 
                 translate([0,0,3.4-0.4/2-1/2])
                 cube([63,63,0.4], center=true);
@@ -793,9 +794,11 @@ module window_frame() {
             translate([-25,25,-0.2])
             M3_nut(2, cone=false);
 
+            // window hole
             cube([42,42,10], center=true);
 
-            translate([0,0,10/2+2.4])
+            // pane indent
+            translate([0,0,10/2+2.6])
             cube([47,47,10], center=true);
         }
     }
@@ -1154,10 +1157,10 @@ module _core_universal(h=89) {
         wall = 1;
         intersection() {
             difference() {
-                cylinder(d=50,h=h,$fn=50);
-                cylinder(d=50-wall*2,h=h,$fn=50);
+                cylinder(d=50, h=h, $fn=50);
+                cylinder(d=50 - wall*2, h=h, $fn=50);
             }
-            cube([26,26,h]);
+            cube([26, 26, h]);
         }
     }
 
@@ -1166,22 +1169,22 @@ module _core_universal(h=89) {
 
         union() {
             difference() {
-                cylinder(d=inner_d+3,h=h,$fn=80);
-                cylinder(d=22.5,h=h,$fn=80);
+                cylinder(d=inner_d + 3, h=h, $fn=80);
+                cylinder(d=22.5, h=h, $fn=80);
             }
-            translate([0,0,7+sqrt(2)/2])
-            cube_donut(inner_d,2);
+            translate([0, 0, 7 + sqrt(2)/2])
+            cube_donut(inner_d, 2);
 
-            translate([0,0,h-(7+sqrt(2)/2)])
-            cube_donut(inner_d,2);
+            translate([0, 0, h - (7 + sqrt(2)/2)])
+            cube_donut(inner_d, 2);
 
-            for(i=[0:3]) {
-                rotate([0,0,360/4*i]) {
-                    translate([0,inner_d/2+0.2,7/2])
-                    cube([1,1,7],center=true);
+            for(i = [0:3]) {
+                rotate([0, 0, 360/4 * i]) {
+                    translate([0, inner_d/2 + 0.2, 7/2])
+                    cube([1, 1, 7], center=true);
 
-                    translate([0,inner_d/2+0.2,h-7/2])
-                    cube([1,1,7],center=true);
+                    translate([0, inner_d/2 + 0.2, h - 7/2])
+                    cube([1, 1, 7], center=true);
                 }
             }
         }
@@ -1215,6 +1218,31 @@ module core_1kg_universal() {
 
 module core_750g_universal() {
     _core_universal(55.1);
+}
+
+module sunlu_core_adapter() {
+    // 73mm hole on Sunlu spools
+    h = 60;
+    wall = 1.2;
+
+    intersection() {
+        union() {
+            tube(72, h, wall, $fn=50);
+            tube(54, h, wall, $fn=50);
+
+            for(i = [0:3]) {
+                rotate([0, 0, i*360/4])
+                translate([52/2 + 10/2, 0, h/2])
+                cube([10, wall, h], center=true);
+
+                rotate([0, 0, i*360/4 + 45])
+                translate([70/2, 0, 0])
+                scale([1, 1.5, 1])
+                cylinder(d=3.5, h=h, $fn=20);
+            }
+        }
+        chamfered_cylinder(73.5, h, 1, $fn=60);
+    }
 }
 
 module _lip(h) {
@@ -1366,7 +1394,7 @@ module debug() {
     rotate([0,90,0])
     difference() {
         cylinder(d=202,h=90,$fn=100);
-        cylinder(d=10,h=190,$fn=100,center=true);
+        cylinder(d=50,h=190,$fn=100,center=true);
     }
     translate([8+100.7/2,100,80])
     rotate([-7,0,0])
