@@ -12,6 +12,9 @@ depth = 13;
 //debug_special1();
 
 //cable_tray(248.5/2);
+//cable_tray(240);
+//cable_tray(149);
+//cable_tray(190);
 //cable_tray(130, top_guides=false, bottom_guides=false);
 //cable_tray(180, chamfer=2);
 //cable_tray(200, chamfer=1, support=true);
@@ -35,6 +38,7 @@ depth = 13;
 //cable_tray_cover_special2();
 
 //cable_tray_cover(140);
+cable_tray_cover(186);
 //cable_tray_cover_300_x4();
 //cable_tray_cover_300_x6();
 
@@ -43,6 +47,14 @@ depth = 13;
 
 //corner_tray(150, 100);
 //corner_tray_cover(150, 100);
+
+//corner_tray(125, 125);
+
+//corner_tray(100, 100);
+//corner_tray_cover(120, 120);
+//corner_tray_cover(105, 105);
+//corner_tray_cover(95, 145);
+//corner_tray_cover();
 
 //cable_tray_cover_angled(h=50);
 //cable_tray_cover_angled2(h=80);
@@ -372,7 +384,7 @@ module corner_tray(len1=80, len2=80) {
     }
 }
 
-module corner_tray_cover(len1, len2) {
+module corner_tray_cover(len1=80, len2=80) {
     l1 = len1 - 35.35;
     l2 = len2 - 35.35;
 
@@ -392,20 +404,20 @@ module corner_tray_cover(len1, len2) {
 }
 
 module cable_tray_cover(h=100) {
-    translate([0,0,h/2])
+    translate([0, 0, h/2])
     difference() {
-        rounded_cube_side(30,4,h,1,center=true,$fn=20);
+        rounded_cube_side(30, 4, h, 1, center=true, $fn=20);
 
         hull() {
-            translate([0,(4-wall-1.3)/2-4/2+wall])
-            cube([30-2*wall,4-wall-1.3,h+1],center=true);
+            translate([0, (4 - wall - 1.3)/2 - 4/2 + wall])
+            cube([30 - 2*wall, 4 - wall - 1.3, h + 1], center=true);
 
-            translate([0,3.7,0])
-            cube([5,1,h+1],center=true);
+            translate([0, 3.7, 0])
+            cube([5, 1, h + 1], center=true);
         }
 
-        translate([0,4/2,0])
-        cube([25.2,4,h+1],center=true);
+        translate([0, 4/2, 0])
+        cube([25.2, 4, h + 1], center=true);
     }
 }
 
@@ -782,11 +794,11 @@ module debug_angled() {
 
 module debug_chamfer() {
     translate([0,depth/2,0])
-    cable_tray(50, chamfer=1);
+    cable_tray(50, bottom_chamfer=45);
 
     rotate([90,0,180])
     translate([0,depth/2,0])
-    cable_tray(50, chamfer=1);
+    cable_tray(50, bottom_chamfer=45);
 
     translate([0,13-0.2,10.5])
     rotate([0,0,180])
@@ -809,11 +821,4 @@ module debug_special1() {
     translate([0,13-0.2,10.5])
     rotate([0,0,180])
     cable_tray_cover_special1(support=false);
-}
-
-difference() {
-    cable_tray_cover(150);
-
-    translate([0, 10/2-0.3, 50/2+150-45])
-    cube([50,10,50],center=true);
 }
