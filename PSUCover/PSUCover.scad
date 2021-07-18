@@ -2,34 +2,29 @@ include <../Dollo/NEW_long_ties/include.scad>;
 include <../Dollo/NEW_long_ties/globals.scad>;
 include <../Dollo/NEW_long_ties/mockups.scad>;
 
-switch_height = 12.8;
-switch_width = 19.45;
+use <../PCParts/common.scad>;
+
+
 
 $fn=30;
 
-module switch_hole() {
-    hull() {
-        translate([0,0,3]) cube([switch_height, switch_width+2, 1], center=true);
-        translate([0,0,0.48]) cube([switch_height, switch_width, 1], center=true);
-    }
-}
+//%translate([53, 2.5, 35])
+//rotate([90, 0, 180])
+//mock_PSU_600W();
 
-module cord_socket_hole() {
-    w = 27.2;
-    l = 19.2;
-    hull() {
-        translate([-w/2+5/2,-l/2+5/2,0]) cylinder(d=5,h=10,$fn=30);
-        translate([w/2-5/2,-l/2+5/2,0]) cylinder(d=5,h=10,$fn=30);
-        
-        translate([-w/2+1/2,-19/2+13,0]) cylinder(d=1,h=10,$fn=20);
-        translate([w/2-1/2,-19/2+13,0]) cylinder(d=1,h=10,$fn=20);
-        
-        translate([-15/2+1/2,19/2-1/2,0]) cylinder(d=1,h=10,$fn=20);
-        translate([15/2-1/2,19/2-1/2,0]) cylinder(d=1,h=10,$fn=20);
-    }
-    translate([40/2,0,0]) cylinder(d=3.2,h=10,$fn=20);
-    translate([-40/2,0,0]) cylinder(d=3.2,h=10,$fn=20);
-}
+//cover1_360W();
+cover2_360W();
+//cover2_360W_with_2020_ear();
+//cover_240W();
+//cover_240W_with_2020_ear();
+
+//bottom_bracket1();
+//bottom_bracket2();
+
+//translate([0, -25, 0])
+//cord_holder();
+//translate([20, -25, 0])
+//cord_holder(false);
 
 //cord_socket_hole();
 
@@ -58,7 +53,7 @@ module cover1_360W() {
         translate([33, 18,-1]) cylinder(d=8,h=3);
         translate([23.5, 18,-1]) cylinder(d=3.3,h=3);
         translate([42.5, 18,-1]) cylinder(d=3.3,h=3);
-        translate([2,25,0]) switch_hole();
+        translate([2,25,0]) mains_switch_hole();
     }
 
     module extrusion() {
@@ -111,11 +106,11 @@ module cover2_360W() {
         translate([16.1,55,16.25]) rotate([90,0,0]) cylinder(d=3,h=10,center=true,$fn=50);
         translate([16.1,55,23.25]) rotate([90,0,0]) cylinder(d=3,h=10,center=true,$fn=50);
         
-        translate([5,55,16]) rotate([90,0,0]) switch_hole();
+        translate([5,55,16]) rotate([90,0,0]) mains_switch_hole();
         translate([-30,48,12]) rotate([-90,0,0]) cord_socket_hole();
         
-        translate([-30-20,52,12]) rotate([0,90,-90]) nut(3);
-        translate([-30+20,52,12]) rotate([0,90,-90]) nut(3);
+        translate([-30-20,52,12]) rotate([0,90,-90]) M3_nut(3);
+        translate([-30+20,52,12]) rotate([0,90,-90]) M3_nut(3);
     }
 }
 
@@ -316,16 +311,3 @@ module cord_holder(nut_holes=true) {
     main();
 }
 
-//%translate([53,2.5,35]) rotate([90,0,180]) mock_PSU_600W();
-
-//cover1_360W();
-//cover2_360W();
-//cover2_360W_with_2020_ear();
-//cover_240W();
-cover_240W_with_2020_ear();
-
-//bottom_bracket1();
-//bottom_bracket2();
-
-//translate([0,-25, 0]) cord_holder();
-//translate([20,-25, 0]) cord_holder(false);
