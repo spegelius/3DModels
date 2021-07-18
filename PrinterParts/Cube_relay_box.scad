@@ -19,9 +19,6 @@ mount_stud_h = 4;
 box_16_x = 200;
 box_16_y = 105;
 
-module mock_stepdown_cenverter() {
-    cube([11,20,1.6]);
-}
 
 module _mock_relay_board(x, y, hole_offset_x, hole_offset_y) {
     difference() {
