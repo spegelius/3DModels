@@ -14,6 +14,25 @@ fan_92mm_bolt_offset = 82.5/2;
 atx_mobo_w = 12*25.4;
 atx_mobo_l = 9.6*25.4;
 
+switch_height = 12.9;
+switch_width = 19.2;
+
+
+//mock_mobo();
+//mock_card();
+//mock_mobo_card();
+//mock_hd();
+//mock_ssd();
+//mock_atx_psu();
+//mock_fan_connector_male();
+//mock_fan_80mm();
+//mock_USB_HDD_Seagate_5T();
+//mock_USB_HDD_Seagate_2T();
+//mock_USB_HDD_Toshiba_4T();
+//mock_USB_hub_Dlink();
+//mock_stepdown_converter();
+
+
 atx_mobo_holes = [
     [atx_mobo_w-0.65*25.4, 0.4*25.4],
     [atx_mobo_w-0.65*25.4, 6.5*25.4],
@@ -146,29 +165,50 @@ module mock_hd() {
     difference() {
         cube([hd_width, 146, 26]);
 
-        translate([0, 28.3, 6.40])
+        translate([-1, 28.3, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
 
-        translate([0, 69.8, 6.40])
+        translate([-1, 69.8, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
 
-        translate([0, 129.8, 6.40])
+        translate([-1, 129.8, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
 
         translate([hd_width - 5, 28.3, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
 
         translate([hd_width - 5, 69.8, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
 
         translate([hd_width - 5, 129.8, 6.40])
         rotate([0, 90, 0])
-        cylinder(d=screw_dia, h=5, $fn=30);
+        cylinder(d=screw_dia, h=6, $fn=30);
+
+        translate([12 + 21/2, 0])
+        cube([21, 10, 4], center=true);
+
+        translate([38 + 11/2, 0])
+        cube([11, 10, 4], center=true);
+
+        translate([12 + 37/2, 0, 5 - 2/2])
+        cube([37, 10, 2], center=true);
+
+        translate([12 + 2/2, 0, 0])
+        cube([2, 10, 10], center=true);
+
+        translate([49 - 2/2, 0, 0])
+        cube([2, 10, 10], center=true);
+
+        translate([34.3 + 2.5/2, 0, 0])
+        cube([2.5, 10, 10], center=true);
+
+        translate([100/2, 0, 8.5 + 2/2])
+        cube([200, 5, 2], center=true);
     }
 }
 
@@ -479,10 +519,136 @@ module mock_fan_140mm() {
     }
 }
 
-//mock_mobo();
-//mock_card();
-//mock_mobo_card();
-//mock_ssd();
-//mock_atx_psu();
-//mock_fan_connector_male();
-//mock_fan_80mm();
+module mock_USB_HDD_Seagate_5T() {
+    difference() {
+        intersection() {
+            rounded_cube_side(
+                80.2, 117.2, 21, 5, center=true, $fn=30);
+
+            translate([0, 0, 5/2])
+            rounded_cube(84, 121, 26, 10, center=true);
+        }
+
+        translate([80.2/2 - 14/2 - 27.5,
+                   -117.2/2, 1])
+        cube([14, 4, 4], center=true);
+    }
+}
+
+module mock_USB_HDD_Seagate_2T() {
+    difference() {
+        intersection() {
+            rounded_cube_side(
+                80.2, 117.2, 14.7, 5, center=true, $fn=30);
+
+            translate([0, 0, 5/2])
+            rounded_cube(84, 121, 19.7, 10, center=true);
+        }
+
+        translate([80.2/2 - 14/2 - 27.5,
+                   -117.2/2, 14.7/2 - 4/2 - 7])
+        cube([14, 4, 4], center=true);
+    }
+}
+
+module mock_USB_HDD_Toshiba_4T() {
+    difference() {
+        intersection() {
+            rounded_cube_side(
+                77.3, 108, 20, 6, center=true, $fn=30);
+
+            translate([0, 0, 5/2])
+            rounded_cube(80, 111, 25, 13, center=true);
+        }
+
+        translate([-80.2/2 + 14/2 + 24,
+                   -108/2, 20/2 - 4/2 - 11])
+        cube([14, 4, 4], center=true);
+    }
+}
+
+module mock_USB_hub_Dlink() {
+    // DUB-H7
+
+    spacing = (98.5 - 22.2 - 7) / 6;
+    echo(spacing);
+
+    difference() {
+        translate([0, 0, 23/2 + 2.6])
+        union() {
+            rounded_cube_side(98.5, 57, 23, 20, center=true);
+
+            translate([0, 0, -2.6])
+            rounded_cube_side(94, 52.5, 23, 20 - 4.5, center=true);
+        }
+
+        translate([-98.5/2 + 19, -57/2, 23 + 2.6 - 11.2])
+        rotate([90, 0, 0])
+        cylinder(d=6, h=10, center=true);
+
+        translate([-98.5/2 + 32 + 8.5/2, -57/2, 9 + 6/2])
+        hull() {
+            cube([8.5, 10, 6], center=true);
+
+            translate([0, 0, (8.2 - 6)/2])
+            cube([5, 10, 8.2], center=true);
+        }
+
+        translate([-98.5/2 + 11.1 + 7/2, 57/2, 7.5 + 14/2])
+        for(i = [0:6]) {
+            translate([i * spacing, 0, 0])
+            cube([7, 10, 14], center=true);
+        }
+    }
+}
+
+module cord_socket_hole() {
+    w = 27.3;
+    l = 19.2;
+
+    hull() {
+        translate([-w/2 + 5/2, -l/2 + 5/2, 0])
+        cylinder(d=5, h=10, $fn=30);
+
+        translate([w/2 - 5/2, -l/2 + 5/2, 0])
+        cylinder(d=5, h=10, $fn=30);
+
+        translate([-w/2 + 1/2, -l/2 + 13, 0])
+        cylinder(d=1, h=10, $fn=20);
+
+        translate([w/2 - 1/2, -l/2 + 13, 0])
+        cylinder(d=1, h=10, $fn=20);
+
+        translate([-15/2 + 1/2, l/2 - 1/2, 0])
+        cylinder(d=1, h=10, $fn=20);
+
+        translate([15/2 - 1/2, l/2 - 1/2, 0])
+        cylinder(d=1, h=10, $fn=20);
+    }
+
+    translate([40/2, 0, 0])
+    cylinder(d=3.2, h=10, $fn=20);
+
+    translate([-40/2, 0, 0])
+    cylinder(d=3.2, h=10, $fn=20);
+}
+
+module mains_switch_hole() {
+    hull() {
+        translate([0, 0, 3])
+        cube([switch_height, switch_width + 2, 1], center=true);
+
+        translate([0, 0, 0.5])
+        cube([switch_height, switch_width, 1], center=true);
+    }
+    translate([0, 0, 1 + 3/2])
+    cube([switch_height + 1, switch_width + 3, 3], center=true);
+}
+
+module mock_stepdown_converter() {
+    translate([0, 0, 1.6/2])
+    cube([11, 20, 1.6], center=true);
+
+    translate([11/2 - 6.5/2 - 0.5, 0, 4.5/2])
+    cube([6.5, 6.5, 4.5], center=true);
+}
