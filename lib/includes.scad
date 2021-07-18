@@ -102,33 +102,6 @@ module rounded_tube(d,h,corner) {
     }
 }
 
-module M3_nut(h=2.4, cone=true) {
-    hull() {
-        cylinder(d = 6.5, h=h, $fn=6);
-        if (cone) {
-            translate([0,0,2.4]) cylinder(d=3.2, h=1.2, $fn=20);
-        }
-    }
-}
-
-module M4_nut(h=3.2, cone=true) {
-    hull() {
-        cylinder(d = 7.85, h=h, $fn=6);
-        if (cone) {
-            translate([0,0,2.4]) cylinder(d=4.2, h=1.2, $fn=20);
-        }
-    }
-}
-
-module M8_nut(h=6, cone=true) {
-    hull() {
-        cylinder(d = 14.9, h=h, $fn=6);
-        if (cone) {
-            translate([0,0,2.4]) cylinder(d=3.2, h=1.2, $fn=20);
-        }
-    }
-}
-
 module dovetail(max_width, min_width, depth, height) {
     angle=atan((max_width/2-min_width/2)/depth);
 	linear_extrude(height=height, convexity=2)
