@@ -7,7 +7,6 @@ use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 include <common.scad>;
 
 
-
 height = 480;
 width = 230;
 depth = 430;
@@ -39,7 +38,7 @@ echo("Extention_t: ", t_length, t_offset);
 
 mount_screw_d = 10;
 
-//debug();
+debug();
 //debug_PSU_plate();
 //debug_foot();
 
@@ -59,8 +58,10 @@ mount_screw_d = 10;
 //PSU_bottom_support_long_bow_tie();
 //foot();
 //foot_dampener();
-motherboard_tray();
+//motherboard_tray();
 //mobo_tray_mount();
+//hdd_mount();
+
 
 module debug() {
     %translate([26,18,420])
@@ -171,15 +172,15 @@ module debug() {
             support=false);
     }
 
-    translate([45,400,height-30])
-    rotate([0,90,0])
-    render()
-    for(i=[0:e_count_w-1]) {
-        translate([0,0,e_length_w/2+i*e_length_w])
-        extention(
-            units=e_units_w/e_count_w,
-            support=false);
-    }
+//    translate([45, 400, height - 30])
+//    rotate([0, 90, 0])
+//    render()
+//    for(i=[0:e_count_w - 1]) {
+//        translate([0, 0, e_length_w/2 + i*e_length_w])
+//        extention(
+//            units=e_units_w/e_count_w,
+//            support=false);
+//    }
 
     // h beams
     translate([0,0,45])
@@ -270,32 +271,48 @@ module debug() {
             support=false);
     }
 
-    translate([0,260,300/2+60+15])
+    translate([0, 260, 300/2 + 60 + 15])
     extention(units=300/30,support=false);
 
-    translate([30,370,15])
+    translate([50, 380, 30])
+    rotate([0, 0, -90])
+    mock_hd();
+
+    translate([50, 380, 60])
+    rotate([0, 0, -90])
+    mock_hd();
+
+    translate([50, 380, 90])
+    rotate([0, 0, -90])
+    mock_hd();
+
+    translate([50, 380, 120])
+    rotate([0, 0, -90])
+    mock_hd();
+
+    translate([50, 380, 150])
+    rotate([0, 0, -90])
+    mock_hd();
+
+    translate([50, 380, 180])
     rotate([0,0,-90])
     mock_hd();
 
-    translate([30,370,45])
+    translate([50, 380, 210])
     rotate([0,0,-90])
     mock_hd();
 
-    translate([30,370,75])
+    translate([50, 380, 240])
     rotate([0,0,-90])
     mock_hd();
 
-    translate([30,370,105])
-    rotate([0,0,-90])
-    mock_hd();
+    translate([123, 329, 210 + 30/2 - 2])
+    rotate([0, 0, 90])
+    hdd_mount();
 
-    translate([30,370,135])
-    rotate([0,0,-90])
-    mock_hd();
-
-    translate([30,370,165])
-    rotate([0,0,-90])
-    mock_hd();
+    translate([123, 329, 240 + 30/2 - 2])
+    rotate([0, 0, 90])
+    hdd_mount();
 
     translate([width/2-30/2,5/2+3,17])
     rotate([90,0,0])
@@ -315,6 +332,9 @@ module debug() {
         translate([0,0,-0.05])
         foot_dampener();
     }
+
+    translate([width/2 - 30/2, depth - 30/2, 100])
+    fan_mount_140mm();
 }
 
 module test_PSU_plate() {
@@ -668,7 +688,7 @@ module motherboard_tray() {
                         d=3.5,h=h*4,
                         center=true,$fn=30);
                     M3_nut(
-                        h=h-3,cone=false,
+                        h=h - 3, cone=false,
                         bridging=true);
                 }
             }
@@ -821,3 +841,202 @@ module mobo_tray_mount(support=true) {
         }
     }
 }
+
+module hdd_mount(supports=true) {
+
+    h = 30;
+    w = hd_width + 3.7;
+
+    difference() {
+        union() {
+            cube([w, 146, h], center=true);
+
+            translate([-54, 123, 0])
+            rotate([90, 0, 0])
+            long_bow_tie_half(h);
+
+            hull() {
+                translate([-w/2 + 15/2, 146/2 - 1/2,
+                           -h/2 + 2/2])
+                cube([15, 1, 2], center=true);
+
+                translate([-54 + 4/2 + 0.5, 123 - 2/2,
+                           -h/2 + 2/2])
+                cube([4, 2, 2], center=true);
+            }
+
+            hull() {
+                translate([-w/2 + 3.5/4, 146/2 - 1/2, 0])
+                cube([3.5/2, 1, h], center=true);
+
+                translate([-54 + 3.5/4 + 0.5, 123 - 2/2, 0])
+                cube([3.5/2, 2, h], center=true);
+            }
+
+            translate([56, -200 + 123, 0])
+            rotate([90, 0, 180])
+            long_bow_tie_half(h);
+
+            hull() {
+                translate([w/2 - 15/2, 146/2 - 1/2,
+                           -h/2 + 2/2])
+                cube([15, 1, 2], center=true);
+
+                translate([56 - 4/2 - 0.5, 123 - 2/2,
+                           -h/2 + 2/2])
+                cube([4, 2, 2], center=true);
+            }
+
+            hull() {
+                translate([w/2 - 3.5/4, 146/2 - 1/2, 0])
+                cube([3.5/2, 1, h], center=true);
+
+                translate([56 - 3.5/4 - 0.5, 123 - 2/2, 0])
+                cube([3.5/2, 2, h], center=true);
+            }
+
+            translate([56, 123, 0])
+            rotate([-90, 0, 180])
+            long_bow_tie_half(h);
+
+            hull() {
+                translate([w/2 - 3.5/4, -146/2 + 1/2, 0])
+                cube([3.5/2, 1, h], center=true);
+
+                translate([56 - 3/2 - 2,
+                           -200 + 123 + 2/2, 0])
+                cube([3, 2, h], center=true);
+            }
+
+            translate([-w/2 + 0.01, -146/2 + 2.5, 0])
+            rotate([90, 0, -90])
+            long_tie(h);
+        }
+
+        translate([0, -2, 2])
+        cube([hd_width + 0.2, 152, h], center=true);
+
+        translate([20, 146/2 + 2, -h/2 + 4/2 + 1])
+        cube([40, 15, 4], center=true);
+
+        translate([0, 146/2 - 28.3, -h/2 + 2 + 6.4])
+        rotate([0, 90, 0])
+        cylinder(d=3.7, h=200, center=true, $fn=40);
+
+        translate([0, 146/2 - 69.8, -h/2 + 2 + 6.4])
+        rotate([0, 90, 0])
+        cylinder(d=3.7, h=200, center=true, $fn=40);
+
+        translate([0, 146/2 - 129.8, -h/2 + 2 + 6.4])
+        rotate([0, 90, 0])
+        cylinder(d=3.7, h=200, center=true, $fn=40);
+
+        translate([0, 0, h/2 + 10])
+        chamfered_cube(200, 140, 30, 10, center=true);
+
+        translate([0, -27, -h/2 - 12.8])
+        chamfered_cube(200, 62, 30, 10, center=true);
+
+        translate([0, 24, -h/2 - 12.8])
+        chamfered_cube(200, 42, 30, 10, center=true);
+
+        translate([0, 59, -h/2 - 12.8])
+        chamfered_cube(200, 30, 30, 10, center=true);
+
+        translate([0, -28, -2])
+        rotate([45, 0, 0])
+        cube([200, 8, 8], center=true);
+
+        translate([0, 25, -2])
+        rotate([45, 0, 0])
+        cube([200, 8, 8], center=true);
+
+        translate([0, 78, 0])
+        rotate([45, 0, 0])
+        cube([200, 8, 8], center=true);
+
+        translate([0, 94, 0])
+        rotate([45, 0, 0])
+        cube([200, 8, 8], center=true);
+
+        translate([0, 110, 0])
+        rotate([45, 0, 0])
+        cube([200, 8, 8], center=true);
+
+    }
+
+    support_h = 1.95;
+
+    if (supports) {
+        translate([w/2 - 1.5/2, -27, -h/2 + support_h/2])
+        cube([1.5, 41, support_h], center=true);
+
+        translate([-w/2 + 1.5/2, -27, -h/2 + support_h/2])
+        cube([1.5, 41, support_h], center=true);
+
+        translate([w/2 - 1.5/2, 24, -h/2 + support_h/2])
+        cube([1.5, 21, support_h], center=true);
+
+        translate([-w/2 + 1.5/2, 24, -h/2 + support_h/2])
+        cube([1.5, 21, support_h], center=true);
+
+        translate([w/2 - 1.5/2, 59, -h/2 + support_h/2])
+        cube([1.5, 9, support_h], center=true);
+
+        translate([-w/2 + 1.5/2, 59, -h/2 + support_h/2])
+        cube([1.5, 9, support_h], center=true);
+    }
+
+    %translate([hd_width/2, 146/2, -h/2 + 2])
+    rotate([0, 0, 180])
+    mock_hd();
+}
+
+module fan_mount_140mm() {
+    %translate([0, 140/2 + 4.3, 25/2 + 2])
+    mock_fan_140mm();
+
+    difference() {
+        union() {
+            difference() {
+                union() {
+                    translate([-170/2, 20/2, 0])
+                    long_bow_tie_half(20);
+
+                    translate([170/2, 20/2, 0])
+                    long_bow_tie_half(20);
+                }
+
+                translate([0, 20/2, 2/2 + 2])
+                cube([170, 21, 2], center=true);
+            }
+
+            translate([0, 20/2, 2/2])
+            cube([170, 20, 2], center=true);
+
+            hull() {
+                translate([0, 4/2, 1/2])
+                cube([170, 4, 1], center=true);
+
+                translate([0, 4/2, 10/2])
+                cube([145, 4, 10], center=true);
+            }
+
+            translate([-140/2 - 2/2 - 0.5, 20/2, 10/2])
+            cube([2, 20, 10], center=true);
+
+            translate([140/2 + 2/2 + 0.5, 20/2, 10/2])
+            cube([2, 20, 10], center=true);
+        }
+
+        translate([0, 140/2 + 4.3, 0])
+        chamfered_cube(140, 140, 85, 40, center=true);
+
+        translate([124.5/2, 4 + 15.5/2 + 0.3, 0])
+        cylinder(d=5.3, h=10, center=true, $fn=40);
+
+        translate([-124.5/2, 4 + 15.5/2 + 0.3, 0])
+        cylinder(d=5.3, h=10, center=true, $fn=40);
+    }
+}
+!fan_mount_140mm();
