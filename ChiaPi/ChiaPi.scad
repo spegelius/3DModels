@@ -1,7 +1,9 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
+use <../Dollo/NEW_long_ties/long_tie.scad>;
 use <../PCParts/common.scad>;
 use <../PCParts/case_profile.scad>;
+use <../Stepdown_box/Stepdown_box.scad>;
 
 stl_base_path = "../_downloaded/";
 raspi_stl_path = str(
@@ -13,97 +15,340 @@ f_h = 30;
 
 rod_d = 8.3;
 
-side_d = 40 + 73 + 83.5 + 68 - 20 + 54 + 45 + 4 * 20;
+cover_d = 40 + 73 + 83.5 + 68 - 20 + 54 + 45 + 4 * 20;
 
 slop = 0.2;
 
-echo(side_d);
+cover_joiner_positions_x = [
+    0, 40, 80, -40, -80
+];
+
+cover_joiner_positions_y = [
+    22, -22
+];
+
+bottom_joiner_positions = [
+    0, cover_d/4 - 20, -cover_d/4 + 20,
+    cover_d/4 - 60, -cover_d/4 + 60
+];
+
+echo(cover_d);
 
 
 //mock_5V_transformer();
+//mock_5V_transformer_2();
+//mock_5V_transformer_3();
+//mock_5V_USB_transformer();
+//mock_12V_transformer();
 //mockup();
+//debug_beam();
 //debug_hdd_pieces();
-//debug_bottom_joiner();
+//debug_joiners();
 //debug_D_link_clips();
+//debug_Targus_clips();
+//debug_Belkin_clips();
+//debug_5V_transformer_2_clip();
 //debug_side();
+//debug_bottom();
 //debug_top();
+//debug_transformers();
+//debug_stepdown_box_clip();
 
 //front_1();
 //front_2();
 //back_1();
 //back_2();
-//beam_1();
-//beam_2();
-//beam_middle();
 
 //bottom_1();
 //bottom_2();
 //bottom_3();
 //bottom_4();
-//bottom_5();
-//bottom_6();
-//bottom_7();
-//bottom_8();
-//bottom_9();
-//bottom_10();
-//bottom_joiner();
+
+//side_1();
+//side_2();
+//side_3();
+//side_4();
+
+//top_1();
+//top_2();
+//top_3();
+//top_4();
+
+//top_1_dc();
+//top_1_dc_chia_logo();
+
+//top_2_dc();
+//top_2_dc_raspi_green();
+//top_2_dc_raspi_red();
+
+//top_3_dc();
+//top_3_dc_bitcoin_orange();
+//top_3_dc_bitcoin_black();
+
+//top_4_dc();
+top_4_dc_hdd_logo();
+
+//end_joiner();
+//cover_joiner();
+
+//beam_1();
+//beam_2();
+//beam_middle();
 
 //hdd_piece();
+//hdd_piece_big();
 //hdd_piece_end();
 //hdd_piece_clip();
+//hdd_piece_clip_big_1();
+//hdd_piece_clip_big_2();
 //hdd_piece_clip_end();
+
 //pi_mount();
+
 //adapter_USB_HDD_Toshiba_4T_bottom();
 //adapter_USB_HDD_Toshiba_4T_top();
 //adapter_USB_HDD_Seagate_2T_bottom();
 //adapter_USB_HDD_Seagate_2T_top();
 //adapter_USB_HDD_Seagate_5T_bottom();
 //adapter_USB_HDD_Seagate_5T_top();
+//adapter_USB_HDD_Seagate_5T_2_bottom();
+//adapter_USB_HDD_Seagate_5T_2_top();
+//adapter_USB_HDD_Intenso_5T_bottom();
+//adapter_USB_HDD_Intenso_5T_top();
 //cord_socket_mount();
 //mains_switch_mount();
 //5V_transformer_clip();
+//5V_transformer_2_clip();
+//5V_transformer_3_clip();
+//5V_transformer_2_clip_cover();
 //7_5V_transformer_clip();
+//double_transformer_clip();
 
 //D_link_hub_clip_back();
 //D_link_hub_clip_front();
 
-//side_1();
-//side_2();
-//side_3();
-//side_4();
-//side_joiner();
+//Targus_hub_clip_back();
+//Targus_hub_clip_front();
 
-//top_1();
-//top_2();
-//top_3();
-top_4();
+//Belkin_hub_clip_back();
+//Belkin_hub_clip_front();
 
-//top_mount_left();
-//top_mount_right();
+//cable_clip();
 
-//top_mount_front();
-//top_mount_back();
+//connector_clip();
 
-module _transformer_form() {
+//stepdown_box_clip();
+
+//dummy_hdd();
+
+module _transformer_form(h=20) {
     hull() {
         translate([0, 35.5/2 - 3/2, 0])
-        cylinder(d=3, h=20, $fn=30);
+        cylinder(d=3, h=h, $fn=30);
 
         translate([0, -35.5/2 + 3/2, 0])
-        cylinder(d=3, h=20, $fn=30);
+        cylinder(d=3, h=h, $fn=30);
 
         translate([-13.5/2 + 8/2, -10, 0])
-        cylinder(d=8, h=20, $fn=30);
+        cylinder(d=8, h=h, $fn=30);
 
         translate([13.5/2 - 8/2, -10, 0])
-        cylinder(d=8, h=20, $fn=30);
+        cylinder(d=8, h=h, $fn=30);
 
         translate([13.5/2 - 8/2, 10, 0])
-        cylinder(d=8, h=20, $fn=30);
+        cylinder(d=8, h=h, $fn=30);
 
         translate([-13.5/2 + 8/2, 10, 0])
-        cylinder(d=8, h=20, $fn=30);
+        cylinder(d=8, h=h, $fn=30);
     }
+}
+
+module _chia_logo() {
+    intersection() {
+        translate([0, 2, 0])
+        scale([2.2, 2.2, 10])
+        import("chia_logo.stl", convexity=10);
+
+        cube([200, 200, 2], center=true);
+    }
+}
+
+module _raspi_logo_1() {
+    intersection() {
+        difference() {
+            translate([0, 0, 1/2])
+            cube([100, 100, 1], center=true);
+
+            translate([-0.31, 0, -0.1])
+            scale([0.4, 0.4, 0.4])
+            import("../_downloaded/Raspberry Pi logo/RPi_Logo_1.stl",
+                convexity=10);
+        }
+
+        union() {
+
+            hull() {
+                translate([5.5, 21, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([8, 22, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([12, 23, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([17.5, 23.5, 0])
+                cylinder(d=5, h=10, center=true, $fn=20);
+
+                translate([12, 18, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([8, 17, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+            }
+
+            mirror([1, 0, 0])
+            hull() {
+                translate([5.5, 21, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([8, 22, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([12, 23, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([17.5, 23.5, 0])
+                cylinder(d=5, h=10, center=true, $fn=20);
+
+                translate([12, 18, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+
+                translate([8, 17, 0])
+                cylinder(d=10, h=10, center=true, $fn=20);
+            }
+        }
+    }
+}
+
+module _raspi_logo_2() {
+    intersection() {
+        difference() {
+            translate([0, 0, 1/2])
+            cube([100, 100, 1], center=true);
+
+            translate([-0.31, 0, -0.1])
+            scale([0.4, 0.4, 0.4])
+            import("../_downloaded/Raspberry Pi logo/RPi_Logo_1.stl",
+                convexity=10);
+        }
+
+        union() {
+
+            union() {
+                translate([0, 6, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([9, 5, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([14, -4, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([11, -14, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([0, -20, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([-9.5, 5, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([-14, -4, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([-11, -14, 0])
+                cylinder(d=15, h=10, center=true, $fn=20);
+
+                translate([0, -8, 0])
+                cylinder(d=20, h=10, center=true, $fn=20);
+
+            }
+        }
+    }
+}
+
+module _bitcoin_logo_1() {
+    difference() {
+        cylinder(d=80, h=1, $fn=80);
+
+        translate([0, 0, -1])
+        rotate([0, 0, -12])
+        import("../_downloaded/Bitcoin Sign/Bitcoin.stl",
+                convexity=10);
+    }
+}
+
+module _bitcoin_logo_2() {
+    intersection() {
+        translate([0, 0, -1])
+        rotate([0, 0, -12])
+        import("../_downloaded/Bitcoin Sign/Bitcoin.stl",
+                convexity=10);
+
+        cylinder(d=200, h=1);
+    }
+}
+
+module _hdd_logo() {
+    union() {
+        difference() {
+            translate([0, 0, 1/2])
+            rounded_cube_side(60, 85, 1, 20, center=true);
+
+            rounded_cube_side(50, 75, 15, 10, center=true);
+        }
+
+        difference() {
+            translate([0, 12.5, 0])
+            tube(40, 1, 13, $fn=50);
+
+            hull() {
+                translate([8, 0, 0])
+                cylinder(d=6, h=5, center=true, $fn=20);
+
+                translate([-8, -15, 0])
+                cylinder(d=14, h=5, center=true, $fn=20);
+
+            }
+        }
+
+        difference() {
+            hull() {
+                translate([8, 0, 0])
+                cylinder(d=2.5, h=1, $fn=20);
+
+                translate([-8, -15, 0])
+                cylinder(d=10.5, h=1, $fn=20);
+            }
+
+            translate([-8, -15, 0])
+            cylinder(d=5.5, h=5, center=true, $fn=20);
+        }
+
+        translate([20, 32.5, 0])
+        cylinder(d=3, h=1, $fn=20);
+
+        translate([-20, 32.5, 0])
+        cylinder(d=3, h=1, $fn=20);
+
+        translate([20, -32.5, 0])
+        cylinder(d=3, h=1, $fn=20);
+
+        translate([-20, -32.5, 0])
+        cylinder(d=3, h=1, $fn=20);
+    }
+    
 }
 
 module mock_5V_transformer() {
@@ -118,6 +363,69 @@ module mock_5V_transformer() {
 
     translate([0, 74.6/2 - 35.5/2 - 5 - 18.7/2, 0])
     cylinder(d=4, h=72, center=true, $fn=20);
+}
+
+module mock_5V_transformer_2() {
+    translate([0, 0, 55/2])
+    cube([34.5, 74.6, 55], center=true);
+
+    difference() {
+        union() {
+            translate([0, 74/2 - 15 - 1.5/2])
+            cube([6.3, 1.5, 34], center=true);
+
+            translate([0, 74/2 - 27.5 - 1.5/2])
+            cube([6.3, 1.5, 34], center=true);
+        }
+
+        translate([0, 15, -12])
+        rotate([90, 0, 0])
+        cylinder(d=3.3, h=30, center=true, $fn=20);
+    }
+}
+
+module mock_5V_transformer_3() {
+    translate([0, 0, 34.5/2])
+    cube([43.2, 79.7, 34.5], center=true);
+
+    translate([0, -(37.5 - 13.5/2)/2 + 79.9/2 - 8 - 13.5/2, 0])
+    cube([37.5 - 13.5/2, 31, 11.8], center=true);
+
+    translate([0, 79.7/2 - 13.5/2 - 8, -25 + 1])
+    rotate([0, 0, 90])
+    _transformer_form(25);
+
+    translate([18.7/2, 79.7/2 - 13.5/2 - 8, -24])
+    cylinder(d=4, h=38, center=true, $fn=20);
+
+    translate([-18.7/2, 79.7/2 - 13.5/2 - 8, -24])
+    cylinder(d=4, h=38, center=true, $fn=20);
+}
+
+module mock_5V_USB_transformer() {
+    difference() {
+        union() {
+            intersection() {
+                scale([4.5, 1, 1])
+                cylinder(d=22.7, h=48.5, $fn=40);
+
+                cube([45, 30, 200], center=true);
+            }
+
+            translate([0, 0, -19 + 0.5])
+            rotate([0, 0, 90])
+            _transformer_form(19);
+
+            translate([18.7/2, 0, -19 + 0.5])
+            cylinder(d=4, h=38, center=true, $fn=20);
+
+            translate([-18.7/2, 0, -19 + 0.5])
+            cylinder(d=4, h=38, center=true, $fn=20);
+        }
+
+        translate([0, 2, 48.5])
+        cube([14, 7, 10], center=true);
+    }
 }
 
 module mock_7_5V_transformer() {
@@ -135,6 +443,20 @@ module mock_7_5V_transformer() {
     cylinder(d=4, h=72, center=true, $fn=20);
 }
 
+module mock_12V_transformer() {
+    translate([0, 0, 42/2])
+    cube([26.5, 75, 42], center=true);
+
+    translate([0, 75/2 - 35.5/2 - 7.4, -19 + 0.5])
+    _transformer_form(19);
+
+    translate([0, 74.6/2 - 35.5/2 - 7.4 + 18.7/2, -19 + 0.5])
+    cylinder(d=4, h=35, center=true, $fn=20);
+
+    translate([0, 74.6/2 - 35.5/2 - 7.4 - 18.7/2, -19 + 0.5])
+    cylinder(d=4, h=35, center=true, $fn=20);
+}
+
 module mockup() {
     // 2U
 //    %translate([0, 0, 2U_h/2])
@@ -144,17 +466,25 @@ module mockup() {
     rotate([0, -90, 0])
     pi_mount();
 
-    translate([-10, -160.3, 32.7])
-    rotate([-90, 0, -90])
+    translate([-70 + 64, -161.7, 32.7])
+    rotate([-90, 0, 90])
     D_link_hub_clip_back();
 
-    translate([-10 + 64, -160.3, 32.7])
-    rotate([-90, 0, 90])
+    translate([-70, -161.7, 32.7])
+    rotate([-90, 0, -90])
     D_link_hub_clip_front();
 
-    translate([110, -161, 30])
-    rotate([12, 0, -90])
-    mock_USB_hub_Dlink();
+    translate([15 + 67.3, -161.7, 32.7])
+    rotate([-90, 0, 90])
+    Targus_hub_clip_back();
+
+    translate([15, -161.7, 32.7])
+    rotate([-90, 0, -90])
+    Targus_hub_clip_front();
+
+//    translate([110, -161, 30])
+//    rotate([15, 0, 90])
+//    mock_USB_hub_Dlink();
 
     translate([-203, -56.25, 23])
     rotate([90, 0, 90])
@@ -225,138 +555,72 @@ module mockup() {
     hdd_piece();
 
     // side rods
-    translate([-440/2 + 8, 0, 2U_h - 8])
+    translate([-440/2 + 10, 0, 2U_h - 10])
     rotate([90, 0, 0])
     cylinder(d=8, h=500, center=true, $fn=30);
 
-    translate([-440/2 + 8, 0, 8])
+    translate([-440/2 + 10, 0, 10])
     rotate([90, 0, 0])
     cylinder(d=8, h=500, center=true, $fn=30);
 
-    translate([440/2 - 8, 0, 2U_h - 8])
+    translate([440/2 - 10, 0, 2U_h - 10])
     rotate([90, 0, 0])
     cylinder(d=8, h=500, center=true, $fn=30);
 
-    translate([440/2 - 8, 0, 8])
+    translate([440/2 - 10, 0, 10])
     rotate([90, 0, 0])
     cylinder(d=8, h=500, center=true, $fn=30);
 
-    translate([440/2 - 8, -400/2, 8])
+    translate([440/2 - 10, -400/2, 10])
     rotate([90, 0, 0])
     M8_nut(cone=false);
 
     // front and back parts
-    translate([-220/2, -500/2 + 9, 2U_h/2])
-    rotate([-90, 0, 0])
-    front_1();
+    render() {
+        translate([-220/2, -500/2 + 9, 2U_h/2])
+        rotate([-90, 0, 0])
+        front_1();
 
-    translate([220/2, -500/2 + 9, 2U_h/2])
-    rotate([-90, 0, 0])
-    front_2();
+        translate([220/2, -500/2 + 9, 2U_h/2])
+        rotate([-90, 0, 0])
+        front_2();
 
-    translate([-220/2, 500/2 - 7.5, 2U_h/2])
-    rotate([90, 0, 0])
-    back_1();
+        translate([-220/2, 500/2 - 7.5, 2U_h/2])
+        rotate([90, 0, 0])
+        back_1();
 
-    translate([220/2, 500/2 - 7.5, 2U_h/2])
-    rotate([90, 0, 0])
-    back_2();
+        translate([220/2, 500/2 - 7.5, 2U_h/2])
+        rotate([90, 0, 0])
+        back_2();
+    }
 
-    translate([-440/2 + 40.1, 212.5, 2U_h - 2 - 10/2])
-    rotate([90, 0, 0])
-    top_mount_left();
+    translate([0, 1.5/2, 0])
+    render()
+    debug_bottom();
 
-    translate([440/2 - 40.1, -211, 2U_h - 2 - 10/2])
-    rotate([90, 0, 180])
-    top_mount_left();
-
-    translate([440/2 - 40.1, 212.5, 2U_h - 2 - 10/2])
-    rotate([90, 0, 0])
-    top_mount_right();
-
-    translate([-440/2 + 40.1, -211, 2U_h - 2 - 10/2])
-    rotate([90, 0, 180])
-    top_mount_right();
-
-    translate([0, -206, 2U_h - 10 - 2])
-    rotate([0, 0, 180])
-    top_mount_front();
-
-    translate([10, 207.5, 2U_h - 10 - 2])
-    top_mount_back();
+    translate([0, 1.5/2, 0])
+    render()
+    debug_side();
 
     // beam 1 (raspi and usb hubs)
-    translate([-440/2 + 170/2 + 8, -161, 10])
-    beam_1();
-
-    translate([440/2 - 170/2 - 8, -161, 10])
+    translate([0, -161, 10])
     rotate([90, 0, 0])
-    beam_2();
-
-    translate([0, -171, 10])
-    rotate([-90, 0, 0])
-    rotate([0, 0, -90])
-    beam_middle();
+    debug_beam();
 
     // beam 2 (hdd)
-    translate([-440/2 + 170/2 + 8, -68, 10])
+    translate([0, -68, 10])
     rotate([90, 0, 0])
-    beam_1();
-
-    translate([440/2 - 170/2 - 8, -68, 10])
-    rotate([90, 0, 0])
-    beam_2();
-
-    translate([0, -78, 10])
-    rotate([-90, 0, 0])
-    rotate([0, 0, -90])
-    beam_middle();
+    debug_beam();
 
     // beam 3 (hdd)
-    translate([-440/2 + 170/2 + 8, 83.5, 10])
+    translate([0, 83.5, 10])
     rotate([90, 0, 0])
-    beam_1();
-
-    translate([440/2 - 170/2 - 8, 83.5, 10])
-    rotate([90, 0, 0])
-    beam_2();
-
-    translate([0, 73.5, 10])
-    rotate([-90, 0, 0])
-    rotate([0, 0, -90])
-    beam_middle();
+    debug_beam();
 
     // beam 4 (power)
-    translate([-440/2 + 170/2 + 8, 157.5, 10])
+    translate([0, 157.5, 10])
     rotate([90, 0, 0])
-    beam_1();
-
-    translate([440/2 - 170/2 - 8, 157.5, 10])
-    rotate([90, 0, 0])
-    beam_2();
-
-    translate([0, 147.5, 10])
-    rotate([-90, 0, 0])
-    rotate([0, 0, -90])
-    beam_middle();
-
-    translate([-220/2, -191, 0])
-    bottom_1();
-
-    translate([-220/2, -114.5, 0])
-    bottom_3();
-
-    translate([220/2, -114.5, 0])
-    bottom_4();
-
-    translate([-220/2, 7.8, 0])
-    bottom_5();
-
-    translate([-220/2, 120.5, 0])
-    bottom_7();
-
-    translate([-220/2, 190, 0])
-    bottom_9();
+    debug_beam();
 
     translate([-40, 500/2 - 9 + 3/2, 2U_h/2])
     rotate([90, 0, 0])
@@ -371,7 +635,7 @@ module mockup() {
     rotate([0, 110, 0])
     mock_5V_transformer();
 
-    translate([35, 178, 64])
+    translate([125, 178, 64])
     rotate([110, 0, 90])
     5V_transformer_clip();
 
@@ -380,36 +644,49 @@ module mockup() {
     rotate([0, 110, 0])
     mock_5V_transformer();
 
-    translate([125, 178, 64])
+    translate([35, 178, 64])
     rotate([110, 0, 90])
     5V_transformer_clip();
 
-    translate([-150, 162.7, 45.5])
-    rotate([0, -90, 0])
-    mock_7_5V_transformer();
+    translate([-60, 175, 34])
+    rotate([90, 0, 90])
+    double_transformer_clip();
 
-    translate([-125, 182, 45.7])
-    rotate([90, 0, -90])
-    7_5V_transformer_clip();
+//    translate([-150, 162.7, 45.5])
+//    rotate([0, -90, 0])
+//    mock_7_5V_transformer();
+//
+//    translate([-125, 182, 45.7])
+//    rotate([90, 0, -90])
+//    7_5V_transformer_clip();
 
-    translate([-440/2, -side_d/4 + 1.5/2, 2U_h/2 + 0.1])
-    rotate([0, 90, 0])
-    side_1();
+//    translate([5/2, 5/2 + 1.5/2, 2U_h])
+//    rotate([0, 180, 0])
+//    debug_top();
+}
 
-    translate([-440/2, side_d/4 + 1.5/2, 2U_h/2 + 0.1])
-    rotate([0, 90, 0])
-    side_2();
+module debug_beam() {
+    translate([-220 + 168/2 + 10, 0, 0])
+    beam_1();
 
-    translate([440/2, -side_d/4 + 1.5/2, 2U_h/2 + 0.1])
-    rotate([0, -90, 0])
-    side_3();
+    rotate([0, 90, 90])
+    beam_middle();
 
-    translate([5/2, 5/2 + 1.5/2, 2U_h])
-    rotate([0, 180, 0])
-    debug_top();
+    translate([220 - 168/2 - 10, 0, 0])
+    beam_2();
+
+    %translate([-220 + 10, 0, 0])
+    cylinder(d=8, h=100, $fn=30);
+
+    %translate([220 - 10, 0, 0])
+    cylinder(d=8, h=100, $fn=30);
 }
 
 module debug_hdd_pieces() {
+
+    translate([0, 0, -50.2])
+    hdd_piece_big();
+
     hdd_piece();
 
     translate([0, 0, -25.1])
@@ -419,6 +696,14 @@ module debug_hdd_pieces() {
     rotate([0, 180, 0])
     hdd_piece_end();
 
+    translate([-2.75, 57, -28.6])
+    rotate([0, 90, 0])
+    hdd_piece_clip_big_2();
+
+    translate([130.75, 57, -28.6])
+    rotate([0, -90, 0])
+    hdd_piece_clip_big_1();
+
     translate([1, 57, -3.5])
     rotate([0, 90, 0])
     hdd_piece_clip();
@@ -426,6 +711,10 @@ module debug_hdd_pieces() {
     translate([1, 57, 17.6])
     rotate([0, 90, 0])
     hdd_piece_clip_end();
+
+    %translate([64, 22, -50.2 + 13.5])
+    rotate([0, 0, 90])
+    mock_USB_HDD_Intenso_5T();
 
     %translate([64, 23, 21/2 + 3])
     rotate([0, 0, 90])
@@ -446,12 +735,24 @@ module debug_hdd_pieces() {
     echo(2U_h - 83 - 3);
 }
 
-module debug_bottom_joiner() {
-    translate([0, 0, 3/2])
-    bottom_joiner();
+module debug_joiners() {
+    translate([0, 0, 2/2])
+    end_joiner();
 
     translate([-220/2, 0, 0])
+    front_1();
+
+    translate([-30, 2U_h/2 - 3/2, f_h])
+    rotate([0, 90, 90])
+    cover_joiner();
+
+    translate([-220/2 + 3, 2U_h/2,  cover_d/4 + 30.1])
+    rotate([90, 0, 0])
     bottom_1();
+
+    translate([-220, 0,  cover_d/4 + 30.1])
+    rotate([90, 0, 90])
+    side_1();
 }
 
 module debug_D_link_clips() {
@@ -459,7 +760,7 @@ module debug_D_link_clips() {
         union() {
             D_link_hub_clip_back();
 
-            translate([0, 0, 35 + 29])
+            translate([0, 0, 35.5 + 29])
             rotate([0, 180, 0])
             D_link_hub_clip_front();
         }
@@ -469,97 +770,168 @@ module debug_D_link_clips() {
     }
 }
 
+module debug_Targus_clips() {
+    intersection() {
+        union() {
+            Targus_hub_clip_back();
+
+            translate([0, 0, 35.5 + 32])
+            rotate([0, 180, 0])
+            Targus_hub_clip_front();
+        }
+
+        translate([200/2, 0, 0])
+        cube([200, 200, 200], center=true);
+    }
+}
+
+module debug_Belkin_clips() {
+    intersection() {
+        union() {
+            Belkin_hub_clip_back();
+
+            translate([0, 0, 22.5 + 32])
+            rotate([0, 180, 0])
+            Belkin_hub_clip_front();
+        }
+
+        translate([200/2, 0, 0])
+        cube([200, 200, 200], center=true);
+    }
+}
+
+module debug_5V_transformer_2_clip() {
+    intersection() {
+        union() {
+            5V_transformer_2_clip();
+
+            translate([0, 0, 8 - 0.1])
+            rotate([180, 0, 0])
+            5V_transformer_2_clip_cover();
+        }
+
+        translate([0, 100/2, 0])
+        cube([100, 100, 100], center=true);
+    }
+}
+
 module debug_side() {
 
-    translate([0, -side_d/4, 0])
+    translate([-220, -cover_d/4, 2U_h/2])
+    rotate([0, 90, 0])
     side_1();
 
-    translate([0, side_d/4 + 0.1, 0])
+    translate([220, -cover_d/4, 2U_h/2])
+    rotate([0, -90, 0])
     side_2();
 
-    // rods
-    translate([-2U_h/2 + 8, 0, 8])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=40);
+    translate([-220, cover_d/4, 2U_h/2])
+    rotate([0, 90, 0])
+    side_3();
 
-    translate([2U_h/2 - 8, 0, 8])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=40);
-
-    y_1 = -side_d/2 + 40/2;
-
-    translate([2U_h/2, y_1, 220/2])
+    translate([220, cover_d/4, 2U_h/2])
     rotate([0, -90, 0])
+    side_4();
+
+    translate([-220 + 3/2, 0, 22.5])
+    rotate([90, 0, 90])
+    bottom_joiner();
+
+    translate([-220 + 3/2, 0, 66.5])
+    rotate([90, 0, 90])
+    bottom_joiner();
+
+    translate([220 - 3/2, 0, 22.5])
+    rotate([90, 0, 90])
+    bottom_joiner();
+
+    translate([220 - 3/2, 0, 66.5])
+    rotate([90, 0, 90])
+    bottom_joiner();
+}
+
+module debug_bottom() {
+    render()
+    translate([-220/2 + 3, -cover_d/4 + 0.1, 0])
     bottom_1();
 
-    y_2 = y_1 + 40/2 + 20/2;
-
-    translate([2U_h/2 - 20/2, y_2, 170/2 + 8])
-    rotate([0, -90, 90])
-    beam_1();
-
-    y_3 = y_2 + 20/2 + 73/2;
-
-    translate([2U_h/2, y_3, 220/2])
-    rotate([0, -90, 0])
+    render()
+    translate([-220/2 + 3, cover_d/4, 0])
     bottom_3();
 
-    y_4 = y_3 + 73/2 + 20/2;
+    render()
+    translate([220/2 - 3, -cover_d/4 + 0.1, 0])
+    bottom_2();
 
-    translate([2U_h/2 - 20/2, y_4, 170/2 + 8])
-    rotate([0, -90, 90])
-    beam_1();
+    render()
+    translate([220/2 - 3, cover_d/4, 0])
+    bottom_4();
 
-    y_5 = y_4 + 20/2 + 131.5/2;
+    render()
+    translate([30, 0, 3/2])
+    rotate([0, 0, 90])
+    bottom_joiner();
 
-    translate([2U_h/2, y_5, 220/2])
-    rotate([0, -90, 0])
-    bottom_5();
-
-    y_6 = y_5 + 131.5/2 + 20/2;
-
-    translate([2U_h/2 - 20/2, y_6, 170/2 + 8])
-    rotate([0, -90, 90])
-    beam_1();
-
-    y_7 = y_6 + 20/2 + 54/2;
-
-    translate([2U_h/2, y_7, 220/2])
-    rotate([0, -90, 0])
-    bottom_7();
-
-    y_8 = y_7 + 54/2 + 20/2;
-
-    translate([2U_h/2 - 20/2, y_8, 170/2 + 8])
-    rotate([0, -90, 90])
-    beam_1();
-
-    y_9 = y_8 + 20/2 + 45/2;
-
-    translate([2U_h/2, y_9, 220/2])
-    rotate([0, -90, 0])
-    bottom_9();
+    render()
+    translate([0, 20, 3/2])
+    bottom_joiner();
 }
 
 module debug_top() {
-    translate([-210/2, -side_d/4 + 0.1, 0])
-    top_1();
+    translate([-210/2, -cover_d/4 + 0.1, 0])
+    top_1_dc();
 
-    translate([-210/2, side_d/4, 0])
-    top_2();
+    translate([-210/2, cover_d/4, 0])
+    top_2_dc();
 
-    translate([210/2, -side_d/4 + 0.1, 0])
-    top_3();
+    translate([210/2, -cover_d/4 + 0.1, 0])
+    top_3_dc();
 
-    translate([210/2, side_d/4, 0])
-    top_4();
+    translate([210/2, cover_d/4, 0])
+    top_4_dc();
+}
+
+module debug_transformers() {
+    rotate([90, 0, 0])
+    debug_beam();
+
+    translate([90, 17.7, 53])
+    rotate([110, 0, 90])
+    5V_transformer_clip();
+
+    translate([20, 17.7, 53])
+    rotate([110, 0, 90])
+    5V_transformer_2_clip();
+
+    translate([-60, 21.9, 35.65])
+    rotate([90, 0, 90])
+    5V_transformer_3_clip();
+
+    translate([-29, -3.3, 35.5])
+    rotate([0, 90, 0])
+    mock_5V_transformer_3();
+}
+
+module debug_stepdown_box_clip() {
+    stepdown_box_clip();
+
+    translate([0, 3, -25])
+    rotate([0, 0, -90])
+    pi_mount();
+
+    translate([40, -5/2, 5])
+    rotate([90, 0, 0])
+    box_bottom();
+
+    translate([40, -5/2 - 5, 5])
+    rotate([90, 0, 180])
+    box_top();
 }
 
 module M6_thread(h=50) {
     v_screw(h=h, screw_d=6.2, pitch=1, direction=0,
             steps=40, depth=0.1, chamfer=false);
 }
-
 
 module bottom_pattern() {
     size = 20 * 17 + 15;
@@ -577,351 +949,189 @@ module bottom_pattern() {
     }
 }
 
-module corner_1() {
 
+module _joiner_form(l=30) {
+    rotate([45, 0, 0])
+    cube([l - slop, 10 - slop, 10 - slop], center=true);
+}
+
+module _joiner_2_form(l=30) {
     difference() {
-        union() {
-            translate([0, 0, h/2])
-            _profile(h);
+        cube([l, 13, 5], center=true);
 
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
+        translate([0, 13/2 + 10/2 + 1, 0])
+        rotate([45, 0, 0])
+        cube([l + 1, 10, 10], center=true);
 
-            translate([0, 84/2 + 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(84);
-
-            translate([154/2 + 6, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([-20/2, 90, 20/2])
-        _joint_form();
-
-        translate([160, -20/2, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
+        translate([0, -13/2 - 10/2 - 1, 0])
+        rotate([45, 0, 0])
+        cube([l + 1, 10, 10], center=true);
     }
 }
 
-module corner_2() {
+module bottom_joiner() {
+    intersection() {
+        scale([1, 0.98, 1])
+        _joiner_form();
 
-    difference() {
-        union() {
-            translate([0, 0, h/2])
-            _profile(h);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, 84/2 + 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(84);
-
-            translate([-154/2 - 6, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([-20/2, 90, 20/2])
-        rotate([0, 180,0])
-        _joint_form();
-
-        translate([-160, -20/2, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
+        cube([9.5, 40, 3], center=true);
     }
 }
 
-module center_1() {
+module end_joiner(l=14.5) {
+    scale([1, 0.98, 1])
+    intersection() {
+        _joiner_2_form(l);
 
-    l = 180;
-    difference() {
-        union() {
-            translate([0, 0, (h - 13)/2 + 13])
-            _profile(h - 13);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(l);
-
-            translate([0, 84/2 + 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(84);
-
-        }
-
-        translate([-l/2, 20/2, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-
-        translate([l/2, 20/2, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-
-        translate([-20/2, 90, 20/2])
-        _joint_form();
+        cube([100, 100, 2], center=true);
     }
 }
 
-module center_2() {
+module cover_joiner(l=9.5) {
+    scale([1, 0.98, 1])
+    intersection() {
+        _joiner_form(l);
 
-    l = 180;
-    difference() {
-        union() {
-            translate([0, 0, (h - 13)/2 + 13])
-            _profile(h - 13);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(l);
-
-            translate([0, -124/2 - 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(124);
-
-        }
-
-        translate([-l/2, -20/2, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
-
-        translate([l/2, -20/2, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
-
-        translate([-20/2, -130, 20/2])
-        _joint_form();
+        cube([100, 100, 3], center=true);
     }
 }
 
-module middle_1() {
-
-    difference() {
-        union() {
-            translate([0, 0, (h - 13)/2 + 13])
-            _profile(h - 13);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, -20, 20/2])
-            rotate([-90, 0, 0])
-            _profile(140);
-
-            translate([154/2 + 6, -20, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([20/2, 140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([20/2, -140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([160, -20/2 - 20, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
-    }
+module _end_joiner_support(l, h=11, d=2) {
+    cube([l, 0.6, h], center=true);
 }
 
-module middle_center() {
-
-    l = 180;
-    difference() {
-        union() {
-            translate([0, -20, 20/2])
-            rotate([-90, 0, 0])
-            _profile(140);
-
-            translate([0, -20, 20/2])
-            rotate([0, 90, 0])
-            _profile(l);
-        }
-
-        translate([20/2, 140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([20/2, -140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([l/2, 20/2 - 20, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-
-        translate([-l/2, 20/2 - 20, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-
+module _cover_joiners() {
+    for (i = cover_joiner_positions_x) {
+        translate([i, 2U_h/2 - 3/2, 0])
+        rotate([0, 90, 90])
+        cover_joiner();
     }
+
+   for (i = cover_joiner_positions_y) {
+        translate([-220/2 + 3/2, i, 0])
+        rotate([0, 90, 0])
+        cover_joiner();
+   }
 }
 
-module middle_2() {
-
-    difference() {
-        union() {
-            translate([0, 0, (h - 13)/2 + 13])
-            _profile(h - 13);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, -20, 20/2])
-            rotate([-90, 0, 0])
-            _profile(140);
-
-            translate([-154/2 - 6, -20, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([20/2, 140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([20/2, -140/2 - 20, 20/2])
-        rotate([0, 0, 180])
-        _joint_form();
-
-        translate([-160, -20/2 - 20, 20/2])
-        rotate([0, 0, 90])
-        _joint_form();
-    }
-}
-
-module corner_3() {
-
-    difference() {
-        union() {
-            translate([0, 0, h/2])
-            _profile(h);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, -174/2 - 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(174);
-
-            translate([154/2 + 6, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([-20/2, -180, 20/2])
-        _joint_form();
-
-        translate([160, 20/2, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-    }
-}
-
-module corner_4() {
-
-    difference() {
-        union() {
-            translate([0, 0, h/2])
-            _profile(h);
-
-            translate([0, 0, h - 12/2 + 2])
-            chamfered_cube(12, 12, 12, 2, center=true);
-
-            translate([0, -124/2 - 6, 20/2])
-            rotate([-90, 0, 0])
-            _profile(124);
-
-            translate([-154/2 - 6, 0, 20/2])
-            rotate([0, 90, 0])
-            _profile(154);
-        }
-
-        translate([-20/2, -130, 20/2])
-        _joint_form();
-
-        translate([-160, 20/2, 20/2])
-        rotate([0, 0, -90])
-        _joint_form();
-    }
-}
-
-module _end_form() {
+module _end_form(middle_top_mount=true) {
     union() {
         intersection() {
             difference() {
                 translate([10/2, 0, f_h/2])
-                chamfered_cube_side(230, 2U_h, f_h, 4.5, center=true, $fn=30);
+                chamfered_cube_side(
+                    230, 2U_h, f_h, 4.5,
+                    center=true, $fn=30);
 
-                translate([10/2, 0, (f_h + 10)/2 + 2])
-                chamfered_cube(226, 2U_h - 4, f_h + 10, 7, center=true);
+                translate([10/2 + 1/2, -1/2,
+                           (f_h + 10)/2 + 2])
+                chamfered_cube(
+                    225, 2U_h - 5, f_h + 10,
+                    7, center=true);
+
+                translate([10/2, 0,
+                           (f_h - 1)/2 + 2])
+                chamfered_cube(
+                    226, 2U_h - 4, f_h - 1,
+                    7, center=true);
+
+                translate([220/2, 30, 2/2])
+                _joiner_2_form(15);
+
+                translate([220/2, -30, 2/2])
+                _joiner_2_form(15);
+
+                translate([220/2, 0, 2/2])
+                _joiner_2_form(15);
+
+                translate([220/2, 2U_h/2 - 2/2,
+                           f_h - 12])
+                rotate([90, 0, 0])
+                _joiner_2_form(15);
+
+                translate([220/2, -2U_h/2 + 2/2,
+                           f_h - 12])
+                rotate([90, 0, 0])
+                _joiner_2_form(15);
+
             }
 
             cube([220, 2U_h * 2, 100], center=true);
         }
-        translate([-220/2 + 8, 2U_h/2 - 8, 0])
-        cylinder(d=16, h=f_h, $fn=30);
 
-        translate([-220/2 + 8, -2U_h/2 + 8, 0])
-        cylinder(d=16, h=f_h, $fn=30);
+        translate([0, 0, f_h])
+        _cover_joiners();
 
-        translate([220/2 - 8/2, 0, f_h/2])
-        cube([8, 2U_h - 1, f_h], center=true);
+        translate([-220/2 + 10, 2U_h/2 - 10, 0])
+        cylinder(d=17, h=f_h, $fn=30);
 
-        translate([-50, 2U_h/2 - 20/2, f_h - 20/2])
-        rotate([0, 90, 0])
-        _profile_v2(15);
+        translate([-220/2 + 10, -2U_h/2 + 10, 0])
+        cylinder(d=17, h=f_h, $fn=30);
 
-        translate([50, 2U_h/2 - 20/2, f_h - 20/2])
-        rotate([0, 90, 0])
-        _profile_v2(15);
+        translate([-220/2 + 40, -2U_h/2 + 1.8, f_h - 2])
+        _top_mount();
+
+        if (middle_top_mount) {
+            translate([220/2 - 14/2, -2U_h/2 + 1.8,
+                       f_h - 2])
+            difference() {
+                _top_mount();
+
+                translate([4.5, 0, -8.6])
+                cube([10, 1, 10], center=true);
+
+                translate([10, 0, -5])
+                rotate([0, 45, 0])
+                cube([10, 20, 30], center=true);
+            }
+        }
+    }
+    
+    // supports
+    translate([220/2 -7.2/2, 2U_h/2 - 2/2, f_h - 12])
+    _end_joiner_support(7.2);
+
+    translate([220/2 -7.2/2, -2U_h/2 + 2/2, f_h - 12])
+    _end_joiner_support(7.2);
+}
+
+module _top_mount() {
+    difference() {
+        hull() {
+            translate([0, 10/2, 10/2 + 2])
+            cube([10, 10, 10], center=true);
+
+            translate([0, 0.1/2, 0])
+            cube([10, 0.1, 24], center=true);
+        }
+        translate([0.1, 0, 12 - 4.8])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, h=30, center=true, $fn=20);
+
+        translate([0, 0, 11/2 + 2])
+        cube([20, 2, 11], center=true);
     }
 }
 
-module front_1() {
+module front_1(middle_top_mount=true) {
     f_h = 30;
 
     difference() {
-        union() {
-            _end_form();
+         _end_form(middle_top_mount=middle_top_mount);
 
-            translate([220/2, 2U_h/2 - 10, f_h/2])
-            rotate([90, 0, 90])
-            long_bow_tie(f_h, middle=true);
+        translate([-220/2 + 10, 2U_h/2 - 10, 0])
+        cylinder(d=rod_d, h=f_h * 3,
+            center=true, $fn=30);
 
-            translate([220/2, -2U_h/2 + 10, f_h/2])
-            rotate([90, 0, 90])
-            long_bow_tie(f_h, middle=true);
-            
-        }
-        translate([-220/2 + 8, 2U_h/2 - 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
+        translate([-220/2 + 10, 2U_h/2 - 10, -0.1])
+        M8_nut(cone=false, bridging=true);
 
-        translate([-220/2 + 8, -2U_h/2 + 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
+        translate([-220/2 + 10, -2U_h/2 + 10, 0])
+        cylinder(d=rod_d, h=f_h * 3,
+            center=true, $fn=30);
 
-        translate([220/2 - 9, 15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            cylinder(d=9, h=10, center=true, $fn=30);
-        }
-
-        translate([220/2 - 9, -15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            cylinder(d=9, h=10, center=true, $fn=30);
-        }
+        translate([-220/2 + 10, -2U_h/2 + 10, -0.1])
+        M8_nut(cone=false, bridging=true);
 
         for(i = [0:22]) {
             translate([-220/2 + 25 + i * 8, 0, 1.5])
@@ -930,150 +1140,46 @@ module front_1() {
 
                 translate([-10/2 - 1.5, 0, 0])
                 rotate([90, 0, 0])
-                cylinder(d=10, h=2U_h, center=true, $fn=80);
+                cylinder(d=10, h=2U_h, center=true,
+                    $fn=80);
 
                 translate([10/2 + 1.5, 0, 0])
                 rotate([90, 0, 0])
-                cylinder(d=10, h=2U_h, center=true, $fn=80);
+                cylinder(d=10, h=2U_h, center=true,
+                    $fn=80);
             }
         }
-
-        translate([220/2, 0, f_h])
-        cube([20, 2U_h - 34, 18], center=true);
-
-        translate([0, 0, f_h])
-        cube([150, 2U_h - 18.5, 41], center=true);
-
-        translate([0, 0.5, 14])
-        hull() {
-            cube([150, 2U_h - 5, 10], center=true);
-
-            translate([0, 0, 20])
-            cube([150, 2U_h - 5 - 40, 10], center=true);
-        }
-
-        translate([220/2, 2U_h/2 - 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-
-        translate([220/2, -2U_h/2 + 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
     }
 }
 
 module front_2() {
-    f_h = 30;
-
-    difference() {
-        mirror([1, 0, 0])
-        _end_form();
-
-        translate([220/2 - 8, 2U_h/2 - 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
-
-        translate([220/2 - 8, -2U_h/2 + 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
-
-        translate([-220/2 + 5, 15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            M4_nut(10, cone=false);
-        }
-
-        translate([-220/2 + 5, -15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            M4_nut(10, cone=false);
-        }
-
-        for(i = [0:22]) {
-            translate([-220/2 + 20 + i * 8, 0, 1.5])
-            difference() {
-                cube([4, 2U_h - 20, 10], center=true);
-
-                translate([-10/2 - 1.5, 0, 0])
-                rotate([90, 0, 0])
-                cylinder(d=10, h=2U_h, center=true, $fn=80);
-
-                translate([10/2 + 1.5, 0, 0])
-                rotate([90, 0, 0])
-                cylinder(d=10, h=2U_h, center=true, $fn=80);
-            }
-        }
-
-        translate([-220/2 - 0.01, 2U_h/2 - 10, -1])
-        rotate([0, 0, -90])
-        male_dovetail(f_h + 2);
-
-        translate([-220/2 - 0.01, -2U_h/2 + 10, -1])
-        rotate([0, 0, -90])
-        male_dovetail(f_h + 2);
-
-        translate([-220/2, 0, f_h])
-        cube([20, 2U_h - 34, 18], center=true);
-
-        translate([0, 0, f_h])
-        cube([150, 2U_h - 18.5, 41], center=true);
-
-        translate([0, 0.5, 14])
-        hull() {
-            cube([150, 2U_h - 5, 10], center=true);
-
-            translate([0, 0, 20])
-            cube([150, 2U_h - 5 - 40, 10], center=true);
-        }
-
-        translate([-220/2, 2U_h/2 - 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-
-        translate([-220/2, -2U_h/2 + 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-    }
+    mirror([1, 0, 0])
+    front_1(middle_top_mount=false);
 }
 
-module back_1() {
+module back_1(middle_top_mount=false) {
     f_h = 30;
 
     difference() {
         union() {
             mirror([0, 1, 0])
-            _end_form();
-
-            translate([220/2, 2U_h/2 - 10, f_h/2])
-            rotate([90, 0, 90])
-            long_bow_tie(f_h, middle=true);
-
-            translate([220/2, -2U_h/2 + 10, f_h/2])
-            rotate([90, 0, 90])
-            long_bow_tie(f_h, middle=true);
+            _end_form(middle_top_mount=middle_top_mount);
 
             translate([70, 0, 0])
             for (i = [0:3]) {
                 rotate([0, 0, 90 * i])
                 translate([50/2 + 3, 50/2 + 3, 0])
+                rotate([0, 0, i*90 + 30])
                 cylinder(d=10, h=5, $fn=6);
             }
         }
-        translate([-220/2 + 8, 2U_h/2 - 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
+        translate([-220/2 + 10, 2U_h/2 - 10, 0])
+        cylinder(d=rod_d, h=f_h * 3,
+            center=true, $fn=30);
 
-        translate([-220/2 + 8, -2U_h/2 + 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
-
-        translate([220/2 - 9, 15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            cylinder(d=9, h=10, center=true, $fn=30);
-        }
-
-        translate([220/2 - 9, -15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            cylinder(d=9, h=10, center=true, $fn=30);
-        }
+        translate([-220/2 + 10, -2U_h/2 + 10, 0])
+        cylinder(d=rod_d, h=f_h * 3,
+            center=true, $fn=30);
 
         translate([220/2, 0, f_h])
         cube([20, 2U_h - 34, 18], center=true);
@@ -1085,14 +1191,16 @@ module back_1() {
         for (i = [0:3]) {
             rotate([0, 0, 90 * i])
             translate([50/2 + 3, 50/2 + 3, 3]) {
-                cylinder(d=3.3, h=29, center=true, $fn=30);
+                cylinder(d=3.3, h=29,
+                    center=true, $fn=30);
 
+                rotate([0, 0, i*90 + 30])
                 M3_nut(3);
             }
         }
 
         translate([-5, 0, 2 + 10/2])
-        cube([81, 81, 10], center=true);
+        cube([82, 82, 10], center=true);
 
         translate([-5, 0, 0])
         for (i = [0:3]) {
@@ -1102,27 +1210,7 @@ module back_1() {
         }
 
         translate([-5, 0, 0])
-        cylinder(d=80, h-20, center=true, $fn=60);
-
-        translate([0, 0, f_h])
-        cube([150, 2U_h - 18.5, 41], center=true);
-
-        translate([0, -0.5, 14])
-        hull() {
-            cube([150, 2U_h - 5, 10], center=true);
-
-            translate([0, 0, 20])
-            cube([150, 2U_h - 5 - 40, 10], center=true);
-        }
-
-        translate([220/2, -2U_h/2 + 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-
-        translate([220/2, 2U_h/2 - 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-
+        cylinder(d=80.5, h-20, center=true, $fn=60);
     }
 
     %translate([-5, 0, 25/2 + 2])
@@ -1130,312 +1218,160 @@ module back_1() {
 }
 
 module back_2() {
-
-
-    difference() {
-        union() {
-            mirror([0, 1, 0])
-            mirror([1, 0, 0])
-            _end_form();
-
-            translate([-70, 0, 0])
-            for (i = [0:3]) {
-                rotate([0, 0, 90 * i])
-                translate([50/2 + 3, 50/2 + 3, 0])
-                cylinder(d=10, h=5, $fn=6);
-            }
-        }
-
-        translate([220/2 - 8, 2U_h/2 - 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
-
-        translate([220/2 - 8, -2U_h/2 + 8, 0])
-        cylinder(d=rod_d, h=f_h * 3, center=true, $fn=30);
-
-        translate([-220/2 + 5, 15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            M4_nut(10, cone=false);
-        }
-
-        translate([-220/2 + 5, -15, f_h/2])
-        rotate([0, 90, 0]) {
-            cylinder(d=4.4, h=30, center=true, $fn=30);
-            M4_nut(10, cone=false);
-        }
-
-        translate([-220/2 - 0.01, 2U_h/2 - 10, -1])
-        rotate([0, 0, -90])
-        male_dovetail(f_h + 2);
-
-        translate([-220/2 - 0.01, -2U_h/2 + 10, -1])
-        rotate([0, 0, -90])
-        male_dovetail(f_h + 2);
-
-        translate([-220/2, 0, f_h])
-        cube([20, 2U_h - 34, 18], center=true);
-
-        translate([-70, 0, -1])
-        rounded_cube(50, 50, 10, 2, center=true, $fn=30);
-
-        translate([-70, 0, -1])
-        for (i = [0:3]) {
-            rotate([0, 0, 90 * i])
-            translate([50/2 + 3, 50/2 + 3, 3]) {
-                cylinder(d=3.3, h=29, center=true, $fn=30);
-
-                M3_nut(3);
-            }
-        }
-
-        translate([5, 0, 2 + 10/2])
-        cube([81, 81, 10], center=true);
-
-        translate([5, 0, 0])
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([72/2, 72/2, 0])
-            cylinder(d=5.3, h=55, center=true, $fn=30);
-        }
-
-        translate([5, 0, 0])
-        cylinder(d=80, h-20, center=true, $fn=60);
-
-        translate([0, 0, f_h])
-        cube([150, 2U_h - 18.5, 41], center=true);
-
-        translate([0, -0.5, 14])
-        hull() {
-            cube([150, 2U_h - 5, 10], center=true);
-
-            translate([0, 0, 20])
-            cube([150, 2U_h - 5 - 40, 10], center=true);
-        }
-
-        translate([-220/2, -2U_h/2 + 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-
-        translate([-220/2, 2U_h/2 - 5.7, f_h])
-        rotate([90, 0, 90])
-        _profile_groove2(20);
-    }
-
-    %translate([5, 0, 25/2 + 2])
-    mock_fan_80mm();
+    mirror([1, 0, 0])
+    back_1(middle_top_mount=true);
 }
 
-module beam_1() {
-    l = 170;
-    difference() {
-        union() {
-            rotate([0, 90, 0])
-            _profile_v2(l);
+module _cable_mount() {
+    intersection() {
+        translate([0, 0, -1])
+        rotate([90, 0, 0])
+        tube(14, 5, 1.5, $fn=30);
 
-            translate([-l/2, -2, 0])
-            cylinder(d=12, h=20, center=true, $fn=40);
-
-        }
-
-        translate([l/2, -20/2, 0])
-        rotate([0, 0, 90])
-        _joint_form();
-
-        translate([-l/2, -2, 0])
-        cylinder(d=8, h=40, center=true, $fn=40);
-
-        translate([-l/2 - 5, -2, 0])
-        cube([6, 6.5, 30], center=true);
-
-        translate([-l/2 - 10, -2, 0])
-        cube([10, 10, 30], center=true);
+        translate([10/2 , 0, 0])
+        cube([10, 20, 20], center=true);
     }
 }
 
-module beam_2() {
-    
-    l = 170;
-    difference() {
-        union() {
-            rotate([0, 90, 0])
-            _profile_v2(l);
-
-            translate([l/2, -2, 0])
-            cylinder(d=12, h=20, center=true, $fn=40);
-
-        }
-
-        translate([-l/2, -20/2, 0])
-        rotate([0, 0, 90])
-        _joint_form();
-
-        translate([l/2, -2, 0])
-        cylinder(d=8, h=40, center=true, $fn=40);
-
-        translate([l/2 - 0.45, -7, 0])
-        rotate([0, 0, -5])
-        cube([7, 8.5, 30], center=true);
-
-        translate([l/2 + 2, -12, 0])
-        cube([10, 10, 30], center=true);
-    }
+module _cover_mount_stud() {
+    cylinder(d1=12, d2=8, h=3, $fn=20);
 }
 
-module beam_middle() {
-    l = 164;
-    
-    difference() {
-        union() {
-            translate([0, 0, 20/2])
-            rotate([90, 0, 0])
-            _profile_v2(l - 80 - 0.5);
-
-            translate([-20/2, l/2 - 80/2, 20/2])
-            intersection() {
-                joint_block_v2();
-
-                translate([0, 41/2 - 0.5, 0])
-                cube([30, 41, 30], center=true);
-            }
-
-            translate([-20/2, -l/2 + 80/2, 20/2])
-            intersection() {
-                joint_block_v2();
-
-                translate([0, -41/2 + 0.5, 0])
-                cube([30, 41, 30], center=true);
-            }
-        }
-    }
-}
-
-module _wall_clip() {
-    difference() {
-        union() {
-            translate([0, 2/2, 9/2])
-            cube([12, 2, 9], center=true);
-
-            translate([0, 0.55, 5.5])
-            rotate([0, 90, 0])
-            _profile_groove2(11);
-        }
-
-        translate([0, 5/2 + 1.76, 7])
-        cube([14, 5, 10], center=true);
-
-        translate([0, -0.2, 12.3])
-        rotate([-15, 0, 0])
-        cube([14, 3, 10], center=true);
-
-    }
-
-//    translate([0, -20/2, 20/2])
-//    rotate([0, 90, 0])
-//    %_profile_v2(20);
-}
-
-module _joiner_end() {
-    rotate([45, 0, 0])
-    cube([30, 10, 10], center=true);
-}
-
-module _bottom(width, ends=[0], pattern=true) {
-    difference() {
-        intersection() {
-            union() {
-                translate([0, 0, 3/2])
-                cube([220, width, 3], center=true);
-
-                translate([-50, -width/2, 0])
-                _wall_clip();
-
-                translate([50, -width/2, 0])
-                _wall_clip();
-
-                translate([-50, width/2, 0])
-                rotate([0, 0, 180])
-                _wall_clip();
-
-                translate([50, width/2, 0])
-                rotate([0, 0, 180])
-                _wall_clip();
-            }
-            translate([5, 0, 30/2])
-            chamfered_cube(
-                230, width * 2, 30, 4.5, center=true, $fn=30);
-        }
-
-        for (i = ends) {
-            translate([220/2, i, 3/2])
-            _joiner_end();
-        }
-
-        if (pattern) {
-            translate([0.5, 0, 0])
-            difference() {
-                intersection() {
-                    translate([0, 0, 1.2])
-                    bottom_pattern();
-
-                    translate([0, 0, 20/2 + 1.2])
-                    chamfered_cube(
-                        216, width - 3, 20, 3, center=true);
-
-                    translate([0, 0, 3.1/2])
-                    cube([400, width, 3.1], center=true);
-                }
-
-                for (i = ends) {
-                    translate([220/2, i, 0])
-                    chamfered_cube(37, 19, 6, 2, center=true);
-                }
-            }
-        }
-    }
-}
-
-module _bottom_clip() {
+module _bottom_form(h) {
+    w = 220 - 6;
 
     intersection() {
-        union() {
-            difference() {
-                hull() {
-                    translate([-220/2 + 8, 0, 8])
-                    rotate([90, 0, 0])
-                    cylinder(d=12, h=10, center=true, $fn=30);
+        difference() {
 
-                    translate([-220/2 + 7, 0, 1/2])
-                    cube([12, 10, 1], center=true);
-                }
+            translate([0, 0, 3/2])
+            cube([w, h, 3], center=true);
 
-                translate([-220/2 + 8, 0, 8])
-                rotate([90, 0, 0])
-                cylinder(d=8, h=12, center=true, $fn=30);
+            for(i = bottom_joiner_positions) {
+                translate([w/2, i, 3/2])
+                _joiner_form(10);
 
-                translate([-220/2 + 8, 0, 8 + 4])
-                cube([7, 12, 5], center=true);
+                translate([-w/2, i, 3/2])
+                _joiner_form(10);
             }
-            translate([-220/2 + 7, 0, 3/2])
-            cube([14, 15, 3], center=true);
+
+            for (i = cover_joiner_positions_x) {
+                translate([i - 3, h/2, 3/2])
+                rotate([0, 0, 90])
+                _joiner_form(10);
+
+                translate([i - 3, -h/2, 3/2])
+                rotate([0, 0, 90])
+                _joiner_form(10);
+
+            }
+
+            translate([0, 0, 0.6])
+            intersection() {
+                bottom_pattern();
+
+                translate([0, 0, 10/2])
+                difference() {
+                    chamfered_cube(
+                        w - 4, h - 4, 10, 3, center=true);
+
+                    for(i = bottom_joiner_positions) {
+                        translate([w/2, i, 3/2])
+                        cube([14, 18, 20], center=true);
+
+                        translate([-w/2, i, 3/2])
+                        cube([14, 18, 20], center=true);
+                    }
+
+                    for (i = cover_joiner_positions_x) {
+                        translate([i - 3, h/2, 3/2])
+                        cube([18, 14, 20], center=true);
+
+                        translate([i - 3, -h/2, 3/2])
+                        cube([18, 14, 20], center=true);
+                    }
+                }
+            }
+
+            translate([-220/2 + 10 - 6/2, -h/2, 10])
+            rotate([90, 0, 0])
+            cylinder(d=16.2, h=20, center=true, $fn=40);
         }
 
-        translate([5, 0, 30/2])
-        chamfered_cube(230, 40, 30, 4.5, center=true, $fn=30);
+    }
+    %translate([-220/2 + 10 - 3, h/2, 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=h, $fn=20);
+}
+
+
+module _cover_rod_hole() {
+    difference() {
+        union() {
+            cylinder(d=11, h=16, $fn=30);
+
+            translate([0, 10/2, 16/2])
+            cube([3, 10, 16], center=true);
+
+            translate([-10/2, 0, 16/2])
+            cube([10, 3, 16], center=true);
+        }
+
+        cylinder(d=8, h=50, center=true, $fn=30);
+
+        translate([0, 0, -9])
+        rotate([0, 45, -45])
+        cube([20, 20, 60], center=true);
     }
 }
 
 module bottom_1() {
+    h = cover_d/2;
+
     difference() {
         union() {
-            _bottom(40 - slop);
+            _bottom_form(h);
 
-            _bottom_clip();
+            translate([-49, -h/2 + 50, 0])
+            _cover_mount_stud();
+
+            translate([-49, -h/2 + 143, 0])
+            _cover_mount_stud();
+
+            translate([220/2 - 33, -h/2 + 50, 0])
+            _cover_mount_stud();
+
+            translate([220/2 - 33, -h/2 + 143, 0])
+            _cover_mount_stud();
 
         }
 
-        translate([-220/2 + 8, -40/2, 8])
-        rotate([90, 0, 0])
-        cylinder(d=16, h=20, center=true, $fn=40);
+        translate([-49, -h/2 + 50, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([220/2 - 33, -h/2 + 50, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([-49, -h/2 + 143, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([220/2 - 33, -h/2 + 143, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
     }
 }
 
@@ -1445,15 +1381,53 @@ module bottom_2() {
 }
 
 module bottom_3() {
+    h = cover_d/2;
+
     difference() {
         union() {
-            _bottom(73 - slop, ends=[18, -18]);
+            mirror([0, 1, 0])
+            _bottom_form(h);
 
-            translate([0, -73/2 + 15/2])
-            _bottom_clip();
+            translate([-49, -h/2 + 82.5, 0])
+            _cover_mount_stud();
 
-            translate([0, 73/2 - 15/2])
-            _bottom_clip();
+            translate([-49, -h/2 + 156.5, 0])
+            _cover_mount_stud();
+
+            translate([220/2 - 33, -h/2 + 82.5, 0])
+            _cover_mount_stud();
+
+            translate([220/2 - 33, -h/2 + 156.5, 0])
+            _cover_mount_stud();
+
+        }
+
+        translate([-49, -h/2 + 82.5, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([220/2 - 33, -h/2 + 82.5, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([-49, -h/2 + 156.5, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
+        }
+
+        translate([220/2 - 33, -h/2 + 156.5, 0]) {
+            cylinder(d=3.3, h=10, center=true, $fn=20);
+
+            cylinder(d1=9.7, d2=3.3, h=3.2,
+                center=true, $fn=20);
         }
     }
 }
@@ -1463,99 +1437,727 @@ module bottom_4() {
     bottom_3();
 }
 
-module bottom_5() {
-    d = 83.5 + 68 - 20 - slop;
-    echo(d);
+module _rod_clip() {
 
-    difference() {
+    intersection() {
         union() {
-            _bottom(d, ends=[45, 15, -15, -45],
-                pattern=false);
+            difference() {
+                hull() {
+                    translate([0, 0, 10])
+                    rotate([90, 0, 0])
+                    cylinder(d=12, h=10, center=true, $fn=30);
 
-            translate([0, -d/2 + 22])
-            _bottom_clip();
+                    translate([1, 0, 1/2])
+                    cube([12, 10, 1], center=true);
+                }
 
-            translate([0, d/2 - 22])
-            _bottom_clip();
+                translate([0, 0, 10])
+                rotate([90, 0, 0])
+                cylinder(d=8, h=12, center=true, $fn=30);
+
+                translate([0, 0, 10 + 4])
+                cube([7, 12, 5], center=true);
+            }
+            translate([3, 0, 3/2])
+            cube([13, 13, 3], center=true);
         }
 
-        intersection() {
-            for(i = [0:40]) {
-                translate([-220/2 + i * 15, 0, 0])
-                rotate([0, 0, 15])
-                cube([8, 200, 20], center=true);
+//        translate([5, 0, 30/2])
+//        chamfered_cube(30, 40, 30, 4.5, center=true, $fn=30);
+    }
+}
+
+module _side_form() {
+
+    union() {
+        difference() {
+
+            intersection() {
+                translate([0, 0, 20/2])
+                rotate([90, 0, 0])
+                chamfered_cube_side(
+                    2U_h, 20, cover_d / 2,
+                    4.5, center=true);
+
+                translate([0, 0, (6 + 15/2)/2])
+                cube([2U_h, cover_d, 6 + 15/2],
+                    center=true);
             }
 
-            translate([-3, 0, 0])
-            cube([180, d - 30, 20], center=true);
+            translate([-2U_h/2 + 1.7/2 - slop,
+                0, 20/2 + 10])
+            cube([1.7, 300, 20], center=true);
+
+            translate([0, 0, 30/2 + 3])
+            chamfered_cube(2U_h - 6, 300, 30,
+                2.2, center=true);
+
+            translate([2U_h/2, 0, 20/2 + 6])
+            cube([10, 300, 20], center=true);
+
+            translate([0.5, 0, 0.6])
+            difference() {
+                intersection() {
+                    translate([0, 0, 0])
+                    bottom_pattern();
+
+                    translate([0, 0, 20/2 + 0.6])
+                    chamfered_cube(
+                        2U_h - 7, cover_d / 2 - 3,
+                        20, 3, center=true);
+
+                    difference() {
+                        translate([0, 0, 4/2])
+                        cube([400, cover_d / 2 - 2, 4],
+                        center=true);
+
+                        for(i = cover_joiner_positions_y) {
+                            translate([i, cover_d / 4, 3/2])
+                            cube([19, 14, 10], center=true);
+                        }
+
+                        for(i = cover_joiner_positions_y) {
+                            translate([i, -cover_d / 4, 3/2])
+                            cube([19, 14, 10], center=true);
+                        }
+                    }
+                }
+            }
+
+            for(i = cover_joiner_positions_y) {
+                translate([i, -cover_d / 4, 3/2])
+                rotate([0, 0, 90])
+                _joiner_form(10);
+            }
+
+            for(i = cover_joiner_positions_y) {
+                translate([i, cover_d / 4, 3/2])
+                rotate([0, 0, 90])
+                _joiner_form(10);
+            }
+
+            translate([-2U_h/2 + 10, -cover_d/4, 10])
+            rotate([90, 0, 0])
+            cylinder(d=16.2, h=20, center=true, $fn=40);
+
+            translate([2U_h/2 - 10, -cover_d/4, 10])
+            rotate([90, 0, 0])
+            cylinder(d=16.2, h=20, center=true, $fn=40);
         }
+
+        translate([0, 0, 0.8])
+        rotate([0, -90, 0])
+        _cable_mount();
+
+        translate([0, 70, 0.8])
+        rotate([0, -90, 0])
+        _cable_mount();
+
+        translate([0, -70, 0.8])
+        rotate([0, -90, 0])
+        _cable_mount();
+
+        for(i = bottom_joiner_positions) {
+            translate([2U_h/2 - 3/2, i, 6])
+            intersection() {
+                rotate([0, 90, 0])
+                cover_joiner();
+
+                translate([0, 0, 15/2 -0.1])
+                cube([10, 30, 15], center=true);
+            }
+        }
+    }
+
+    %translate([-2U_h/2 + 10, 0, 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=cover_d, center=true, $fn=20);
+
+    %translate([2U_h/2 - 10, 0, 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=cover_d, center=true, $fn=20);
+}
+
+module side_1() {
+    union() {
+        _side_form();
+
+        translate([-2U_h/2 + 10, -cover_d/4 + 20, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, -cover_d/4 + 20, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
+
+        translate([-2U_h/2 + 10, 0, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, 0, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
+
+        translate([-2U_h/2 + 10, cover_d/4 - 20, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, cover_d/4 - 20, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
     }
 }
 
-module bottom_6() {
+module side_2() {
     mirror([1, 0, 0])
-    bottom_5();
+    side_1();
 }
 
-module bottom_7() {
-    d = 54 - slop;
+module side_3() {
+    union() {
+        mirror([0, 1, 0])
+        _side_form();
 
+        translate([-2U_h/2 + 10, -cover_d/4 + 20, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, -cover_d/4 + 20, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
+
+        translate([-2U_h/2 + 10, 0, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, 0, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
+
+        translate([-2U_h/2 + 10, cover_d/4 - 20, 0])
+        _rod_clip();
+
+        translate([2U_h/2 - 10, cover_d/4 - 20, 0])
+        rotate([0, 0, 180])
+        _rod_clip();
+    }
+}
+
+module side_4() {
+    mirror([1, 0, 0])
+    side_3();
+}
+
+module top_1() {
+
+    top_d = cover_d/2 + 4.8;    
+    top_w = (440 - 20)/2 - 5.2;
+
+    union() {
+        difference() {
+            union() {
+                translate([0, 0, 2.8/2])
+                cube([top_w, top_d, 2.8], center=true);
+
+                intersection() {
+                    translate([top_w/2, -top_d/2 + 15, 2.8/2])
+                    for(i = [0:9]) {
+                        translate([0, i * 21, 0])
+                        rotate([45, 0, 0])
+                        cube([9.8, 9.8, 9.8], center=true);
+                    }
+
+                    translate([0, 0, 2.8/2])
+                    cube([400, 400, 2.8], center=true);
+                }
+            }
+
+            translate([-top_w/2, 0, 5/2 + 1.6])
+            cube([10, cover_d, 5], center=true);
+
+            translate([-top_w/2 + 15, top_d/2, 2.8/2])
+            for(i = [0:9]) {
+                translate([i * 21, 0, 0])
+                rotate([0, 45, 0])
+                cube([10, 10, 10], center=true);
+            }
+
+            intersection() {
+                translate([0, 0, 0.6])
+                bottom_pattern();
+
+                difference() {
+                    translate([2, -2, 20/2 + 0.6])
+                    chamfered_cube(
+                        top_w - 10, top_d - 10,
+                        20, 3, center=true);
+
+                    translate([-top_w/2 + 30, -top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+                }
+            }
+
+            translate([-top_w/2 + 30, -top_d/2 + 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+        }
+
+        translate([5, -top_d/2 + 12, 6/2 + 0.4])
+        cube([top_w, 2, 6], center=true);
+
+        translate([5, 32, 6/2 + 0.4])
+        cube([top_w, 2, 6], center=true);
+
+        translate([-top_w/2 + 5 + 2/2, 5, 6/2 + 0.4])
+        cube([2, top_d - 10, 6], center=true);
+
+    }
+}
+
+module top_1_dc() {
     difference() {
-        union() {
-            _bottom(d, ends=[10, -10]);
+        top_1();
 
-            _bottom_clip();
-
-        }
-
+        translate([5, 0, -0.2])
+        scale([2, 2, 3])
+        mirror([1, 0, 0])
+        _chia_logo();
     }
 }
 
-module bottom_8() {
-    mirror([1, 0, 0])
-    bottom_7();
-}
-
-module bottom_9() {
-    d = 45 - slop;
-
-    difference() {
-        union() {
-            _bottom(d, ends=[0]);
-
-            _bottom_clip();
-
-        }
-
-        translate([-220/2 + 8, 45/2, 8])
-        rotate([90, 0, 0])
-        cylinder(d=16, h=20, center=true, $fn=40);
-    }
-}
-
-module bottom_10() {
-    mirror([1, 0, 0])
-    bottom_9();
-}
-
-module _joiner(h=3) {
+module top_1_dc_chia_logo() {
     intersection() {
-        rotate([45, 0, 0])
-        cube([30 - slop, 10 - slop, 10 - slop], center=true);
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
 
-        cube([30, 20, h], center=true);
+        translate([5, 0, -0.2])
+        scale([2, 2, 3])
+        mirror([1, 0, 0])
+        _chia_logo();
     }
 }
 
+module top_2() {
+    top_d = cover_d/2 - 5.2;    
+    top_w = (440 - 20)/2 - 5.2;
 
-module bottom_joiner() {
-    _joiner(h=3);
+    union() {
+        difference() {
+            union() {
+                translate([0, 0, 2.8/2])
+                cube([top_w, top_d, 2.8], center=true);
+
+                intersection() {
+                    translate([-top_w/2 + 15, -top_d/2, 2.8/2])
+                    for(i = [0:9]) {
+                        translate([i * 21, 0, 0])
+                        rotate([0, 45, 0])
+                        cube([9.8, 9.8, 9.8], center=true);
+                    }
+
+                    translate([0, 0, 2.8/2])
+                    cube([top_w, top_d + 10, 2.8], center=true);
+                }
+
+                intersection() {
+                    translate([top_w/2, -top_d/2 + 15, 2.8/2])
+                    for(i = [0:9]) {
+                        translate([0, i * 21, 0])
+                        rotate([45, 0, 0])
+                        cube([9.8, 9.8, 9.8], center=true);
+                    }
+
+                    translate([5/2, 0, 2.8/2])
+                    cube([top_w + 5, top_d, 2.8], center=true);
+                }
+            }
+
+            translate([-top_w/2, 0, 5/2 + 1.6])
+            cube([10, cover_d, 5], center=true);
+
+            intersection() {
+                translate([0, 0, 0.6])
+                bottom_pattern();
+
+                difference() {
+                    translate([2, -2, 20/2 + 0.6])
+                    chamfered_cube(
+                        top_w - 10, top_d - 5,
+                        20, 3, center=true);
+
+                    translate([-top_w/2 + 30, top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+
+                    translate([top_w/2 - 1.8, top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+                }
+            }
+
+            translate([-top_w/2 + 30, top_d/2 - 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+
+            translate([top_w/2 - 1.8, top_d/2 - 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+        }
+        translate([5/2, top_d/2 - 12, 6/2 + 0.4])
+        cube([top_w - 5, 2, 6], center=true);
+
+        translate([5, -28, 6/2 + 0.4])
+        cube([top_w, 2, 6], center=true);
+
+        translate([-top_w/2 + 5 + 2/2, -5, 6/2 + 0.4])
+        cube([2, top_d - 10, 6], center=true);
+
+    }
 }
 
-module side_joiner() {
-    _joiner(h=2);
+module top_2_dc() {
+    difference() {
+        top_2();
+
+        translate([0, 0, -0.2])
+        scale([2, 2, 3])
+        _raspi_logo_1();
+
+        translate([0, 0, -0.2])
+        scale([2, 2, 3])
+        _raspi_logo_2();
+    }
 }
 
+module top_2_dc_raspi_green() {
+    intersection() {
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
+
+        translate([0, 0, -0.2])
+        scale([2, 2, 3])
+        _raspi_logo_1();
+    }
+}
+
+module top_2_dc_raspi_red() {
+    intersection() {
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
+
+        translate([0, 0, -0.2])
+        scale([2, 2, 3])
+        _raspi_logo_2();
+    }
+}
+
+module top_3() {
+    top_d = cover_d/2 + 4.8;    
+    top_w = (440 - 20)/2 + 4.8;
+
+    union() {
+        difference() {
+            translate([0, 0, 2.8/2])
+            cube([top_w, top_d, 2.8], center=true);
+
+            translate([top_w/2, 0, 5/2 + 1.6])
+            cube([10, cover_d, 5], center=true);
+
+            translate([top_w/2 - 13, top_d/2, 2.8/2])
+            for(i = [0:9]) {
+                translate([-i * 21, 0, 0])
+                rotate([0, 45, 0])
+                cube([10, 10, 10], center=true);
+            }
+
+            translate([-top_w/2, -top_d/2 + 15, 2.8/2])
+            for(i = [0:9]) {
+                translate([0, i * 21, 0])
+                rotate([45, 0, 0])
+                cube([10, 10, 10], center=true);
+            }
+
+            intersection() {
+                translate([0, 0, 0.6])
+                bottom_pattern();
+
+                difference() {
+                    translate([2, -2, 20/2 + 0.6])
+                    chamfered_cube(
+                        top_w - 10, top_d - 10,
+                        20, 3, center=true);
+
+                    translate([top_w/2 - 30, -top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+
+                    translate([-top_w/2 + 11.8, -top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+                }
+            }
+
+            translate([top_w/2 - 30, -top_d/2 + 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+
+            translate([-top_w/2 + 11.8, -top_d/2 + 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+        }
+
+        translate([0, -top_d/2 + 12, 6/2 + 0.4])
+        cube([top_w - 10, 2, 6], center=true);
+
+        translate([0, 32, 6/2 + 0.4])
+        cube([top_w - 10, 2, 6], center=true);
+
+        translate([top_w/2 - 5 - 2/2, 5, 6/2 + 0.4])
+        cube([2, top_d - 10, 6], center=true);
+    }
+}
+
+module top_3_dc() {
+    difference() {
+        top_3();
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _bitcoin_logo_1();
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _bitcoin_logo_2();
+    }
+}
+
+module top_3_dc_bitcoin_orange() {
+    intersection() {
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _bitcoin_logo_1();
+    }
+}
+
+module top_3_dc_bitcoin_black() {
+    intersection() {
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _bitcoin_logo_2();
+    }
+}
+
+module top_4() {
+    top_d = cover_d/2 - 5.2;    
+    top_w = (440 - 20)/2 + 4.8;
+
+    union() {
+        difference() {
+            union() {
+                translate([0, 0, 2.8/2])
+                cube([top_w, top_d, 2.8], center=true);
+
+                intersection() {
+                    translate([top_w/2 - 13, -top_d/2, 2.8/2])
+                    for(i = [0:9]) {
+                        translate([-i * 21, 0, 0])
+                        rotate([0, 45, 0])
+                        cube([9.8, 9.8, 9.8], center=true);
+                    }
+
+                    translate([0, 0, 2.8/2])
+                    cube([top_w, top_d + 10, 2.8], center=true);
+                }
+            }
+
+            translate([top_w/2, 0, 5/2 + 1.6])
+            cube([10, cover_d, 5], center=true);
+
+            translate([-top_w/2, -top_d/2 + 15, 2.8/2])
+            for(i = [0:9]) {
+                translate([0, i * 21, 0])
+                rotate([45, 0, 0])
+                cube([10, 10, 10], center=true);
+            }
+
+            intersection() {
+                translate([0, 0, 0.6])
+                bottom_pattern();
+
+                difference() {
+                    translate([2, -2, 20/2 + 0.6])
+                    chamfered_cube(
+                        top_w - 10, top_d - 5,
+                        20, 3, center=true);
+
+                    translate([top_w/2 - 30, top_d/2, 0])
+                    cube([10, 20, 10], center=true);
+                }
+            }
+            translate([top_w/2 - 30, top_d/2 - 10/2, 0]) {
+                cylinder(d=3.3, h= 10, center=true, $fn=20);
+                cylinder(d1=9.7, d2=3.3, h=3.2,
+                    center=true, $fn=20);
+            }
+        }
+        translate([-5/2, top_d/2 - 12, 6/2 + 0.4])
+        cube([top_w - 5, 2, 6], center=true);
+
+        translate([0, -28, 6/2 + 0.4])
+        cube([top_w - 10, 2, 6], center=true);
+
+        translate([top_w/2 - 5 - 2/2, -5, 6/2 + 0.4])
+        cube([2, top_d - 10, 6], center=true);
+    }
+}
+
+module top_4_dc() {
+    difference() {
+        top_4();
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _hdd_logo();
+    }
+}
+
+module top_4_dc_hdd_logo() {
+    intersection() {
+        translate([0, 0, 2.8/2])
+        cube([400, 400, 2.8], center=true);
+
+        translate([0, 0, -0.2])
+        scale([1.5, 1.5, 3])
+        mirror([1, 0, 0])
+        _hdd_logo();
+    }
+}
+
+module beam_1() {
+    l = 168;
+    difference() {
+        intersection() {
+            union() {
+                rotate([0, 90, 0])
+                _profile_v2(l);
+
+                translate([-l/2, 0, 0])
+                cylinder(d=12, h=20,
+                    center=true, $fn=40);
+
+            }
+            translate([0, 3, 0])
+            cube([2 * l, 20, 20], center=true);
+        }
+
+        translate([l/2, 0, 20/2 - 0.2])
+        rotate([0, 90, 90])
+        _joint_form();
+
+        translate([-l/2, 0, 0])
+        cylinder(d=8, h=40, center=true, $fn=40);
+
+        translate([-l/2 - 5, 0, 0])
+        cube([6, 6.5, 30], center=true);
+
+        translate([-l/2 - 10, 0, 0])
+        cube([10, 10, 30], center=true);
+
+        #translate([-30, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, h=40, center=true, $fn=10);
+    }
+}
+
+module beam_2() {
+    
+    l = 168;
+
+    difference() {
+        intersection() {
+            union() {
+                rotate([0, 90, 0])
+                _profile_v2(l);
+
+                translate([l/2, 0, 0])
+                cylinder(d=12, h=20,
+                    center=true, $fn=40);
+
+            }
+            translate([0, 3, 0])
+            cube([2 * l, 20, 20], center=true);
+        }
+
+        translate([-l/2, 0, 20/2 - 0.2])
+        rotate([0, 90, 90])
+        _joint_form();
+
+        translate([l/2, 0, 0])
+        cylinder(d=8, h=40, center=true, $fn=40);
+
+        translate([l/2 - 0.45, -5, 0])
+        rotate([0, 0, -5])
+        cube([7, 8.5, 30], center=true);
+
+        translate([l/2 + 2, -10, 0])
+        cube([10, 10, 30], center=true);
+
+        #translate([30, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, h=40, center=true, $fn=10);
+    }
+}
+
+module beam_middle() {
+    l = 164;
+    
+    intersection() {
+        union() {
+            translate([0, 0, 0])
+            rotate([90, 0, 0])
+            _profile_v2(l - 80 - 0.5);
+
+            translate([-20/2, l/2 - 80/2, 0])
+            intersection() {
+                joint_block_v2();
+
+                translate([0, 41/2 - 0.5, 0])
+                cube([30, 41, 30], center=true);
+            }
+
+            translate([-20/2, -l/2 + 80/2, 0])
+            intersection() {
+                joint_block_v2();
+
+                translate([0, -41/2 + 0.5, 0])
+                cube([30, 41, 30], center=true);
+            }
+        }
+
+        difference() {
+            translate([0, 0, 3])
+            cube([20, 2 * l, 20], center=true);
+
+            #translate([0, -30, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=10);
+
+            #translate([0, 30, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=10);
+        }
+    }
+}
 
 module hdd_piece() {
 
@@ -1638,6 +2240,95 @@ module hdd_piece() {
     }
 
 //
+//    %translate([-10, 2U_h - 23 - 20/2, 0])
+//    _profile_v2(30);
+}
+
+module hdd_piece_big() {
+
+    h = 21 + 2 + 2;
+
+    difference() {
+        union() {
+            rotate([0, 0, 180])
+            scale([1, 1, 13/20])
+            _frame_clip_v2();
+
+            translate([151.5, 0, 0])
+            rotate([0, 0, 180])
+            scale([1, 1, 13/20])
+            _frame_clip_v2();
+
+            translate([-1.5, -20, 0])
+            cube([131, 83, h]);
+
+            translate([-8.5 + 3, 83 - 20 - 15, 0])
+            cube([5, 8, 18]);
+
+            translate([128.5, 83 - 20 - 15, 0])
+            cube([5, 8, 18]);
+
+            translate([-6.5, -2, 0])
+            cube([5, 2, 13]);
+
+            translate([128.55, -2, 0])
+            cube([5, 2, 13]);
+
+            translate([126, -1, 0])
+            hull() {
+                cube([1, 23, 2]);
+                cube([23, 1, 2]);
+            }
+
+            translate([1, -1, 0])
+            hull() {
+                cube([1, 23, 2]);
+
+                translate([-22, 0, 0])
+                cube([23, 1, 2]);
+            }
+        }
+        translate([0, -18, 2])
+        cube([128, 85, 24]);
+
+        translate([-3, 0, 2])
+        cube([138, 48, 24]);
+
+        translate([-3, 20, 18])
+        cube([138, 48, 24]);
+
+        translate([22, -40, 6])
+        cube([87, 48, 24]);
+
+        translate([-3.75, 83 - 20 - 16, 2])
+        cube([2, 15, 6]);
+
+        translate([-3.75, 83 - 20 - 16, 10])
+        cube([2, 15, 6]);
+
+        translate([129.75, 83 - 20 - 16, 2])
+        cube([2, 15, 6]);
+
+        translate([129.75, 83 - 20 - 16, 10])
+        cube([2, 15, 6]);
+
+        for(i = [1:7]) {
+            translate([16 * i, -5, 0])
+            hull() {
+                cylinder(d=6, h=10, center=true, $fn=30);
+
+                translate([0, 55, 0])
+                cylinder(d=6, h=10, center=true, $fn=30);
+            }
+        }
+
+        translate([-5/2 - 2, -12, 0])
+        cube([5, 15, 50], center=true);
+
+        translate([131 + 5/2 - 1, -12, 0])
+        cube([5, 15, 50], center=true);
+    }
+
 //    %translate([-10, 2U_h - 23 - 20/2, 0])
 //    _profile_v2(30);
 }
@@ -1725,6 +2416,26 @@ module hdd_piece_clip_end() {
     }
 }
 
+module hdd_piece_clip_big_1() {
+    union() {
+        translate([-22.8/2 + 11.4/4, 0, 0])
+        cube([11.4/2, 12, 1.8], center=true);
+
+        translate([22.8/2 - 11.4/4, 0, 3.75])
+        cube([11.4/2, 12, 1.8], center=true);
+
+        translate([22.8/2 - 11.4/4, 12/2 - 5/2, (3.75 + 1.8)/2 - 1.8/2])
+        cube([11.4/2, 5, 3.75 + 1.8], center=true);
+
+        translate([0, 12/2 - 5/2, 0])
+        cube([14.8, 5, 1.8], center=true);
+    }
+}
+
+module hdd_piece_clip_big_2() {
+    mirror([1, 0, 0])
+    hdd_piece_clip_big_1();
+}
 
 module pi_mount() {
     %translate([5, -60/2 + 0.5, 67.3])
@@ -1851,11 +2562,51 @@ module adapter_USB_HDD_Seagate_5T_bottom() {
 
 module adapter_USB_HDD_Seagate_5T_top() {
     difference() {
-        cube([119.7, 22.7, 7], center=true);
+        cube([119.7, 22.7, 8], center=true);
 
         cube([117.4, 21, 10], center=true);
     }
 }
+
+module adapter_USB_HDD_Seagate_5T_2_bottom() {
+    difference() {
+        cube([119.7, 22.7, 15], center=true);
+
+        translate([0, 0, 1])
+        cube([115.6, 21, 15], center=true);
+
+        cube([100, 10, 20], center=true);
+    }
+}
+
+module adapter_USB_HDD_Seagate_5T_2_top() {
+    difference() {
+        cube([119.7, 22.7, 8], center=true);
+
+        cube([115.6, 21, 10], center=true);
+    }
+}
+
+module adapter_USB_HDD_Intenso_5T_bottom() {
+    difference() {
+        cube([127.7, 22.7, 15], center=true);
+
+        translate([0, 0, 1.4])
+        cube([126.4, 20.4, 15], center=true);
+
+        cube([105, 10, 20], center=true);
+    }
+}
+
+module adapter_USB_HDD_Intenso_5T_top() {
+    difference() {
+        cube([127.7, 22.7, 8], center=true);
+
+        cube([126.4, 21, 10], center=true);
+    }
+}
+
+
 
 module cord_socket_mount() {
     difference() {
@@ -1967,6 +2718,123 @@ module 5V_transformer_clip() {
     }
 }
 
+module 5V_transformer_2_clip() {
+    difference() {
+        intersection() {
+            union() {
+                translate([-6, -44, -4])
+                rotate([-20, 0, 0])
+                rotate([0, 0, 180])
+                scale([1, 1, 1.2])
+                _frame_clip_v2();
+
+                translate([0, 0, 8/2])
+                rounded_cube_side(27, 15, 8, 4, center=true);
+
+                hull() {
+                    intersection() {
+                        translate([-6 - 12, -44 + 1, 6])
+                        rotate([-20, 0, 0])
+                        cube([10, 1, 15], center=true);
+
+                        translate([0, 0, 8/2])
+                        cube([200, 200, 8], center=true);
+                    }
+
+                    translate([0, -7, 8/2])
+                    cube([10, 1, 8], center=true);
+                }
+
+                hull() {
+                    translate([-6 - 12, -44 + 1, 6])
+                    rotate([-20, 0, 0])
+                    cube([3, 0.01, 18], center=true);
+
+                    translate([-8.8, -25, 8/2])
+                    cube([3, 0.01, 8], center=true);
+                }
+            }
+
+            translate([0, 0, 100/2])
+            cube([200, 200, 100], center=true);
+        }
+
+        translate([-12.5/2, 0, 0])
+        cube([1.8, 6.7, 20], center=true);
+
+        translate([12.5/2, 0, 0])
+        cube([1.8, 6.7, 20], center=true);
+
+        translate([27.2/2 + 0.7, 0, 8/2 - 0.1])
+        sphere(d=3.2, $fn=30);
+
+        translate([-27.2/2 - 0.7, 0, 8/2 - 0.1])
+        sphere(d=3.2, $fn=30);
+    }
+
+    %translate([-15, 0, 8])
+    rotate([0, 0, -90])
+    mock_5V_transformer_2();
+}
+
+module 5V_transformer_2_clip_cover() {
+    union() {
+        difference() {
+            translate([0, 0, 20/2])
+            rounded_cube_side(27 + 2.7, 15 + 2.7,
+                20, 4 + 2.7, center=true);
+
+            translate([0, 0, 20/2])
+            rounded_cube_side(27 + 0.2, 15 + 0.2,
+                22, 4 + 0.2, center=true);
+
+            translate([-0.5, 8, 0])
+            rotate([0, 0, 26])
+            cube([10, 8, 16.8], center=true);
+        }
+
+        translate([0, 0, 20])
+        difference() {
+            hull() {
+                rounded_cube_side(27 + 2.7, 15 + 2.7,
+                    0.2, 4 + 2.7, center=true);
+
+                translate([0, 0, 14 - 0.1/2])
+                rounded_cube_side(10, 6.3, 0.1, 1.4, center=true);
+            }
+            hull() {
+                translate([0, 0, -0.2/2])
+                rounded_cube_side(27 + 0.2, 15 + 0.2,
+                    0.2, 4 + 0.2, center=true);
+
+                translate([0, 0, 14])
+                rounded_cube_side(10 - 2.58, 6.3 - 2.56, 0.1,
+                    0.2, center=true);
+            }
+        }
+
+        translate([0, 0, 34 + 6/2])
+        difference() {
+            rounded_cube_side(10, 6.3, 6, 1.4, center=true);
+
+            rounded_cube_side(10 - 2.5, 6.3 - 2.5, 7,
+                0.2, center=true);
+        }
+
+        intersection() {
+            union() {
+                translate([27.2/2 + 0.7, 0, 8/2])
+                sphere(d=3, $fn=30);
+
+                translate([-27.2/2 - 0.7, 0, 8/2])
+                sphere(d=3, $fn=30);
+            }
+            cube([28, 6, 20], center=true);
+        }
+
+    }
+}
+
 module 7_5V_transformer_clip() {
     difference() {
         union() {
@@ -2001,20 +2869,95 @@ module 7_5V_transformer_clip() {
     }
 }
 
+module 5V_transformer_3_clip() {
+
+    mirror([1, 0, 0])
+    7_5V_transformer_clip();
+}
+
+module double_transformer_clip() {
+
+    %translate([-12.2, 0, 24])
+    rotate([0, 0, -90])
+    mock_12V_transformer();
+
+    %translate([-38, 27, 24])
+    mock_5V_USB_transformer();
+
+    difference() {
+        union() {
+            translate([-6, -11, 0])
+            rotate([0, 0, 180])
+            _frame_clip_v2();
+
+            rotate([0, 0, 90])
+            scale([1.235, 1.14, 1])
+            _transformer_form();
+
+            translate([-38, 27, 0])
+            rotate([0, 0, 90])
+            scale([1.235, 1.14, 1])
+            _transformer_form();
+
+            hull() {
+                translate([-20, -12, 0])
+                cylinder(d=2, h=12, $fn=10);
+
+                translate([-10, -12, 0])
+                cylinder(d=2, h=12, $fn=10);
+
+                translate([-40, 20, 0])
+                cylinder(d=2, h=12, $fn=10);
+
+                translate([-30, 20, 0])
+                cylinder(d=2, h=12, $fn=10);
+            }
+
+            hull() {
+                translate([-8, -12, 0])
+                cylinder(d=4, h=12, $fn=10);
+
+                translate([-19, 0, 0])
+                cylinder(d=16, h=12, $fn=20);
+            }
+        }
+        translate([0, 0, 6.6])
+        rotate([0, 0, 90])
+        scale([1.025, 1.02, 1])
+        _transformer_form();
+
+        translate([-18.7/2, 0, 0])
+        cylinder(d=4.8, h=40, center=true, $fn=40);
+
+        translate([18.7/2, 0, 0])
+        cylinder(d=4.8, h=40, center=true, $fn=40);
+
+        translate([-38, 27, 6.6])
+        rotate([0, 0, 90])
+        scale([1.025, 1.02, 1])
+        _transformer_form();
+
+        translate([-38 -18.7/2, 27, 0])
+        cylinder(d=4.8, h=40, center=true, $fn=40);
+
+        translate([-38 + 18.7/2, 27, 0])
+        cylinder(d=4.8, h=40, center=true, $fn=40);
+    }
+}
+
 module D_link_hub_clip_back() {
-    %translate([0, 0, 35])
-    rotate([102, 0, 0])
+    %translate([0, 0, 35.5])
+    rotate([105, 0, 0])
     mock_USB_hub_Dlink();
 
     difference() {
         intersection() {
             union() {
                 translate([-11, 10, 0])
-                rotate([0, 0, 0])
                 _frame_clip_v2();
 
-                rotate([12, 0, 0])
-                translate([0, -5.5, 12])
+                rotate([15, 0, 0])
+                translate([0, -3.6, 12])
                 cube([103, 30, 29], center=true);
 
                 translate([0.7, 9, 3/2])
@@ -2028,12 +2971,12 @@ module D_link_hub_clip_back() {
             cube([200, 100, 20], center=true);
         }
 
-        rotate([12, 0, 0])
-        translate([0, -5.5, 18.2])
+        rotate([15, 0, 0])
+        translate([0, -3.6, 18.2])
         cube([99, 26, 25], center=true);
 
-        rotate([12, 0, 0])
-        translate([0, -5.5, 10])
+        rotate([15, 0, 0])
+        translate([0, -3.6, 10])
         cube([90, 18, 25], center=true);
 
         translate([0, -25.5, -0.1])
@@ -2044,19 +2987,18 @@ module D_link_hub_clip_back() {
 
 module D_link_hub_clip_front() {
     %translate([0, 0, 29])
-    rotate([-90 + 12, 0, 180])
+    rotate([-90 + 15, 0, 180])
     mock_USB_hub_Dlink();
 
     difference() {
         intersection() {
             union() {
                 translate([-12.5, 10, 0])
-                rotate([0, 0, 0])
                 _frame_clip_v2();
 
-                rotate([-12, 0, 0])
-                translate([0, -18.8, 6])
-                cube([103, 30, 29], center=true);
+                rotate([-15, 0, 0])
+                translate([0, -19.2, 6])
+                cube([103, 32, 29], center=true);
 
                 translate([-0.7, 3, 3/2])
                 cube([15, 15, 3], center=true);
@@ -2067,676 +3009,304 @@ module D_link_hub_clip_front() {
             translate([0, 0, 20/2])
             cube([200, 100, 20], center=true);
         }
-        rotate([-12, 0, 0])
-        translate([0, -18.8, 12.2])
+        rotate([-15, 0, 0])
+        translate([0, -20.3, 11.9])
         cube([99, 26, 25], center=true);
 
-        rotate([-12, 0, 0])
-        translate([0, -20.7, 5])
+        rotate([-15, 0, 0])
+        translate([0, -21.7, 5])
         cube([85, 18, 35], center=true);
 
-        translate([0, -37.5, -0.1])
+        translate([0, -38.8, -0.1])
         rotate([35, 0, 0])
         cube([120, 10, 10], center=true);
     }
 }
 
-module _side_clip() {
-    intersection() {
-        difference() {
-            hull() {
-                translate([0, 0, 8])
-                rotate([90, 0, 0])
-                cylinder(d=12, h=10, center=true, $fn=30);
+module Targus_hub_clip_back() {
+    %translate([0, -25.4, 30.2])
+    rotate([-90 + 15, 0, 0])
+    mock_USB_hub_Targus();
 
-                translate([0, 0, 1/2])
-                cube([12, 10, 1], center=true);
+    difference() {
+        intersection() {
+            union() {
+                translate([-11, 10, 0])
+                _frame_clip_v2();
+
+                rotate([15, 0, 0])
+                translate([0, -3.6, 12])
+                cube([107.4, 32, 29], center=true);
+
+                translate([0.7, 9, 3/2])
+                cube([15, 5, 3], center=true);
+
+                translate([0.7, 8, 20/2])
+                cube([3, 7, 20], center=true);
             }
 
-            translate([0, 0, 8])
-            rotate([90, 0, 0])
-            cylinder(d=8, h=12, center=true, $fn=30);
-
-            translate([-0.75, 0, 8 + 4])
-            cube([7.5, 12, 8], center=true);
-
-            translate([-3, 0, 8 + 2.8])
-            cube([7.5, 12, 8], center=true);
-
-            translate([3, 0, 8 + 7.4])
-            cube([7.5, 12, 8], center=true);
-
+            translate([0, 0, 20/2])
+            cube([200, 100, 20], center=true);
         }
 
-        translate([30/2 - 4.7, 0, 30/2])
-        chamfered_cube(30, 40, 30, 1.5, center=true, $fn=30);
+        translate([0, -25.4, 30.2])
+        rotate([-90 + 15, 0, 0])
+        scale([1.01, 1.01, 1.01])
+        mock_USB_hub_Targus();
+
+        translate([103/2 - 4.5 - 7/2, -22, 17])
+        cube([7, 10, 15], center=true);
+
+        translate([-103/2 + 4.5 + 7/2, -22, 17])
+        cube([7, 10, 15], center=true);
+
+        rotate([15, 0, 0])
+        translate([0, -3.6, 10])
+        cube([90, 18, 25], center=true);
+
+        translate([0, -25.5, -0.1])
+        rotate([45, 0, 0])
+        cube([120, 10, 10], center=true);
     }
 }
 
-module _side_cable_mount() {
-    intersection() {
-        translate([0, 0, -1])
-        rotate([90, 0, 0])
-        tube(12, 5, 1.5, $fn=30);
+module Targus_hub_clip_front() {
+    %translate([0, -25.4, 37.2])
+    rotate([90 + 15, 0, 180])
+    mock_USB_hub_Targus();
 
-        translate([0, 0, 10/2])
-        cube([20, 20, 10], center=true);
+    difference() {
+        intersection() {
+            union() {
+                translate([-12.5, 10, 0])
+                _frame_clip_v2();
+
+                rotate([-15, 0, 0])
+                translate([0, -21, 6])
+                cube([107.4, 32, 29], center=true);
+
+                translate([-0.7, 2.7, 3/2])
+                cube([15, 16, 3], center=true);
+
+                translate([-0.7, 2.7, 20/2])
+                cube([3, 16, 20], center=true);
+            }
+            translate([0, 0, 20/2])
+            cube([200, 100, 20], center=true);
+        }
+
+        translate([0, -25.4, 37.2])
+        rotate([90 + 15, 0, 180])
+        scale([1.01, 1.01, 1.01])
+        mock_USB_hub_Targus();
+
+        translate([0, -25.4, 37.2])
+        rotate([90 + 15, 0, 180])
+        mock_USB_hub_Targus();
+
+        rotate([-15, 0, 0])
+        translate([0, -19.7, 5])
+        cube([97, 18, 35], center=true);
+
+        translate([0, -38.8, -0.1])
+        rotate([35, 0, 0])
+        cube([120, 10, 10], center=true);
     }
 }
 
-module side_1() {
-    union() {
-        difference() {
+module Belkin_hub_clip_back() {
+    %translate([0, -5.5, 27])
+    rotate([-90 + 15, 0, 0])
+    mock_USB_hub_Belkin();
 
-            intersection() {
-                translate([0, 0, 20/2])
-                rotate([90, 0, 0])
-                chamfered_cube_side(
-                    2U_h, 20, side_d / 2 - slop,
-                    4.5, center=true);
+    difference() {
+        intersection() {
+            union() {
+                translate([-11, 10, 0])
+                _frame_clip_v2();
 
-                translate([0, 0, 12/2])
-                cube([2U_h, side_d, 12], center=true);
+                rotate([15, 0, 0])
+                translate([0, 1.6, 12])
+                cube([91.4, 16.4, 29], center=true);
+
+                translate([0.7, 9, 3/2])
+                cube([15, 5, 3], center=true);
+
+                translate([0.7, 8, 20/2])
+                cube([3, 7, 20], center=true);
             }
 
-            translate([-2U_h/2 + 1.7/2 - slop, 0, 20/2 + 10])
-            cube([1.7, 300, 20], center=true);
+            translate([0, 0, 20/2])
+            cube([200, 100, 20], center=true);
+        }
 
-            translate([100/2 - 2U_h/2 + 3, 0, 30/2 + 2])
-            chamfered_cube(100, 300, 30, 2.2, center=true);
+        translate([0, -2.9, 30/2 + 2])
+        rotate([15, 0, 0])
+        cube([87.3, 12.3, 30], center=true);
 
-            translate([2U_h/2 + 10/2 - 3, 0, 0])
-            cube([10, 300, 30], center=true);
+        rotate([15, 0, 0])
+        translate([0, 1.6, 10])
+        cube([81, 11, 25], center=true);
+
+        translate([0, -25.5, -0.1])
+        rotate([45, 0, 0])
+        cube([120, 10, 10], center=true);
+
+        translate([-87/2 + 10, 3, 0])
+        rotate([15, 0, 0])
+        cylinder(d=10, h=10, center=true, $fn=30);
+    }
+}
+
+module Belkin_hub_clip_front() {
+    %translate([0, -5.5, 27.5])
+    rotate([90 + 15, 0, 180])
+    mock_USB_hub_Belkin();
+
+    difference() {
+        intersection() {
+            union() {
+                translate([-12.5, 10, 0])
+                _frame_clip_v2();
+
+                rotate([-15, 0, 0])
+                translate([0, -12.6, 6])
+                cube([91.4, 16.4, 29], center=true);
+
+                translate([-0.7, 2.7, 3/2])
+                cube([15, 16, 3], center=true);
+
+                translate([-0.7, 2.7, 20/2])
+                cube([3, 16, 20], center=true);
+            }
+            translate([0, 0, 20/2])
+            cube([200, 100, 20], center=true);
+        }
+
+        translate([0, -8.15, 30/2 + 2.55])
+        rotate([-15, 0, 0])
+        cube([87.3, 12.3, 30], center=true);
+
+        rotate([-15, 0, 0])
+        translate([0, -12.4, 5])
+        cube([81, 11, 35], center=true);
+
+        translate([0, -22.8, -0.1])
+        rotate([35, 0, 0])
+        cube([120, 10, 10], center=true);
+    }
+
+    //support
+    translate([0, -18, 1.8/2])
+    cube([80, 2, 1.8], center=true);
+}
+
+module dummy_hdd() {
+
+    difference() {
+        cube([119.7, 22.7, 80], center=true);
+
+        translate([0, 20/2 + 0.8, 1.2])
+        cube([117, 20, 80], center=true);
+
+        translate([0, -20/2 - 0.8, 1.2])
+        cube([117, 20, 80], center=true);
+    }
+}
+
+module cable_clip() {
+
+    module _cable_hole() {
+        difference() {
+            union() {
+                rounded_cube_side(
+                    16 - 3, 12 - 3, 11, 2, center=true);
+
+                translate([-(16 - 3)/2, 6/2 -(12 - 3)/2, 0])
+                cube([5, 6, 11], center=true);
+            }
             
-            translate([2U_h/2, -side_d/4 + 40/2, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
+            translate([-16/2 + 2/2, 25/2 - 3, 0])
+            rotate([0, 90, 0])
+            donut(25, 2, $fn=60);
 
-            translate([2U_h/2, -side_d/4 + 40 + 20 + 15/2, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([2U_h/2, -side_d/4 + 40 + 20 + 73 - 15/2, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([2U_h/2, -side_d/4 + 40 + 20 + 73/2, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([2U_h/2, 69.25, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([0, side_d/4, 2/2])
-            rotate([0, 0, 90])
-            _joiner_end();
-
-            translate([0.5, 0, 0])
-            difference() {
-                intersection() {
-                    translate([0, 0, 1])
-                    bottom_pattern();
-
-                    translate([0, 0, 20/2 + 1])
-                    chamfered_cube(
-                        2U_h - 7, side_d / 2 - 3,
-                        20, 3, center=true);
-
-                    translate([0, 0, 3/2])
-                    difference() {
-                        cube([400, side_d / 2 - 2, 3],
-                             center=true);
-
-                        translate([0, side_d/4, 0])
-                        cube([20, 36, 4], center=true);
-                    }
-                }
-            }
-
-            translate([-2U_h/2 + 8, -side_d/4, 8])
-            rotate([90, 0, 0])
-            cylinder(d=16, h=20, center=true, $fn=40);
-
-            translate([2U_h/2 - 8, -side_d/4, 8])
-            rotate([90, 0, 0])
-            cylinder(d=16, h=20, center=true, $fn=40);
+            translate([-16/2 + 1.5/2, 25/2 - 3, 0])
+            rotate([0, 90, 0])
+            cylinder(d=25, h=1.5, center=true, $fn=40);
         }
-        translate([-2U_h/2 + 8, -side_d/4 + 16, 0])
-        _side_clip();
-
-        translate([-2U_h/2 + 8, 0, 0])
-        _side_clip();
-
-        translate([-2U_h/2 + 8, side_d/4 - 6, 0])
-        _side_clip();
-
-        translate([2U_h/2 - 8, -side_d/4 + 33, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([2U_h/2 - 8, 1.5, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([2U_h/2 - 8, 90, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([0, 0, 0.8])
-        _side_cable_mount();
-
-        translate([0, 70, 0.8])
-        _side_cable_mount();
-
-        translate([0, -70, 0.8])
-        _side_cable_mount();
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   -side_d/4 + 18, 12])
-        cube([1.5, 10, 6], center=true);
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   0, 12])
-        cube([1.5, 10, 6], center=true);
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   side_d/4 - 6, 12])
-        cube([1.5, 10, 6], center=true);
     }
-}
-
-module side_2() {
-    union() {
-        difference() {
-
-            intersection() {
-                translate([0, 0, 20/2])
-                rotate([90, 0, 0])
-                chamfered_cube_side(
-                    2U_h, 20, side_d / 2 - slop,
-                    4.5, center=true);
-
-                translate([0, 0, 12/2])
-                cube([2U_h, side_d, 12], center=true);
-            }
-
-            translate([-2U_h/2 + 1.7/2 - slop, 0, 20/2 + 10])
-            cube([1.7, 300, 20], center=true);
-
-            translate([100/2 - 2U_h/2 + 3, 0, 30/2 + 2])
-            chamfered_cube(100, 300, 30, 2.2, center=true);
-
-            translate([2U_h/2 + 10/2 - 3, 0, 0])
-            cube([10, 300, 30], center=true);
-            
-            translate([2U_h/2, -side_d/4 + 50.5, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([2U_h/2, 13.8, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([2U_h/2, 83.3, 5/2 + 1.2])
-            cube([20, 11, 5], center=true);
-
-            translate([0, -side_d/4, 2/2])
-            rotate([0, 0, 90])
-            _joiner_end();
-
-            translate([0.5, 0, 0])
-            intersection() {
-                translate([0, 0, 1])
-                bottom_pattern();
-
-                translate([0, 0, 20/2 + 1])
-                chamfered_cube(
-                    2U_h - 7, side_d / 2 - 3,
-                    20, 3, center=true);
-
-                translate([0, 0, 3/2])
-                difference() {
-                    cube([400, side_d / 2 - 2, 3],
-                         center=true);
-
-                    translate([0, -side_d/4, 0])
-                    cube([20, 36, 4], center=true);
-                }
-            }
-
-            translate([-2U_h/2 + 8, side_d/4, 8])
-            rotate([90, 0, 0])
-            cylinder(d=16, h=20, center=true, $fn=40);
-
-            translate([2U_h/2 - 8, side_d/4, 8])
-            rotate([90, 0, 0])
-            cylinder(d=16, h=20, center=true, $fn=40);
-        }
-        translate([-2U_h/2 + 8, -side_d/4 + 6, 0])
-        _side_clip();
-
-        translate([-2U_h/2 + 8, 0, 0])
-        _side_clip();
-
-        translate([-2U_h/2 + 8, side_d/4 - 16, 0])
-        _side_clip();
-
-        translate([2U_h/2 - 8, -side_d/4 + 6, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([2U_h/2 - 8, 1.5, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([2U_h/2 - 8, side_d/4 - 34, 0])
-        rotate([0, 0, 180])
-        _side_clip();
-
-        translate([0, 0, 0.8])
-        _side_cable_mount();
-
-        translate([0, 70, 0.8])
-        _side_cable_mount();
-
-        translate([0, -70, 0.8])
-        _side_cable_mount();
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   -side_d/4 + 10, 12])
-        cube([1.5, 10, 6], center=true);
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   0, 12])
-        cube([1.5, 10, 6], center=true);
-
-        translate([-2U_h/2 + 1.7 - slop + 1.5/2,
-                   side_d/4 - 18, 12])
-        cube([1.5, 10, 6], center=true);
-    }
-}
-
-module side_3() {
-    mirror([1, 0, 0])
-    side_1();
-}
-
-module side_4() {
-    mirror([1, 0, 0])
-    side_2();
-}
-
-module top_1() {
-
-    top_d = side_d/2 + 4.8;    
-    top_w = (440 - 20)/2 - 5.2;
-
-    union() {
-        difference() {
-            union() {
-                translate([0, 0, 2.8/2])
-                cube([top_w, top_d, 2.8], center=true);
-
-                intersection() {
-                    translate([top_w/2, -top_d/2 + 15, 2.8/2])
-                    for(i = [0:9]) {
-                        translate([0, i * 21, 0])
-                        rotate([45, 0, 0])
-                        cube([9.8, 9.8, 9.8], center=true);
-                    }
-
-                    translate([0, 0, 2.8/2])
-                    cube([400, 400, 2.8], center=true);
-                }
-            }
-
-            translate([-top_w/2, 0, 5/2 + 1.6])
-            cube([10, side_d, 5], center=true);
-
-            translate([-top_w/2 + 15, top_d/2, 2.8/2])
-            for(i = [0:9]) {
-                translate([i * 21, 0, 0])
-                rotate([0, 45, 0])
-                cube([10, 10, 10], center=true);
-            }
-
-            intersection() {
-                translate([0, 0, 0.6])
-                bottom_pattern();
-
-                difference() {
-                    translate([2, -2, 20/2 + 0.6])
-                    chamfered_cube(
-                        top_w - 10, top_d - 10,
-                        20, 3, center=true);
-
-                    translate([-top_w/2 + 30, -top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-                }
-            }
-
-            translate([-top_w/2 + 30, -top_d/2 + 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-        }
-
-        translate([5, -top_d/2 + 12, 6/2 + 0.4])
-        cube([top_w, 2, 6], center=true);
-
-        translate([5, 32, 6/2 + 0.4])
-        cube([top_w, 2, 6], center=true);
-
-        translate([-top_w/2 + 5 + 2/2, 5, 6/2 + 0.4])
-        cube([2, top_d - 10, 6], center=true);
-
-    }
-}
-
-module top_2() {
-    top_d = side_d/2 - 5.2;    
-    top_w = (440 - 20)/2 - 5.2;
-
-    union() {
-        difference() {
-            union() {
-                translate([0, 0, 2.8/2])
-                cube([top_w, top_d, 2.8], center=true);
-
-                intersection() {
-                    translate([-top_w/2 + 15, -top_d/2, 2.8/2])
-                    for(i = [0:9]) {
-                        translate([i * 21, 0, 0])
-                        rotate([0, 45, 0])
-                        cube([9.8, 9.8, 9.8], center=true);
-                    }
-
-                    translate([0, 0, 2.8/2])
-                    cube([top_w, top_d + 10, 2.8], center=true);
-                }
-
-                intersection() {
-                    translate([top_w/2, -top_d/2 + 15, 2.8/2])
-                    for(i = [0:9]) {
-                        translate([0, i * 21, 0])
-                        rotate([45, 0, 0])
-                        cube([9.8, 9.8, 9.8], center=true);
-                    }
-
-                    translate([5/2, 0, 2.8/2])
-                    cube([top_w + 5, top_d, 2.8], center=true);
-                }
-            }
-
-            translate([-top_w/2, 0, 5/2 + 1.6])
-            cube([10, side_d, 5], center=true);
-
-            intersection() {
-                translate([0, 0, 0.6])
-                bottom_pattern();
-
-                difference() {
-                    translate([2, -2, 20/2 + 0.6])
-                    chamfered_cube(
-                        top_w - 10, top_d - 5,
-                        20, 3, center=true);
-
-                    translate([-top_w/2 + 30, top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-
-                    translate([top_w/2 - 5, top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-                }
-            }
-
-            translate([-top_w/2 + 30, top_d/2 - 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-
-            translate([top_w/2 - 5, top_d/2 - 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-        }
-        translate([5/2, top_d/2 - 12, 6/2 + 0.4])
-        cube([top_w - 5, 2, 6], center=true);
-
-        translate([5, -28, 6/2 + 0.4])
-        cube([top_w, 2, 6], center=true);
-
-        translate([-top_w/2 + 5 + 2/2, -5, 6/2 + 0.4])
-        cube([2, top_d - 10, 6], center=true);
-
-    }
-}
-
-module top_3() {
-    top_d = side_d/2 + 4.8;    
-    top_w = (440 - 20)/2 + 4.8;
-
-    union() {
-        difference() {
-            translate([0, 0, 2.8/2])
-            cube([top_w, top_d, 2.8], center=true);
-
-            translate([top_w/2, 0, 5/2 + 1.6])
-            cube([10, side_d, 5], center=true);
-
-            translate([top_w/2 - 13, top_d/2, 2.8/2])
-            for(i = [0:9]) {
-                translate([-i * 21, 0, 0])
-                rotate([0, 45, 0])
-                cube([10, 10, 10], center=true);
-            }
-
-            translate([-top_w/2, -top_d/2 + 15, 2.8/2])
-            for(i = [0:9]) {
-                translate([0, i * 21, 0])
-                rotate([45, 0, 0])
-                cube([10, 10, 10], center=true);
-            }
-
-            intersection() {
-                translate([0, 0, 0.6])
-                bottom_pattern();
-
-                difference() {
-                    translate([2, -2, 20/2 + 0.6])
-                    chamfered_cube(
-                        top_w - 10, top_d - 10,
-                        20, 3, center=true);
-
-                    translate([top_w/2 - 30, -top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-
-                    translate([-top_w/2 + 5, -top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-                }
-            }
-
-            translate([top_w/2 - 30, -top_d/2 + 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-
-            translate([-top_w/2 + 5, -top_d/2 + 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-        }
-
-        translate([0, -top_d/2 + 12, 6/2 + 0.4])
-        cube([top_w - 10, 2, 6], center=true);
-
-        translate([0, 32, 6/2 + 0.4])
-        cube([top_w - 10, 2, 6], center=true);
-
-        translate([top_w/2 - 5 - 2/2, 5, 6/2 + 0.4])
-        cube([2, top_d - 10, 6], center=true);
-    }
-}
-
-module top_4() {
-    top_d = side_d/2 - 5.2;    
-    top_w = (440 - 20)/2 + 4.8;
-
-    union() {
-        difference() {
-            union() {
-                translate([0, 0, 2.8/2])
-                cube([top_w, top_d, 2.8], center=true);
-
-                intersection() {
-                    translate([top_w/2 - 13, -top_d/2, 2.8/2])
-                    for(i = [0:9]) {
-                        translate([-i * 21, 0, 0])
-                        rotate([0, 45, 0])
-                        cube([9.8, 9.8, 9.8], center=true);
-                    }
-
-                    translate([0, 0, 2.8/2])
-                    cube([top_w, top_d + 10, 2.8], center=true);
-                }
-            }
-
-            translate([top_w/2, 0, 5/2 + 1.6])
-            cube([10, side_d, 5], center=true);
-
-            translate([-top_w/2, -top_d/2 + 15, 2.8/2])
-            for(i = [0:9]) {
-                translate([0, i * 21, 0])
-                rotate([45, 0, 0])
-                cube([10, 10, 10], center=true);
-            }
-
-            intersection() {
-                translate([0, 0, 0.6])
-                bottom_pattern();
-
-                difference() {
-                    translate([2, -2, 20/2 + 0.6])
-                    chamfered_cube(
-                        top_w - 10, top_d - 5,
-                        20, 3, center=true);
-
-                    translate([top_w/2 - 30, top_d/2, 0])
-                    cube([10, 20, 10], center=true);
-                }
-            }
-            translate([top_w/2 - 30, top_d/2 - 10/2, 0]) {
-                cylinder(d=3.3, h= 10, center=true, $fn=20);
-                cylinder(d1=9.7, d2=3.3, h=3.2,
-                    center=true, $fn=20);
-            }
-        }
-        translate([-5/2, top_d/2 - 12, 6/2 + 0.4])
-        cube([top_w - 5, 2, 6], center=true);
-
-        translate([0, -28, 6/2 + 0.4])
-        cube([top_w - 10, 2, 6], center=true);
-
-        translate([top_w/2 - 5 - 2/2, -5, 6/2 + 0.4])
-        cube([2, top_d - 10, 6], center=true);
-    }
-}
-
-module top_mount_left() {
-
-//    %translate([220/2 - 40, -2U_h/2 + 10/2 + 2, -30])
-//    back_1();
 
     difference() {
         union() {
-            cube([10, 10, 20], center=true);
+            translate([-11.75, 0, 0])
+            scale([1, 1, 0.5])
+            _frame_clip_v2();
 
-            translate([-30/2, 0, -10/2])
-            cube([30, 10, 10], center=true);
+            translate([22, 12/2, 10/2])
+            rounded_cube_side(16, 12, 10, 5, center=true);
+
+            translate([-22, 12/2, 10/2])
+            rounded_cube_side(16, 12, 10, 5, center=true);
+
+            translate([0, 1.5/2, 10/2])
+            cube([40, 1.5, 10], center=true);
         }
 
-        translate([-40.2 + 16/2, -1, 0])
-        cylinder(d=16.2, h=50, center=true, $fn=40);
+        translate([22, 12/2, 10/2])
+        _cable_hole();
 
-        translate([0, -5, -10])
-        rotate([45, 0, ])
-        cube([44, 10, 20], center=true);
+        mirror([1, 0, 0])
+        translate([22, 12/2, 10/2])
+        _cable_hole();
 
-        translate([0, 0, 5.1])
+
+    }
+}
+
+module connector_clip() {
+    difference() {
+        union() {
+            translate([-11.75, 0, 0])
+            scale([1, 1, 1.5])
+            _frame_clip_v2();
+
+            translate([0, 0, 30/2])
+            cube([13, 6, 30], center=true);
+        }
+
+        translate([0, 20/2 + 4.3, 30/2])
+        chamfered_cube(40, 20, 22, 7, center=true);
+
+        translate([0, 0, 30/2 - 19.5/2])
         rotate([90, 0, 0])
-        cylinder(d=2.8, h=40, center=true, $fn=30);
+        cylinder(d=2.8, 15, center=true, $fn=10);
 
-        translate([-35, 0, 0])
-        cube([20, 40, 40], center=true);
+        translate([0, 0, 30/2 + 19.5/2])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
 
-        translate([0, 10/2, 11/2])
-        cube([20, 1.6, 11], center=true);
     }
 }
 
-module top_mount_right() {
-    mirror([1, 0, 0])
-    top_mount_left();
-}
+module stepdown_box_clip() {
+    union() {
+        translate([-11.75, 0, 0])
+        scale([1, 1, 15/20])
+        _frame_clip_v2();
 
-module top_mount_front() {
+        translate([50/2, 2/2, 15/2])
+        cube([50, 2, 15], center=true);
 
-//    %translate([220/2, 35, -2U_h/2 + 10 + 2])
-//    rotate([-90, 0, 180])
-//    front_1();
+        translate([30, -7/2 + 2, 15/2])
+        cube([1.8, 7, 15], center=true);
 
-    difference() {
-        union() {
-            translate([13/2 - 10/2, 0, 10/2])
-            cube([13, 10, 10], center=true);
+        translate([30 + 20, -7/2 + 2, 15/2])
+        cube([1.8, 7, 15], center=true);
 
-            translate([10/2 + 8, 10/2, 10/2])
-            cube([10, 20, 10], center=true);
-        }
+        translate([30 + 0.15, -5, 0])
+        cylinder(d=2.1, h=15, $fn=20);
 
-
-        translate([17, 0, 0])
-        rotate([0, 45, 0])
-        cube([10, 32, 20], center=true);
-
-        translate([17, -9, 0])
-        rotate([0, 0, 45])
-        cube([30, 20, 40], center=true);
-
-        translate([0, -0.2, 0])
-        cylinder(d=2.8, h=40, center=true, $fn=30);
-
-        translate([0, -1/2, 10])
-        cube([40, 11, 1.6], center=true);
-    }
-}
-
-module top_mount_back() {
-
-//    %translate([220/2 - 10, 35, -2U_h/2 + 10 + 2])
-//    rotate([-90, 0, 180])
-//    front_1();
-
-    difference() {
-        union() {
-            translate([13/2 - 10/2, 0, 10/2])
-            cube([13, 10, 10], center=true);
-
-            translate([10/2 - 2, 10/2, 10/2])
-            cube([10, 20, 10], center=true);
-        }
-
-
-        translate([11, 0, 0])
-        rotate([0, 45, 0])
-        cube([10, 32, 20], center=true);
-
-        translate([12, -9, 0])
-        rotate([0, 0, 45])
-        cube([30, 20, 40], center=true);
-
-        translate([0, -0.1, 0])
-        cylinder(d=2.8, h=40, center=true, $fn=30);
-
-        translate([0, -1/2, 10])
-        cube([40, 11, 1.6], center=true);
+        translate([30 + 20 - 0.15, -5, 0])
+        cylinder(d=2.1, h=15, $fn=20);
     }
 }
