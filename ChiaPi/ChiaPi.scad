@@ -86,7 +86,7 @@ echo(cover_d);
 //top_3_dc_bitcoin_black();
 
 //top_4_dc();
-top_4_dc_hdd_logo();
+//top_4_dc_hdd_logo();
 
 //end_joiner();
 //cover_joiner();
