@@ -24,7 +24,7 @@ stud_h = 4;
 
 //case_top_middle();
 
-//card_plate();
+card_plate();
 
 //joint_block();
 //joint_block_ssd_1();
@@ -53,7 +53,7 @@ stud_h = 4;
 //bolt_knob();
 
 //psu_support_clip();
-foot_clip();
+//foot_clip();
 
 
 module M6_thread(h=50) {
@@ -633,94 +633,63 @@ module case_top_middle() {
     
 
 module card_plate() {
-    rotate([-90, 0, 0])
+
     difference() {
         union() {
-            cube([150, 2, 133.8]);
+            mobo_card_plate();
 
-            translate([0, -10, 133.8 - 4])
-            cube([150, 10, 4]);
-
-            for (i = [0:7]) {
-                translate(
-                    [3.5 + i * card_spacing,
-                     -3, 10])
-                cube([2.5, 3, 120]);
-            }
-
-            translate([-15, -28, 21.5])
-            cube([20, 30, 2]);
+            translate([-16.5, 3.5, 0])
+            cube([20, 2, 30]);
 
             hull() {
-                translate([3, -23, 21.5])
-                cube([2, 25, 2]);
+                translate([1.5, 3.5, 0])
+                cube([2, 2, 25]);
 
-                translate([3, 0, 21.5])
-                cube([2, 2, 30]);
+                translate([1.5, 3.5, 0])
+                cube([2, 30, 2]);
             }
 
             hull() {
-                translate([0, 0, 21.5])
-                cube([2, 2, 20]);
+                translate([0, 3.5, 0])
+                cube([2, 20, 2]);
 
-                translate([-3, 0, 21.5])
+                translate([-3, 3, 0])
                 cube([2, 2, 2]);
             }
 
-            translate([147, 1, 21.5])
+            translate([147, 3.5, 0])
             hull() {
-                cube([28, 1, 2]);
+                cube([26.5, 2, 1]);
 
-                translate([8, -30, 0])
-                cube([20, 1, 2]);
+                translate([8, 0, 30])
+                cube([18.5, 2, 1]);
             }
 
-            translate([147, 1, 21.5])
+            translate([149, 3.5, 0])
             hull() {
-                cube([2, 1, 30]);
+                cube([2, 30, 1]);
 
-                translate([8, -30, 0])
-                cube([2, 1, 2]);
+                translate([6, 0, 30])
+                cube([2, 2, 1]);
             }
         }
-        for (i = [0:6]) {
-            translate(
-                [7.25 + i * card_spacing, -3, 26])
-            cube([15, 6, 103.8]);
+        translate([-3, -2.5, -1])
+        cube([7, 6, 8]);
 
-            translate(
-                [9.5 + i * card_spacing, -3, 125])
-            cube([10, 6, 106]);
-
-            translate(
-                [4.5 + i * card_spacing, -3, 133 - 6])
-            cylinder(d=3, h=7, $fn=30);
-        }
-        
-        translate([9, 0, 4])
+        translate([-6.5, 0, 5.3])
         rotate([-90, 0, 0])
-        cylinder(d=4,h=3);
+        cylinder(d=3.8, h=50, $fn=30);
 
-        translate([141 - 16.5 + 9, 0, 4])
+        translate([-6.5, 0, 25.3])
         rotate([-90, 0, 0])
-        cylinder(d=4,h=3);
-
-        translate([-1, -4, 0])
-        cube([160, 8, 15]);
-
-        translate([-1, -4, 0])
-        cube([7, 8, 23.5]);
-
-        translate([-5, -3, 0])
         cylinder(d=3.8, h=50, $fn=30);
 
-        translate([-5, -23, 0])
+        translate([163.5, 0, 5.3])
+        rotate([-90, 0, 0])
         cylinder(d=3.8, h=50, $fn=30);
 
-        translate([165, -3, 0])
-        cylinder(d=3.8, h=50, $fn=30);
-
-        translate([165, -23, 0])
+        translate([163.5, 0, 25.3])
+        rotate([-90, 0, 0])
         cylinder(d=3.8, h=50, $fn=30);
     }
 }
@@ -1177,7 +1146,7 @@ module debug() {
     rotate([0, 0, 90])
     case_top_middle();
 
-    translate([165, -5, -25.5])
+    translate([166.6, -2.67, -7.5])
     rotate([90, 0, 0])
     card_plate();
 

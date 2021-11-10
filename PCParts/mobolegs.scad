@@ -6,8 +6,8 @@ $fn=40;
 //view_proper();
 
 //leg();
-//card_plate();
-ssd_attachment();
+card_plate();
+//ssd_attachment();
 //ssd_attachment(slot=2);
 //fixit();
 
@@ -16,56 +16,43 @@ module leg() {
     difference() {
         union() {
             cylinder(d1=24, d2=12, h=20);
-            translate([0,0,19.99]) cylinder(d=12.01, h=5);
-            translate([-10/2,-13,0]) cube([10,26,8]);
-            translate([-13,-10/2,0]) cube([26,10,8]);
+            translate([0, 0, 19.99])
+            cylinder(d=12.01, h=5);
+
+            translate([-10/2, -13, 0])
+            cube([10, 26, 8]);
+
+            translate([-13, -10/2, 0])
+            cube([26, 10, 8]);
         }
         cylinder(d=3, h=32);
-        translate([0,0,4]) rotate([90,0,0]) cylinder(d=3, h=32,center=true);
-        translate([0,0,4]) rotate([0,90,0]) cylinder(d=3, h=32,center=true);
+
+        translate([0, 0, 4])
+        rotate([90, 0, 0])
+        cylinder(d=3, h=32, center=true);
+
+        translate([0, 0, 4])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=32,center=true);
     }
 }
 
 module card_plate() {
-    rotate([-90, 0, 0])
     difference() {
         union() {
-            cube([150, 2, 133.8]);
+            mobo_card_plate();
 
-            translate([0, -10, 133.8 - 4])
-            cube([150, 10, 4]);
+            translate([0, -17.6, 0])
+            cube([21, 28, 3]);
 
-            for (i = [0:7]) {
-                translate(
-                    [3.5 + i * card_spacing,
-                     -3, 10])
-                cube([2.5, 3, 120]);
-            }
+            translate([123, -17.6, 0])
+            cube([21, 28, 3]);
         }
-        for (i = [0:6]) {
-            translate(
-                [7.5 + i * card_spacing, -3, 25])
-            cube([14.5, 6, 104.8]);
+        translate([7.3, -18.5 + 4.9, -1])
+        cylinder(d=4, h=13);
 
-            translate(
-                [9.5 + i * card_spacing, -3, 125])
-            cube([10, 6, 106]);
-
-            translate(
-                [4.5 + i * card_spacing, -3, 133 - 6])
-            cylinder(d=3, h=7, $fn=30);
-        }
-        
-        translate([9, 0, 4])
-        rotate([-90, 0, 0])
-        cylinder(d=4,h=3);
-
-        translate([141 - 16.5 + 9, 0, 4])
-        rotate([-90, 0, 0])
-        cylinder(d=4,h=3);
-
-        translate([21, -4, 0])
-        cube([100, 8, 15]);
+        translate([141 - 18.2 + 9, -18.5 + 4.9, -1])
+        cylinder(d=4, h=13);
     }
 }
 
@@ -182,31 +169,54 @@ module ssd_attachment(slot=1) {
 
 module fixit() {
     difference() {
-        cylinder(d=24,h=5,$fn=40);
-        cylinder(d=4,h=6,$fn=40);
-        translate([0,0,1.8]) cylinder(d=7.2,h=6,$fn=40);
+        cylinder(d=24, h=5, $fn=40);
+        cylinder(d=4, h=6, $fn=40);
+
+        translate([0, 0, 1.8])
+        cylinder(d=7.2, h=6, $fn=40);
     }
 }
 
 module view_proper() {
     %mock_mobo_card();
     
-    translate([6.35+281.94,10.16,-25]) leg();
-    translate([6.35+281.94,10.16+154.94,-25]) leg();
-    translate([6.35+281.94,10.16+227.33,-25]) leg();
+    translate([6.35 + 281.94, 10.16, -25])
+    leg();
 
-    translate([6.35+157.48+45.72,10,-25]) leg();
+    translate([6.35 + 281.94, 10.16 + 154.94, -25])
+    leg();
 
-    translate([6.35+157.48,10.16,-25]) leg();
-    translate([6.35+157.48,10.16+154.94,-25]) leg();
-    translate([6.35+157.48,10.16+227.33,-25]) leg();
+    translate([6.35 + 281.94, 10.16 + 227.33, -25])
+    leg();
 
-    translate([6.35,22.86,-25]) leg();
-    translate([6.35,10.16+154.94,-25]) leg();
-    translate([6.35,10.16+227.33,-25]) leg();
+    translate([6.35 + 157.48 + 45.72, 10, -25])
+    leg();
 
-    translate([305-150,-4.2,-25]) rotate([90,0,0]) card_plate();
-    
-    translate([165,142,-25]) ssd_attachment();
-    translate([23.75,139,-25]) ssd_attachment(slot=2);
+    translate([6.35 + 157.48, 10.16, -25])
+    leg();
+
+    translate([6.35 + 157.48, 10.16 + 154.94, -25])
+    leg();
+
+    translate([6.35 + 157.48, 10.16 + 227.33, -25])
+    leg();
+
+    translate([6.35, 22.86, -25])
+    leg();
+
+    translate([6.35, 10.16 + 154.94, -25])
+    leg();
+
+    translate([6.35, 10.16 + 227.33, -25])
+    leg();
+
+    translate([305 - 148.5, -2.65, -7.4])
+    rotate([90, 0, 0])
+    card_plate();
+
+    translate([165, 142, -25])
+    ssd_attachment();
+
+    translate([23.75, 139, -25])
+    ssd_attachment(slot=2);
 }
