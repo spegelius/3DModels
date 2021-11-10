@@ -56,40 +56,41 @@ module _joint_form(holes=true, extra=0) {
         cube([20, 80, 25], center=true);
 
         translate([20/2 + 15/2 - 4, 0, 0])
-        chamfered_cube(15 + extra, 90, 10, 4, center=true);
+        chamfered_cube(15 + extra, 90, 10,
+            4, center=true);
     }
 
     if (holes) {
         translate([0, 80/2 - 6, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, -90, 0]) {
             cylinder(d=3.3, h=50, center=true, $fn=20);
 
-            translate([0, 0, 15.5])
-            M3_nut(5, cone=false);
+            translate([0, 0, -20.5])
+            M3_nut(5, cone=false, bridging=true);
         }
 
         translate([0, 6, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, -90, 0]) {
             cylinder(d=3.3, h=50, center=true, $fn=20);
 
-            translate([0, 0, 15.5])
-            M3_nut(5, cone=false);
+            translate([0, 0, -20.5])
+            M3_nut(5, cone=false, bridging=true);
         }
 
         translate([0, -80/2 + 6, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, -90, 0]) {
             cylinder(d=3.3, h=50, center=true, $fn=20);
 
-            translate([0, 0, 15.5])
-            M3_nut(5, cone=false);
+            translate([0, 0, -20.5])
+            M3_nut(5, cone=false, bridging=true);
         }
 
         translate([0, -6, 0])
-        rotate([0, 90, 0]) {
+        rotate([0, -90, 0]) {
             cylinder(d=3.3, h=50, center=true, $fn=20);
 
-            translate([0, 0, 15.5])
-            M3_nut(5, cone=false);
+            translate([0, 0, -20.5])
+            M3_nut(5, cone=false, bridging=true);
         }
     }
 }
@@ -109,6 +110,7 @@ module joint_block() {
 
     difference() {
         intersection() {
+            translate([0, 0, 0])
             _joint_form(holes=false, extra=0.15);
 
             translate([20/2, 0, 0])
@@ -148,6 +150,7 @@ module joint_block_v2() {
 
     difference() {
         intersection() {
+            translate([0, 0, 0])
             _joint_form(holes=false, extra=0.15);
 
             translate([20/2, 0, 0])
@@ -232,4 +235,4 @@ module _frame_clip_v2() {
     %translate([20/2 + 1.7, 20/2 + 3])
     _profile_v2(30);
 }
-_frame_clip_v2();
+//_frame_clip_v2();
