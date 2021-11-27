@@ -72,6 +72,7 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mobo_backplate();
 //mock_card();
 //mock_mobo_card();
+//mock_mobo_card_ee_atx();
 //mock_hd();
 //mock_ssd();
 //mock_atx_psu();
@@ -84,6 +85,7 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_USB_HDD_Toshiba_4T();
 //mock_USB_HDD_Intenso_5T();
 //mock_USB_HDD_WD_5T();
+//mock_USB_HDD_WD_E_5T();
 //mock_USB_hub_Dlink();
 //mock_USB_hub_Targus();
 //mock_USB_hub_Belkin();
@@ -511,6 +513,62 @@ module mock_mobo_card() {
     mock_card();
 }
 
+module mock_mobo_card_ee_atx() {
+
+    card_y = -1.3;
+    card_z_pci = 18.8 - 10;
+    card_z_pcie = 14.4 - 10;
+
+    mock_mobo_ee_atx();
+
+    translate([-9.4 + 42, io_y_pos, -7.4])
+    rotate([90, 0, 0])
+    mobo_backplate();
+
+    translate([
+        ee_atx_card_x_0 - 6*card_spacing + 2/2,
+        card_y, card_z_pcie])
+    rotate([0, 0, 90])
+    mock_card_pcie();
+
+    translate([
+        ee_atx_card_x_0 - 5*card_spacing + 2/2,
+        card_y, card_z_pcie])
+    rotate([0, 0, 90])
+    mock_card_pcie();
+
+    translate([
+        ee_atx_card_x_0 - 4*card_spacing + 2/2,
+        card_y, card_z_pcie])
+    rotate([0, 0, 90])
+    mock_card_pcie();
+
+    translate([
+        ee_atx_card_x_0 - 3*card_spacing + 2/2,
+        card_y, card_z_pcie])
+    rotate([0, 0, 90])
+    mock_card_pcie();
+
+    // big card, max should be 111.15 × 312.00, but this is bigger
+    translate([
+        ee_atx_card_x_0 - 2*card_spacing + 2/2,
+        card_y, card_z_pci])
+    rotate([0, 0, 90])
+    mock_card(h=140, l=312);
+
+    translate([
+        ee_atx_card_x_0 - card_spacing + 2/2,
+        card_y, card_z_pcie])
+    rotate([0, 0, 90])
+    mock_card_pcie();
+
+    translate([
+        ee_atx_card_x_0 + 2/2,
+        card_y, card_z_pci])
+    rotate([0, 0, 90])
+    mock_card();
+}
+
 module mock_ssd() {
     holx_1 = 4.07;
     holx_2 = holx_1 + 61.71;
@@ -738,6 +796,7 @@ module atx_psu_back_cutout(screw_hole=3.2, thickness=3) {
 //atx_psu_back_cutout();
 
 module mock_atx_psu(holes=true, slop=0) {
+
     w = atx_psu_width + 2*slop;
     h = atx_psu_height + 2*slop;
 
@@ -1017,6 +1076,102 @@ module mock_USB_HDD_WD_5T() {
                    -107/2, -19/2 + 4/2 + 5])
         cube([14, 4, 4], center=true);
     }
+}
+
+module mock_USB_HDD_WD_E_5T() {
+    // WD Elements
+
+    bottom_d = 160;
+    bottom_offset = bottom_d/2 - 22/2;
+
+    top_d = 200;
+    top_offset = -top_d/2 + 22/2;
+
+    module _nub() {
+        intersection() {
+            cylinder(d=4.5, h=5, center=true, $fn=20);
+
+            translate([0, 0, 4.5])
+            sphere(d=10, $fn=40);
+        }
+    }
+
+    difference() {
+        intersection() {
+            hull() {
+                translate([0, 0, 22/2 - 1/2])
+                rounded_cube_side(
+                    82.5, 110, 1, 15, center=true, $fn=30
+                );
+
+                translate([0, 0, -22/2 + 1/2])
+                rounded_cube_side(
+                    80.5, 109, 1, 14, center=true, $fn=30
+                );
+            }
+
+            hull() {
+                translate([23, 37, bottom_offset])
+                rotate([0, 0, -45])
+                scale([0.5, 1, 1])
+                sphere(d=bottom_d, $fn=80);
+
+                translate([-23, 37, bottom_offset])
+                rotate([0, 0, 45])
+                scale([0.5, 1, 1])
+                sphere(d=bottom_d, $fn=80);
+
+                translate([23, -37, bottom_offset])
+                rotate([0, 0, 45])
+                scale([0.5, 1, 1])
+                sphere(d=bottom_d, $fn=80);
+
+                translate([-23, -37, bottom_offset])
+                rotate([0, 0, -45])
+                scale([0.5, 1, 1])
+                sphere(d=bottom_d, $fn=80);
+
+            }
+
+            hull() {
+                translate([25, 38, top_offset])
+                rotate([0, 0, -45])
+                scale([0.5, 1, 1])
+                sphere(d=top_d, $fn=80);
+
+                translate([-25, 38, top_offset])
+                rotate([0, 0, 45])
+                scale([0.5, 1, 1])
+                sphere(d=top_d, $fn=80);
+
+                translate([25, -38, top_offset])
+                rotate([0, 0, 45])
+                scale([0.5, 1, 1])
+                sphere(d=top_d, $fn=80);
+
+                translate([-25, -38, top_offset])
+                rotate([0, 0, -45])
+                scale([0.5, 1, 1])
+                sphere(d=top_d, $fn=80);
+
+            }
+        }
+
+        translate([75/2 - 14/2 - 20.5,
+                   -107/2, -19/2 + 4/2 + 5])
+        cube([14, 4, 4], center=true);
+    }
+    translate([-57.5/2, 86.5/2, -22/2])
+    _nub();
+
+    translate([-57.5/2, -86.5/2, -22/2])
+    _nub();
+
+    translate([57.5/2, 86.5/2, -22/2])
+    _nub();
+
+    translate([57.5/2, -86.5/2, -22/2])
+    _nub();    
 }
 
 module mock_USB_hub_Dlink() {
