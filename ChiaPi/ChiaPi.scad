@@ -58,6 +58,7 @@ echo(cover_d);
 //debug_stepdown_box_side_clip();
 //debug_stepdown_box_clip();
 //debug_ac_cover();
+//debug_adapter_WD_E_5T();
 
 //front_1();
 //front_2();
@@ -110,7 +111,7 @@ echo(cover_d);
 
 //pi_mount();
 
-adapter_USB_HDD_Toshiba_4T_bottom();
+//adapter_USB_HDD_Toshiba_4T_bottom();
 //adapter_USB_HDD_Toshiba_4T_top();
 //adapter_USB_HDD_Seagate_2T_bottom();
 //adapter_USB_HDD_Seagate_2T_top();
@@ -122,6 +123,8 @@ adapter_USB_HDD_Toshiba_4T_bottom();
 //adapter_USB_HDD_Intenso_5T_top();
 //adapter_USB_HDD_WD_5T_top();
 //adapter_USB_HDD_WD_5T_bottom();
+//adapter_USB_HDD_WD_E_5T_top();
+//adapter_USB_HDD_WD_E_5T_bottom();
 //cord_socket_mount();
 //mains_switch_mount();
 //5V_transformer_clip();
@@ -156,7 +159,9 @@ adapter_USB_HDD_Toshiba_4T_bottom();
 //stepdown_box_clip();
 
 //dummy_hdd();
+
 //ac_cover();
+ac_cover_2();
 
 
 module _transformer_form(h=20) {
@@ -1043,6 +1048,24 @@ module debug_ac_cover() {
     translate([0, 0, 5/2 + 2])
     rotate([90, 0, 0])
     ac_cover();
+}
+
+module debug_adapter_WD_E_5T() {
+    translate([0, 0, 82.5/2])
+    rotate([0, 90, 90])
+    mock_USB_HDD_WD_E_5T();
+
+    intersection() {
+        translate([0, 0, 15/2])
+        adapter_USB_HDD_WD_E_5T_bottom();
+
+        translate([200/2, 0, 0])
+        cube([200, 100, 60], center=true);
+    }
+
+    translate([0, 0, 75])
+    rotate([0, 180, 0])
+    adapter_USB_HDD_WD_E_5T_top();
 }
 
 module M6_thread(h=50) {
@@ -2778,6 +2801,48 @@ module adapter_USB_HDD_WD_5T_bottom() {
     }
 }
 
+module adapter_USB_HDD_WD_E_5T_bottom() {
+    difference() {
+        rounded_cube_side(
+            119.7, 22.7, 15, 3, center=true, $fn=30
+        );
+
+        
+        hull() {
+            translate([0, 0.5, -15/2 + 1/2])
+            rotate([-5, 0, 0])
+            cube([110.2, 17.2, 1], center=true);
+
+            translate([0, 0.3, 0])
+            cube([110.2, 21, 1], center=true);
+
+            translate([0, 0, 15/2])
+            cube([110.2, 23.2, 1], center=true);
+        }
+
+        translate([0, 0, 15/2])
+        cube([110.2, 26, 10], center=true);
+
+        cube([100, 10, 20], center=true);
+
+        translate([-119.7/2, 0 , 0])
+        cube([6, 15, 20], center=true);
+
+        translate([119.7/2, 0 , 0])
+        cube([6, 15, 20], center=true);
+
+    }
+}
+
+module adapter_USB_HDD_WD_E_5T_top() {
+    intersection() {
+        adapter_USB_HDD_WD_E_5T_bottom();
+
+        translate([0, 0, -2])
+        cube([200, 100, 5], center=true);
+    }
+}
+
 module cord_socket_mount() {
     difference() {
         union() {
@@ -3831,5 +3896,14 @@ module ac_cover() {
 
         translate([130/2 + 20/2 - wall + 0.9, 40/2, -18])
         chamfered_cube(20, 29, 20, 2, center=true);
+    }
+}
+
+module ac_cover_2() {
+    difference() {
+        ac_cover();
+
+        translate([])
+        cube([15, 60, 100], center=true);
     }
 }
