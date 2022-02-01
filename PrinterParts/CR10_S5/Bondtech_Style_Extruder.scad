@@ -15,8 +15,8 @@ dc_stl_path = str(
 //debug();
 
 //new_lid_M10(bridging=true);
-new_lid_M10_soluble_supports();
-//cr_extruder_carriage_mount();
+//new_lid_M10_soluble_supports();
+cr_extruder_carriage_mount();
 
 
 module _orig_lid_M10() {
