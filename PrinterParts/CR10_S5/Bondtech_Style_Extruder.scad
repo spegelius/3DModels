@@ -11,15 +11,15 @@ dc_stl_path = str(
 
 //original_extruder_assembly();
 //_lid_form();
-//_orig_lid();
+//_orig_lid_M10();
 //debug();
 
-//new_lid(bridging=true);
-//new_lid_soluble_supports();
+//new_lid_M10(bridging=true);
+new_lid_M10_soluble_supports();
 //cr_extruder_carriage_mount();
 
 
-module _orig_lid() {
+module _orig_lid_M10() {
     fname =
         "Lid__M10_Threaded_Fittings_v3.stl";
 
@@ -35,7 +35,7 @@ module original_extruder_assembly() {
 
     translate([0, 0, 29])
     rotate([0, 180, 0])
-    _orig_lid();
+    _orig_lid_M10();
 
     fname2 =
         "Base_v3.stl";
@@ -78,14 +78,14 @@ module debug() {
 
 module _lid_form() {
     hull()
-    _orig_lid();
+    _orig_lid_M10();
 }
 
-module new_lid(bridging=true) {
+module new_lid_M10(bridging=true) {
 
     module _filler() {
         intersection() {
-            _orig_lid();
+            _orig_lid_M10();
 
             translate([-4.5, 0.1, 13.8 + 2/2])
             cube([6, 12.4, 2], center=true);
@@ -94,7 +94,7 @@ module new_lid(bridging=true) {
 
     difference() {
         union() {
-            _orig_lid();
+            _orig_lid_M10();
 
             translate([0, 0, -1.99])
             _filler();
@@ -127,9 +127,9 @@ module new_lid(bridging=true) {
     }
 }
 
-module new_lid_soluble_supports() {
+module new_lid_M10_soluble_supports() {
 
-    %_orig_lid();
+    %_orig_lid_M10();
 
     // hinge
     difference() {
@@ -152,7 +152,7 @@ module new_lid_soluble_supports() {
             translate([-22, -14, 0])
             cylinder(d=3, h=9.4, $fn=20);
         }
-        _orig_lid();
+        _orig_lid_M10();
     }
 
     // bolt had indents
@@ -167,7 +167,7 @@ module new_lid_soluble_supports() {
             translate([-15.5, 15.5, 0])
             cylinder(d=7, h=3);
         }
-        _orig_lid();
+        _orig_lid_M10();
     }
 
     // fitting holes
@@ -201,7 +201,7 @@ module new_lid_soluble_supports() {
                 cylinder(d=3, h=10, $fn=30);
             }
         }
-        new_lid();
+        new_lid_M10();
 
         translate([-4.55, 0.1, 12])
         cube([10, 12.4, 10], center=true);
