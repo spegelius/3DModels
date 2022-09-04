@@ -31,7 +31,7 @@ $fn=60;
 //arm_Bondtech(threads=false, m4=true);
 //arm_Bondtech(threads=false, m4=true, supports=true);
 //support_soluble_bondtech();
-//support_nonsoluble_bondtech();
+support_nonsoluble_bondtech();
 
 //hinge_support();
 
@@ -559,11 +559,26 @@ module support_nonsoluble_bondtech() {
     difference() {
         union() {
             hull() {
-                hull() {
-                    translate([11.3, -1.8, 2 + 1/2])
-                    cube([1, 8.5, 1], center=true);
+                translate([11.3, -1.8, 2 + 1/2])
+                cube([1, 8.5, 1], center=true);
 
-                    translate([22.2, -0.9, 2 + 1/2])
+                translate([22.2, -0.9, 2 + 1/2])
+                rotate([0, 0, -11.3])
+                cube([1, 10, 1], center=true);
+
+                translate([7.3, -2, 12 + 1/2])
+                cube([1, 8, 1], center=true);
+
+                translate([21.2, -0.9, 12 + 1/2])
+                rotate([0, 0, -11.3])
+                cube([1, 10, 1], center=true);
+            }
+            hull() {
+                hull() {
+                    translate([7.3, -2, 12 + 1/2])
+                    cube([1, 8, 1], center=true);
+
+                    translate([21.2, -0.9, 12 + 1/2])
                     rotate([0, 0, -11.3])
                     cube([1, 10, 1], center=true);
                 }
@@ -579,7 +594,6 @@ module support_nonsoluble_bondtech() {
                     rotate([0, 0, -11.3])
                     cube([10, 20, 40], center=true);
                 }
-
             }
             translate([22.2, -0.9, 2/2])
             rotate([0, 0, -11.3])
@@ -587,8 +601,8 @@ module support_nonsoluble_bondtech() {
 
         }
         
-        translate([10, -4/2 - 1.7, 12/2 + 2.6])
-        rotate([0, 0, 2])
+        translate([10, -4/2 - 1.6, 12/2 + 2.6])
+        rotate([0, 0, 1.5])
         cube([30, 4, 12], center=true);
 
         translate([10, 3/2 - 1, 12/2 + 2.6])
