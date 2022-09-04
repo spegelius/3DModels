@@ -1,30 +1,52 @@
+include <../Dollo/New_long_ties/include.scad>;
 include <../lib/includes.scad>;
+include <../lib/bearings.scad>;
 include <../lib/fittings.scad>;
+
 
 ////// VARIABLES //////
 $fn=60;
 
 ////// VIEW //////
-//translate([50,0,0])
+//translate([50, 0, 0])
 //orig_arm();
 
-//debug();
+//debug_orig_arm();
+
+//debug_arm_E3D_HobGoblin_U604zz();
+
+//debug_arm_E3D_HobGoblin_2x623zz();
+
+//debug_arm_Bondtech();
 //debug_bondtech_gear();
+//debug_bondtech_arm_supports();
 
 //arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_U604zz(threads=false);
 //arm_E3D_HobGoblin_2x623zz();
+
+//arm_Bondtech();
+//arm_Bondtech(supports=true);
 //arm_Bondtech(threads=false);
-arm_Bondtech();
+//arm_Bondtech(threads=false, m4=true);
+//arm_Bondtech(threads=false, m4=true, supports=true);
+//support_soluble_bondtech();
+//support_nonsoluble_bondtech();
+
 //hinge_support();
+
 //motor_mount();
 //motor_mount_extra_mount();
 //motor_mount_extra_mount2();
 //motor_mount_extra_mount3();
+
 //lock_lever();
+
 //MR105zz_support_Hobbgoblin();
 //MR105zz_support_Bondtech();
+
 //spring_cap_8mm_spring();
+
 //bondtech_position_tool();
 
 
@@ -248,41 +270,79 @@ module E3D_HobGoblin_hole(height=15) {
     cylinder(d=8+5,h=6);
 }
 
-module filament_holes(x_offset, height=15, offset=5, threads=true) {
+module filament_holes(
+    x_offset, height=15, offset=5,
+    threads=true, m4=false
+) {
     // filament tube and fitting holes
-    rotate([0,0,-13]) union() {
-        translate([x_offset,offset,height/2])
-        rotate([-90,0,0])
-        cylinder(d=2,h=30, $fn=30);
+    rotate([0, 0, -13])
+    union() {
+        translate([x_offset, offset, height/2])
+        rotate([-90, 0, 0])
+        cylinder(d=2, h=30, $fn=30);
 
-        translate([x_offset,20,height/2])
-        rotate([-90,0,0])
-        cylinder(d1=2, d2=3.5,h=4, $fn=30);
+        if (m4) {
+            translate([x_offset, 13.5, height/2])
+            rotate([-90, 0, 0])
+            cylinder(d1=2, d2=3.7, h=4, $fn=30);
+        } else {
+            translate([x_offset, 20, height/2])
+            rotate([-90, 0, 0])
+            cylinder(d1=2, d2=3.5, h=4, $fn=30);
+        }
 
-        translate([x_offset,-offset,height/2])
-        rotate([90,0,0])
-        cylinder(d=2,h=60, $fn=30);
+        translate([x_offset, -offset, height/2])
+        rotate([90, 0, 0])
+        cylinder(d=2, h=60, $fn=30);
 
-        translate([x_offset,30,height/2])
-        rotate([90,0,0])
-        cylinder(d=0.8,h=60, $fn=30);
+        translate([x_offset, 30, height/2])
+        rotate([90, 0, 0])
+        cylinder(d=0.8, h=60, $fn=30);
 
         if (threads) {
-            translate([x_offset,29-5.79,height/2])
-            rotate([-90,0,0])
+            translate([x_offset, 29 - 5.79, height/2])
+            rotate([-90, 0, 0])
             fitting_thread_M6(6);
 
-            translate([x_offset,-18+6.19,height/2])
-            rotate([90,0,0])
+            translate([x_offset, -18 + 6.19, height/2])
+            rotate([90, 0, 0])
             fitting_thread_M6(6);
-        } else {
-            translate([x_offset,29-5.79,height/2])
-            rotate([-90,0,0])
-            cylinder(d=6,h=6,$fn=30);
+        } else if (!m4){
+            translate([x_offset, 29 - 5.79, height/2])
+            rotate([-90, 0, 0])
+            cylinder(d=6, h=6, $fn=30);
 
-            translate([x_offset,-18+6.19,height/2])
-            rotate([90,0,0])
-            cylinder(d=6,h=6,$fn=30);
+            translate([x_offset, -18 + 6.19, height/2])
+            rotate([90, 0, 0])
+            cylinder(d=6, h=6, $fn=30);
+        }
+
+        if (m4) {
+            translate([x_offset, 29 - 11.79, height/2])
+            rotate([-90, 0, 0])
+            cylinder(d=4.3, h=12, $fn=30);
+
+            translate([x_offset, -18 + 9.19, height/2])
+            rotate([90, 0, 0])
+            cylinder(d=4.3, h=12, $fn=30);
+
+            translate([x_offset, 29 - 4, height/2])
+            rotate([90, -90, 0])
+            hull() {
+                M4_nut(cone=false);
+
+                translate([10, 0, 0])
+                M4_nut(cone=false);
+            }
+
+            translate([x_offset, -18 + 7, height/2])
+            rotate([90, -90, 0])
+            hull() {
+                M4_nut(cone=false);
+
+                translate([10, 0, 0])
+                M4_nut(cone=false);
+            }
         }
     }
 }
@@ -403,115 +463,187 @@ module hole_bondtech() {
     // gear indent
     difference() {
         hull() {
-            translate([0,-0.2,-1])
-            cylinder(d=9,h=height+1,$fn=40);
+            translate([0, -0.2, -1])
+            cylinder(d=9, h=height + 1, $fn=40);
 
-            translate([-15,-35/2,-1])
-            cube([1,54,height+1]);
+            translate([-15, -35/2, -1])
+            cube([1, 54, height + 1]);
         }
-        translate([0,-0.2,2+3])
-        donut(11.9,4,93,-90/2-20);
+        translate([0, -0.2, 2 + 3])
+        donut(11.9, 4, 93, -90/2 - 20);
 
-        rotate([0,0,26])
-        translate([11.9/2,0,2+3])
-        rotate([-90,0,0])
-        cylinder(d=4,h=5);
+        rotate([0, 0, 26])
+        translate([11.9/2, 0, 2 + 3])
+        rotate([-90, 0, 0])
+        cylinder(d=4, h=5);
     }
-    hull() {
-        translate([0,0,1.8+14-5])
-        cylinder(d=12.2,h=15,$fn=50);
 
-        translate([-15,-30/2,2+14-5])
-        cube([1,40,15]);
+    hull() {
+        translate([0, 0, 1.8 + 14 - 5])
+        cylinder(d=12.2, h=15, $fn=50);
+
+        translate([-15, -30/2, 2 + 14 - 5])
+        cube([1, 40, 15]);
     }
-    hull() {
-        translate([0,0,2+14/2-3/2])
-        cylinder(d=10,h=4,$fn=50);
 
-        translate([-15,-30/2,2+14/2-3/2])
-        cube([1,42,4]);
+    hull() {
+        translate([0, 0, 2 + 14/2 - 3/2])
+        cylinder(d=10, h=4, $fn=50);
+
+        translate([-15, -30/2, 2 + 14/2 - 3/2])
+        cube([1, 42, 4]);
     }
 }
 
-module idler_hole_Bondtech() {
+module idler_hole_Bondtech(supports) {
     // idler hole
-    rotate([0,0,-13])
-    translate([8.9,0,0]) {
+    rotate([0, 0, -13])
+    translate([8.9, 0, 0]) {
         cylinder(d=3.15, h=3, $fn=30);
 
-        translate([0,0,20-3.4])
-        cylinder(d=3.15, h=5, $fn=30);
+        if (supports) {
+            translate([0, 0, 20 - 4])
+            cylinder(d=3.15, h=5, $fn=30);
+        } else {
+            translate([0, 0, 20 - 3.4])
+            cylinder(d=3.15, h=5, $fn=30);
+        }
 
-        translate([0,0,1.8])
+        translate([0, 0, 1.8])
         difference() {
             difference() {
                 union() {
                     hull() {
-                        cylinder(d=8.6,h=14.4,$fn=60);
+                        cylinder(d=8.6, h=14.4, $fn=60);
 
-                        translate([15,-11/2+5,0])
-                        cube([1,11,14.4]);
+                        translate([15, -11/2 + 5, 0])
+                        cube([1, 11, 14.4]);
                     }
-                    translate([0,0,14-5])
+                    translate([0, 0, 14 - 5])
                     hull() {
-                        cylinder(d=10,h=5.4,$fn=60);
+                        cylinder(d=10, h=5.4, $fn=60);
 
-                        translate([15,-11/2+5,0])
-                        cube([1,11,5.4]);
+                        translate([15, -11/2 + 5, 0])
+                        cube([1, 11, 5.4]);
                     }
                 }
-                translate([0,0,3.2])
-                donut(11.9,4,110,125);
+                translate([0, 0, 3.2])
+                donut(11.9, 4, 110, 125);
             }
         }
     }
 }
 
-module arm_Bondtech(threads=true) {
+module support_soluble_bondtech() {
+    difference() {
+        idler_hole_Bondtech();
+
+        cylinder(d=30, h=3.6, center=true);
+
+        translate([0, 0, 20])
+        cylinder(d=30, h=7, center=true);
+
+        translate([0, 0, 1.8 + 14.4/2 - 0.3])
+        cylinder(d=80, h=13.4, center=true);
+
+        cube([22, 20, 20], center=true);
+
+        translate([26.7, 0, 0])
+        rotate([0, 0, -11.3])
+        cube([10, 20, 40], center=true);
+        
+    }
+}
+
+module support_nonsoluble_bondtech() {
+    difference() {
+        union() {
+            hull() {
+                hull() {
+                    translate([11.3, -1.8, 2 + 1/2])
+                    cube([1, 8.5, 1], center=true);
+
+                    translate([22.2, -0.9, 2 + 1/2])
+                    rotate([0, 0, -11.3])
+                    cube([1, 10, 1], center=true);
+                }
+
+                translate([0, 0, 14.4])
+                difference() {
+                    linear_extrude(1)
+                    offset(-0.3)
+                    projection()
+                    idler_hole_Bondtech();
+
+                    translate([26.8, 0, 0])
+                    rotate([0, 0, -11.3])
+                    cube([10, 20, 40], center=true);
+                }
+
+            }
+            translate([22.2, -0.9, 2/2])
+            rotate([0, 0, -11.3])
+            cube([1, 10, 2], center=true);
+
+        }
+        
+        translate([10, -4/2 - 1.7, 12/2 + 2.6])
+        rotate([0, 0, 2])
+        cube([30, 4, 12], center=true);
+
+        translate([10, 3/2 - 1, 12/2 + 2.6])
+        rotate([0, 0, 4])
+        cube([30, 3, 12], center=true);
+    }
+}
+
+module arm_Bondtech(
+    threads=true, m4=false, supports=false
+) {
 
     difference() {
         difference() {
             union() {
                 arm_body(height=19.2);
 
-                rotate([0,0,-13])
-                translate([8.9,0,19])
-                cylinder(d1=7,d2=5,h=1);
+                rotate([0, 0, -13])
+                translate([8.9, 0, 19])
+                cylinder(d1=7, d2=5, h=1);
             }
-            translate([-22,6,15])
-            chamfered_cube(52,42,10,4.2);
+            translate([-22, 6, 15])
+            chamfered_cube(52, 42, 10, 4.2);
 
-            translate([-10,-38,15])
-            chamfered_cube(50,30,10,4.2);
+            translate([-10, -38, 15])
+            chamfered_cube(50, 30, 10, 4.2);
 
-            translate([-9,-15,15])
-            rotate([0,0,-13])
-            cube([10.6,30,10]);
+            translate([-9, -15, 15])
+            rotate([0, 0, -13])
+            cube([10.6, 30, 10]);
             
             // extra infill
-            translate([9,5.7,10])
-            cylinder(d=0.1,h=10);
+            translate([9, 5.7, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([13,5.7,10])
-            cylinder(d=0.1,h=10);
+            translate([13, 5.7, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([17,5.7,10])
-            cylinder(d=0.1,h=10);
+            translate([17, 5.7, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([21,6,10])
-            cylinder(d=0.1,h=10);
+            translate([21, 6, 10])
+            cylinder(d=0.1, h=10);
             
-            translate([6,-7.4,10])
-            cylinder(d=0.1,h=10);
+            translate([6, -7.4, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([10,-7.6,10])
-            cylinder(d=0.1,h=10);
+            translate([10, -7.6, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([14,-7.8,10])
-            cylinder(d=0.1,h=10);
+            translate([14, -7.8, 10])
+            cylinder(d=0.1, h=10);
 
-            translate([18,-8,10])
-            cylinder(d=0.1,h=10);
+            translate([18, -8, 10])
+            cylinder(d=0.1, h=10);
 
         }
         hinge(height=15);
@@ -519,9 +651,16 @@ module arm_Bondtech(threads=true) {
 
         hole_bondtech();
 
-        filament_holes(4.4, height=(2+3)*2,offset=5, threads=threads);
+        filament_holes(
+            4.4, height=(2 + 3)*2, offset=5,
+            threads=threads, m4=m4
+        );
 
-        idler_hole_Bondtech();
+        idler_hole_Bondtech(supports=supports);
+
+        translate([10, 14, 15 + 10/2])
+        rotate([0, 0, 17.3])
+        cube([20, 10, 10], center=true);
     }
 }
 
@@ -815,121 +954,159 @@ module bondtech_position_tool() {
     }
 }
 
-module debug() {
-    arm = 3;
-
-    %translate([0,0,-5])
+module debug_orig_arm() {
+    %translate([0, 0, -5])
     //motor_mount();
     //motor_mount_extra_mount2();
     motor_mount_extra_mount3();
 
-    %translate([-31/2,-31/2,-1])
+    %translate([-31/2, -31/2, -1])
     lock_lever();
 
-    if (arm == 0) {
-        intersection() {
-            orig_arm();
+    intersection() {
+        orig_arm();
 
-            translate([-100/2,-100/2,0])
-            cube([100,100,15/2]);
-        }
-        %cylinder(d=11,h=11, $fn=40);
-        %translate([12.9,0,5.5]) U604zz();
-    } else if (arm == 1) {
-        intersection() {
-            arm_E3D_HobGoblin_U604zz();
-            translate([-100/2,-100/2,0])
-            cube([100,100,15/2]);
-
-            //translate([-100/2,-40,0])
-            //cube([100,55,40]);
-        }
-        %translate([0,0,11+4])
-        rotate([180,0,0])
-        E3D_HobGoblin();
-
-        %translate([0,0,15.2])
-        MR105zz();
-
-        %rotate([0,0,-13])
-        translate([10.5,0,5.5])
-        U604zz();
-
-        %translate([0,0,20.4])
-        rotate([0,180,0])
-        MR105zz_support_Hobbgoblin();
-    } else if (arm == 2) {
-        intersection() {
-            arm_E3D_HobGoblin_2x623zz();
-
-            //translate([-100/2,-100/2,0])
-            //cube([100,100,15/2]);
-
-            translate([-100/2,-40,0])
-            cube([100,55,40]);
-        }
-
-        %translate([0,0,15])
-        rotate([0,180,0])
-        E3D_HobGoblin();
-
-        %translate([0,0,15.2])
-        MR105zz();
-
-        x_offset = 9.8;
-        %rotate([0,0,-13])
-        translate([x_offset,0,3.5])
-        623zz();
-
-        %rotate([0,0,-13])
-        translate([x_offset,0,7.5])
-        623zz();
-
-        %translate([0,0,20.4])
-        rotate([0,180,0])
-        MR105zz_support_Hobbgoblin();
-    } else if (arm == 3) {
-        intersection() {
-            arm_Bondtech();
-
-            translate([-100/2,-100/2,0])
-            cube([100,100,2+3]);
-
-//            translate([-100/2,-40,0])
-//            cube([100,55,40]);
-        }
-
-        %translate([0,0,14+2])
-        rotate([0,180,0])
-        Bondtech_gear();
-
-        %translate([0,0,14+2.2])
-        MR105zz();
-
-        x_offset = 8.9;
-        %rotate([0,0,-13])
-        translate([x_offset,0,14+2])
-        rotate([0,180,0])
-        Bondtech_gear();
-
-        %translate([0,0,21.4])
-        rotate([0,180,0])
-        MR105zz_support_Bondtech();
+        translate([-100/2, -100/2, 0])
+        cube([100, 100, 15/2]);
     }
+    %cylinder(d=11, h=11, $fn=40);
+    %translate([12.9, 0, 5.5])
+    U604zz();
+    
+}
+
+
+module debug_arm_E3D_HobGoblin_U604zz() {
+    %translate([0, 0, -5])
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
+
+    %translate([-31/2, -31/2, -1])
+    lock_lever();
+
+    intersection() {
+        arm_E3D_HobGoblin_U604zz();
+
+        translate([-100/2, -100/2, 0])
+        cube([100, 100, 15/2]);
+
+        //translate([-100/2, -40, 0])
+        //cube([100, 55, 40]);
+    }
+    %translate([0, 0, 11 + 4])
+    rotate([180, 0, 0])
+    E3D_HobGoblin();
+
+    %translate([0, 0, 15.2])
+    MR105zz();
+
+    %rotate([0, 0, -13])
+    translate([10.5, 0, 5.5])
+    U604zz();
+
+    %translate([0, 0, 20.4])
+    rotate([0, 180, 0])
+    MR105zz_support_Hobbgoblin();
+}
+
+module debug_arm_E3D_HobGoblin_2x623zz() {
+    %translate([0, 0, -5])
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
+
+    %translate([-31/2, -31/2, -1])
+    lock_lever();
+
+    intersection() {
+        arm_E3D_HobGoblin_2x623zz();
+
+        translate([-100/2, -100/2, 0])
+        cube([100, 100, 15/2]);
+
+//        translate([-100/2, -40, 0])
+//        cube([100, 55, 40]);
+    }
+
+    %translate([0, 0, 15])
+    rotate([0, 180, 0])
+    E3D_HobGoblin();
+
+    %translate([0, 0, 15.2])
+    MR105zz();
+
+    x_offset = 9.8;
+    %rotate([0, 0, -13])
+    translate([x_offset, 0, 3.5])
+    623zz();
+
+    %rotate([0, 0, -13])
+    translate([x_offset, 0, 7.5])
+    623zz();
+
+    %translate([0, 0, 20.4])
+    rotate([0, 180, 0])
+    MR105zz_support_Hobbgoblin();
+}
+
+module debug_arm_Bondtech() {
+    %translate([0, 0, -5])
+    //motor_mount();
+    //motor_mount_extra_mount2();
+    motor_mount_extra_mount3();
+
+    %translate([-31/2, -31/2, -1])
+    lock_lever();
+
+    intersection() {
+        arm_Bondtech(threads=false, m4=true);
+
+//        translate([-100/2, -100/2, 0])
+//        cube([100, 100, 2 + 3]);
+
+//      translate([-100/2, -40, 0])
+//      cube([100, 55, 40]);
+    }
+
+    %translate([0, 0, 14 + 2])
+    rotate([0, 180, 0])
+    Bondtech_gear();
+
+    %translate([0, 0, 14 + 2.2])
+    MR105zz();
+
+    x_offset = 8.9;
+    %rotate([0, 0, -13])
+    translate([x_offset, 0, 14 + 2])
+    rotate([0, 180, 0])
+    Bondtech_gear();
+
+    %translate([0, 0, 21.4])
+    rotate([0, 180, 0])
+    MR105zz_support_Bondtech();
 }
 
 module debug_bondtech_gear() {
 
-    %translate([0,0,-5])
+    %translate([0, 0, -5])
     //motor_mount();
     //motor_mount_extra_mount2();
     motor_mount_extra_mount3();
 
-    %translate([0,0,14+2])
-    rotate([0,180,0])
+    %translate([0, 0, 14 + 2])
+    rotate([0, 180, 0])
     Bondtech_gear();
 
-    rotate([0,0,-140])
-    translate([-2,0,-1])
+    rotate([0, 0, -140])
+    translate([-2, 0, -1])
     bondtech_position_tool();
+}
+
+module debug_bondtech_arm_supports() {
+    arm_Bondtech(threads=false, m4=true, supports=true);
+
+    support_soluble_bondtech();
+
+    support_nonsoluble_bondtech();
 }
