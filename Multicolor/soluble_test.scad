@@ -1,9 +1,10 @@
 
-//soluble_test();
+//soluble_test_1();
 
-soluble_test2();
+//soluble_test_2_p1();
+soluble_test_2_p2();
 
-module soluble_test() {
+module soluble_test_1() {
 
     difference() {
         union() {
@@ -18,23 +19,30 @@ module soluble_test() {
     }
 }
 
-module soluble_test2() {
-    h = 35; 
-    union() {
-        translate([0, 0, h/2])
-        sphere(d=30, $fn=40);
+s2_h = 35;
 
-        translate([30/2 + 3, 0, h/2])
-        cube([10, 10, h], center=true);
+module soluble_test_2_p1() {
 
-        translate([-30/2 - 3, 0, h/2])
-        cube([10, 10, h], center=true);
+    difference() {
+        union() {
+            translate([30/2 + 3, 0, s2_h/2])
+            cube([10, 10, s2_h], center=true);
 
-        translate([30/2 + 3, 0, h/2])
-        cube([10, h, 10], center=true);
+            translate([-30/2 - 3, 0, s2_h/2])
+            cube([10, 10, s2_h], center=true);
 
-        translate([-30/2 - 3, 0, h/2])
-        cube([10, h, 10], center=true);
+            translate([30/2 + 3, 0, s2_h/2])
+            cube([10, s2_h, 10], center=true);
 
+            translate([-30/2 - 3, 0, s2_h/2])
+            cube([10, s2_h, 10], center=true);
+        }
+
+        soluble_test_2_p2();
     }
+}
+
+module soluble_test_2_p2() {
+    translate([0, 0, s2_h/2])
+    sphere(d=30, $fn=40);
 }
