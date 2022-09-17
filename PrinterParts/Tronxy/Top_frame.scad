@@ -134,85 +134,97 @@ module extention_t_part_front(supports=true) {
 }
 
 module top_frame_assembly() {
+
+    v_ext = 6;
+    v_ext_z = v_ext/2 * 30 + 120;
+    c_z = v_ext*30 + 120 + 87;
+    top_z = v_ext*30 + 120 + 87;
+
+    // frame mounts
     translate([-530/2 + 75, 500/2 - 10, 0])
     frame_mount();
 
-    translate([-530/2 + 75, 500/2 + 15, 150])
-    extention(2,support=false);
-
-    translate([-530/2 + 75, 500/2 + 17, 267])
-    rotate([0, 135, -90])
-    corner_90(
-        corner_len=70, extra_stiff=true, support=false
-    );
-    
     translate([530/2 - 75, 500/2 - 10, 0])
     frame_mount();
 
-    translate([530/2 - 75, 500/2 + 15, 150])
-    extention(2, support=false);
-
-    translate([530/2 - 75, 500/2 + 17, 267])
-    rotate([0, 135, -90])
-    corner_90(
-        corner_len=70, extra_stiff=true, support=false
-    );
-    
     translate([-530/2 + 75, -500/2 + 10, 0])
     rotate([0, 0, 180])
     frame_mount();
-
-    translate([-530/2 + 75, -530/2, 150])
-    extention(2, support=false);
-
-    translate([-530/2 + 75, -500/2 - 17, 267])
-    rotate([0, 135, 90])
-    corner_90(
-        corner_len=70, extra_stiff=true, support=false
-    );
 
     translate([530/2 - 75, -500/2 + 10, 0])
     rotate([0, 0, 180])
     frame_mount();
 
-    translate([530/2 - 75, -530/2, 150])
-    extention(2, support=false);
+    // extentions
+    translate([-530/2 + 75, 500/2 + 15, v_ext_z])
+    extention(v_ext, support=false);
 
-    translate([530/2 - 75, -500/2 - 17, 267])
+    translate([530/2 - 75, 500/2 + 15, v_ext_z])
+    extention(v_ext, support=false);
+
+    translate([-530/2 + 75, -530/2, v_ext_z])
+    extention(v_ext, support=false);
+
+    translate([530/2 - 75, -530/2, v_ext_z])
+    extention(v_ext, support=false);
+
+    // corners
+    translate([-530/2 + 75, 500/2 + 17, c_z])
+    rotate([0, 135, -90])
+    corner_90(
+        corner_len=70, extra_stiff=true, support=false
+    );
+
+    translate([530/2 - 75, 500/2 + 17, c_z])
+    rotate([0, 135, -90])
+    corner_90(
+        corner_len=70, extra_stiff=true, support=false
+    );
+
+    translate([-530/2 + 75, -500/2 - 17, c_z])
     rotate([0, 135, 90])
     corner_90(
         corner_len=70, extra_stiff=true, support=false
     );
 
-    translate([-530/2 + 75 - 15, 500/2 - 130, 265])
+    translate([530/2 - 75, -500/2 - 17, c_z])
+    rotate([0, 135, 90])
+    corner_90(
+        corner_len=70, extra_stiff=true, support=false
+    );
+
+    // t ententions
+    translate([-530/2 + 75 - 15, 500/2 - 130, top_z])
     rotate([0, -90, 180])
     extention_t_part_back(supports=false);
 
-    translate([-530/2 + 75, 500/2 - 250, 265])
-    rotate([90, 0, 0])
-    extention(support=false);
-
-    translate([-530/2 + 75 - 15, 500/2 - 370, 265])
+    translate([-530/2 + 75 - 15, 500/2 - 370, top_z])
     rotate([0, 90, 0])
     extention_t_part_front(supports=false);
 
-    translate([530/2 - 75 + 15, 500/2 - 130, 265])
+    translate([530/2 - 75 + 15, 500/2 - 130, top_z])
     rotate([0, 90, 180])
     extention_t_part_back(supports=false);
 
-    translate([530/2 - 75, 500/2 - 250, 265])
-    rotate([90, 0, 0])
-    extention(support=false);
-
-    translate([530/2 - 75 + 15, 500/2 - 370, 265])
+    translate([530/2 - 75 + 15, 500/2 - 370, top_z])
     rotate([0, -90, 0])
     extention_t_part_front(supports=false);
 
-    translate([0, 120, 265])
+    // joining extentions
+    translate([-530/2 + 75, 500/2 - 250, top_z])
+    rotate([90, 0, 0])
+    extention(support=false);
+
+    translate([530/2 - 75, 500/2 - 250, top_z])
+    rotate([90, 0, 0])
+    extention(support=false);
+
+    // middle extentions
+    translate([0, 120, top_z])
     rotate([0, 90, 0])
     middle_extention(support=false);
 
-    translate([0, -150, 265])
+    translate([0, -150, top_z])
     rotate([0, 90, 0])
     middle_extention(support=false);
 }

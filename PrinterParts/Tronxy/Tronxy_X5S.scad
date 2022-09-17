@@ -10,7 +10,7 @@ use <../../lib/includes.scad>;
 //rounded_gt2_belt(10, 30);
 //tronxy_z_rod_top_washer();
 //tronxy_board_frame_adapters();
-//hotend_pcb();
+hotend_pcb();
 //tronxy_cable_pcb_mount();
 //tronxy_cable_pcb_mount_fasterner();
 //tronxy_bed_spacer();
@@ -23,7 +23,7 @@ use <../../lib/includes.scad>;
 //tronxy_wire_chain_support();
 //tronxy_corner_bearing_mount_right();
 //tronxy_corner_bearing_mount_left();
-gt2_idler_625zz();
+//gt2_idler_625zz();
 //gt2_idler_625zz_retainer();
 
 
@@ -98,6 +98,7 @@ module tronxy_board_frame_adapters() {
 }
 
 module hotend_pcb() {
+    color("grey")
     difference() {
         cube([23, 28, 1]);
 
@@ -443,7 +444,7 @@ module tronxy_z_position_nut() {
             cylinder(d=12, h=5, $fn=40);
         }
         cylinder(d=3.2, h=5, $fn=20);
-        nut();
+        M3_nut();
 
         for(i = [0:dents - 1]) {
             rotate([0, 0, 360/dents*i])
