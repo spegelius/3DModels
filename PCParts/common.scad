@@ -1,6 +1,5 @@
 //use <../lib/includes.scad>;
 use <../Dollo/NEW_long_ties/include.scad>;
-use <common.scad>;
 
 atx_psu_width = 150;
 atx_psu_height = 86;
@@ -74,11 +73,15 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_mobo_card();
 //mock_mobo_card_ee_atx();
 //mock_hd();
+//mock_dvdrom();
 //mock_ssd();
 //mock_atx_psu();
 //mock_fan_connector_male();
 //mock_fan_60mm();
 //mock_fan_80mm();
+//mock_fan_92mm();
+//mock_fan_120mm();
+//mock_fan_140mm();
 //mock_USB_HDD_Seagate_5T();
 //mock_USB_HDD_Seagate_5T_2();
 //mock_USB_HDD_Seagate_2T();
@@ -618,10 +621,33 @@ hd_height = 26.1;
 
 screw_dia = 3.6;
 
+module _sata_connector_cutout() {
+    translate([21/2, 0, 2/2])
+    cube([21, 10, 2.01], center=true);
+
+    translate([26 + 11/2, 0, 2/2])
+    cube([11, 10, 2.01], center=true);
+
+    translate([37/2, 0, 5 - 2/2])
+    cube([37, 10, 2], center=true);
+
+    translate([2/2, 0, 5/2])
+    cube([2, 10, 5.01], center=true);
+
+    translate([37 - 2/2, 0, 5/2])
+    cube([2, 10, 5.01], center=true);
+
+    translate([22.3 + 2.5/2, 0, 5/2])
+    cube([2.5, 10, 5.01], center=true);
+
+    translate([22.3, 0, 1/2])
+    cube([8, 10, 1.01], center=true);
+}
+
 module mock_hd() {
     color("white")
     difference() {
-        cube([hd_width, 146, 26]);
+        cube([hd_width, 146, hd_height]);
 
         translate([-1, 28.3, 6.40])
         rotate([0, 90, 0])
@@ -647,26 +673,54 @@ module mock_hd() {
         rotate([0, 90, 0])
         cylinder(d=screw_dia, h=6, $fn=30);
 
-        translate([12 + 21/2, 0])
-        cube([21, 10, 4], center=true);
-
-        translate([38 + 11/2, 0])
-        cube([11, 10, 4], center=true);
-
-        translate([12 + 37/2, 0, 5 - 2/2])
-        cube([37, 10, 2], center=true);
-
-        translate([12 + 2/2, 0, 0])
-        cube([2, 10, 10], center=true);
-
-        translate([49 - 2/2, 0, 0])
-        cube([2, 10, 10], center=true);
-
-        translate([34.3 + 2.5/2, 0, 0])
-        cube([2.5, 10, 10], center=true);
+        translate([12, 0, 0])
+        _sata_connector_cutout();
 
         translate([100/2, 0, 8.5 + 2/2])
         cube([200, 5, 2], center=true);
+    }
+}
+
+module mock_dvdrom() {
+    difference() {
+        translate([0, 0, 42/2])
+        cube([148, 186, 42], center=true);
+
+        translate([148/2, -186/2 + 52.5, 10.5])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([148/2, -186/2 + 52.5, 22])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([-148/2, -186/2 + 52.5, 10.5])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([-148/2, -186/2 + 52.5, 22])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([148/2, -186/2 + 52.5 + 79, 10.5])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([148/2, -186/2 + 52.5 + 79, 22])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([-148/2, -186/2 + 52.5 + 79, 10.5])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([-148/2, -186/2 + 52.5 + 79, 22])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([148/2 - 30, 186/2, 7])
+        rotate([0, 0, 180])
+        _sata_connector_cutout();
     }
 }
 
@@ -926,18 +980,53 @@ module pcb_with_holes(w,l,h=1.6) {
     }
 }
 
+module fan_mount_holes(fan_d) {
+    module _fan_mount_holes(spacing) {
+        for (i = [0:3]) {
+            rotate([0, 0, i * 360/4])
+            translate([spacing/2, spacing/2, 0]) {
+                cylinder(d=4, h=55, center=true, $fn=30);
+            }
+        }
+    }
+
+    if (fan_d == 40) {
+        _fan_mount_holes(32);
+    } else if (fan_d == 60) {
+        _fan_mount_holes(50);
+    } else if (fan_d == 80) {
+        _fan_mount_holes(72);
+    } else if (fan_d == 92) {
+        _fan_mount_holes(82.5);
+    } else if (fan_d == 100) {
+        _fan_mount_holes(90.5);
+    } else if (fan_d == 120) {
+        _fan_mount_holes(105);
+    } else if (fan_d == 140) {
+        _fan_mount_holes(124.5);
+    }
+}
+
+module mock_fan_40mm(h=10) {
+    difference() {
+        rounded_cube_side(
+            40, 40, h, 6, center=true, $fn=20
+        );
+
+        cylinder(d=38, h=55, center=true, $fn=90);
+
+        fan_mount_holes(40);
+    }
+}
+
+
 module mock_fan_60mm(h=25) {
     difference() {
         rounded_cube_side(60, 60, h, 6, center=true, $fn=20);
 
         cylinder(d=58, h=55, center=true, $fn=90);
 
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([50/2, 50/2, 0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
-        }
+        fan_mount_holes(60);
     }
 }
 
@@ -947,12 +1036,7 @@ module mock_fan_80mm() {
         cube([80, 80, 25], center=true);
         cylinder(d=79, h=55, center=true, $fn=90);
 
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([72/2, 72/2, 0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
-        }
+        fan_mount_holes(80);
     }
 }
 
@@ -960,12 +1044,8 @@ module mock_fan_92mm() {
     difference() {
         cube([92, 92, 25], center=true);
         cylinder(d=91, h=55, center=true, $fn=90);
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([82.5/2, 82.5/2,0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
-        }
+
+        fan_mount_holes(92);
     }
 }
 
@@ -973,12 +1053,8 @@ module mock_fan_120mm() {
     difference() {
         cube([120, 120, 25], center=true);
         cylinder(d=118, h=55, center=true, $fn=90);
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([105/2, 105/2,0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
-        }
+
+        fan_mount_holes(120);
     }
 }
 
@@ -986,12 +1062,8 @@ module mock_fan_140mm() {
     difference() {
         cube([140, 140, 25], center=true);
         cylinder(d=139, h=55, center=true, $fn=90);
-        for (i = [0:3]) {
-            rotate([0, 0, i * 360/4])
-            translate([124.5/2, 124.5/2,0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
-        }
+
+        fan_mount_holes(140);
     }
 }
 
@@ -1494,4 +1566,32 @@ module mock_stepdown_converter() {
 
     translate([11/2 - 6.5/2 - 0.5, 0, 4.5/2])
     cube([6.5, 6.5, 4.5], center=true);
+}
+
+module mock_led_3mm() {
+    hull() {
+        translate([0, 0, 4.6 - 2.8/2])
+        sphere(d=2.8, $fn=30);
+
+        cylinder(d=2.8, h=1, $fn=30);
+    }
+
+    cylinder(d=3.2, h=1.2, $fn=30);
+}
+
+module mock_led_5mm() {
+    hull() {
+        translate([0, 0, 8.6 - 4.9/2])
+        sphere(d=4.9, $fn=30);
+
+        cylinder(d=4.9, h=1, $fn=30);
+    }
+
+    cylinder(d=5.6, h=1.2, $fn=30);
+
+    translate([3/2 - 0.5/2, 0, -10/2])
+    cube([0.5, 0.5, 10], center=true);
+
+    translate([-3/2 + 0.5/2, 0, -10/2])
+    cube([0.5, 0.5, 10], center=true);
 }
