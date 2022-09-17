@@ -1,6 +1,7 @@
 use <../../PCParts/common.scad>;
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
+use <../../Dollo/New_long_ties/mockups.scad>;
 
 use <../Copperhead/cooling_shroud.scad>;
 
@@ -9,13 +10,16 @@ stl_path =
 
 
 //debug_copperhead_cooling_shroud();
+//debug_tronxy_E3D_mount_M4();
 
 //tronxy_belt_clip_left_top();
 //tronxy_belt_clip_right_top();
 //tronxy_belt_clip_left_bottom();
-tronxy_belt_clip_right_bottom();
+//tronxy_belt_clip_right_bottom();
 //tronxy_E3D_mount();
+//tronxy_E3D_mount_M4();
 //tronxy_E3D_mount_cap();
+tronxy_E3D_M4_mount_cap();
 
 
 module round_tooth(height) {
@@ -212,9 +216,10 @@ module tronxy_E3D_mount() {
     union() {
         difference() {
         
-            import(str(stl_path,
-                    "tronxy_x5s_e3d_v6_mtg_+_belt_aligner_r1.STL"),
-                convexity=10);
+            import(str(
+                stl_path,
+                "tronxy_x5s_e3d_v6_mtg_+_belt_aligner_r1.STL"
+            ), convexity=10);
 
             translate([-23.5, 3, 0])
             cube([20, 50, 25]);
@@ -308,6 +313,64 @@ module tronxy_E3D_mount() {
 
 }
 
+module tronxy_E3D_mount_M4() {
+    difference() {
+        union() {
+            tronxy_E3D_mount();
+
+            difference() {
+                translate([33.5, 14.4, 15/2 + 5])
+                cube([33, 18, 15], center=true);
+
+                translate([33.5, 2, 20])
+                rotate([-90, 0, 0])
+                cylinder(d=16.1, h=5, $fn=200);
+
+                translate([33.5 + 20, 8.5])
+                cylinder(d=12, h=30);
+
+                translate([33.5 - 20, 8.5])
+                cylinder(d=12, h=30);
+
+            }
+        }
+
+        translate([33.5, 14.4 + 9, 20])
+        rotate([-90, 0, 0])
+        cylinder(d1=24, d2=54, h=20, $fn=100);
+
+        translate([33.5, 1, 20])
+        rotate([-90, 0, 0])
+        cylinder(d=4.3, h=27, $fn=60);
+
+        translate([33.5, 10.7, 20])
+        rotate([-90, 0, 0])
+        cylinder(d=8.2, h=3.3, $fn=60);
+
+        translate([33.5, 18, 20])
+        rotate([-90, 0, 0])
+        cylinder(d=8.2, h=3.3, $fn=60);
+
+        translate([33.5 + 8, 16, 0]) {
+            cylinder(d=3.4, h=60, $fn=30);
+
+            M3_nut_tapering(
+                h=10.4, cone=true,
+                bridging=false
+            );
+        }
+
+        translate([33.5 + -8, 16, 0]) {
+            cylinder(d=3.4, h=60, $fn=30);
+
+            M3_nut_tapering(
+                h=10.4, cone=true,
+                bridging=false
+            );
+        }
+    }
+}
+
 module tronxy_E3D_mount_cap() {
     difference() {
         import(str(stl_path,
@@ -316,6 +379,38 @@ module tronxy_E3D_mount_cap() {
 
         translate([10, 27.7, 25])
         cube([50, 20, 20], center=true);
+    }
+}
+
+module tronxy_E3D_M4_mount_cap() {
+    difference() {
+        translate([0, 0, 9])
+        rotate([180, 0, 0])
+        intersection() {
+            chamfered_cube(
+                24, 15, 20, 3, center=true
+            );
+
+            cylinder(d=60, h=9);
+        }
+
+        translate([8, 0, 0])
+        cylinder(d=3.4, h=60, center=true, $fn=30);
+
+        translate([-8, 0, 0])
+        cylinder(d=3.4, h=60, center=true, $fn=30);
+
+        translate([0, 0, 9])
+        rotate([90, 0, 0])
+        cylinder(d=4.3, h=60, center=true, $fn=30);
+
+        translate([0, 3.65, 9])
+        rotate([-90, 0, 0])
+        cylinder(d=8.2, h=3.3, center=true, $fn=60);
+        
+        translate([0, -3.65, 9])
+        rotate([-90, 0, 0])
+        cylinder(d=8.2, h=3.3, center=true, $fn=60);
     }
 }
 
@@ -333,4 +428,31 @@ module debug_copperhead_cooling_shroud() {
     translate([26.65, -53, 10.5])
     rotate([-90,0,0])
     tronxy_E3D_mount_cap();
+}
+
+module debug_tronxy_E3D_mount_M4() {
+    %rotate([-90, 0, 0])
+    translate([33.5, -20, -59.25])
+    rotate([0, 0, -90])
+    copperhead(block_rotation=90);
+
+//    translate([33.5, -57.05, 20])
+//    rotate([-90, 0, 0])
+//    e3dv6();
+
+    translate([26.65, 10.5, 52.6])
+    rotate([180, 0, 0])
+    tronxy_E3D_mount_cap();
+
+    translate([33.5, 16, 29.1])
+    rotate([180, 0, 0])
+    tronxy_E3D_M4_mount_cap();
+
+    intersection() {
+        tronxy_E3D_mount_M4();
+
+        translate([100/2 + 33.5, 0, 0])
+        cube([100, 100, 100], center=true);
+    }
+
 }
