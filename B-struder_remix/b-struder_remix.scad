@@ -22,7 +22,12 @@ $fn=60;
 //debug_bondtech_arm_supports();
 
 //arm_E3D_HobGoblin_U604zz();
+//arm_E3D_HobGoblin_U604zz(supports=true);
+arm_E3D_HobGoblin_U604zz(
+    threads=false, m4=true, supports=true
+);
 //arm_E3D_HobGoblin_U604zz(threads=false);
+
 //arm_E3D_HobGoblin_2x623zz();
 
 //arm_Bondtech();
@@ -31,7 +36,7 @@ $fn=60;
 //arm_Bondtech(threads=false, m4=true);
 //arm_Bondtech(threads=false, m4=true, supports=true);
 //support_soluble_bondtech();
-support_nonsoluble_bondtech();
+//support_nonsoluble_bondtech();
 
 //hinge_support();
 
@@ -253,21 +258,21 @@ module E3D_HobGoblin_hole(height=15) {
     // gear indent
     difference() {
         hull() {
-            cylinder(d=8.5,h=height+1,$fn=40);
+            cylinder(d=8.5, h=height + 1, $fn=40);
 
-            translate([-15,-35/2,0])
-            cube([1,54,height+1]);
+            translate([-15, -35/2, 0])
+            cube([1, 54, height + 1]);
         }
-        translate([0,0,height/2])
-        donut(12.8,5,93,-90/2-20);
+        translate([0, 0, height/2])
+        donut(12.8, 5, 93, -90/2 - 20);
 
-        rotate([0,0,26])
-        translate([12.8/2,0,height/2])
-        rotate([-90,0,0])
-        cylinder(d=5,h=5);
+        rotate([0, 0, 26])
+        translate([12.8/2, 0, height/2])
+        rotate([-90, 0, 0])
+        cylinder(d=5, h=5);
     }
-    translate([0,0,7.5+3])
-    cylinder(d=8+5,h=6);
+    translate([0, 0, 7.6 + 3.2])
+    cylinder(d=8 + 5, h=6);
 }
 
 module filament_holes(
@@ -329,67 +334,87 @@ module filament_holes(
             translate([x_offset, 29 - 4, height/2])
             rotate([90, -90, 0])
             hull() {
-                M4_nut(cone=false);
+                M4_nut(h=3.35, cone=false);
 
                 translate([10, 0, 0])
-                M4_nut(cone=false);
+                M4_nut(h=3.35, cone=false);
             }
 
             translate([x_offset, -18 + 7, height/2])
             rotate([90, -90, 0])
             hull() {
-                M4_nut(cone=false);
+                M4_nut(h=3.35, cone=false);
 
                 translate([10, 0, 0])
-                M4_nut(cone=false);
+                M4_nut(h=3.35, cone=false);
             }
         }
     }
 }
 
-module idler_hole_E3D_HobGoblin_U604zz() {
+module idler_hole_E3D_HobGoblin_U604zz(supports) {
     // idler hole
-    rotate([0,0,-13])
-    translate([10.7,0,0]) {
-        cylinder(d=3.5, h=5, $fn=30);
+    rotate([0, 0, -13])
+    translate([10.7, 0, 0]) {
+        cylinder(d=3.6, h=11, center=true, $fn=30);
 
-        translate([0,0,5])
-        cylinder(d=4.2, h=5, $fn=30);
-        
-        translate([0,0,10.2])
+        translate([0, 0, 5])
         cylinder(d=4.2, h=15, $fn=30);
 
-        translate([0,0,15-2.5])
+        translate([0, 0, 15 - 2.5])
         cylinder(d=9, h=3, $fn=30);
 
-        translate([0,0,5])
+        translate([0, 0, 4.6])
         difference() {
+            // main hole form
             difference() {
                 hull() {
-                    cylinder(d=13.3,h=5,$fn=60);
-                    translate([20,-18/2+8,0])
-                    cube([1,18,5]);
+                    cylinder(d=13.3, h=5.8, $fn=60);
+
+                    translate([20, -18/2 + 8, 0])
+                    cube([1, 18, 5.8]);
                 }
-                translate([0,0,5/2])
-                donut(13.5,2,110,125);
+                translate([0, 0, 5.8/2])
+                donut(13.5, 2, 110, 125);
             }
+
+            // support pillar
             difference() {
-                cylinder(d=5.2,h=5,$fn=30);
+                cylinder(d=5.2, h=6, $fn=30);
 
-                translate([0,0,0.5+4/2])
-                rotate([0,0,45])
-                cube([2,8,4], center=true);
+                if (supports) {
+                    translate([0, 0, 0.9 + 4/2])
+                    rotate([0, 0, 45])
+                    cube([2, 8, 4], center=true);
 
-                translate([0,0,0.5+4/2])
-                rotate([0,0,-45])
-                cube([2,8,4], center=true);
+                    translate([0, 0, 0.9 + 4/2])
+                    rotate([0, 0, -45])
+                    cube([2, 8, 4], center=true);
+                } else {
+                    translate([0, 0, 0.9])
+                    cylinder(d=6, h=4);
+                }
+            }
+            if (supports) {
+                translate([5, -3, 5.4/2 + 0.2])
+                rotate([0, 0, 14])
+                cube([15, 0.45, 5.4], center=true);
+
+                translate([11, 3.4, 5.4/2 + 0.2])
+                rotate([0, 0, 16])
+                cube([15, 0.45, 5.4], center=true);
+
+                translate([5, 6, 5.4/2 + 0.2])
+                rotate([0, 0, 18])
+                cube([15, 0.45, 5.4], center=true);
             }
         }
-        
     }
 }
 
-module arm_E3D_HobGoblin_U604zz(threads=true) {
+module arm_E3D_HobGoblin_U604zz(
+    threads=true, m4=false, supports=false
+) {
 
     difference() {
         arm_body();
@@ -398,9 +423,11 @@ module arm_E3D_HobGoblin_U604zz(threads=true) {
         
         E3D_HobGoblin_hole();
         
-        filament_holes(4.2, offset=5, threads=threads);
+        filament_holes(
+            4.2, offset=5, threads=threads, m4=m4
+        );
         
-        idler_hole_E3D_HobGoblin_U604zz();
+        idler_hole_E3D_HobGoblin_U604zz(supports);
     }
 }
 
@@ -559,14 +586,14 @@ module support_nonsoluble_bondtech() {
     difference() {
         union() {
             hull() {
-                translate([11.3, -1.8, 2 + 1/2])
-                cube([1, 8.5, 1], center=true);
+                #translate([11.3, -1.8, 2 + 1/2])
+                cube([1, 8, 1], center=true);
 
                 translate([22.2, -0.9, 2 + 1/2])
                 rotate([0, 0, -11.3])
                 cube([1, 10, 1], center=true);
 
-                translate([7.3, -2, 12 + 1/2])
+                #translate([7.3, -2, 12 + 1/2])
                 cube([1, 8, 1], center=true);
 
                 translate([21.2, -0.9, 12 + 1/2])
@@ -601,11 +628,11 @@ module support_nonsoluble_bondtech() {
 
         }
         
-        translate([10, -4/2 - 1.6, 12/2 + 2.6])
+        translate([10, -4/2 - 1.5, 12/2 + 2.6])
         rotate([0, 0, 1.5])
         cube([30, 4, 12], center=true);
 
-        translate([10, 3/2 - 1, 12/2 + 2.6])
+        translate([10, 3/2 - 1.1, 12/2 + 2.6])
         rotate([0, 0, 4])
         cube([30, 3, 12], center=true);
     }
@@ -1000,7 +1027,7 @@ module debug_arm_E3D_HobGoblin_U604zz() {
     lock_lever();
 
     intersection() {
-        arm_E3D_HobGoblin_U604zz();
+        arm_E3D_HobGoblin_U604zz(threads=false, m4=true, supports=true);
 
         translate([-100/2, -100/2, 0])
         cube([100, 100, 15/2]);
@@ -1076,8 +1103,8 @@ module debug_arm_Bondtech() {
     intersection() {
         arm_Bondtech(threads=false, m4=true);
 
-//        translate([-100/2, -100/2, 0])
-//        cube([100, 100, 2 + 3]);
+        translate([-100/2, -100/2, 0])
+        cube([100, 100, 2 + 3]);
 
 //      translate([-100/2, -40, 0])
 //      cube([100, 55, 40]);
