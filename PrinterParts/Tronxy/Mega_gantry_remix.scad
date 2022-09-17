@@ -10,15 +10,14 @@ stl_path = "../../_downloaded/Tronxy_X5S_Mega_gantry_plates/";
 
 //debug();
 
-tronxy_mega_gantry_left();
+//tronxy_mega_gantry_left();
+//tronxy_mega_gantry_right();
 
 //translate([0, -130, 0])
 //tronxy_mega_gantry_right();
 
-//tronxy_mega_gantry_right();
-
 //top_bearing_support_right();
-//top_bearing_support_left();
+top_bearing_support_left();
 //washer_8_5_1();
 
 
@@ -53,36 +52,44 @@ module tronxy_mega_gantry_left() {
         union() {
             intersection() {
                 translate([0, -4.5, -88.55])
-                import(str(stl_path,
-                        "x5s_y_l_plate_r1.STL"), convexity=5);
+                import(
+                    str(
+                       stl_path, "x5s_y_l_plate_r1.STL"
+                    ), convexity=5);
 
-                translate([24,0,0])
+                translate([24, 0, 0])
                 cube([113, 131, 50], center=true);
             }
 
             // v-slot guides
-            translate([-12.7, -36, 14.45])
+            translate([-12.6, -36, 14.6])
             hull() {
-                cube([8, 30, 6.2], center=true);
-                cube([8 - 2 * 1.9, 30, 6.2 + 2 * 1.7], center=true);
-            }
-            translate([-12, -36, 14.45])
-            cube([8, 30, 6.2], center=true);
+                cube([8.2, 30, 6], center=true);
 
-            translate([-12.7, -2, 14.45])
-            hull() {
-                cube([8, 6, 6.2], center=true);
-                cube([8 - 2 * 1.9, 6, 6.2 + 2 * 1.7], center=true);
+                cube([
+                    4.5, 30, 9.55
+                ], center=true);
             }
-            translate([-12, -2, 14.45])
-            cube([8, 6, 6.2], center=true);
+            translate([-12.4, -36, 14.6])
+            cube([8, 30, 6], center=true);
+
+            translate([-12.6, -2, 14.6])
+            hull() {
+                cube([8.2, 6, 6], center=true);
+
+                cube([
+                    4.5, 6, 9.55
+                ], center=true);
+            }
+            translate([-12.4, -2, 14.6])
+            cube([8, 6, 6], center=true);
 
         }
 
         // chamfers
         translate([-34, -68, 0])
         rotate([0, 0, 45])
-        cube([10,10,100],center=true);
+        cube([10, 10, 100],center=true);
 
         translate([-8.5, -68, 0])
         rotate([0, 0, 45])
@@ -112,13 +119,13 @@ module tronxy_mega_gantry_left() {
         //cylinder(d=4.5,h=1);
 
         // bolt head indents
-        translate([-31.8, -13, 14.45])
+        translate([-31.8, -13, 14.6])
         rotate([0, 90, 0])
-        cylinder(d=8, h=2, $fn=40, center=true);
+        cylinder(d=8, h=3, $fn=40, center=true);
 
-        translate([-31.8, -58, 14.45])
+        translate([-31.8, -58, 14.6])
         rotate([0, 90, 0])
-        cylinder(d=8, h=2, $fn=40, center=true);
+        cylinder(d=8, h=3, $fn=40, center=true);
 
         // back outer roller bolt hole
         translate([-23, 51.5, -21])
@@ -161,31 +168,31 @@ module tronxy_mega_gantry_left() {
 
         // infill
         translate([-18, 0, 3.5])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([-28, 0, 3.5])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([-8, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([5, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([15, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([25, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([35, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([45, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
 
         translate([55, 0, 3])
-        cube([0.1, 200, 0.25], center=true);
+        cube([0.1, 200, 4], center=true);
     }
 
     %translate([67, 52, 18.2])
@@ -335,20 +342,70 @@ module top_bearing_support_right() {
     _top_bearing_support();
 }
 
+module 2020_vslot(h=100) {
+    iw = 20 - 2*(4.3 + 1.8);
+    iw2 = iw - sqrt((1.5 * 1.5)/2) * 2;
+    
+    ih = 4.3 - (11 - iw2)/2;
+    echo(iw, iw2, ih);
+    
+
+    difference() {
+        rounded_cube_side(
+            20, 20, h, .8, center=true, $fn=15
+        );
+
+        cylinder(d=4.2, h=h*2, center=true, $fn=30);
+        for (i=[0:3]) {
+            rotate([0, 0, i * 90])
+            translate([0, 20/2 + 10/2, 0])
+            hull() {
+                cube([
+                    6.2, 10 + (9.55 - 6.2), h * 2
+                ], center=true);
+
+                cube([9.55, 10, h*2], center=true);
+            }
+
+            rotate([0, 0, i * 90])
+            translate([0, 20/2, 0])
+            cube([6.2, 5, h*2], center=true);
+
+            rotate([0, 0, i * 90])
+            hull() {
+                translate([0, 20/2 - 1.8 - ih/2, 0])
+                cube([11, ih, h*2], center=true);
+
+                translate([0, iw/2 + 0.1/2, 0])
+                cube([iw2, 0.1, h*2], center=true);
+            }
+            
+        }
+    }
+}
+
 module debug() {
 
     2020_path = "../../_downloaded/2020_profile/";
 
 //    color("DarkSlateGrey")
-//    translate([339.8, -60, -125.4])
+//    translate([340, -60, -130])
+//    translate([0, 0, 4.65])
 //    scale([1, 10, 1])
-//    import(str(2020_path, "2020_v-slot.stl"), convexity=10);
+//    import(str(
+//        2020_path, "2020_v-slot.stl"
+//    ), convexity=10);
+
+    color("DarkSlateGrey")
+    translate([-0.2, -20, 20/2 + 4.6])
+    rotate([90, 0, 0])
+    2020_vslot();
 
     intersection() {
         tronxy_mega_gantry_left();
 
-        //translate([0, -40, 0])
-        //cube([200, 100, 100], center=true);
+        translate([0, -40, 0])
+        cube([200, 100, 100], center=true);
         
     }
 
@@ -366,4 +423,9 @@ module debug() {
 
     translate([23, 16 - 4.65, -1])
     washer_8_5_1();
+
+    // bolt
+    translate([-31, -58, 14.6])
+    rotate([0, 90, 0])
+    cylinder(d=4, h=25);
 }
