@@ -14,9 +14,9 @@ wall = 1.2;
 bracket_wall = 1.6;
 //section_w = 170;
 section_w = 220;
-section_d = 16-2*slop;
+section_d = 18;
 section_y_pos = 20 + (section_d + 2*slop + 4)/2;
-section_head_outer_d = section_d + 2*slop - 2*wall - 0.4;
+section_head_outer_d = section_d + 2*slop - 2*wall - 0.5;
 section_head_d = 11 + slop;
 //infill = true;
 infill = false;
@@ -49,59 +49,122 @@ if (!is_undef(section_quide_3))
 //debug_section_end_1();
 //debug_section_end_2();
 
-//shelf_top_bracket();
-//shelf_section_bracket_1(
-//    section_w, section_d, 25, 180, 10, open=false);
+//shelf_top_bracket(20);
 
-//shelf_section_bracket_right(220, 16-2*slop, 25, 200, 13, section_support="beam");
-shelf_section_bracket_left(220, 16-2*slop, 25, 200, 13, section_support="beam");
-//shelf_section_bracket_middle(220, 16-2*slop, 25, 200, 13, section_support="beam");
-//shelf_section_bracket_support(220, 16-2*slop, 25, 200, 13, section_support="beam");
+//shelf_section_bracket_left(
+//    180, section_d, 20, 200, 13,
+//    open=true, section_support="arc"
+//);
 
-//shelf_section_bracket_support(170, 16-2*slop, 20, 180, 10, section_support="arc", lip=false);
+//shelf_section_bracket_right(
+//    180, section_d, 20, 200, 13,
+//    open=true, section_support="arc"
+//);
+
+//shelf_section_bracket_right(
+//    200, section_d, 22, 214, 13,
+//    section_support="arc"
+//);
+
+//shelf_section_bracket_left(
+//    200, section_d, 22, 214, 13,
+//    section_support="arc"
+//);
+
+//shelf_section_bracket_support(
+//    200, section_d, 22, 214, 13,
+//    section_support="arc"
+//);
+
+//shelf_section_bracket_right(
+//    220, section_d, 25, 200, 13,
+//    section_support="beam"
+//);
+
+//shelf_section_bracket_left(
+//    220, section_d, 20, 200, 13,
+//    section_support="beam"
+//);
+
+//shelf_section_bracket_middle(
+//    220, section_d, 20, 200, 13,
+//    section_support="beam"
+//);
+
+//shelf_section_bracket_support(
+//    220, section_d, 20, 200, 13,
+//    section_support="beam"
+//);
+
+//shelf_section_bracket_support(
+//    170, section_d, 20, 180, 10,
+//    section_support="arc", lip=false
+//);
 
 //shelf_section_bracket_2(section_w, section_l, open=true);
 
-//shelf_section_bracket_middle(section_w, section_l, open=true);
-//shelf_section_bracket_support(section_w, section_l);
-//shelf_section_bracket_support_small(section_w, section_l);
-//shelf_section_support(section_w, section_l);
+//shelf_section_bracket_middle(section_w, section_d, open=true);
+//shelf_section_bracket_support(section_w, section_d);
+//shelf_section_bracket_support_small(section_d);
+//shelf_section_support(section_w, section_d);
 
 //shelf_section(section_w, section_d, 170, configuration=2);
-//shelf_section(170, configuration=3);
-//shelf_section(200, configuration=1);
-//shelf_section(200, configuration=4);
-//shelf_section(200, configuration=2);
-//shelf_section(160, configuration=2);
-//shelf_section(200, configuration=2, end=1);
-//shelf_section(200, configuration=2, end=2);
-//shelf_section(250, configuration=2);
-//shelf_section(280, configuration=3);
-//shelf_section(300);
-//shelf_section(300, configuration=1);
-//shelf_section(300, configuration=2);
-//shelf_section(330, configuration=1);
-//shelf_section(330, configuration=2);
-//shelf_section(400);
-//shelf_section(40, configuration=2, end=1);
-//shelf_section(40, configuration=2, end=2);
+//shelf_section(220, section_d, 170, configuration=3);
+//shelf_section(220, section_d, 170, configuration=2);
+//shelf_section(220, section_d, 200, configuration=1);
+//shelf_section(220, section_d, 245, configuration=4);
+//shelf_section(220, section_d, 215, configuration=1);
+//shelf_section(220, section_d, 200, configuration=4);
+//shelf_section(220, section_d, 200, configuration=2);
+//shelf_section(220, section_d, 160, configuration=2);
+//shelf_section(220, section_d, 200, configuration=2, end=1);
+//shelf_section(220, section_d, 200, configuration=2, end=2);
+//shelf_section(220, section_d, 250, configuration=2);
+//shelf_section(220, section_d, 280, configuration=3);
+//shelf_section(220, section_d, 300);
+//shelf_section(220, section_d, 300, configuration=1);
+//shelf_section(220, section_d, 300, configuration=2);
+//shelf_section(220, section_d, 330, configuration=1);
+//shelf_section(220, section_d, 330, configuration=2);
+//shelf_section(220, section_d, 400);
+//shelf_section(220, section_d, 40, configuration=2, end=1);
+//shelf_section(220, section_d, 40, configuration=2, end=2);
+
+//shelf_section(200, section_d, 225, configuration=2);
+//shelf_section(200, section_d, 203, configuration=2);
+//shelf_section(200, section_d, 306, configuration=2);
+//shelf_section(200, section_d, 322, configuration=2);
+//shelf_section(200, section_d, 273, configuration=2);
+//shelf_section(200, section_d, 124, configuration=3);
+
+//shelf_section(200, section_d, 300, configuration=2, infill=true);
+
+//shelf_section(200, section_d, 271, configuration=2, infill=true);
+
+//shelf_section(200, section_d, 273, configuration=2, infill=true);
+
+//shelf_section(200, section_d, 262, configuration=2, infill=true);
+
+//shelf_section(200, section_d, 306, configuration=2, infill=true);
 
 //test_shelf_section_bottom();
 
 //shelf_section_end_1();
 //shelf_section_end_2();
 
+//M4_nut_block();
+
 //%translate([0,-200,0])
 //cube([200,200,1]);
+
 
 ////// MODULES //////
 module _arcify(x, y, h, size_x, size_y) {
     intersection() {
-        translate([x,y,0])
+        translate([x, y, 0])
         children();
 
-        translate([5,0,0])
-        cube([size_x,size_y,h]);
+        cube([size_x, size_y, h]);
     }
 }
 
@@ -128,66 +191,69 @@ module shelf_top_bracket(h) {
     difference() {
         union() {
             hull() {
-                cylinder(d=10,h=h,$fn=30);
+                cylinder(d=10, h=h, $fn=30);
 
-                translate([0,180,0])
-                cylinder(d=10,h=h,$fn=30);
+                translate([0, 180, 0])
+                cylinder(d=10, h=h, $fn=30);
             }
-            translate([0,120,0]) hull() {
-                cylinder(d=10,h=h,$fn=30);
+            translate([0, 120, 0])
+            hull() {
+                cylinder(d=10, h=h, $fn=30);
 
-                translate([160,50,0])
-                cylinder(d=10,h=h,$fn=30);
+                translate([160, 50, 0])
+                cylinder(d=10, h=h, $fn=30);
             }
             //arc(600, 276.4, -100.4, 160, 170);
             _arcify(276.4, -100.4, h, 160, 170)
             chamfered_tube(
-                d=600,h=h,wall=10,chamfer=2.5,center=false,$fn=100);
+                d=600, h=h, wall=10,
+                chamfer=2.5, center=false, $fn=100
+            );
             
-            translate([25,105,h/2])
-            rotate([0,0,-35])
-            cube([55,10,h],center=true);
+            translate([25, 105, h/2])
+            rotate([0, 0, -35])
+            cube([55, 10, h], center=true);
         }
         
         // mount holes
-        translate([0,50,h/2])
-        rotate([0,90,0])
-        cylinder(d=5,h=20,center=true,$f=30);
+        translate([0, 50, h/2])
+        rotate([0, 90, 0])
+        cylinder(d=5, h=20, center=true, $f=30);
 
-        translate([40/2,50,h/2])
-        rotate([0,90,0])
-        cylinder(d=12,h=40,center=true,$f=30);
+        translate([40/2, 50, h/2])
+        rotate([0, 90, 0])
+        cylinder(d=12, h=40, center=true, $f=30);
 
-        translate([0,180-10,h/2])
-        rotate([0,90,0])
-        cylinder(d=5,h=20,center=true,$f=30);
+        translate([0, 180 - 10, h/2])
+        rotate([0, 90, 0])
+        cylinder(d=5, h=20, center=true, $f=30);
 
-        translate([40/2,180-10,h/2])
-        rotate([0,90,0])
-        cylinder(d=12,h=40,center=true,$f=30);
+        translate([40/2, 180 - 10, h/2])
+        rotate([0, 90, 0])
+        cylinder(d=12, h=40, center=true, $f=30);
 
-        translate([25,140,h/2])
-        rotate([90,0,0])
-        cylinder(d=4,h=40,center=true,$f=30);
+        translate([25, 140, h/2])
+        rotate([90, 0, 0])
+        cylinder(d=4, h=40, center=true, $f=30);
 
-        translate([125,150,h/2])
-        rotate([90,0,0])
-        cylinder(d=4,h=40,center=true,$f=30);
+        translate([125, 150, h/2])
+        rotate([90, 0, 0])
+        cylinder(d=4, h=40, center=true, $f=30);
         
         // infill
-        translate([0,200/2-10,7])
-        cube([0.1,200,0.2],center=true);
+        translate([0, 200/2 - 10, 7])
+        cube([0.1, 200 ,0.2], center=true);
 
-        translate([0,200/2-10,h-7])
-        cube([0.1,200,0.2],center=true);
+        translate([0, 200/2 - 10, h - 7])
+        cube([0.1, 200, 0.2], center=true);
         
-        translate([200/2-20,144,7])
-        rotate([0,0,18])
-        cube([220,0.1,0.2],center=true);
+        translate([200/2 - 20, 144, 7])
+        rotate([0, 0, 18])
+        cube([220, 0.1, 0.2], center=true);
 
-        translate([200/2-20,144,h-7])
-        rotate([0,0,18])
-        cube([220,0.1,0.2],center=true);
+        translate([200/2 - 20, 144, h - 7])
+        rotate([0, 0, 18])
+        cube([220, 0.1, 0.2], center=true);
     }
 }
 
@@ -202,82 +268,136 @@ module _section_form(width, depth, height) {
 }
 
 module _bracket_mount_hole(h) {
-    translate([0,0,h/2])
-    rotate([0,90,0])
-    cylinder(d=5,h=20,center=true,$fn=8);
+    translate([0, 0, h/2])
+    rotate([0, 90, 0])
+    cylinder(d=5, h=20, center=true, $fn=8);
 
-    translate([80/2,0,h/2])
-    rotate([0,90,0])
-    cylinder(d=12,h=80,center=true,$fn=20);
+    translate([80/2, 0, h/2])
+    rotate([0, 90, 0])
+    cylinder(d=12, h=80, center=true, $fn=20);
 }
 
 module _shelf_section_bracket_base(
-    section_width, section_depth, thickness, back_length,
-    beam_width, open=false, section_support="arc") {
+    section_width, section_depth, thickness,
+    back_length, beam_width, open=false,
+    section_support="arc"
+) {
 
     w = section_width;
     d = section_depth + 2 * slop;
     h = thickness;
-
+    arc_d = 290 * section_width/160;
+    
     module _section_support_arc() {
-        translate(
-            [-5, section_y_pos + d/2 + 2 - 10, 0])
-        _arcify(300/2 - 2, 300/2, h, 145, 135)
-        chamfered_tube(
-            d=300, h=h, wall=10, chamfer=2.5, center=false, $fn=160);
 
-        translate([19, section_y_pos + 32, h/2])
-        rotate([0, 90, 45])
-        chamfered_cube_side(h, 10, 55, 2.5, center=true);
+        translate([
+            -5, section_y_pos + d/2 + -9,
+            0
+        ])
+        _arcify(
+            arc_d/2, arc_d/2, h,
+            section_width - 25, back_length - 55
+        )
+        chamfered_tube(
+            d=arc_d, h=h, wall=10, chamfer=2.5,
+            center=false, $fn=160
+        );
+
+        hull() {
+            translate([4, section_y_pos + d/2, 0])
+            chamfered_cylinder(
+                10, h, 2.5, $fn=30
+            );
+
+            translate([
+                arc_d/2 - 5,
+                arc_d/2 + section_y_pos + d/2 + -9
+            ])
+            rotate([0, 0, 45])
+            translate([-arc_d/2 + 5, 0, 0])
+            chamfered_cylinder(
+                10, h, 2.5, $fn=30
+            );
+        }
     }
 
     module _section_support_beam() {
         max_x = w - 12 - beam_width/2;
         max_y = back_length - 12 - beam_width/2;
-        center_y = (max_y - section_y_pos)/2 + section_y_pos;
+        center_y =
+            (max_y - section_y_pos)/2 +
+            section_y_pos;
 
         union() {
             hull() {
                 translate([0, max_y, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
 
                 translate([max_x, section_y_pos, 0])
-                chamfered_cylinder(beam_width,h, 2.5, $fn=30);
+                chamfered_cylinder(
+                    beam_width,h, 2.5, $fn=30
+                );
             }
 
             hull() {
-                translate(
-                    [0, section_y_pos + d/2 - beam_width/2 + 4.5, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                translate([
+                    0, section_y_pos + d/2 -
+                    beam_width/2 + 4.5, 0
+                ])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
 
-                translate(
-                    [max_x - beam_width,
-                     section_y_pos + d/2 - beam_width/2 + 4.5,0])
-                chamfered_cylinder(beam_width,h, 2.5, $fn=30);
-            }
-
-            hull() {
-                translate([max_x/2, center_y, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
-
-                translate([0, section_y_pos + d/4, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
-            }
-
-            hull() {
-                translate([max_x/2, center_y, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
-
-                translate([max_x/2, section_y_pos, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                translate([
+                    max_x - beam_width,
+                    section_y_pos + d/2 -
+                    beam_width/2 + 4.5, 0
+                ])
+                chamfered_cylinder(
+                    beam_width,h, 2.5, $fn=30
+                );
             }
 
             hull() {
                 translate([max_x/2, center_y, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
+
+                translate([
+                    0, section_y_pos + d/4, 0
+                ])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
+            }
+
+            hull() {
+                translate([max_x/2, center_y, 0])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
+
+                translate([
+                    max_x/2, section_y_pos, 0
+                ])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
+            }
+
+            hull() {
+                translate([max_x/2, center_y, 0])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
 
                 translate([0, center_y, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
             }
         }
     }
@@ -286,15 +406,24 @@ module _shelf_section_bracket_base(
         union() {
             // back beam
             hull() {
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
 
-                translate([0, back_length, 0])
-                chamfered_cylinder(beam_width, h, 2.5, $fn=30);
+                translate([
+                    0, back_length - beam_width, 0
+                ])
+                chamfered_cylinder(
+                    beam_width, h, 2.5, $fn=30
+                );
             }
 
             // section outer form
             translate([2, section_y_pos, 0])
-            _section_form(w + 2 + 2 * slop, d + 4 + 2 * slop, h);
+            _section_form(
+                w + 2 + 2 * slop,
+                d + 4 + 2 * slop, h
+            );
 
             if (section_support == "arc") {
                 _section_support_arc();
@@ -306,11 +435,19 @@ module _shelf_section_bracket_base(
 
     module _section_hole() {
         translate([2, section_y_pos, -1/2])
-        _section_form(w + 2 * slop, d + 2 * slop, h + 1);
+        _section_form(
+            w + 2 * slop, d + 2 * slop, h + 1
+        );
 
         if (open) {
-            translate([w + 2, section_y_pos, (h + 1)/2])
-            cube([d, d, h + 1], center=true);
+            translate([
+                w + 2, section_y_pos,
+                (h + 1)/2
+            ])
+            cube(
+                [d, d + 2 * slop, h + 1],
+                center=true
+            );
         }
     }
 
@@ -319,103 +456,240 @@ module _shelf_section_bracket_base(
         translate([0, 8, 0])
         _bracket_mount_hole(h);
 
-        translate([0, back_length - 10, 0])
+        translate([
+            0, back_length - beam_width - 10,
+            0
+        ])
         _bracket_mount_hole(h);
     }
 
     module _infill() {
         // infill
         translate([0, 200/2 - 10, h/3])
-        cube([0.1, 200, 0.2], center=true);
+        cube([0.1, 200, 0.3], center=true);
 
         translate([0,200/2 - 10, h/3*2])
-        cube([0.1, 200, 0.2], center=true);
+        cube([0.1, 200, 0.3], center=true);
 
         if (section_support == "arc") {
-            translate([19, section_y_pos + 32, h/3])
-            rotate([0, 0, -45])
-            cube([0.1, 95, 0.2],center=true);
 
-            translate([19, section_y_pos + 32, h/3*2])
-            rotate([0, 0, -45])
-            cube([0.1, 95, 0.2], center=true);
+           hull() {
+                translate([
+                    4, section_y_pos + d/2, h/3
+                ])
+                cylinder(d=0.2, h=0.3, center=true);
 
-            translate([-5, section_y_pos + d/2 + 2 - 10, h/3])
-            _arcify(300/2 - 2, 300/2, h, 155, 155)
-            tube(300 - 10, 0.2, 0.1, center=true, $fn=160);
+                translate([
+                    arc_d/2 - 5,
+                    arc_d/2 + section_y_pos + d/2 + -9,
+                    h/3
+                ])
+                rotate([0, 0, 45])
+                translate([-arc_d/2 + 25, 0, 0])
+                cylinder(d=0.2, h=0.3, center=true);
+            }
 
-            translate([-5, section_y_pos + d/2 + 2 - 10, h/3*2])
-            _arcify(300/2 - 2, 300/2, h, 155, 155)
-            tube(300 - 10, 0.2, 0.1, center=true, $fn=160);
+            hull() {
+                translate([
+                    4, section_y_pos + d/2, h/3*2
+                ])
+                cylinder(d=0.2, h=0.3, center=true);
+
+                translate([
+                    arc_d/2 - 5,
+                    arc_d/2 + section_y_pos + d/2 + -9,
+                    h/3*2
+                ])
+                rotate([0, 0, 45])
+                translate([-arc_d/2 + 25, 0, 0])
+                cylinder(d=0.2, h=0.3, center=true);
+            }
+            
+            translate([
+                -5, section_y_pos + d/2 - 9,
+                h/3
+            ])
+            _arcify(
+                arc_d/2, arc_d/2, h,
+                section_width - 25, back_length - 55
+            )
+            tube(
+                arc_d - 10, 0.3, 0.1,
+                center=true, $fn=160
+            );
+
+            translate([
+                -5, section_y_pos + d/2 - 9,
+                h/3*2
+            ])
+            _arcify(
+                arc_d/2, arc_d/2, h,
+                section_width - 25, back_length - 55
+            )
+            tube(
+                arc_d - 10, 0.3, 0.1,
+                center=true, $fn=160
+            );
         } else {
             max_x = w - 12 - beam_width/2;
             max_y = back_length - 12 - beam_width/2;
-            center_y = (max_y - section_y_pos)/2 + section_y_pos;
+            center_y =
+                (max_y - section_y_pos)/2 +
+                section_y_pos;
 
             ratio = (max_y - section_y_pos)/max_x;
 
             hull() {
-                translate([-20, max_y + ratio * 20, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    -20, max_y + ratio * 20,
+                    h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([max_x, section_y_pos, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x, section_y_pos, h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([-20, max_y + ratio * 20, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    -20, max_y + ratio * 20,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([max_x, section_y_pos, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x, section_y_pos,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2 + 20, center_y + ratio*20, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2 + 20,
+                    center_y + ratio*20, h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([0, section_y_pos + d/4, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    0, section_y_pos + d/4,
+                    h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2 + 20, center_y + ratio*20, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2 + 20,
+                    center_y + ratio*20, h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([0, section_y_pos + d/4, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    0, section_y_pos + d/4,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2, center_y + 20, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2, center_y + 20,
+                    h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([max_x/2, section_y_pos, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2, section_y_pos,
+                    h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2, center_y + 20, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2, center_y + 20,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
-                translate([max_x/2, section_y_pos, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2, section_y_pos,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2 + 20, center_y, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2 + 20, center_y,
+                    h/3
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
                 translate([-10, center_y, h/3])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
 
             hull() {
-                translate([max_x/2 + 20, center_y, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                translate([
+                    max_x/2 + 20, center_y,
+                    h/3*2
+                ])
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
 
                 translate([-10, center_y, h/3*2])
-                cylinder(d=0.1, h=0.2, center=true, $fn=10);
+                cylinder(
+                    d=0.1, h=0.3,
+                    center=true, $fn=10
+                );
             }
         }
     }
@@ -429,8 +703,10 @@ module _shelf_section_bracket_base(
 }
 
 module _shelf_section_bracket(
-    section_width, section_depth, thickness, back_length,
-    beam_width, nuts=true, open=false, section_support="arc") {
+    section_width, section_depth, thickness,
+    back_length, beam_width, nuts=true,
+    open=false, section_support="arc"
+) {
 
     w = section_width;
     d = section_depth;
@@ -444,13 +720,19 @@ module _shelf_section_bracket(
         union() {
             union() {
                 _shelf_section_bracket_base(
-                    section_width, section_depth, thickness,
-                    back_length, beam_width, open=open,
-                    section_support=section_support);
+                    section_width, section_depth,
+                    thickness, back_length,
+                    beam_width, open=open,
+                    section_support=section_support
+                    );
 
                 // bottom
                 translate([2, section_y_pos, 0])
-                _section_form(w + 1, d + 1, bracket_wall);
+                _section_form(
+                    w + 2 + 2 * slop,
+                    d + 4 + 2 * slop,
+                    bracket_wall
+                );
             }
 
             // section mount studs
@@ -459,25 +741,33 @@ module _shelf_section_bracket(
                     [2 + x_pos_1 + 10/2, section_y_pos,
                     (bracket_wall + 7)/2])
                 _mount_stud(
-                    x_pos_2 - x_pos_1 + 11, section_head_outer_d - 1);
+                    x_pos_2 - x_pos_1 + 11,
+                    section_head_outer_d - 1
+                );
 
                 translate(
                     [2 + x_pos_3 + 10/2, section_y_pos,
                     (bracket_wall + 7)/2])
                 _mount_stud(
-                    x_pos_4 - x_pos_3 + 11, section_head_outer_d - 1);
+                    x_pos_4 - x_pos_3 + 11,
+                    section_head_outer_d - 1
+                );
             } else {
                 translate(
                     [2 + x_pos_1 + 10/2, section_y_pos,
                     (bracket_wall + 7)/2])
                 _mount_stud(
-                    x_pos_2 - x_pos_1 + 18, section_head_outer_d);
+                    x_pos_2 - x_pos_1 + 18,
+                    section_head_outer_d
+                );
 
                 translate(
                     [2 + x_pos_3 + 10/2, section_y_pos,
                     (bracket_wall + 7)/2])
                  _mount_stud(
-                    x_pos_4 - x_pos_3 + 18, section_head_outer_d);
+                    x_pos_4 - x_pos_3 + 18,
+                    section_head_outer_d
+                );
             }
         }
         // section mount holes
@@ -503,8 +793,10 @@ module _shelf_section_bracket(
 }
 
 module shelf_section_bracket_left(
-    section_width, section_depth, thickness, back_length,
-    beam_width, open=false, section_support="arc") {
+    section_width, section_depth, thickness,
+    back_length, beam_width, open=false,
+    section_support="arc"
+) {
 
     w = section_width;
     d = section_depth;
@@ -512,35 +804,46 @@ module shelf_section_bracket_left(
     render(convexity=10)
     difference() {
         _shelf_section_bracket(
-            section_width, section_depth, thickness,
-            back_length, beam_width, nuts=true, open=open,
+            section_width, section_depth,
+            thickness, back_length,
+            beam_width, nuts=true, open=open,
             section_support=section_support);
 
         translate([2, section_y_pos, 0]) {
             translate([1/4 , 0, -10])
-            _shelf_section_quides(w, d, 14, length=9, extra=0.4);
+            _shelf_section_quides(
+                w, d, 14, length=9, extra=0.4
+            );
 
             translate([x_pos_1, 0, -0.1]) {
                 M4_nut_tapering(
-                    h=bracket_wall + 4.5, cone=false, bridging=true);
+                    h=bracket_wall + 4.5,
+                    cone=false, bridging=true
+                );
                 cylinder(d=bolt_d, h=10, $fn=25);
             }
 
             translate([x_pos_2, 0, -0.1]) {
                 M4_nut_tapering(
-                    h=bracket_wall + 4.5, cone=false, bridging=true);
+                    h=bracket_wall + 4.5,
+                    cone=false, bridging=true
+                );
                 cylinder(d=bolt_d, h=10, $fn=25);
             }
 
             translate([x_pos_3, 0, -0.1]) {
                 M4_nut_tapering(
-                    h=bracket_wall + 4.5, cone=false, bridging=true);
+                    h=bracket_wall + 4.5,
+                    cone=false, bridging=true
+                );
                 cylinder(d=bolt_d, h=10, $fn=25);
             }
 
             translate([x_pos_4, 0, -0.1]) {
                 M4_nut_tapering(
-                    h=bracket_wall + 4.5, cone=false, bridging=true);
+                    h=bracket_wall + 4.5,
+                    cone=false, bridging=true
+                );
                 cylinder(d=bolt_d, h=10, $fn=25);
             }
         }
@@ -548,11 +851,13 @@ module shelf_section_bracket_left(
 }
 
 module shelf_section_bracket_right(
-    section_width, section_depth, thickness, back_length,
-    beam_width, open=false, section_support="arc") {
+    section_width, section_depth, thickness,
+    back_length, beam_width, open=false,
+    section_support="arc"
+) {
 
     difference() {
-        mirror([0,1,0])
+        mirror([0, 1, 0])
         _shelf_section_bracket(
             section_width, section_depth, thickness,
             back_length, beam_width, nuts=false, open=open,
@@ -563,36 +868,44 @@ module shelf_section_bracket_right(
             translate([x_pos_1 - 1, 0, -0.1]) {
                 hull() {
                     cylinder(
-                        d=section_head_d, h=bracket_wall + 4.6, $fn=25);
+                        d=section_head_d, h=bracket_wall + 4.6, $fn=25
+                    );
 
                     translate([10 + 2, 0, 0])
                     cylinder(
-                        d=section_head_d, h=bracket_wall + 4.6, $fn=25);
+                        d=section_head_d, h=bracket_wall + 4.6, $fn=25
+                    );
 
                     cylinder(
-                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25);
+                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25
+                    );
 
                     translate([10 + 2, 0, 0])
                     cylinder(
-                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25);
+                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25
+                    );
                 }
             }
 
             translate([x_pos_3 - 1, 0, -0.1]) {
                 hull() {
                     cylinder(
-                        d=section_head_d, h=bracket_wall + 4.6, $fn=25);
+                        d=section_head_d, h=bracket_wall + 4.6, $fn=25
+                    );
 
                     translate([10 + 2, 0, 0])
                     cylinder(
-                        d=section_head_d, h=bracket_wall + 4.6, $fn=25);
+                        d=section_head_d, h=bracket_wall + 4.6, $fn=25
+                    );
 
                     cylinder(
-                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25);
+                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25
+                    );
 
                     translate([10 + 2, 0, 0])
                     cylinder(
-                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25);
+                        d=section_head_d - 1, h=bracket_wall + 5.1, $fn=25
+                    );
                 }
             }
         }
@@ -614,8 +927,10 @@ module shelf_section_bracket_right(
 
     translate([
         x_pos_1 + 5 + bolt_d/2, -section_y_pos, 0.25/2])
-    cube(
-        [x_pos_2 - x_pos_1 + bolt_d*2, bolt_d + 1, 0.25], center=true);
+    cube([
+       x_pos_2 - x_pos_1 + bolt_d*4,
+       bolt_d + 1, 0.25
+    ], center=true);
 
     translate([
         x_pos_3 + 5 + bolt_d/2, -section_y_pos + bolt_d/2 + 0.5,
@@ -633,13 +948,17 @@ module shelf_section_bracket_right(
 
     translate([
         x_pos_3 + 5 + bolt_d/2, -section_y_pos, 0.25/2])
-    cube(
-        [x_pos_4 - x_pos_3 + bolt_d*2, bolt_d + 1, 0.25], center=true);
+    cube([
+        x_pos_4 - x_pos_3 + bolt_d*4,
+        bolt_d + 1, 0.25
+    ], center=true);
 }
 
 module shelf_section_bracket_middle(
-    section_width, section_depth, thickness, back_length, beam_width,
-    open=false, section_support="arc") {
+    section_width, section_depth, thickness,
+    back_length, beam_width, open=false,
+    section_support="arc"
+) {
 
     w = section_width;
     d = section_depth;
@@ -679,8 +998,10 @@ module shelf_section_bracket_middle(
 }
 
 module shelf_section_bracket_support(
-    section_width, section_depth, thickness, back_length, beam_width,
-    section_support="arc", lip=true) {
+    section_width, section_depth, thickness,
+    back_length, beam_width,
+    section_support="arc", lip=true
+) {
 
     w = section_width;
     d = section_depth;
@@ -787,21 +1108,24 @@ module shelf_section_bracket_support(
         }
 
         // infill
-        translate(
-            [(w + 20)/2 - 10, section_y_pos + d/2 + wall*2 + 5/2, h/3])
+        translate([
+            (w + 20)/2 - 10,
+            section_y_pos + d/2 + wall*2 + 5/2, h/3
+        ])
         cube([w + 20, 0.1, 0.2], center=true);
 
-        translate(
-            [(w + 20)/2 - 10, section_y_pos + d/2 + wall*2 + 5/2, h/3 * 2])
+        translate([
+            (w + 20)/2 - 10,
+            section_y_pos + d/2 + wall*2 + 5/2, h/3 * 2
+        ])
         cube([w + 20, 0.1, 0.2], center=true);
     }
 }
 
-module shelf_section_bracket_support_small(
-    section_width, section_depth) {
+module shelf_section_bracket_support_small(section_depth) {
 
-    w = section_width;
     d = section_depth;
+    l = d + 64;
     h = 20;
 
     difference() {
@@ -810,7 +1134,7 @@ module shelf_section_bracket_support_small(
             hull() {
                 chamfered_cylinder(10, h, 2.5, $fn=30);
 
-                translate([0, 80, 0])
+                translate([0, l, 0])
                 chamfered_cylinder(10, h, 2.5, $fn=30);
             }
  
@@ -822,31 +1146,33 @@ module shelf_section_bracket_support_small(
             }
 
             hull() {
-                translate([50, d + 2 - 5 + 2.1, 0])
+                translate([54, d + 2 - 5 + 2.1, 0])
                 chamfered_cylinder(10, h, 2.5, $fn=30);
 
-                translate([0, 60, 0])
+                translate([0, l - 20, 0])
                 chamfered_cylinder(10, h, 2.5, $fn=30);
 
             }
 
-            translate([2 + 41/2,(d + 2)/2 + 2.1, h/2])
-            cube([50, d+2, h], center=true);
+            translate([2 + 45/2, (d + 2)/2 + 2.1, h/2])
+            cube([54, d + 2, h], center=true);
         }
         translate([2, d/2 + 2, -1/2])
-        _section_form(w, d + 2*slop, h + 1);
+        _section_form(200, d + 2*slop, h + 1);
 
         // mount holes
-        translate([0, 32, 0])
-        _bracket_mount_hole();
+        translate([0, d + 16, 0])
+        _bracket_mount_hole(h);
 
-        translate([0, 80 - 8, 0])
-        _bracket_mount_hole();
+        translate([0, l - 8, 0])
+        _bracket_mount_hole(h);
     }
 }
 
 module _shelf_section_quides(
-    section_width, section_depth, height, length=7, extra=0, end=0) {
+    section_width, section_depth, height,
+    length=7, extra=0, end=0
+) {
 
     w = section_width;
     d = section_depth;
@@ -906,15 +1232,19 @@ module _shelf_section_quides(
 //!_shelf_section_quides(10, length=7, extra=0);
 
 module _section_shell(
-    w, l, height, notch=false, wall=wall, infill=infill, end=0) {
+    w, l, height, notch=false, wall=wall,
+    infill=infill, end=0
+) {
 
     _notch = 1;
     _notch_2 = _notch + 2*wall;
 
     module _shell_minus() {
         difference() {
-            translate([wall,0,-1])
-            _section_form(w-2*wall, l-2*wall, height+2);
+            translate([wall, 0, -1])
+            _section_form(
+                w - 2 * wall, l - 2 * wall, height + 2
+            );
 
             if (notch) {
                 translate([w/2,l/2-wall,(height+1)/2])
@@ -952,23 +1282,53 @@ module _section_shell(
     }
 
     module _infill() {
-        _w = sqrt(0.6*0.6*2);
-        z = sqrt(50*50*2);
+        //_w = sqrt(0.6 * 0.6 * 2);
+        _w = sqrt(0.5 * 0.5 / 2);
+        //_w = 0.5;
+        z = sqrt(50 * 50 * 2);
         echo(_w, z);
-        count = ceil(height /z) + 2;
+        count = ceil(height / z) + 2;
 
         intersection() {
             for(i=[0:count]) {
-                translate([w/2,0,i*z-z+7])
-                rotate([0,45,0])
-                cube([2*w,l,_w],center=true);
+                translate([w/2, 0, i * z - z])
+                rotate([0, 45, 0])
+                cube([2 * w, l, _w], center=true);
 
-                translate([w/2,0,i*z-z+7])
-                rotate([0,-45,0])
-                cube([2*w,l,_w],center=true);
+                translate([w/2, 0, i * z - z])
+                rotate([0, -45, 0])
+                cube([2 * w, l, _w], center=true);
             }
-            translate([0,0,7])
-            _section_form(w, l, height-7);
+
+            difference() {
+                _section_form(w, l, height);
+
+                translate([x_pos_1 + 10/2 - 1/4, 0, 0])
+                cube([28.5, section_d - 2 * wall, 14], center=true);
+
+                translate([x_pos_3 + 10/2 - 1/4, 0, 0])
+                cube([28.5, section_d - 2 * wall, 14], center=true);
+
+                translate([x_pos_1 + 10/2 - 1/4, 0, height])
+                cube([28.5, section_d - 2 * wall, 14], center=true);
+
+                translate([x_pos_3 + 10/2 - 1/4, 0, height])
+                cube([28.5, section_d - 2 * wall, 14], center=true);
+
+                translate([section_quide_1, 0, 0])
+                cube([3, section_d - 2 * wall, 7], center=true);
+
+                translate([section_quide_2, 0, 0])
+                cube([3, section_d - 2 * wall, 7], center=true);
+
+                translate([section_quide_3, 0, 0])
+                cube([3, section_d - 2 * wall, 7], center=true);
+
+                translate([w, 0, 0])
+                cube([
+                    section_d + 1, section_d - 2 * wall, 7
+                ], center=true);
+            }
         }
     }
 
@@ -993,7 +1353,8 @@ module _section_shell(
 // 2 = top
 module _shelf_section(
     section_width, section_depth, height,
-    configuration=0, supports=true, end=0) {
+    configuration=0, supports=true, infill=false, end=0
+) {
 
     w = section_width;
     d = section_depth; 
@@ -1015,15 +1376,16 @@ module _shelf_section(
         }
     }
     
-    module _rod_hole(h) {
-        translate([0, 0, h/2+7]) {
-            cylinder(d=bolt_d, h=h, center=true, $fn=40);
+    module _rod_hole(h, nut=false) {
+        translate([0, 0, h/2 + 7]) {
+            cylinder(d=bolt_d, h=h + 1, center=true, $fn=40);
 
             if (h >= 25) {
                 chamfered_cylinder(
                     bolt_d + 0.7, h - 20, 1, center=true, $fn=40);
             }
         }
+
         if (end == 1) {
             translate([0, 0, -0.1]) {
                 hull() {
@@ -1032,22 +1394,26 @@ module _shelf_section(
                 }
             }
         } else if (end == 2) {
-            translate([0, 0, h+2*7]) {
+            translate([0, 0, h + 2*7]) {
                 rotate([180, 0, 0])
                 M4_nut_tapering(h=7, cone=false, bridging=true);
 
                 cylinder(d=bolt_d, h=7*2, center=true, $fn=25);
             }
+        } else if (nut) {
+            translate([0, 0, h + 7])
+            rotate([180, 0, 0])
+            M4_nut_tapering(h=4, cone=false, bridging=false);
         }
     }
 
     module _tube_support() {
-        h = 7 - 0.2;
+        h = 7 - 0.25;
         y = d / 2 - wall - 1;
 
         if (supports && end != 1) {
             union() {
-                tube(7, h, 1.5);
+                tube(7, h, 1, $fn=20);
 
                 difference() {
                     translate([0, 0, h/2])
@@ -1212,7 +1578,7 @@ module _shelf_section(
 
     difference() {
         union() {
-            _section_shell(w, d, height, end=end);
+            _section_shell(w, d, height, end=end, infill=infill);
             _bottom_flats();
             _top_flats();
             _end_additions();
@@ -1332,22 +1698,22 @@ module _shelf_section(
             _rod_hole(height - 14, $fn=30);
 
             translate([x_pos_2 - slop, 0, 0])
-            _rod_hole(23, $fn=30);
+            _rod_hole(23, nut=true, $fn=30);
 
             translate([x_pos_3 - slop, 0, 0])
             _rod_hole(height - 14, $fn=30);
 
             translate([x_pos_4 - slop, 0, 0])
-            _rod_hole(23, $fn=30);
+            _rod_hole(23, nut=true, $fn=30);
         } else if (configuration == 4 ) {
             translate([x_pos_1 - slop, 0, 0])
-            _rod_hole(23, $fn=30);
+            _rod_hole(23, nut=true, $fn=30);
 
             translate([x_pos_2 - slop, 0, 0])
             _rod_hole(height - 14, $fn=30);
 
             translate([x_pos_3 - slop, 0, 0])
-            _rod_hole(23, $fn=30);
+            _rod_hole(23, nut=true, $fn=30);
 
             translate([x_pos_4 - slop, 0, 0])
             _rod_hole(height - 14, $fn=30);
@@ -1401,7 +1767,7 @@ module _section_end(w, l, nuts=false) {
             hull() {
                 M4_nut(cone=false);
 
-                translate([0,5,])
+                translate([0, 5, 0])
                 M4_nut(cone=false);
             }
         }
@@ -1413,7 +1779,7 @@ module _section_end(w, l, nuts=false) {
             hull() {
                 M4_nut(cone=false);
 
-                translate([0,4,])
+                translate([0, 4, 0])
                 M4_nut(cone=false);
             }
         }
@@ -1560,7 +1926,7 @@ module shelf_section_support(section_width, section_depth) {
 
 module shelf_section(
     section_width, section_depth, height, configuration=0,
-    supports=true, end=0) {
+    supports=true, infill=false, end=0) {
 
     w = section_width;
     d = section_depth;
@@ -1571,11 +1937,11 @@ module shelf_section(
         rotate([180, 0, 0])
         _shelf_section(
             w, d, height, configuration=configuration,
-            supports=false, end=end);
+            supports=false, infill=infill, end=end);
     } else {
         _shelf_section(
             w, d, height, configuration=configuration,
-            supports=supports, end=end);
+            supports=supports, infill=infill, end=end);
     }
 }
 
@@ -1609,24 +1975,29 @@ module debug_section_bracket() {
             translate(
                 [2 + slop, -20 - (d + 4)/2, bracket_wall + 0.1])
             _shelf_section(
-                w, d, rods[0], supports=false, configuration=4);
+                w, d, rods[0], supports=false, configuration=4,
+                infill=true
+            );
 
             translate(
                 [2 + slop, -20 -(d + 4)/2, bracket_wall + 0.2 + rods[0]])
             _shelf_section(
-                w, d, 50, supports=false, configuration=2);
+                w, d, 50, supports=false, configuration=2
+            );
 
             translate(
                 [2 + slop, -20 -(d + 4)/2,
                 bracket_wall + 0.3 + rods[0] + 50])
             _shelf_section(
-                w, d, 50, supports=false, configuration=3);
+                w, d, 50, supports=false, configuration=3
+            );
 
             translate(
                 [2 + slop, -20 -(d + 4)/2,
                 bracket_wall + 0.4 + rods[0] + 100])
             _shelf_section(
-                w, d, 50, supports=false, configuration=1);
+                w, d, 50, supports=false, configuration=1
+            );
         }
         translate([0, -29.5, 0])
         cube([240, 29, 500]);
@@ -1681,21 +2052,29 @@ module debug_section() {
             _shelf_section(
                 section_w, section_d, h, configuration=0, end=end);
 
-            translate([section_w+5,0,0])
+            translate([section_w + 5, 0, 0])
             _shelf_section(
                 section_w, section_d, h, configuration=1, end=end);
 
-            translate([2*(section_w+5),0,0])
+            translate([2*(section_w + 5), 0, 0])
             _shelf_section(
                 section_w, section_d, h, configuration=2, end=end);
 
-            translate([3*(section_w+5),0,0])
+            translate([3*(section_w + 5), 0, 0])
             _shelf_section(
                 section_w, section_d, h, configuration=3, end=end);
 
-            translate([4*(section_w+5),0,0])
+            translate([4*(section_w + 5), 0, 0])
             _shelf_section(
                 section_w, section_d, h, configuration=4, end=end);
+
+            translate([5*(section_w + 5), 0, 0])
+            _shelf_section(
+                section_w, section_d, h, configuration=3, end=0);
+
+            translate([6*(section_w + 5), 0, 0])
+            _shelf_section(
+                section_w, section_d, h, configuration=4, end=0);
         }
 
         translate([0, 0, -2])
@@ -1856,4 +2235,16 @@ module debug_section_end_2() {
 
     translate([-2.2, -30, -20/2])
     shelf_section_bracket_support(w, d, 20, 180, 10);
+}
+
+module M4_nut_block() {
+    difference() {
+        cube([12.8, 11, 10], center=true);
+
+        translate([0, 0, 5.1])
+        rotate([180, 0, 0])
+        M4_nut_tapering(7, cone=false);
+
+        cylinder(d=4.3, h=30, center=true, $fn=30);
+    }
 }
