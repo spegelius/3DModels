@@ -4,8 +4,8 @@ use <../Dollo/NEW_long_ties/mockups.scad>;
 
 
 //debug();
-//bracket_front();
-bracket_back();
+bracket_front();
+//bracket_back();
 
 
 module debug() {
@@ -46,13 +46,16 @@ module _bracket_form(h, front=true) {
     union() {
         translate([0, 0, 10/2])
         chamfered_cube_side(
-            motor_side_length,
-            motor_side_length,
-            10, 5, center=true
+            motor_side_length - 0.3,
+            motor_side_length - 0.3,
+            10, 4, center=true
         );
 
         if (front) {
-            translate([28/2 - 27 - 20, -26 + 20/2 + 5/2, h/2])
+            translate([
+                28/2 - 27 - 20,
+                -26 + 20/2 + 5/2, h/2
+            ])
             cube([28, 5, h], center=true);
         }
 
@@ -77,10 +80,10 @@ module _bracket_form(h, front=true) {
             }
 
             translate([
-                -motor_side_length/2 + 1/2,
+                -(motor_side_length - 0.3)/2 + 0.649,
                 15.65, 10/2
             ])
-            cube([1, 1, 10], center=true);
+            cube([1.3, 2.7, 10], center=true);
         }
 
         hull() {
@@ -91,8 +94,9 @@ module _bracket_form(h, front=true) {
             cube([1, 18, 10], center=true);
 
             translate([
-                motor_side_length/2 - 1/2,
-                -motor_side_length/2 + 15/2 - 7, 10/2
+                (motor_side_length - 0.3)/2 - 1/2,
+                -(motor_side_length - 0.3)/2 + 15/2 - 7,
+                10/2
             ])
             cube([1, 15, 10], center=true);
         }
@@ -105,8 +109,9 @@ module _bracket_form(h, front=true) {
             cube([1, 5, h], center=true);
 
             translate([
-                motor_side_length/2 - 1/2,
-                -motor_side_length/2 + 1/2 - 7, 10/2
+                (motor_side_length - 0.3)/2 - 1/2,
+                -(motor_side_length - 0.3)/2 + 1/2 - 7,
+                10/2
             ])
             cube([1, 5, 10], center=true);
         }
@@ -178,5 +183,8 @@ module bracket_back() {
             cylinder(d=7, h=10, $fn=20);
         }
 
+        translate([20/2 + 27, -26 + 20/2, 35])
+        rotate([-90, 0, 0])
+        _mount_hole();
     }
 }
