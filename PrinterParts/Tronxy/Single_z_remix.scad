@@ -4,6 +4,9 @@ use <../../PCParts/common.scad>;
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
 use <../../Dollo/New_long_ties/mockups.scad>;
+use <../../lib/fittings.scad>;
+use <../../lib/bearings.scad>;
+use <common.scad>
 
 
 stl_base_path = "../../_downloaded/";
@@ -17,18 +20,22 @@ single_z_path = str(
 //_original();
 //_original_motor_mount();
 //debug();
+//debug_z_motor_mount();
 
 
 //z_bottom();
 //z_bottom_top();
-//z_bottom_centering_peg();
+
+//slot_centering_peg();
+//rod_clip();
 
 //z_top();
-//rod_clip();
+//z_top(screw_bearing=true);
+//z_top(screw_bearing=true, bearing_h=8);
 //z_screw_clip();
 
 //rotate([0, -90, 0])
-//z_motor_mount();
+z_motor_mount();
 //z_motor_mount_arm();
 //z_motor_mount_arm_cap();
 //z_motor_mount_arm_stopper();
@@ -37,7 +44,7 @@ single_z_path = str(
 //pulley_washer();
 //center_rod_mount();
 //z_rod_support();
-z_pulley_40t();
+//z_pulley_40t();
 //z_pulley_40t_retainer();
 //support_rod_nut();
 
@@ -70,6 +77,35 @@ module debug() {
     //_original_motor_mount();
 }
 
+module debug_z_motor_mount() {
+    z_motor_mount();
+
+    %translate([0, 42/2, 19.5])
+    rotate([90, 0, 0])
+    mock_stepper_motor();
+
+    //%translate([-35, 14, 43])
+    //import(str(
+    //    stl_base_path,
+    //    "Parametric_idler_pulley/beltpulley_623.stl"
+    //));
+
+    %translate([-36, 15, 43 - 1])
+    //623zz_idler_pulley();
+    mock_idler();
+
+    %translate([0, 0, 43 + 15])
+    rotate([180, 0, 0])
+    import(str(
+        stl_base_path,
+        "Parametric_pulley/GT2_16teeth.stl"
+    ));
+
+    %translate([25, 0, 20/2 + 5])
+    rotate([180, 0, 0])
+    z_motor_mount_arm();
+}
+
 module _bearing_hole() {
     d = 16;
 
@@ -81,6 +117,12 @@ module _bearing_hole() {
             cylinder(d=d - 2, h=7, $fn=60);
         }
         cylinder(d1=7, d2=1.3, h=2, $fn=30);
+
+        for(i = [0:4]) {
+            rotate([0, 0, 360/5*i])
+            translate([17/2 + 0.2, 0, 0])
+            cylinder(d=1.5, h=10, $fn=20);
+        }   
     }
 }
 
@@ -172,17 +214,18 @@ module z_bottom() {
 
                 hull() {
                     translate([0, 0, h/2])
-                    cube([1, 65, h],center=true);
+                    cube([1, 65, h], center=true);
 
                     translate([0, 0, h/2])
                     cube([20, 45, h], center=true);
                 }
                 translate([0, 65, 0])
-                cylinder(d=20, h=22, $fn=30);
+                cylinder(d=14, h=17, $fn=30);
 
                 translate([0, -65, 0])
-                cylinder(d=20, h=22, $fn=30);
+                cylinder(d=14, h=17, $fn=30);
             }
+
             translate([0, 0, 40/2 + 15])
             cube([30, 50, 40], center=true);
 
@@ -197,16 +240,16 @@ module z_bottom() {
                     d=4.2, h=50, center=true, $fn=30
                 );
 
-                translate([0, 0, 1])
-                cylinder(d=8.1, h=50, $fn=30);
+                hull() {
+                    translate([0, 0, 1])
+                    cylinder(d=8.3, h=50, $fn=30);
 
-                translate([0, 0, 15])
-                rotate([0, 90, 0])
-                cylinder(d=3.2, h=15, $fn=20);
+                    translate([10, 0, 1])
+                    cylinder(d=8.4, h=50, $fn=30);
+                }
 
-                translate([8, 0, 15])
-                rotate([90, 0, -90])
-                _long_nut();
+                translate([0, 0, 14])
+                donut(14.6, 1, $fn=30);
             }
 
             translate([0, -65, 0]) {
@@ -214,16 +257,16 @@ module z_bottom() {
                     d=4.2, h=50, center=true, $fn=30
                 );
 
-                translate([0, 0, 1])
-                cylinder(d=8.1, h=50, $fn=30);
+                hull() {
+                    translate([0, 0, 1])
+                    cylinder(d=8.3, h=50, $fn=30);
 
-                translate([0, 0, 15])
-                rotate([0, 90, 0])
-                cylinder(d=3.2, h=15, $fn=20);
+                    translate([10, 0, 1])
+                    cylinder(d=8.4, h=50, $fn=30);
+                }
 
-                translate([8, 0, 15])
-                rotate([90, 0, -90])
-                _long_nut();
+                translate([0, 0, 14])
+                donut(14.6, 1, $fn=30);
             }
 
             translate([0, 82, 0]) {
@@ -280,8 +323,16 @@ module z_bottom() {
     z_bottom_top();
 }
 
-module z_top() {
+module z_top(screw_bearing=false, bearing_h=16) {
+    // debug
+    if (screw_bearing) {
+        %translate([0, 0, bearing_h])
+        rotate([0, 0, 90])
+        trapezoid_bearing();
+    }
+
     difference() {
+        // body
         union() {
             translate([0, 0, 5/2])
             cube([20, 145, 5], center=true);
@@ -292,40 +343,46 @@ module z_top() {
             translate([0, -65, 0])
             cylinder(d=14, h=14, $fn=30);
 
-            //v_screw(
-            //    h=15, screw_d=15, pitch=3,
-            //    direction=0, steps=100
-            //);
-
-            cylinder(d=15, h=15, $fn=40);
+            if (!screw_bearing) {
+                cylinder(d=15, h=15, $fn=40);
+            } else {
+                // trapezoid bearing block
+                translate([0, 0, (bearing_h + 2)/2])
+                chamfered_cube_side(
+                    20, 51, bearing_h + 2,
+                    5, center=true
+                );
+            }
         }
 
+        // rod holder cutout
         translate([0, 65, 1]) {
             hull() {
-                cylinder(d=8.2, h=22, $fn=30);
+                cylinder(d=8.3, h=22, $fn=30);
 
                 translate([10, 0, 0])
-                cylinder(d=8.3, h=22, $fn=30);
+                cylinder(d=8.4, h=22, $fn=30);
             }
 
             cylinder(d=4.3, h=15, $fn=20, center=true);
 
             translate([0, 0, 10])
-            donut(15.5, 1, $fn=30);
+            donut(14.6, 1, $fn=30);
         }
 
+        // rod holder cutout
         translate([0, -65, 1]) {
             hull() {
-                cylinder(d=8.2, h=22, $fn=30);
+                cylinder(d=8.3, h=22, $fn=30);
 
                 translate([10, 0, 0])
-                cylinder(d=8.3, h=22, $fn=30);
+                cylinder(d=8.4, h=22, $fn=30);
             }
 
             cylinder(d=4.3, h=15, $fn=20, center=true);
 
             translate([0, 0, 10])
-            donut(15.5, 1, $fn=30);
+            donut(14.6, 1, $fn=30);
         }
 
         translate([0, 0, 2])
@@ -335,16 +392,48 @@ module z_top() {
             translate([10, 0, 0])
             cylinder(d=9, h=25, $fn=40);
         }
+        
+        if (!screw_bearing) {
+            translate([0, 0, 11])
+            donut(15.6, 1, $fn=30);
+        } else {
+            // trapezoid bearing holes
+            translate([0, 36.5/2, 0])
+            cylinder(d=4.3, h=60, center=true, $fn=30);
 
-        translate([0, 0, 11])
-        donut(16.5, 1, $fn=30);
+            translate([0, -36.5/2, 0])
+            cylinder(d=4.3, h=60, center=true, $fn=30);
 
+            translate([0, 36.5/2, -0.1])
+            M4_nut_tapering(
+                h=bearing_h - 3,
+                cone=false,
+                bridging=true
+            );
+
+            translate([0, -36.5/2, -0.1])
+            M4_nut_tapering(
+                h=bearing_h - 3,
+                cone=false,
+                bridging=true
+            );
+
+            translate([0, 0, bearing_h])
+            scale([1.02, 1.01, 1])
+            hull()
+            rotate([0, 0, 90])
+            trapezoid_bearing();
+            
+        }
+
+        // mount holes
         translate([0, 33, 0])
         cylinder(d=4.3, h=15, center=true, $fn=40);
 
         translate([0, -33, 0])
         cylinder(d=4.3, h=15, center=true, $fn=40);
 
+        // peg coutouts
         translate([0, 49, 0])
         cube([6.2, 15.2, 5], center=true);
 
@@ -353,7 +442,7 @@ module z_top() {
     }
 }
 
-module rod_clip(inner_d=14, h=9, wall=1.7) {
+module rod_clip(inner_d=14, h=9, wall=2) {
 
     module _arm() {
         hull() {
@@ -386,7 +475,7 @@ module rod_clip(inner_d=14, h=9, wall=1.7) {
 
                 translate([0, 0, 6])
                 intersection() {
-                    donut(inner_d + 1.5, 0.9, $fn=30);
+                    donut(inner_d + 0.6, 0.9, $fn=350);
 
                     translate([-30/2, 0, 0])
                     cube([30, 30, h*3], center=true);
@@ -417,7 +506,7 @@ module z_screw_clip() {
     rod_clip(inner_d=15, h=19, wall=2);
 }
 
-module z_bottom_centering_peg() {
+module slot_centering_peg() {
     translate([0, 0, 5/2])
     cube([6, 15, 5], center=true);
 }
@@ -429,48 +518,53 @@ module z_motor_mount() {
     module bearing_indent() {
         difference() {
             chamfered_cylinder(
-                d=24, h=11, chamfer=1, $fn=50
+                d=24, h=13, chamfer=1, $fn=50
             );
 
-            cylinder(d1=6, d2=4.5, h=1, $fn=40);
+            cylinder(d1=8, d2=6.5, h=1, $fn=40);
 
-            translate([0, 0, 10])
-            cylinder(d2=6, d1=4.5, h=1, $fn=40);
+            translate([0, 0, 12])
+            cylinder(d2=8, d1=6.5, h=1, $fn=40);
         }
     }
 
     difference() {
+        // main body
         union() {
             translate([-68/2 + 43/2, 0, h/2])
             cube([68, 58, h], center=true);
 
             translate([
-                -25/2 - 68 + 43/2 + 25, 0,(h + 12)/2
+                -25/2 - 68 + 43/2 + 25, 0,(h + 14)/2
             ])
-            cube([25, 58, h + 12], center=true);
+            cube([25, 58, h + 14], center=true);
         }
 
+        // motor cutout
         translate([0, 0, (h - 4)/2])
         cube([43.1, 43.1, h - 4], center=true);
 
+        // motor connector cutout
         translate([-26, 0, 2])
         rotate([0, -30, 0])
         cube([10, 20, 20], center=true);
 
-        // bearing hole
-        translate([0, 0, 9/2 + h])
-        cube([103.1, 53, 9], center=true);
+        // idler cutout
+        translate([-39, 0, 11/2 + h - 1])
+        rotate([0, 90, 90])
+        chamfered_cube_side(11, 40, 53, 2, center=true);
 
-        translate([-43, 0, 9/2 + h])
+        translate([-43, 0, 11/2 + h - 1])
         hull() {
-            cube([1, 51, 9], center=true);
+            cube([1, 51, 11], center=true);
 
             translate([-6, 0, 0])
-            cube([1, 60, 9], center=true);
+            cube([1, 60, 11], center=true);
         }
 
-        translate([0, 0, (h - 12)/2 + 4])
-        cube([103.1, 43.1, h - 12], center=true);
+        // inner coutout
+        translate([0, 0, (h - 13)/2 + 4])
+        cube([103.1, 43.1, h - 13], center=true);
 
         translate([0, 0, h - 5])
         motor_plate_holes(
@@ -478,23 +572,23 @@ module z_motor_mount() {
             center_chamfer=true
         );
 
-        translate([-36, 14, h - 1])
+        translate([-36, 15, h - 2])
         bearing_indent();
 
-        translate([-36, -14, h - 1])
+        translate([-36, -15, h - 2])
         bearing_indent();
 
-        translate([-36, 14, h - 15])
-        cylinder(d=3.2, h=30, $fn=30);
+        translate([-36, 15, h - 15])
+        cylinder(d=5.3, h=30, $fn=30);
 
-        translate([-36, -14, h - 15])
-        cylinder(d=3.2, h=30, $fn=30);
+        translate([-36, -15, h - 15])
+        cylinder(d=5.3, h=30, $fn=30);
 
-        translate([-365, 14, h - 8.1])
-        M3_nut(cone=false);
+        translate([-36, 15, h - 10])
+        M5_nut(5, cone=false);
 
-        translate([-36, -14, h - 8.1])
-        M3_nut(cone=false);
+        translate([-36, -15, h - 10])
+        M5_nut(5, cone=false);
 
         translate([0, 65/2, 20/2 + 5])
         chamfered_cube(100, 10, 20, 2,center=true);
@@ -525,33 +619,6 @@ module z_motor_mount() {
         }
     }
 
-    %translate([0, 42/2, 19.5])
-    rotate([90, 0, 0])
-    mock_stepper_motor();
-
-    //%translate([-35, 14, h])
-    //import(str(
-    //    stl_base_path,
-    //    "Parametric_idler_pulley/beltpulley_623.stl"
-    //));
-
-    %translate([-36, 14, h])
-    623zz_idler_pulley();
-
-    %translate([-36, 14, h + 9])
-    rotate([180, 0, 0])
-    pulley_washer();
-
-    %translate([0, 0, h + 15])
-    rotate([180, 0, 0])
-    import(str(
-        stl_base_path,
-        "Parametric_pulley/GT2_16teeth.stl"
-    ));
-
-    %translate([25, 0, 20/2 + 5])
-    rotate([180, 0, 0])
-    z_motor_mount_arm();
 }
 
 module z_motor_mount_arm() {
@@ -1068,7 +1135,6 @@ module z_pulley_40t_retainer() {
     }
 }
 
-use <../../lib/fittings.scad>;
 module support_rod_nut() {
     
     difference() {
