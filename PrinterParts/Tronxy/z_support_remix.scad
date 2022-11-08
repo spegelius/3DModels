@@ -4,11 +4,17 @@ use <../../Dollo/New_long_ties/mockups.scad>;
 
 stl_base_path = "../../_downloaded/";
 
+plate_len = 330.7;
 
 //debug();
-//height_block();
-new_z_support(final_render=false);
+//debug_height_block();
+//_mock_z_plate();
+
+//new_z_support(final_render=false);
 //new_z_support(final_render=true);
+//height_block();
+height_block(10);
+//support_fixing_spacer();
 //qnd_middle_support();
 
 
@@ -23,6 +29,131 @@ module _original() {
         z_support_path,
         "X5S_Z_support_System_and_bed_lowering-8mm_rod.stl"
     ), convexity=5);
+}
+
+module _mock_z_plate() {
+    difference() {
+
+        // main form
+        cube([331, 35, 5], center=true);
+
+        // bed carriage mount holes
+        translate([plate_len/2 - 5, 35/2 - 7.5, 0])
+        cylinder(d=5, h=20, center=true, $fn=20);
+
+        translate([plate_len/2 - 5, -35/2 + 7.5, 0])
+        cylinder(d=5, h=20, center=true, $fn=20);
+
+        translate([-plate_len/2 + 5, 35/2 - 7.5, 0])
+        cylinder(d=5, h=20, center=true, $fn=20);
+
+        translate([-plate_len/2 + 5, -35/2 + 7.5, 0])
+        cylinder(d=5, h=20, center=true, $fn=20);
+
+        // bed adjustment screw holes
+        translate([-plate_len/2 + 25, 35/2 - 10, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([plate_len/2 - 25, 35/2 - 10, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        // trapezoid nut hole and screw holes
+        cylinder(d=10.5, h=20, center=true, $fn=30);
+
+        translate([-8, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([8, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([0, -8, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([0, 8, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        // just holes
+        translate([-37/2, 0, 0])
+        cylinder(d=10, h=20, center=true, $fn=30);
+
+        translate([37/2, 0, 0])
+        cylinder(d=10, h=20, center=true, $fn=30);
+
+        // bearing holes
+        translate([-65, 0, 0])
+        cylinder(d=18.5, h=20, center=true, $fn=30);
+
+        translate([65, 0, 0])
+        cylinder(d=18.5, h=20, center=true, $fn=30);
+
+        // bearing mount screw holes
+        translate([-65 - 12, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([-65 + 12, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([-65, -12, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([-65, 12, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([65 - 12, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([65 + 12, 0, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+        
+        translate([65, -12, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+
+        translate([65, 12, 0])
+        cylinder(d=3, h=20, center=true, $fn=10);
+    }
+}
+
+module debug() {
+    intersection() {
+        translate([0, 0, 5])
+        new_z_support();
+
+        translate([0, 40/2, 0])
+        cube([321, 40, 220], center=true);
+    }
+    %translate([0, 0, 5/2])
+    _mock_z_plate();
+
+    //cylinder(d=10, h=1, $fn=30);
+
+    color("darkgrey")
+    translate([-65, 0, -5])
+    plastic_bearing_housing();
+
+    translate([-65, 0, 51.4 + 24/2 - 5])
+    mock_LM8UU();
+
+    translate([plate_len/2 - 5, 0, 16.1])
+    rotate([180, 0, 0])
+    height_block();
+
+    translate([37/2, 0, -1.4])
+    support_fixing_spacers();
+
+    translate([-37/2, 0, -1.4])
+    support_fixing_spacers();
+}
+
+module debug_height_block() {
+    height_block();
+
+    intersection() {
+        translate([0, 0, 5.05])
+        height_block();
+
+        translate([100/2, 0, 0])
+        cube([100, 30, 30], center=true);
+    }
 }
 
 module middle_support() {
@@ -117,15 +248,105 @@ module _remove_middle() {
 }
 
 module new_z_support(final_render=false) {
-    difference() {
-        union() {
-            difference() {
-                _original();
-                _remove_middle();
+    //%_original();
+
+    module _side_form() {
+
+        module _side_indent() {
+            hull() {
+                translate([-113, 12, 0])
+                sphere(d=20, $fn=40);
+
+                translate([-65, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([-65, 12, 0])
+                sphere(d=20, $fn=40);
             }
 
-            translate([0, 0, 35])
-            middle_support();
+            hull() {
+                translate([113, 12, 0])
+                sphere(d=20, $fn=40);
+
+                translate([65, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([65, 12, 0])
+                sphere(d=20, $fn=40);
+            }
+
+            hull() {
+                translate([52, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([6.5, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([52, 12, 0])
+                sphere(d=20, $fn=40);
+
+                translate([6.5, 12, 0])
+                sphere(d=20, $fn=40);
+            }
+
+            hull() {
+                translate([-52, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([-6.5, 31, 0])
+                sphere(d=20, $fn=40);
+
+                translate([-52, 12, 0])
+                sphere(d=20, $fn=40);
+
+                translate([-6.5, 12, 0])
+                sphere(d=20, $fn=40);
+            }
+        }
+
+        difference() {
+            union() {
+                translate([0, 42/2, 0])
+                cube([130, 42, 6], center=true);
+
+                hull() {
+                    translate([-130/2, 42/2, 0])
+                    cube([1, 42, 6], center=true);
+
+                    translate([-plate_len/2 + 11, 6/2, 0])
+                    cube([1, 6, 6], center=true);
+                }
+
+                hull() {
+                    translate([130/2, 42/2, 0])
+                    cube([1, 42, 6], center=true);
+
+                    translate([plate_len/2 - 11, 6/2, 0])
+                    cube([1, 6, 6], center=true);
+                }
+
+            }
+
+            translate([0, 0, 20/2 + 0.8])
+            _side_indent();
+
+            translate([0, 0, -20/2 - 0.8])
+            _side_indent();
+        }
+    }
+    
+    module _main_z_support_form() {
+        union() {
+            translate([0, 0, 6/2])
+            cube([plate_len, 35, 6], center=true);
+
+            translate([0, -35/2 + 6/2, 0])
+            rotate([90, 0, 0])
+            _side_form();
+
+            translate([0, 35/2 - 6/2, 0])
+            rotate([90, 0, 0])
+            _side_form();
 
             translate([-65, 0, 0]) {
                 cylinder(d=30, h=51.4 - 10);
@@ -140,7 +361,25 @@ module new_z_support(final_render=false) {
                 translate([0, 0, 51.4 - 10])
                 cylinder(d1=30, d2=27, h=24);
             }
+
+            translate([-plate_len/2 + 25, 35/2 - 10])
+            cylinder(d=8, h=14, $fn=30);
+
+            translate([plate_len/2 - 25, 35/2 - 10])
+            cylinder(d=8, h=14, $fn=30);
+
+        translate([-37/2, 0, 0])
+        cylinder(d=11, h=8, $fn=6);
+
+        translate([37/2, 0, 0])
+        cylinder(d=11, h=8, $fn=6);
         }
+    }
+
+
+    difference() {
+
+        _main_z_support_form();
 
         // bearing holes
         translate([-65, 0, 0]) {
@@ -169,7 +408,7 @@ module new_z_support(final_render=false) {
                 translate([0, 0, 51.4 - 10 + 0.2])
                 hole_with_spring(15, 26);
             } else {
-                cylinder(d=17.5, h=51.4-10, $fn=30);
+                cylinder(d=17.5, h=51.4 - 10, $fn=30);
 
                 translate([0, 0, 51.4 - 10 + 0.2])
                 cylinder(d=15, h=26, $fn=30);
@@ -180,73 +419,93 @@ module new_z_support(final_render=false) {
             cylinder(d1=14.6, d2=16, h=0.7, $fn=30);
         }
 
-        translate([329/2, 0, 22.6])
-        cube([20, 50, 20], center=true);
+        // bed carriage mount holes
+        translate([plate_len/2 - 5, -35/2 + 7.5, 0])
+        cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([-329/2, 0, 22.6])
-        cube([20, 50, 20], center=true);
+        translate([plate_len/2 - 5, 35/2 - 7.5, 0])
+        cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([320/2, -10.5, 10.6])
-        cylinder(d2=6.6, d1=3.6, h=2, $fn=40);
+        translate([-plate_len/2 + 5, -35/2 + 7.5, 0])
+        cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([320/2, 10.5, 10.6])
-        cylinder(d2=6.6, d1=3.6, h=2, $fn=40);
+        translate([-plate_len/2 + 5, 35/2 - 7.5, 0])
+        cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([-320/2, -10.5, 10.6])
-        cylinder(d2=6.6, d1=3.6, h=2, $fn=40);
+        // height block indents
+        translate([plate_len/2 - 5, -35/2 + 7.5, 4])
+        cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
 
-        translate([-320/2, 10.5, 10.6])
-        cylinder(d2=6.6, d1=3.6, h=2, $fn=40);
+        translate([plate_len/2 - 5, 35/2 - 7.5, 4])
+        cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
+
+        translate([-plate_len/2 + 5, -35/2 + 7.5, 4])
+        cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
+
+        translate([-plate_len/2 + 5, 35/2 - 7.5, 4])
+        cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
+
+        // adjust screw holes
+        translate([plate_len/2 - 25, 35/2 - 10])
+        cylinder(d=3.6, h=40, center=true, $fn=30);
+
+        translate([-plate_len/2 + 25, 35/2 - 10])
+        cylinder(d=3.6, h=40, center=true, $fn=30);
+
+        // main screw hole
+        cylinder(d=24, h=200, center=true, $fn=60);
+
+        // center plate fixing holes
+        translate([-37/2, 0, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([37/2, 0, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([-37/2, 0, 4])
+        M4_nut(5);
+
+        translate([37/2, 0, 4])
+        M4_nut(5);
+
     }
 }
 
-module height_block() {
+module height_block(h=5) {
     difference() {
         union() {
-            cube([10, 35, 5], center=true);
+            translate([0, 0, h/2])
+            cube([10, 35, h], center=true);
 
-            translate([0, -10.5, 5/2])
-            cylinder(d1=6.5, d2=5, h=1, $fn=40);
+            translate([0, -35/2 + 7.5, h])
+            cylinder(d1=8, d2=6.5, h=1, $fn=40);
 
-            translate([0, 10.5, 5/2])
-            cylinder(d1=6.5, d2=5, h=1, $fn=40);
+            translate([0, 35/2 - 7.5, h])
+            cylinder(d1=8, d2=6.5, h=1, $fn=40);
         }
-        translate([0, -10.5, -5/2])
-        cylinder(d1=6.6, d2=3.6, h=2, $fn=40);
+        translate([0, -35/2 + 7.5, -0.1])
+        cylinder(d1=8.2, d2=5.1, h=2.1, $fn=40);
 
-        translate([0, 10.5, -5/2])
-        cylinder(d1=6.6, d2=3.6, h=2, $fn=40);
+        translate([0, 35/2 - 7.5, -0.1])
+        cylinder(d1=8.2, d2=5.1, h=2.1, $fn=40);
 
-        translate([0, -10.5, 0])
-        cylinder(d=4.5, h=20, center=true, $fn=40);
+        translate([0, -35/2 + 7.5, 0])
+        cylinder(d=5.2, h=h*10, center=true, $fn=40);
 
-        translate([0, 10.5, 0])
-        cylinder(d=4.5, h=20, center=true, $fn=40);
+        translate([0, 35/2 - 7.5, 0])
+        cylinder(d=5.2, h=h*10, center=true, $fn=40);
     }
 }
 
-module debug() {
-    intersection() {
-        translate([0, 0, 5])
-        new_z_support();
+module support_fixing_spacer() {
+    difference() {
+        union() {
+            cylinder(d=14, h=1.4, $fn=30);
 
-        translate([0, 40/2, 0])
-        cube([400, 40, 220], center=true);
+            cylinder(d=9.5, h=6.2, $fn=30);
+        }
+        cylinder(d=4.3, h=20, center=true, $fn=30);
     }
-    %translate([0, 0, 5/2])
-    cube([330, 40, 5], center=true);
-
-    //cylinder(d=10, h=1, $fn=30);
-
-    color("darkgrey")
-    translate([-65, 0, -5])
-    plastic_bearing_housing();
-
-    translate([-65, 0, 51.4 + 24/2 - 5])
-    mock_LM8UU();
-
-    translate([320/2, 0, 22])
-    height_block();
 }
 
 module qnd_middle_support() {
