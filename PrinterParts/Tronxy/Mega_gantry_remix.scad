@@ -10,24 +10,88 @@ stl_path = "../../_downloaded/Tronxy_X5S_Mega_gantry_plates/";
 
 //debug();
 
-//tronxy_mega_gantry_left();
+tronxy_mega_gantry_left();
 //tronxy_mega_gantry_right();
 
 //translate([0, -130, 0])
 //tronxy_mega_gantry_right();
 
+//top_bearing_support_left();
 //top_bearing_support_right();
-top_bearing_support_left();
 //washer_8_5_1();
 
+
+module debug() {
+
+    2020_path = "../../_downloaded/2020_profile/";
+
+//    color("DarkSlateGrey")
+//    translate([340, -60, -130])
+//    translate([0, 0, 4.65])
+//    scale([1, 10, 1])
+//    import(str(
+//        2020_path, "2020_v-slot.stl"
+//    ), convexity=10);
+
+//    color("DarkSlateGrey")
+//    translate([-0.2, -20, 20/2 + 4.6])
+//    rotate([90, 0, 0])
+//    2020_vslot();
+
+    intersection() {
+        tronxy_mega_gantry_left();
+
+        translate([0, -18, 0])
+        cube([200, 100, 100], center=true);
+        
+    }
+
+//    translate([0, -4.65, -29.6])
+//    top_bearing_support_left();
+
+    %translate([23, 16 - 4.65, -12])
+    mock_idler();
+
+    %translate([23, 16-4.65, -24])
+    mock_idler();
+
+    translate([23, 16 - 4.65, -13])
+    washer_8_5_1();
+
+    translate([23, 16 - 4.65, -1])
+    washer_8_5_1();
+
+    // bolts
+    #translate([-30, -58, 14.6])
+    rotate([0, 90, 0])
+    cylinder(d=4, h=25);
+
+    #translate([0, -10, 0])
+    cylinder(d=4, h=10, $fn=20);
+
+    #translate([0, 12.8, 0])
+    cylinder(d=4, h=10, $fn=20);
+    
+    tnut_path = str(
+        "../../_downloaded/",
+        "T-nut_Generator_and_Customizer/"
+    );
+
+    translate([-5, -17.1, 7])
+    import(str(
+        tnut_path, "tnut_37_22.8.stl"
+    ), convexity=10);
+}
 
 module _long_nut() {
     hull() {
         rotate([0, 0, 360/6/2])
+        scale([1.02, 1.02, 1.01])
         M4_nut(h=3.4, cone=false);
 
         translate([0, 6, 0])
         rotate([0, 0, 360/6/2])
+        scale([1.02, 1.02, 1.01])
         M4_nut(h=3.4, cone=false);
     }
 }
@@ -37,12 +101,12 @@ module _long_hole() {
 
     hull() {
         translate([0, -0.5, 32.1])
-        cylinder(d=d,h=1,$fn=60);
+        cylinder(d=d, h=1, $fn=60);
 
         translate([0, 0.5, 32.1])
-        cylinder(d=d,h=1,$fn=60);
+        cylinder(d=d, h=1, $fn=60);
 
-        cylinder(d=d,h=1,$fn=60);
+        cylinder(d=d, h=1, $fn=60);
     }
 }
 
@@ -61,29 +125,11 @@ module tronxy_mega_gantry_left() {
                 cube([113, 131, 50], center=true);
             }
 
-            // v-slot guides
-            translate([-12.6, -36, 14.6])
-            hull() {
-                cube([8.2, 30, 6], center=true);
+            translate([-11.1, -36, 14.6])
+            v_slot_guide(30);
 
-                cube([
-                    4.5, 30, 9.55
-                ], center=true);
-            }
-            translate([-12.4, -36, 14.6])
-            cube([8, 30, 6], center=true);
-
-            translate([-12.6, -2, 14.6])
-            hull() {
-                cube([8.2, 6, 6], center=true);
-
-                cube([
-                    4.5, 6, 9.55
-                ], center=true);
-            }
-            translate([-12.4, -2, 14.6])
-            cube([8, 6, 6], center=true);
-
+            translate([-11.1, -1.5, 14.6])
+            v_slot_guide(7);
         }
 
         // chamfers
@@ -111,9 +157,8 @@ module tronxy_mega_gantry_left() {
         rotate([45, 0, 0])
         cube([200, 10, 10], center=true);
 
-        // center M4 nut indent
+        // center M5 nut indent
         translate([23, 11.35, 23])
-        //M5_nut(13);
         rotate([0, 180, 0])
         M5_nut_tapering(13, cone=false);
         //cylinder(d=4.5,h=1);
@@ -121,18 +166,18 @@ module tronxy_mega_gantry_left() {
         // bolt head indents
         translate([-31.8, -13, 14.6])
         rotate([0, 90, 0])
-        cylinder(d=8, h=3, $fn=40, center=true);
+        cylinder(d=8.6, h=3, $fn=40, center=true);
 
         translate([-31.8, -58, 14.6])
         rotate([0, 90, 0])
-        cylinder(d=8, h=3, $fn=40, center=true);
+        cylinder(d=8.6, h=3, $fn=40, center=true);
 
         // back outer roller bolt hole
         translate([-23, 51.5, -21])
         _long_hole();
 
         translate([-23, 51.5, 0])
-        cylinder(d1=10, d2=5, h=2.5, $fn=60);
+        cylinder(d1=10.7, d2=4.7, h=3.75, $fn=60);
 
         // back tightening bolt hole
         translate([-23, 65.5, 6])
@@ -148,7 +193,7 @@ module tronxy_mega_gantry_left() {
         _long_hole();
 
         translate([67, 51.5, 0])
-        cylinder(d1=10, d2=5, h=2.5, $fn=60);
+        cylinder(d1=10.7, d2=4.7, h=3.75, $fn=60);
 
         // back tightening bolt hole
         translate([67, 65.5, 6])
@@ -161,10 +206,10 @@ module tronxy_mega_gantry_left() {
 
         // inner roller bolt holes
         translate([-23, 11.35, 0])
-        cylinder(d1=10, d2=5, h=2.5, $fn=60);
+        cylinder(d1=10.7, d2=4.7, h=3.75, $fn=60);
 
         translate([65, 11.35, 0])
-        cylinder(d1=10, d2=5, h=2.5, $fn=60);
+        cylinder(d1=10.7, d2=4.7, h=3.75, $fn=60);
 
         // infill
         translate([-18, 0, 3.5])
@@ -173,11 +218,11 @@ module tronxy_mega_gantry_left() {
         translate([-28, 0, 3.5])
         cube([0.1, 200, 4], center=true);
 
-        translate([-8, 0, 3])
-        cube([0.1, 200, 4], center=true);
+        translate([-8, 0, 2.5])
+        cube([0.1, 200, 3], center=true);
 
-        translate([5, 0, 3])
-        cube([0.1, 200, 4], center=true);
+        translate([5, 0, 2.5])
+        cube([0.1, 200, 3], center=true);
 
         translate([15, 0, 3])
         cube([0.1, 200, 4], center=true);
@@ -195,17 +240,17 @@ module tronxy_mega_gantry_left() {
         cube([0.1, 200, 4], center=true);
     }
 
-    %translate([67, 52, 18.2])
-    roller();
-
-    %translate([65, 11.5, 18.2])
-    roller();
-
-    %translate([-23, 11.5, 18.2])
-    roller();
-
-    %translate([-23, 52, 18.2])
-    roller();
+//    %translate([67, 52, 18.2])
+//    roller();
+//
+//    %translate([65, 11.5, 18.2])
+//    roller();
+//
+//    %translate([-23, 11.5, 18.2])
+//    roller();
+//
+//    %translate([-23, 52, 18.2])
+//    roller();
 }
 
 module tronxy_mega_gantry_right() {
@@ -231,14 +276,14 @@ module bridge_cylinder() {
 
 module _top_bearing_support() {
     $fn = 40;
-    d = 12.5;
+    d = 13;
 
     module pylon() {
         union() {
             cylinder(d=d, h=29.5);
 
             translate([0, 0, 29.5 - 0.1])
-            cylinder(d1=10, d2=5, h=2.5, $fn=60);
+            cylinder(d1=10.5, d2=6.5, h=2.5, $fn=60);
         }
     }
 
@@ -384,48 +429,20 @@ module 2020_vslot(h=100) {
     }
 }
 
-module debug() {
-
-    2020_path = "../../_downloaded/2020_profile/";
-
-//    color("DarkSlateGrey")
-//    translate([340, -60, -130])
-//    translate([0, 0, 4.65])
-//    scale([1, 10, 1])
-//    import(str(
-//        2020_path, "2020_v-slot.stl"
-//    ), convexity=10);
-
-    color("DarkSlateGrey")
-    translate([-0.2, -20, 20/2 + 4.6])
-    rotate([90, 0, 0])
-    2020_vslot();
-
+module v_slot_guide(length) {
     intersection() {
-        tronxy_mega_gantry_left();
+        union() {
+            hull() {
+                cube([5.2, length, 6], center=true);
 
-        translate([0, -40, 0])
-        cube([200, 100, 100], center=true);
-        
+                cube([
+                    1.5, length, 9.55
+                ], center=true);
+            }
+
+            cube([5.7, length, 6], center=true);
+        }
+        translate([10/2, 0, 0])
+        cube([10, length, 20], center=true);
     }
-
-    translate([0, -4.65, -29.6])
-    top_bearing_support_left();
-
-    %translate([23, 16 - 4.65, -12])
-    mock_idler();
-
-    %translate([23, 16-4.65, -24])
-    mock_idler();
-
-    translate([23, 16 - 4.65, -13])
-    washer_8_5_1();
-
-    translate([23, 16 - 4.65, -1])
-    washer_8_5_1();
-
-    // bolt
-    translate([-31, -58, 14.6])
-    rotate([0, 90, 0])
-    cylinder(d=4, h=25);
 }
