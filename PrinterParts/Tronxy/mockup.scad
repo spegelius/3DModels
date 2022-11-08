@@ -1,4 +1,4 @@
-include<../../lib/includes.scad>;
+include<../../lib/bearings.scad>;
 include<../../Dollo/NEW_long_ties/mockups.scad>;
 use<../../Dollo/NEW_long_ties/extention.scad>;
 use<../../Dollo/NEW_long_ties/corner.scad>;
@@ -14,27 +14,33 @@ use <Purge_bucket.scad>;
 use <E3D_mount_remix.scad>;
 
 
+stl_base_path = "../../_downloaded/";
+
+
 ////// VIEW //////
-X5S_frame_mockup();
+//X5S_frame_mockup();
 
 X5S_x_carriage_mockup();
 
 //debug_z_support();
 //debug_PSUs();
+//debug_z_support();
 //debug_single_z();
 //debug_gantry_plates();
 //debug_corner_bearing_mounts();
 //debug_motor_mount_remix();
-debug_top_frame();
+//debug_top_frame();
 //debug_purge_bucket();
 //debug_tronxy_cable_pcb_mount();
-debug_E3D_mount();
+//debug_E3D_mount();
+debug_duet_case();
 
 
 ////// MODULES //////
 module X5S_frame_mockup() {
 
     color("darkgrey")
+    render()
     translate([0, 0, 570/2])
     difference() {
         cube([530, 500, 570], center=true);
@@ -235,7 +241,8 @@ module X5S_x_carriage_mockup() {
 }
 
 module debug_z_support() {
-    translate([-530/2 + 10, 0, 520])
+    render()
+    translate([-530/2 + 10, 0, 420])
     rotate([180, 0, -90])
     new_z_support(final_render=false);
 }
@@ -271,7 +278,11 @@ module debug_PSUs() {
 }
 
 module debug_single_z() {
-    
+
+    translate([-530/2 + 10, 0, 570 - 20 - 25.5 - 453])
+    cylinder(d=8, h=453, $fn=20);
+
+    render()
     translate([-530/2 + 10, 0, 20])
     intersection() {
         z_bottom();
@@ -281,17 +292,17 @@ module debug_single_z() {
 
     translate([-530/2 + 10, 0, 570 - 20])
     rotate([180, 0, 180])
-    z_top();
+    z_top(bearing=true);
 
     color("white")
     translate([-530/2 + 10, 65, 570 - 25])
     rotate([180, 0, 180])
     rod_clip();
 
-    color("white")
-    translate([-530/2 + 10, 0, 570 - 25])
-    rotate([180, 0, 180])
-    z_screw_clip();
+//    color("white")
+//    translate([-530/2 + 10, 0, 570 - 25])
+//    rotate([180, 0, 180])
+//    z_screw_clip();
 
     %translate([-530/2 + 10, 0, 30])
     color("white")
@@ -497,4 +508,19 @@ module debug_E3D_mount() {
     translate([-33.5, -14.25, 575.5])
     rotate([90, 0, 0])
     tronxy_E3D_mount();
+}
+
+module debug_duet_case() {
+    case_path = str(
+        stl_base_path,
+        "Duet_Wifi_2020_case/Bottom_V1_v3_rmx.stl"
+    );
+
+    translate([500/2 - 5, 0, -81.5])
+    rotate([-90, 0, -90])
+    import(case_path, convexity=10);
+
+    translate([510/2, 0, -7/2])
+    rotate([0, 0, 90])
+    duet_case_frame_adapter();
 }
