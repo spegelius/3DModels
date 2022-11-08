@@ -10,7 +10,7 @@ use <../../lib/includes.scad>;
 //rounded_gt2_belt(10, 30);
 //tronxy_z_rod_top_washer();
 //tronxy_board_frame_adapters();
-hotend_pcb();
+//hotend_pcb();
 //tronxy_cable_pcb_mount();
 //tronxy_cable_pcb_mount_fasterner();
 //tronxy_bed_spacer();
@@ -25,6 +25,7 @@ hotend_pcb();
 //tronxy_corner_bearing_mount_left();
 //gt2_idler_625zz();
 //gt2_idler_625zz_retainer();
+duet_case_frame_adapter();
 
 
 module tronxy_z_rod_top_washer() {
@@ -650,5 +651,41 @@ module gt2_idler_625zz_retainer() {
             translate([0, 0, 1.2])
             cylinder(d=20.2, h=1.2, $fn=80);
         }
+    }
+}
+
+module duet_case_frame_adapter() {
+    difference() {
+        chamfered_cube_side(180, 20, 7, 3, center=true);
+
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([0, 0, -0.6])
+        M4_nut(4);
+
+        translate([-44.5, 0, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([-44.5, 0, -0.6])
+        M4_nut(4);
+
+        translate([44.5, 0, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([44.5, 0, -0.6])
+        M4_nut(4);
+
+        translate([-83, 0, -1.8])
+        cylinder(d=4.3, h=20, $fn=30);
+
+        translate([83, 0, -1.8])
+        cylinder(d=4.3, h=20, $fn=30);
+
+        translate([-83, 0, -4.5])
+        cylinder(d=8, h=5, center=true, $fn=30);
+
+        translate([83, 0, -4.5])
+        cylinder(d=8, h=5, center=true, $fn=30);
+
     }
 }
