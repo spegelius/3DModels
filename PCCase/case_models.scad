@@ -10,6 +10,7 @@ include <variables.scad>;
 
 
 use <common.scad>;
+use <cover.scad>;
 use <fans.scad>;
 use <foot.scad>;
 use <frame_parts.scad>;
@@ -41,7 +42,7 @@ module _mobo(type, width, depth, height) {
         rotate([0, 90, -90])
         motherboard_tray_mount_1();
 
-        translate([15.2, 15.4, 434.8])
+        translate([15.2, 15.4, height - 45.2])
         rotate([90, 90, 0])
         motherboard_back_plate(width, height);
 
@@ -68,6 +69,10 @@ module _mobo(type, width, depth, height) {
         translate([0, depth - 185, height - 346])
         rotate([0, 90, -90])
         motherboard_tray_mount_1();
+
+//        translate([15.2, 15.4, height - 45.2])
+//        rotate([90, 90, 0])
+//        motherboard_back_plate_ee_atx(width, height);
 
     }
 
@@ -340,55 +345,62 @@ module _side_beams(
     }
 }
 
-module _hd_mocks(width, depth) {
-    translate([50, depth - 50, 30])
-    rotate([0, 0, -90])
-    mock_hd();
+module _hd_mocks(width, depth, count=8) {
 
-    translate([50, depth - 50, 60])
-    rotate([0, 0, -90])
-    mock_hd();
+    for(i = [0:count - 1]) {
+        translate([50, depth - 50, 40 + i*30])
+        rotate([0, 0, -90])
+        mock_hd();
 
-    translate([50, depth - 50, 90])
-    rotate([0, 0, -90])
-    mock_hd();
+        translate([
+            width - 107, depth - 101,
+            40 + i*30 + 30/2 - 2
+        ])
+        rotate([0, 0, 90])
+        hdd_mount(width);
+    }
+//    translate([50, depth - 50, 120])
+//    rotate([0, 0, -90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 150])
+//    rotate([0, 0, -90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 180])
+//    rotate([0, 0, -90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 210])
+//    rotate([0, 0, -90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 240])
+//    rotate([0,0,-90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 270])
+//    rotate([0,0,-90])
+//    mock_hd();
+//
+//    translate([50, depth - 50, 300])
+//    rotate([0,0,-90])
+//    mock_hd();
 
-    translate([50, depth - 50, 120])
-    rotate([0, 0, -90])
-    mock_hd();
 
-    translate([50, depth - 50, 150])
-    rotate([0, 0, -90])
-    mock_hd();
 
-    translate([50, depth - 50, 180])
-    rotate([0,0,-90])
-    mock_hd();
-
-    translate([50, depth - 50, 210])
-    rotate([0,0,-90])
-    mock_hd();
-
-    translate([50, depth - 50, 240])
-    rotate([0,0,-90])
-    mock_hd();
-
-    translate([123, depth - 101, 210 + 30/2 - 2])
-    rotate([0, 0, 90])
-    hdd_mount(width);
-
-    translate([123, depth - 104.5, 240 + 30/2 - 2])
-    rotate([0, 0, 90])
-    hdd_mount_rails(width);
-
-    translate([123, depth - 104.5, 270 + 30/2 - 2])
-    rotate([0, 0, 90])
-    hdd_mount_rails(width);
+//    translate([width - 107, depth - 104.5, 240 + 30/2 - 2])
+//    rotate([0, 0, 90])
+//    hdd_mount_rails(width);
+//
+//    translate([width - 107, depth - 104.5, 270 + 30/2 - 2])
+//    rotate([0, 0, 90])
+//    hdd_mount_rails(width);
 }
 
 module _PSU(width) {
-    translate([width/2 - 30/2, 5/2 + 3, 17])
-    mock_atx_psu(holes=true, slop=0);
+//    translate([width/2 - 30/2, 5/2 + 3, 17])
+//    mock_atx_psu(holes=true, slop=0);
 
     translate([width/2 - 30/2, 5/2 + 3, 17])
     rotate([90, 0, 0])
@@ -399,7 +411,8 @@ module _PSU(width) {
     PSU_bottom_support(width);
 
     translate([15, 0, (atx_psu_height + 6)/2 + 15])
-    PSU_plate_mount_1(width);
+    mirror([0, 0, 1])
+    PSU_plate_mount_1();
 }
 
 module _feet(width, depth) {
@@ -436,10 +449,57 @@ module _feet(width, depth) {
     }
 }
 
+module _bottom_cover(width, depth) {
+    translate([width/2 - 15, depth/2 - 15, -15 + 8/2])
+    render()
+    bottom(width, depth);
+}
 
+module _right_cover(width, depth, height) {
 
+    translate([width - 15 + 5, depth/2 - 15, height/2 - 15])
+    rotate([90, 0, -90])
+    side_cover_front(depth, height);
+}
 
+module _left_cover(width, depth, height) {
 
+    translate([-15 - 5, depth/2 - 15, height/2 - 15])
+    rotate([90, 0, 90])
+    side_cover_back(depth, height);
+}
 
+module _front_covers(
+    width, depth, height, grills=40, leds=2,
+    top_h=80, bottom_h=80
+) {
+    if (leds > 2) {
+        translate([
+            width/2 - 30/2, depth - 30/2,
+            height - top_h - 25
+        ])
+        rotate([0, 0, 180])
+        front_cover_buttons_4_leds(width, top_h);
+    } else {
+        translate([
+            width/2 - 30/2, depth - 30/2,
+            height - top_h - 25
+        ])
+        rotate([0, 0, 180])
+        front_cover_buttons(width, top_h);
+    }
 
+    translate([
+        width/2 - 30/2, depth - 30/2, bottom_h - 5
+    ])
+    rotate([180, 0, 0])
+    front_cover_bottom(width, bottom_h);
 
+    h = height - top_h - bottom_h - 20;
+    echo("Front grills height:", h)
+    translate([
+        width/2 - 30/2, depth - 30/2, bottom_h - 5
+    ])
+    rotate([0, 0, 180])
+    front_cover_grill(width, h, grills, 4);
+}

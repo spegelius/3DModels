@@ -9,10 +9,15 @@ include <variables.scad>;
 //debug_motherboard_back_plates();
 //debug_motherboard_ee_atx_parts();
 //debug_motherboard_tray();
+//debug_motherboard_io_cover();
+//debug_motherboard_ee_atx_io_cover();
+//debug_motherboard_card_cover();
+//debug_motherboard_card_cover_ee_atx();
 
 //motherboard_tray_atx(430);
 //motherboard_tray_atx(430, render_threads=false);
 //motherboard_tray_ee_atx(540, render_threads=false);
+//motherboard_tray_ee_atx(540, render_threads=true);
 //motherboard_tray_ee_atx_1_1(540, render_threads=true);
 //motherboard_tray_ee_atx_1_2(540, render_threads=true);
 //motherboard_tray_ee_atx_2_1(540, render_threads=true);
@@ -22,15 +27,25 @@ include <variables.scad>;
 //motherboard_tray_mount_2();
 //motherboard_tray_mount_top_1();
 //motherboard_tray_mount_top_2();
-//motherboard_tray_screw();
+
+motherboard_tray_screw();
+//motherboard_tray_screw_reinforced();
 
 //motherboard_back_plate(230, 480);
 //motherboard_back_plate_1(230, 480);
 //motherboard_back_plate_2(230, 480);
 //motherboard_back_plate_clip();
 //motherboard_back_plate_clip(scaling=1.02);
+//motherboard_io_cover(230);
 
-motherboard_back_plate_ee_atx(240, 550);
+//motherboard_back_plate_ee_atx(240, 525);
+//motherboard_back_plate_ee_atx(240, 550);
+//motherboard_io_cover_ee_atx(240);
+
+//motherboard_card_cover(230, 480);
+//motherboard_card_cover(240, 525);
+//motherboard_card_cover(240, 550, ee_atx=true);
+
 
 module debug_motherboard_back_plates() {
     intersection() {
@@ -91,6 +106,45 @@ module debug_motherboard_ee_atx_parts() {
         540, render_threads=false
     );
 }
+
+module debug_motherboard_ee_atx_io_cover() {
+    motherboard_back_plate_ee_atx(240, 550);
+
+    translate([202.1/2 + 7.7, 117.5, 2])
+    motherboard_io_cover_ee_atx(240);
+}
+
+module debug_motherboard_io_cover() {
+    motherboard_back_plate(230, 480);
+
+    translate([160/2 + 7.7, 112.5, 2])
+    motherboard_io_cover(230);
+}
+
+module debug_motherboard_card_cover() {
+    motherboard_back_plate(230, 480);
+
+    translate([245.5, 139.7, 10 + 6.4])
+    rotate([0, 180, 0])
+    motherboard_card_cover(230, 480);
+}
+
+module debug_motherboard_card_cover_ee_atx() {
+
+    motherboard_back_plate_ee_atx(240, 550);
+
+    translate([301.5, 144.7, 10 + 6.4])
+    rotate([0, 180, 0])
+    intersection() {
+        motherboard_card_cover(
+            240, 550, ee_atx=true
+        );
+
+        translate([200/2, 0, 0])
+        cube([200, 100, 100], center=true);
+    }
+}
+
 
 module _joiner_form(w, d, h) {
     intersection() {
@@ -1130,13 +1184,15 @@ module motherboard_tray_screw(render_threads=true) {
     module _screw_thread() {
         if (render_threads) {
             v_screw(
-                h=9, screw_d=mount_screw_d,
+                h=9, screw_d=mount_screw_d - 0.2,
                 pitch=mount_screw_pitch,
                 direction=0, steps=100,
                 depth=0.1, chamfer=true
             );
         } else {
-            cylinder(d=mount_screw_d - 0.2, h=9, $fn=30);
+            cylinder(
+                d=mount_screw_d - 0.2, h=9, $fn=30
+            );
         }
     }
 
@@ -1144,9 +1200,12 @@ module motherboard_tray_screw(render_threads=true) {
         union() {
             translate([0, 0, 6.5/2])
             hull() {
-                cylinder(d=17.8, h=5.5, center=true, $fn=6);
                 cylinder(
-                    d=15.8, h=6.5, center=true, $fn=6);
+                    d=17.7, h=5.1, center=true, $fn=6
+                );
+                cylinder(
+                    d=15.7, h=6.5, center=true, $fn=6
+                );
             }
 
             cylinder(
@@ -1161,6 +1220,24 @@ module motherboard_tray_screw(render_threads=true) {
         cylinder(d=2, h=40, $fn=20);
     }
 }
+
+module motherboard_tray_screw_reinforced(
+    render_threads=true
+) {
+    difference() {
+        motherboard_tray_screw(
+            render_threads=render_threads
+        );
+
+        cylinder(d=3.2, h=100, center=true, $fn=30);
+
+        translate([0, 0, 6.5 + 22.2 + 9 - 2])
+        cylinder(d1=3.2, d2=6, h=2.1, $fn=30);
+
+        M3_nut(cone=false, bridging=true);
+    }
+}
+
 
 module motherboard_back_plate(width, height) {
 
@@ -1202,10 +1279,13 @@ module motherboard_back_plate(width, height) {
                 327.5 + (10 + w - 327.5)/2 - 10/2,
                 119.8 - 6/2, 12/2
             ])
-            cube([10 + w - 327.5, 6, 12], center=true);
+            cube([
+                10 + w - 327.5,
+                6, 12
+            ], center=true);
 
             translate([
-                169.4, 62.4 + (d - 70)/2,
+                165.5 + 8/2, 62.4 + (d - 70)/2,
                 12/2
             ])
             cube([8, d - 70, 12], center=true);
@@ -1231,21 +1311,21 @@ module motherboard_back_plate(width, height) {
             translate([130, -0.2, 4])
             male_dovetail();
 
-            translate([210, -0.2, 4])
+            translate([215, -0.2, 4])
             male_dovetail();
 
             translate([130, d - 0.2, 4])
             rotate([0, 0, 180])
             male_dovetail();
 
-            translate([210, d - 0.2, 4])
+            translate([215, d - 0.2, 4])
             rotate([0, 0, 180])
             male_dovetail();
 
-            translate([327.5 - 20, -0.2, 4])
+            translate([w - 15, -0.2, 4])
             male_dovetail();
 
-            translate([327.5 - 20, d - 0.2, 4])
+            translate([w - 15, d - 0.2, 4])
             rotate([0, 0, 180])
             male_dovetail();
 
@@ -1256,27 +1336,36 @@ module motherboard_back_plate(width, height) {
             ])
             cube([w - 172, d - 122, 4], center=true);
 
-            translate([327.5 - 11, d - 0.4 - 28, 5])
+            translate([
+                w - 3.5,
+                d - 4.4 - (d - 122)/2, 5
+            ])
             rotate([0, 0, -90])
             male_dovetail();
 
-            translate([327.5 - 153, d - 0.4 - 28, 5])
+            translate([
+                174.5,
+                d - 4.4 - (d - 122)/2,
+                5
+            ])
             rotate([0, 0, 90])
             male_dovetail();
 
-            translate([327.5 - 132, d - 1.4 - 8, 5])
+            translate([205, d - 1.4 - 8, 5])
             rotate([0, 0, 0])
             male_dovetail();
 
-            translate([327.5 - 35, d - 1.4 - 8, 5])
+            translate([w - 35, d - 1.4 - 8, 5])
             rotate([0, 0, 0])
             male_dovetail();
 
             // over I/O
             translate([
-                87.5, 61 + (d - 68)/2, 12/2 + 2
+                7.5 + 160.5/2,
+                61 + (d - 67)/2,
+                12/2 + 2
             ])
-            cube([161, d - 68, 12], center=true);
+            cube([160.5, d - 67, 12], center=true);
 
             // chamfers
             rotate([0, 0, -45])
@@ -1292,30 +1381,30 @@ module motherboard_back_plate(width, height) {
         rotate([90, 90, 0])
         _joiner_form(7.5, 10, 4);
 
-        translate([285, 117.8, 12])
+        translate([w - 35, 117.8, 12])
         rotate([90, 90, 0])
         _joiner_form(7.5, 10, 4);
 
         // over I/O joiners
-        translate([5, 112, 10/2])
+        translate([6, 61 + (d - 68)/2, 10/2])
         rotate([90, 0, 90])
         long_tie(10);
 
-        translate([170, 112, 10/2])
+        translate([169.5, 61 + (d - 68)/2, 10/2])
         rotate([90, 0, -90])
         long_tie(10);
 
-        translate([87.5, 112 + 102/2 + 2, 10/2])
+        translate([87.5, d - 4.5, 10/2])
         rotate([90, 0, 0])
         long_tie(10);
 
-        translate([87.5, 112 - 102/2 - 2, 10/2])
+        translate([87.5, 59.5, 10/2])
         rotate([90, 0, 180])
         long_tie(10);
     }
 
-    %translate([60, 110, 10])
-    mock_fan_92mm();
+//    %translate([60, 110, 10])
+//    mock_fan_92mm();
 }
 
 module motherboard_back_plate_1(width, height) {
@@ -1435,7 +1524,285 @@ module motherboard_back_plate_clip(scaling=1.0) {
 }
 
 module motherboard_back_plate_ee_atx(width, height) {
+    w = height - 160;
+    d = width - 60;
+
     union() {
-        motherboard_back_plate(width, height);
+        difference() {
+            union() {
+                translate([
+                    10/2, (d - 0.4)/2, 12/2
+                ])
+                cube([10, d - 0.4, 12], center=true);
+
+                translate([200/2, 8/2, 12/2])
+                cube([200, 8, 12], center=true);
+
+                translate([50/2, 60, 12/2])
+                cube([50, 7, 12], center=true);
+
+                translate([
+                    200/2,
+                    -8/2 + d - 0.4, 12/2])
+                cube([200, 8, 12], center=true);
+
+                translate([42, 0, 0])
+                motherboard_back_plate(
+                    width, height - 42
+                );
+
+                translate([36/2 + 7, 52/2 + 7, 12/2])
+                cube([36, 52, 12], center=true);
+            }
+
+            // mounts
+            translate([-0.2, d/2, 4])
+            rotate([0, 0, -90])
+            male_dovetail();
+
+            translate([40, -0.2, 4])
+            male_dovetail();
+
+            translate([40, d - 0.2, 4])
+            rotate([0, 0, 180])
+            male_dovetail();
+
+            translate([145, -0.2, 4])
+            male_dovetail();
+
+            translate([145, d - 0.2, 4])
+            rotate([0, 0, 180])
+            male_dovetail();
+
+            // chamfers
+            rotate([0, 0, -45])
+            cube([30, 10, 30], center=true);
+
+            translate([0, d - 0.4, 0])
+            rotate([0, 0, 45])
+            cube([30, 10, 30], center=true);
+
+            // over I/O
+            translate([42, 63.5 + (d - 72)/2, 0])
+            cube([30, d - 72, 40], center=true);
+
+            translate([135, 63.5 + (d - 72)/2, 0])
+            cube([30, d - 72, 40], center=true);
+            
+            translate([
+                7.5 + 194.5/2,
+                61 + (d - 67)/2,
+                12/2 + 2
+            ])
+            cube([194.5, d - 67, 12], center=true);
+
+            translate([5.5, 3.6, 8])
+            chamfered_cube(212.5, 54.45, 20, 5.1);
+
+            translate([10.6 + 40/2, 44.25/2 + 8.7, 20/2 + 1.4])
+            cube([40, 44.25, 20], center=true);
+        }
+
+        translate([6, 61 + (d - 68)/2, 10/2])
+        rotate([90, 0, 90])
+        long_tie(10);
+
+        translate([108.5, d - 4.5, 10/2])
+        rotate([90, 0, 0])
+        long_tie(10);
+
+        translate([108.5, 59.5, 10/2])
+        rotate([90, 0, 180])
+        long_tie(10);
+    }
+}
+
+module _motherboard_io_cover(width, ee_atx=false) {
+
+    w = ee_atx ? 202.1 : 160;
+    d = width - 60 - 67.4;
+    f_d = d - 10;
+
+    module _io_cover(fan_d) {
+        echo(fan_d);
+        difference() {
+            translate([0, 0, 10/2])
+            rounded_cube_side(
+                w, d, 10, 3, center=true, $fn=30
+            );
+
+            translate([-1.9 - w/2, -0.5, -1.5])
+            rotate([0, 0, -90])
+            male_dovetail(15);
+
+            translate([1.9 + w/2, -0.5, -1.5])
+            rotate([0, 0, 90])
+            male_dovetail(15);
+
+            translate([-0.25, d/2 + 1.9, -1.5])
+            rotate([0, 0, 180])
+            male_dovetail(15);
+
+            translate([-0.25, -d/2 - 1.9, -1.5])
+            male_dovetail(15);
+
+            difference() {
+                translate([0, 0, 20/2 + 1.6])
+                //cube([w - 6, d - 6, 20], center=true);
+                chamfered_cube(w - 5, d - 5, 20, 2, center=true);
+
+                translate([-w/2 - 1, -0.5, 0])
+                rounded_cube_side(
+                    12, 12, 40, 2, center=true, $fn=30
+                );
+
+                translate([w/2 + 1, -0.5, 0])
+                rounded_cube_side(
+                    12, 12, 40, 2, center=true, $fn=30
+                );
+
+                translate([-0.25, d/2 + 1, 0])
+                rounded_cube_side(
+                    12, 12, 40, 2, center=true, $fn=30
+                );
+
+                translate([-0.25, -d/2 - 1, 0])
+                rounded_cube_side(
+                    12, 12, 40, 2, center=true, $fn=30
+                );
+            }
+
+            // fan hole
+            translate([w/2 - fan_d/2 - 15, 0, 0])
+            cylinder(
+                d=fan_d, h=40, center=true,
+                $fn=50
+            );
+
+            translate([w/2 - fan_d/2 - 15, 0, 0])
+            fan_mount_holes(fan_d);
+
+            %translate([w/2 - fan_d/2 - 15, 0, 25/2 + 1.6])
+            cube([fan_d + 0.3, fan_d + 0.3, 25], center=true);
+        }
+    }
+    
+    if (f_d > 120 && f_d < 140) {
+        _io_cover(120);
+    } else if (f_d >= 100 && f_d < 120) {
+        _io_cover(100);
+    } else if (f_d >= 92 && f_d < 100) {
+        _io_cover(92);
+    } else if (f_d >= 80 && f_d < 92) {
+        _io_cover(80);
+    } else if (f_d >= 60 && f_d < 80) {
+        _io_cover(60);
+    }
+}
+
+module motherboard_io_cover(width) {
+    _motherboard_io_cover(width, ee_atx=false);
+}
+
+module motherboard_io_cover_ee_atx(width) {
+    difference() {
+        _motherboard_io_cover(width, ee_atx=true);
+
+        // extra 92mm holes
+        translate([202.1/2 - 100/2 - 15, 0, 0])
+        fan_mount_holes(92);
+    }
+}
+
+module motherboard_card_cover(
+    width, height, ee_atx=false
+) {
+    ee_atx_w = ee_atx ? 42 : 0;
+
+    w = height - 160 - 172.5 - ee_atx_w;
+    d = width - 182.5;
+
+    slit_count = floor((w - 15)/8);
+    slit_offset = (w - 15)/(slit_count - 1);
+
+    difference() {
+        union() {
+            translate([0, 0, 6.4/2])
+            rounded_cube_side(
+                w, d, 6.4, 3, center=true, $fn=30
+            );
+
+            translate([-w/2 + 2.5, 1.9, 10/2])
+            rotate([90, 0, -90])
+            long_tie(10);
+
+            translate([w/2 - 2.5, 1.9, 10/2])
+            rotate([90, 0, 90])
+            long_tie(10);
+
+            translate([w/2 - 33.25, d/2 - 2.65, 10/2])
+            rotate([90, 0, 180])
+            long_tie(10);
+
+            translate([-w/2 + 34.25, d/2 - 2.65, 10/2])
+            rotate([90, 0, 180])
+            long_tie(10);
+
+        }
+
+        difference() {
+            translate([0, 0, 20/2 + 1.6])
+            chamfered_cube(
+                w - 4, d - 4, 20,
+                1, center=true
+            );
+
+            translate([-w/2 + 34.25, -d/2, 20/2])
+            chamfered_cube(21, 11, 25, 4, center=true);
+
+            translate([w/2 - 33.25, -d/2, 20/2])
+            chamfered_cube(21, 11, 25, 4, center=true);
+        }
+
+        translate([-w/2 + 34.25, -d/2 + 4/2 - 0.15, 0.6 + 7.5/2])
+        rotate([90, 90, 0])
+        _joiner_form(7.5, 10.2, 4);
+
+        translate([w/2 - 33.25, -d/2 + 4/2 - 0.15, 0.6 + 7.5/2])
+        rotate([90, 90, 0])
+        _joiner_form(7.5, 10.2, 4);
+
+        // chamfers
+        translate([-w/2 - 12, 0, 0])
+        rotate([0, 45, 0])
+        cube([20, d + 10, 20], center=true);
+
+        translate([w/2 + 12, 0, 0])
+        rotate([0, 45, 0])
+        cube([20, d + 10, 20], center=true);
+
+        translate([0, d/2 + 12, 0])
+        rotate([45, 0, 0])
+        cube([w + 10, 20, 20], center=true);
+
+        for (i = [0: slit_count - 1]) {
+            translate([
+                -w/2  + 15/2 + i*slit_offset,
+                0, 0])
+            hull() {
+                translate([2, d/2 - 10, 0])
+                cylinder(
+                    d=2, h=20,
+                    center=true, $fn=20
+                );
+
+                translate([-2, -d/2 + 10, 0])
+                cylinder(
+                    d=2, h=20,
+                    center=true, $fn=20
+                );
+
+            }
+        }
     }
 }

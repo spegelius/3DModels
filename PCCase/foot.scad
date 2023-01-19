@@ -3,7 +3,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 
 //debug_foot();
 
-//foot();
+foot();
 //foot_dampener();
 
 
@@ -26,7 +26,7 @@ module foot() {
             scale([1, 45/30, 1.5])
             sphere(d=36, $fn=80);
 
-            cylinder(d=100, h=55);
+            cylinder(d=100, h=22);
         }
 
         translate([6, 0, 10 + 100/2])

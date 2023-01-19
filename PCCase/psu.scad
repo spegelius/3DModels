@@ -13,11 +13,11 @@ include <variables.scad>;
 //PSU_plate_mount_1();
 //PSU_plate_mount_2();
 //PSU_bottom_support(230);
-//PSU_bottom_support(240);
+PSU_bottom_support(240);
 //PSU_bottom_support_long_bow_tie();
 
 //PSU_plate_long_tie();
-PSU_plate_long_tie(lower_z=0.1);
+//PSU_plate_long_tie(lower_z=0.1);
 
 
 
@@ -156,6 +156,11 @@ module PSU_plate_mount_1() {
 
         translate([-30/2, 0, 0])
         chamfered_cube(30, 30, h/2, 6, center=true);
+
+        translate([5, 10/2 + 4, h/2 + 4])
+        rotate([0, -45, 0])
+        cube([40, 10, 10], center=true);
+        
     }
 }
 

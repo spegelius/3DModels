@@ -33,13 +33,20 @@ module print_parts(
     e_length_dt = e_length(e_units_dt, e_count_dt);
 
     // single printable beam lengths
-    echo("Extention lengths (total, pieces)");
+    echo("Extention lengths (total length, piece lengths)");
     echo("w: ", e_units_w*30, e_length_w);
     echo("h: ", e_units_h*30, e_length_h);
     echo("d: ", e_units_d*30, e_length_d);
-    echo("t: ", e_length_t, 1);
+    echo("t: ", e_length_t, e_length_t);
 
     echo("T extention side details (total, pieces)");
     echo("d: ", e_length_dt, e_count_dt);
+    
+    echo("Extention counts");
+    echo("w: ", e_count_w * 4);
+    echo("d: ", e_count_d * 4 - 2);
+    echo("h: ", e_count_h * 5);
+    echo("t: ", 2);
+    
 }
 

@@ -8,16 +8,26 @@ use <common.scad>;
 
 //extention_100();
 //extention_110();
+//extention_120();
 //extention_310();
 //extention_360();
 //extention_155();
 //extention_135();
-extention_140();
+//extention_140();
 //extention_150();
 //extention_t_case(440, 2);
 //extention_t_case(540, 3);
+
+//long_tie_half_20();
+//long_tie_half_30();
 //long_tie_half_30(lower_z=0.1);
+
+//long_bow_tie_half_30();
+//long_bow_tie_half_30(lower_z=0.1);
+long_bow_tie_half_40();
 //long_bow_tie_half_40(lower_z=0.1);
+
+//long_bow_tie_50();
 
 
 module extention_100() {
@@ -26,6 +36,10 @@ module extention_100() {
 
 module extention_110() {
     extention(110/30);
+}
+
+module extention_120() {
+    extention(120/30);
 }
 
 module extention_135() {
@@ -70,10 +84,30 @@ module extention_t_case(
     );
 }
 
+module long_tie_half_20(lower_z=0.0) {
+    intersection() {
+        translate([0, 0, -lower_z])
+        long_tie_half(20);
+
+        translate([0, 0, 10/2])
+        cube([50, 50, 10], center=true);
+    }
+}
+
 module long_tie_half_30(lower_z=0.0) {
     intersection() {
         translate([0, 0, -lower_z])
         long_tie_half(30);
+
+        translate([0, 0, 10/2])
+        cube([50, 50, 10], center=true);
+    }
+}
+
+module long_bow_tie_half_30(lower_z=0.0) {
+    intersection() {
+        translate([0, 0, -lower_z])
+        long_bow_tie_half(30);
 
         translate([0, 0, 10/2])
         cube([50, 50, 10], center=true);
@@ -90,3 +124,6 @@ module long_bow_tie_half_40(lower_z=0.0) {
     }
 }
 
+module long_bow_tie_50() {
+    long_bow_tie(50);
+}
