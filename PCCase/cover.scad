@@ -14,6 +14,7 @@ include <variables.scad>;
 //debug_side_cover_split_clip();
 
 //debug_cover_buttons();
+//debug_cover_buttons_4_leds();
 //debug_cover_lens();
 
 //bottom(230, 430);
@@ -71,16 +72,20 @@ include <variables.scad>;
 //front_cover_bottom(240, 130);
 //front_cover_bottom(240, 40);
 
+//front_cover_buttons(230, 80);
 //front_cover_buttons(240, 70);
 
-//front_cover_buttons_4_leds(240, 80);
+front_cover_buttons_4_leds(240, 80);
 //front_cover_buttons_4_leds(240, 70);
+
+//front_cover_buttons_mount();
+//front_cover_buttons_mount_4_leds();
 
 //front_cover_grill(240, 172, 23, 10, supports=true);
 //front_cover_grill(240, 173, 23, 1, supports=true);
 
 //front_cover_grill(240, 175, 24, 6, supports=true);
-front_cover_grill(240, 175, 21, 0, supports=true);
+//front_cover_grill(240, 175, 21, 0, supports=true);
 
 //front_cover_grill(240, 420/2, 28, 10, supports=true);
 //front_cover_grill(240, 420/2, 29, 2, supports=true);
@@ -93,10 +98,8 @@ front_cover_grill(240, 175, 21, 0, supports=true);
 
 //top_cover_grill_end(240, 150, 15, 0, brim=true);
 
-//cover_endstop_mount();
 //cover_button();
 //cover_lens_5mm_led();
-//cover_lens_mount();
 
 
 module debug_bottom() {
@@ -202,31 +205,52 @@ module debug_side_cover_split_clip() {
 
 module debug_cover_buttons() {
 
-    translate([-10, -17 + 5, 30])
+    translate([-35, -17 + 5, 30])
     rotate([90, 0, 0])
     cover_button();
 
     intersection() {
-        front_cover_buttons(230, 80);
+        front_cover_buttons(230, 70);
 
-        //translate([-60/2 - 10, 0, 0])
-        //cube([60, 100, 100], center=true);
+//        translate([-60/2 - 10, 0, 0])
+//        cube([60, 100, 100], center=true);
 
-        translate([-60/2 + 40, 0, 0])
-        cube([60, 100, 100], center=true);
+//        translate([-60/2 + 40, 0, 0])
+//        cube([60, 100, 100], center=true);
     }
-
-    translate([-38, 5.7, 15.5])
-    rotate([0, 0, 180])
-    cover_endstop_mount();
 
     translate([40, -6, 30])
     rotate([90, 90, 0])
     debug_cover_lens();
 
-    translate([30, -3.8, 25])
-    rotate([0, 0, 180])
-    cover_lens_mount();
+    translate([0, 0.2, 30])
+    rotate([90, 0, 0])
+    front_cover_buttons_mount();
+}
+
+module debug_cover_buttons_4_leds() {
+
+    translate([-35, -17 + 5, 30])
+    rotate([90, 0, 0])
+    cover_button();
+
+    intersection() {
+        front_cover_buttons_4_leds(230, 70);
+
+//        translate([-60/2 - 10, 0, 0])
+//        cube([60, 100, 100], center=true);
+
+//        translate([-60/2 + 40, 0, 0])
+//        cube([60, 100, 100], center=true);
+    }
+
+    translate([40, -6, 30])
+    rotate([90, 90, 0])
+    debug_cover_lens();
+
+    translate([0, 0.2, 30])
+    rotate([90, 0, 0])
+    front_cover_buttons_mount_4_leds();
 }
 
 module debug_cover_lens() {
@@ -1534,57 +1558,29 @@ module front_cover_buttons(width, height, brim=true) {
             rotate([90, 0, 0])
             cylinder(d=14, h=6, $fn=30);
 
-            // endstop mounts
-            translate([-20, -17 + 17/2, b_pos - 5])
-            cube([5, 17, 20], center=true);
-
+            // screw bodies
             hull() {
-                translate([
-                    -20, -17 + 17/2,
-                    b_pos - 5 - 20/2
-                ])
-                cube([5, 17, 0.1], center=true);
+                translate([60, -11, b_pos])
+                cube([11, 10, 10], center=true);
 
-                translate([
-                    -20, -17 + 1/2,
-                    b_pos - 5 - 20/2 - 18
-                ])
-                cube([0.1, 1, 0.1], center=true);
+                translate([60, -17, b_pos - 15])
+                cube([4, 0.1, 1], center=true);
             }
 
-            translate([-45, -17 + 17/2, b_pos - 5])
-            cube([5, 17, 20], center=true);
-
             hull() {
-                translate([
-                    -45, -17 + 17/2,
-                    b_pos - 5 - 20/2
-                ])
-                cube([5, 17, 0.1], center=true);
+                translate([-60, -11, b_pos])
+                cube([11, 10, 10], center=true);
 
-                translate([
-                    -45, -17 + 1/2,
-                    b_pos - 5 - 20/2 - 18
-                ])
-                cube([0.1, 1, 0.1], center=true);
+                translate([-60, -17, b_pos - 15])
+                cube([4, 0.1, 1], center=true);
             }
 
-            // led mount
-            translate([30, -17 + 10/2, b_pos])
-            cube([5, 10, 10], center=true);
-
             hull() {
-                translate([
-                    30, -17 + 10/2,
-                    b_pos + 5 - 20/2
-                ])
-                cube([5, 10, 0.1], center=true);
+                translate([3, -11, b_pos])
+                cube([11, 10, 10], center=true);
 
-                translate([
-                    30, -17 + 1/2,
-                    b_pos - 20/2 - 7
-                ])
-                cube([0.1, 1, 0.1], center=true);
+                translate([3, -17, b_pos - 15])
+                cube([4, 0.1, 1], center=true);
             }
         }
 
@@ -1595,19 +1591,19 @@ module front_cover_buttons(width, height, brim=true) {
         // led holes
         translate([20, 0, b_pos])
         rotate([90, 0, 0])
-        cylinder(d=8, h=25, $fn=20);
+        cylinder(d=8.3, h=25, $fn=20);
 
         translate([20, 0, b_pos])
         rotate([90, 0, 0])
-        cylinder(d=10.3, h=16, $fn=20);
+        cylinder(d=10.6, h=16, $fn=20);
         
         translate([40, 0, b_pos])
         rotate([90, 0, 0])
-        cylinder(d=8, h=25, $fn=20);
+        cylinder(d=8.3, h=25, $fn=20);
 
         translate([40, 0, b_pos])
         rotate([90, 0, 0])
-        cylinder(d=10.3, h=16, $fn=20);
+        cylinder(d=10.6, h=16, $fn=20);
 
         // button holes
         translate([-10, 0, b_pos])
@@ -1649,11 +1645,41 @@ module front_cover_buttons(width, height, brim=true) {
         translate([30 + 5/2, -17 + 8, b_pos + 3])
         rotate([0, 0, 45])
         cube([2, 2, 15], center=true);
+
+        // screw & nut holes
+        translate([60, -16, b_pos])
+        rotate([-90, 0, 0])
+        cylinder(d=3.3, h=15, $fn=20);
+
+        translate([-60, -16, b_pos])
+        rotate([-90, 0, 0])
+        cylinder(d=3.3, h=15, $fn=20);
+
+        translate([3, -16, b_pos])
+        rotate([-90, 0, 0])
+        cylinder(d=3.3, h=15, $fn=20);
+
+        translate([60, -11, b_pos + 2])
+        cube([6, 2, 10], center=true);
+
+        translate([-60, -11, b_pos + 2])
+        cube([6, 2, 10], center=true);
+
+        translate([3, -11, b_pos + 2])
+        cube([6, 2, 10], center=true);
+
     }
 
-    %translate([-38, 6, b_pos - 15.5])
-    rotate([0, -90, 180])
-    mechanical_endstop();
+    %translate([-38, 5, b_pos - 15.5])
+    rotate([0, -90, 180]) {
+        mechanical_endstop();
+
+        translate([5, 3, 0])
+        cylinder(d=2, h=25, center=true, $fn=20);
+
+        translate([15, 3, 0])
+        cylinder(d=2, h=25, center=true, $fn=20);
+    }
 }
 
 module front_cover_buttons_4_leds(
@@ -1691,26 +1717,24 @@ module front_cover_buttons_4_leds(
                 cube([width, 10, 25], center=true);
             }
 
-            translate([30, -17 + 10/2, (height - 45)/2])
-            cube([5, 10, height - 45], center=true);
         }
 
         // led holes
         translate([20, 0, b_pos + 13])
         rotate([90, 0, 0])
-        cylinder(d=8, h=25, $fn=20);
+        cylinder(d=8.6, h=25, $fn=20);
 
         translate([20, 0, b_pos + 13])
         rotate([90, 0, 0])
-        cylinder(d=10.3, h=16, $fn=20);
+        cylinder(d=10.6, h=16, $fn=20);
         
         translate([40, 0, b_pos + 13])
         rotate([90, 0, 0])
-        cylinder(d=8, h=25, $fn=20);
+        cylinder(d=8.6, h=25, $fn=20);
 
         translate([40, 0, b_pos + 13])
         rotate([90, 0, 0])
-        cylinder(d=10.3, h=16, $fn=20);
+        cylinder(d=10.6, h=16, $fn=20);
 
         translate([20, 0, b_pos])
         rotate([90, 0, 0])
@@ -1744,33 +1768,125 @@ module front_cover_buttons_4_leds(
     }
 }
 
-module cover_endstop_mount() {
+module front_cover_buttons_mount() {
     difference() {
         union() {
-            cube([11, 5, 19.5]);
+            chamfered_cube_side(
+                132, 12, 12.4, 2, center=true
+            );
 
-            translate([1.5, 0, 0])
-            cube([2.9, 11, 19.5]);
+            translate([3, 0, 0])
+            chamfered_cube_side(
+                22, 15, 12.4, 2, center=true
+            );
+
+            translate([-22.5, -4.5, 0])
+            chamfered_cube_side(
+                42, 25, 12.4, 2, center=true
+            );
+
+            translate([30, -2, 3.6/2])
+            chamfered_cube_side(
+                 38, 16, 16, 4, center=true
+            );
+
+            translate([20, 0, 3.6/2])
+            cylinder(d=15, h=16, center=true);
             
-            translate([12.5 - 2.9, 0, 0])
-            cube([2.9, 11, 19.5]);
- 
-            translate([1.5 + 2.9, 8.7, 19.5/2])
-            rotate([0, 0, 45])
-            cube([2, 2, 19.5], center=true);
-
-            translate([12.5 - 2.9, 8.7, 19.5/2])
-            rotate([0, 0, 45])
-            cube([2, 2, 19.5], center=true);
+            translate([40, 0, 3.6/2])
+            cylinder(d=15, h=16, center=true);
         }
 
-        translate([-1, 2.7, 4])
-        rotate([0, 90, 0])
-        cylinder(d=2, h=20, $fn=20);
+        // switch holes
+        translate([-35, -5.4, 5.4])
+        cube([7.1, 20.4, 20], center=true);
 
-        translate([-1, 2.7, 14])
+        translate([-35, -6, 0])
+        cube([7.1, 19.4, 20], center=true);
+
+        translate([-10, -5.4, 5.4])
+        cube([7.1, 20.4, 20], center=true);
+
+        translate([-10, -6, 0])
+        cube([7.1, 19.4, 20], center=true);
+
+        // switch mount holes
+        translate([-47, -10.5, -1.8])
         rotate([0, 90, 0])
-        cylinder(d=2, h=20, $fn=20);
+        cylinder(d=2.2, h=10, $fn=20);
+
+        translate([-10, -10.5, -1.8])
+        rotate([0, 90, 0])
+        cylinder(d=2.2, h=10, $fn=20);
+
+        translate([-22.5, -10.5, -1.8])
+        rotate([0, 90, 0])
+        cylinder(d=1.9, h=20, center=true, $fn=20);
+
+        // led holes
+        translate([20, 0, 12.4/2 - 0.2])
+        cylinder(d=10.2, h=5, $fn=40);
+
+        translate([40, 0, 12.4/2 - 0.2])
+        cylinder(d=10.2, h=5, $fn=40);
+
+        translate([20, 15/2 - 2.5, 0])
+        cube([3, 15, 20], center=true);
+
+        translate([40, 15/2 - 2.5, 0])
+        cube([3, 15, 20], center=true);
+
+        // mount holes
+        translate([3, 0, 10/2 + 2.2])
+        cylinder(d=3.3, h=10, center=true, $fn=20);
+
+        translate([3, 0, -10/2 + 2])
+        cylinder(d=7, h=10, center=true, $fn=20);
+        
+        translate([-60, 0, 10/2 + 2.2])
+        cylinder(d=3.3, h=10, center=true, $fn=20);
+
+        translate([-60, 0, -10/2 + 2])
+        cylinder(d=7, h=10, center=true, $fn=20);
+
+        translate([60, 0, 10/2 + 2.2])
+        cylinder(d=3.3, h=10, center=true, $fn=20);
+
+        translate([60, 0, -10/2 + 2])
+        cylinder(d=7, h=10, center=true, $fn=20);
+
+    }
+}
+
+module front_cover_buttons_mount_4_leds() {
+    difference() {
+        union() {
+            front_cover_buttons_mount();
+
+            translate([30, -12.5, 3.6/2])
+            chamfered_cube_side(
+                 38, 14, 16, 4, center=true
+            );
+
+            translate([20, -13, 3.6/2])
+            cylinder(d=15, h=16, center=true);
+            
+            translate([40, -13, 3.6/2])
+            cylinder(d=15, h=16, center=true);            
+        }
+
+        // led holes
+        translate([20, - 13, 12.4/2 - 0.2])
+        cylinder(d=10.2, h=5, $fn=40);
+
+        translate([40, - 13, 12.4/2 - 0.2])
+        cylinder(d=10.2, h=5, $fn=40);
+
+        translate([20, -15/2 + 2.5 - 13, 0])
+        cube([3, 15, 20], center=true);
+
+        translate([40, -15/2 + 2.5 - 13, 0])
+        cube([3, 15, 20], center=true);
     }
 }
 
@@ -1810,38 +1926,6 @@ module cover_lens_5mm_led() {
 
             cylinder(d=5.1, h=2, $fn=30);
         }
-    }
-}
-
-module cover_lens_mount() {
-    h = 10;
-
-    difference() {
-        union() {
-            translate([0, 0, h/2])
-            cube([32, 4, h], center=true);
-
-            translate([-2.2/2 - 5/2 - 0.05, 7.5/2, h/2])
-            cube([2.2, 7.5, h], center=true);
-            
-            translate([2.2/2 + 5/2 + 0.05, 7.5/2, h/2])
-            cube([2.2, 7.5, h], center=true);
- 
-            translate([-5/2 - 0.05, 5.5, h/2])
-            rotate([0, 0, 45])
-            cube([2, 2, h], center=true);
-
-            translate([5/2 + 0.05, 5.5, h/2])
-            rotate([0, 0, 45])
-            cube([2, 2, h], center=true);
-        }
-
-        translate([-10, 0, 10/2 + 2.4])
-        cube([3, 10, 10], center=true);
-
-        translate([10, 0, 10/2 + 2.4])
-        cube([3, 10, 10], center=true);
-    
     }
 }
 
