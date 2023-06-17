@@ -6,12 +6,15 @@ use <../../Dollo/New_long_ties/mockups.scad>;
 use <../../lib/includes.scad>;
 
 
+//debug_tronxy_cable_pcb_mount();
+
+
 //gt2_belt();
 //rounded_gt2_belt(10, 30);
 //tronxy_z_rod_top_washer();
 //tronxy_board_frame_adapters();
 //hotend_pcb();
-//tronxy_cable_pcb_mount();
+tronxy_cable_pcb_mount();
 //tronxy_cable_pcb_mount_fasterner();
 //tronxy_bed_spacer();
 //qnd_motor_mount_fix();
@@ -25,7 +28,15 @@ use <../../lib/includes.scad>;
 //tronxy_corner_bearing_mount_left();
 //gt2_idler_625zz();
 //gt2_idler_625zz_retainer();
-duet_case_frame_adapter();
+//duet_case_frame_adapter();
+
+
+module debug_tronxy_cable_pcb_mount() {
+    tronxy_cable_pcb_mount();
+
+    translate([10.6, 15, 3])
+    tronxy_cable_pcb_mount_fasterner();
+}
 
 
 module tronxy_z_rod_top_washer() {
@@ -131,73 +142,145 @@ pcw_mount_w = 40;
 pcw_mount_l = 44;
 
 module tronxy_cable_pcb_mount() {
-    h = 55;
+    h = 53;
 
     difference() {
         union() {
             // base
-            cube([pcw_mount_w, pcw_mount_l, 3]);
-
-            // tower
-            translate([-2, 0, 0])
-            cube([6.3, 22.5, h]);
-
             hull() {
-                translate([0, 20.5, 0])
-                cube([9, 2, 1]);
+                translate([-2, -5, 0])
+                rounded_cube_side(
+                    pcw_mount_w + 2,
+                    pcw_mount_l + 20,
+                    3, 9
+                );
 
-                translate([-2, 20.5, h-1])
-                cube([6.3, 2, 1]);
+                translate([
+                    -2 + 9/2, -11 + 9/2, 0
+                ])
+                cylinder(d=9, h=3);
             }
 
-            cube([7, 22, 5.2]);
+            // tower
+            hull() {
+                translate([-2, 0, 0])
+                cube([6.3, 22.5, h]);
+
+                translate([-2, -10, 0])
+                cube([6.3, 22.5, 20]);
+            }
+
+            // reinforcement
+            hull() {
+                translate([-2, 20.5, 0])
+                cube([12.4, 3, 1]);
+
+                translate([-2, 20.5, h-1])
+                cube([6.3, 3, 1]);
+            }
 
             // nut extrusions
-            translate([-1.9, 22.5/2, h - 15.8 + 5])
-            chamfered_cube(4, 22.5, 11, 1.9, center=true);
+            translate([
+                -2, 22.5/2 + 0.5,
+                h - 15.8 + 5
+            ])
+            chamfered_cube(
+                4, 22.5, 11, 1.9, center=true
+            );
 
-            translate([-1.9, 22.5/2, 5.2 + 9])
-            chamfered_cube(4, 22.5, 11, 1.9, center=true);
+            translate([
+                -2, 22.5/2 - 8.5, 3 + 9
+            ])
+            chamfered_cube(
+                4, 22.5, 11, 1.9, center=true
+            );
+
+            // cable rest
+            translate([2, 16.8, 2])
+            rotate([0, 0, -25])
+            cube([22, 7, 6]);
         }
 
-        translate([0, 2.1, h - 15.9 - 4])
+        // tower cuts
+        translate([0, 2.6, h - 15.9 - 4])
         cube([2.2, 18.2, 22]);
 
-        translate([-1.2, 2.25 + 5, h - 15.8 + 5])
+        translate([-1.2, 2.75 + 5, h - 15.8 + 5])
         rotate([0, -90, 0]) {
-            cylinder(d=3.3, h=15, center=true, $fn=20);
+            cylinder(
+                d=3.3, h=15,
+                center=true, $fn=20
+            );
+
             M3_nut(5);
         }
 
-        translate([-1.2, 2.25 + 18 - 5, h - 15.8 + 5])
+        translate([
+            -1.2, 2.75 + 18 - 5, h - 15.8 + 5
+        ])
         rotate([0, -90, 0]) {
-            cylinder(d=3.3, h=15, center=true, $fn=20);
+            cylinder(
+                d=3.3, h=15,
+                center=true, $fn=20
+            );
+
             M3_nut(5);
         }
 
-        translate([-1.2, 2.25 + 5, 5.2 + 9])
+        translate([-1.2, 2.75 - 4, 3 + 9])
         rotate([0, -90, 0]) {
-            cylinder(d=3.3, h=15, center=true, $fn=20);
+            cylinder(
+                d=3.3, h=15,
+                center=true, $fn=20
+            );
+
             M3_nut(5);
         }
 
-        translate([-1.2, 2.25 + 18 - 5, 5.2 + 9])
+        translate([
+            -1.2, 2.75 + 9 - 5, 3 + 9
+        ])
         rotate([0, -90, 0]) {
-            cylinder(d=3.3, h=15, center=true, $fn=20);
+            cylinder(
+                d=3.3, h=15,
+                center=true, $fn=20
+            );
+
             M3_nut(5);
         }
 
-        translate([13, 9, -0.1])
+        // PCB cuts
+        translate([13, 24, -0.1])
         cube([21, 26, 4]);
 
-        translate([12, 8, 1.5])
+        translate([12, 23, 1.5])
         cube([23, 28, 4]);
 
-        translate([23.5, 4, -0.1])
+        translate([23.5, 19, -0.1])
         cylinder(d=3.3, h=5, $fn=20);
 
-        translate([23.5, pcw_mount_l - 4, -0.1])
+        translate([23.5, pcw_mount_l + 11, -0.1])
         cylinder(d=3.3, h=5, $fn=20);
+
+        // cable rest groove
+        translate([14, 15.3, 11.4])
+        rotate([90, 0, -25])
+        cylinder(d=10, h=10, center=true, $fn=40);
+
+        // zip tie groove
+        translate([14, 15.3, -5])
+        rotate([90, 0, -25])
+        difference() {
+            cube([
+                17, 30, 3
+            ], center=true);
+
+            rounded_cube_side(
+                13, 26, 4, 6,
+                center=true, $fn=40
+            );
+
+        }
     }
 }
 
@@ -211,7 +294,9 @@ module tronxy_cable_pcb_mount_fasterner() {
                 translate([0, 6, 0])
                 cube([26, pcw_mount_l - 12, 2]);
 
-                translate([26/2, pcw_mount_l - 4, 0])
+                translate([
+                    26/2, pcw_mount_l - 4, 0
+                ])
                 cylinder(d=7, h=2, $fn=20);
             }
             translate([26/2, 4])
@@ -224,11 +309,11 @@ module tronxy_cable_pcb_mount_fasterner() {
         translate([3, (pcw_mount_l - 25)/2, -0.1])
         cube([20, 25, 14]);
 
-        translate([26/2, 4])
-        cylinder(d=3.3, h=5, $fn=20);
+        translate([26/2, 4, -1])
+        cylinder(d=3.3, h=6, $fn=20);
 
-        translate([26/2, pcw_mount_l - 4])
-        cylinder(d=3.3, h=5, $fn=20);
+        translate([26/2, pcw_mount_l - 4, -1])
+        cylinder(d=3.3, h=6, $fn=20);
 
         translate([26/2, 4, 3])
         M3_nut();
@@ -464,42 +549,76 @@ module tronxy_wire_chain_support() {
     difference() {
         intersection() {
             union() {
-                translate([-2, 0, 0])
-                cube([7, l + 15, h]);
+                translate([-1.99, 0, 0])
+                cube([7, l/2 + 15, h]);
 
-                translate([0, l, h/2])
+                translate([5, l/2 - 10, 0])
+                cube([7, l/2 + 25, h]);
+
+                translate([7, l, h/2])
                 rotate([-tilt, 0, 0]) {
-                    translate([10/2, -18.4/2 - 5/2, 0])
+                    translate([
+                        10/2, -18.4/2 - 5/2, 0
+                    ])
                     cube([10, 5, 50], center=true);
 
-                    translate([10/2, 18.4/2 + 5/2, 0])
+                    translate([
+                        10/2, 18.4/2 + 5/2, 0
+                    ])
                     cube([10, 5, 50], center=true);
                 }
+
                 translate([7.5/2, 20/2, h/2])
-                cube([7.5, 6, 25], center=true);
+                cube([7.5, 6, 30], center=true);
             }
-            translate([-2, 0, 0])
-            cube([20, l + 20, h]);
+
+            translate([-5, 0, 0])
+            chamfered_cube(
+                30, l + 13.5, h, 3
+            );
         }
+
+        // chamfers
         translate([5.01, 0, h/2 - 16/2])
         chamfered_cube(6, 19, 16, 2.5);
 
+        translate([5, l/2 + 15, 0])
+        rotate([0, 0, 74])
+        translate([-40, 0, -1])
+        cube([40, 30, 50]);
+
+        translate([5, l/2 - 10, 0])
+        rotate([0, 0, -16])
+        translate([0, 0, -1])
+        cube([30, 30, 50]);
+
+        // frame mount hole
         translate([0, 10, h/2])
         rotate([0, 90, 0])
-        cylinder(d=4.4, h=20, center=true, $fn=40);
+        cylinder(
+            d=4.4, h=20, center=true, $fn=40
+        );
         
         translate([0, l, h/2])
         rotate([-tilt, 0, 0]) {
-            translate([2, 0, -8/2]) {
+            translate([9, 0, -8/2]) {
                 rotate([0, -90, 0]) {
                     M3_nut(5);
-                    cylinder(d=3.3, h=10, center=true, $fn=30);
+
+                    cylinder(
+                        d=3.3, h=10,
+                        center=true, $fn=30
+                    );
                 }
             }
-            translate([2, 0, 8/2]) {
+            translate([9, 0, 8/2]) {
                 rotate([0, -90, 0]) {
                     M3_nut(5);
-                    cylinder(d=3.3, h=10, center=true, $fn=30);
+
+                    cylinder(
+                        d=3.3, h=10,
+                        center=true, $fn=30
+                    );
                 }
             }
         }
