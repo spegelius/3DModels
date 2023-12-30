@@ -3,11 +3,11 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //_original_bucket();
 //debug_rotating_bucket();
 //debug_rotating_bucket_dc();
-//test_rotating();
+test_rotating();
 
 //rotating_bucket();
 //rotating_bucket_dc_yellow();
-rotating_bucket_dc_black();
+//rotating_bucket_dc_black();
 
 
 
