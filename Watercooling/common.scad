@@ -115,6 +115,7 @@ module g3_8_thread(h, slop=0) {
         pitch=1.337,
         direction=0,
         steps=80,
+        depth=0.3,
         chamfer=true
     );
 
@@ -127,6 +128,19 @@ module g1_4_thread(h, slop=0) {
         pitch=1.337,
         direction=0,
         steps=70,
+        depth=0.2,
+        chamfer=true
+    );
+}
+
+module g1_2_thread(h, slop=0) {
+    v_screw(
+        h=h,
+        screw_d=g1_2_d + slop,
+        pitch=1.814,
+        direction=0,
+        steps=70,
+        depth=0.4,
         chamfer=true
     );
 }

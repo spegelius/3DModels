@@ -6,21 +6,29 @@ include <common.scad>;
 slop = 0.15;
 
 nozzle = 0.45;
-wall = 4*nozzle;
+wall = 2;
 
 //width = 95;
 //length = 150;
 //height = 130;
+//screws_x = 2;
+//screws_y = 3;
 
-width = 100;
-length = 100;
-height = 130;
+//width = 100;
+//length = 100;
+//height = 130;
+//screws_x = 2;
+//screws_y = 2;
+
+width = 140;
+length = 200;
+height = 140;
+screws_x = 3;
+screws_y = 3;
 
 // for faster viewing. Turn on for final render
 render_thread = true;
 
-screws_x = 2;
-screws_y = 2;
 
 gasket_wall = nozzle * 3;
 
@@ -53,7 +61,7 @@ screw_corner_d = lid_screw_dia + 5;
 
 corner = 10;
 
-lid_edge = 2 * wall + 4;
+lid_edge = 2 * wall + 5;
 lid_width = width + lid_edge;
 lid_length = length + lid_edge;
 
@@ -87,9 +95,9 @@ inner_l = length - 2*wall;
 //test_cup_vase();
 
 //reservoir();
-lid();
-//cork();
+//lid();
 //gasket();
+//cork();
 //ring_gasket_passthrough();
 //ring_gasket_wire();
 //cork_gasket();
@@ -103,7 +111,7 @@ lid();
 
 
 ////// MODULES //////
-module screw_corner() {
+module _screw_corner() {
 
     difference() {
         hull() {
@@ -142,16 +150,17 @@ module _reservoir_body() {
         union() {
             rounded_cube_side(
                 width, length, height,
-                corner, $fn=30
+                corner, $fn=40
             );
 
+            // lid top edge
             translate([
                 0, 0, height - lid_edge/2 - 2
             ])
             hull() {
                 rounded_cube_side(
                     width, length, 1,
-                    corner, $fn=30
+                    corner, $fn=40
                 );
 
                 translate([
@@ -161,7 +170,7 @@ module _reservoir_body() {
                 ])
                 rounded_cube_side(
                     lid_width, lid_length,
-                    2, lid_corner, $fn=30
+                    2, lid_corner, $fn=40
                 );
             }
         }
@@ -229,7 +238,7 @@ module reservoir() {
                         0, 0,
                         lid_screw_corner_h
                     ])
-                    screw_corner();
+                    _screw_corner();
                 }
 
                 // inside removed
@@ -365,7 +374,7 @@ module reservoir() {
 
         // gasket groove
         translate([0, 0, height - 3/2])
-        gasket();
+        _gasket(0.1);
     }
 }
 
@@ -396,14 +405,14 @@ module lid() {
             _lid_hole_positions()
             intersection() {
                 scale([1, 1, 2])
-                screw_corner();
+                _screw_corner();
 
                 cylinder(d=100, h=lid_height);
             }
         }
 
         translate([0, 0, lid_height - 3/2 + 0.4])
-        gasket();
+        _gasket(0.1);
 
         // inner block to remove
         difference() {
@@ -526,106 +535,59 @@ module cork() {
     }
 }
 
-module gasket() {
+module _gasket(extra=0) {
+    e1 = 5 + extra;
+    e2 = 4 + extra;
 
-    difference() {
+    module _inner_chamfer() {
         hull() {
-
-            translate([-5/2, -5/2, 1/2])
+            translate([extra/2, extra/2, 0])
             rounded_cube_side(
-                width + 5, length + 5, 2,
-                corner + 5, $fn=40
+                width - extra, length - extra, 3,
+                corner - extra, $fn=50
             );
 
-            translate([-4/2, -4/2, 0])
+            translate([extra/2 - 1, extra/2 - 1, 1])
             rounded_cube_side(
-                width + 4, length + 4, 3,
-                corner + 4, $fn=40
-            );
-        }
-
-        translate([0, 0, -1])
-        rounded_cube_side(
-            width, length, 5,
-            corner, $fn=40
-        );
-
-        hull() {
-            translate([
-                (corner + 2)/2 - 1,
-                (corner + 2)/2 - 1,
-                3 - 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                width - (corner + 2)/2 + 1,
-                (corner + 2)/2 - 1,
-                3 - 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                (corner + 2)/2 - 1,
-                length - (corner + 2)/2 + 1,
-                3 - 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                width - (corner + 2)/2 + 1,
-                length - (corner + 2)/2 + 1,
-                3 - 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-        }
-
-        hull() {
-            translate([
-                (corner + 2)/2 - 1,
-                (corner + 2)/2 - 1,
-                -5 + 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                width - (corner + 2)/2 + 1,
-                (corner + 2)/2 - 1,
-                -5 + 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                (corner + 2)/2 - 1,
-                length - (corner + 2)/2 + 1,
-                -5 + 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
-            );
-
-            translate([
-                width - (corner + 2)/2 + 1,
-                length - (corner + 2)/2 + 1,
-                -5 + 1/2
-            ])
-            chamfered_cylinder(
-                corner + 2, 5, 1, $fn=40
+                width - extra + 2,
+                length - extra + 2, 1,
+                corner - extra + 2, $fn=50
             );
         }
     }
+    
+    difference() {
+        hull() {
+            translate([-e1/2, -e1/2, 1/2])
+            rounded_cube_side(
+                width + e1, length + e1, 2,
+                corner + e1, $fn=50
+            );
+
+            translate([-e2/2, -e2/2, 0])
+            rounded_cube_side(
+                width + e2, length + e2, 3,
+                corner + e2, $fn=50
+            );
+        }
+
+        // hole
+        translate([extra/2, extra/2, -1])
+        rounded_cube_side(
+            width - extra, length - extra, 5,
+            corner - extra, $fn=50
+        );
+
+        translate([0, 0, 3 - 1/2])
+        _inner_chamfer();
+
+        translate([0, 0, -3 + 1/2])
+        _inner_chamfer();
+    }
+}
+
+module gasket() {
+    _gasket();
 }
 
 module ring_gasket_passthrough() {
@@ -949,29 +911,36 @@ module old_gasket() {
 }
 
 module test_res() {
-    translate([0, 0, -height + 15])
+    translate([0, 0, -height + 10])
     intersection() {
         reservoir();
 
-        translate([0, 0, height - 15])
-        cube([20, 20, 15]);
+        translate([-4, -4, height - 10])
+        rounded_cube_side(
+            22, 22, 15, corner
+        );
     }
 }
 
 module test_lid() {
     
     intersection() {
+        translate([width, 0, 0])
+        mirror([1, 0, 0])
         lid();
 
-        cube([20, 20, 10]);
+        translate([-4, -4, 0])
+        rounded_cube_side(
+            19, 19, 10, corner
+        );
     }
 }
 
 module test_gasket() {
     intersection() {
-        translate([-wall, -wall, 0])
         gasket();
 
+        translate([-3, -3, 0])
         cube([20, 20, 10]);
     }
 }
@@ -981,16 +950,16 @@ module test_cork() {
     intersection() {
         cork();
 
-        translate([0, 0, 50/2 + 10])
-        cube([50, 50, 50], center=true);
+        translate([0, 0, 10/2 + 10])
+        cube([50, 50, 10], center=true);
     }
 
     translate([50, 0, 0])
     intersection() {
-        cylinder(d=45, h=10);
+        cylinder(d=43, h=10);
 
         translate([
-            -lid_width/2, -lid_length/2,0
+            -width/2, -length/2,0
         ])
         lid();
     }
@@ -999,13 +968,13 @@ module test_cork() {
 module test_cup() {
     difference() {
         rounded_cube_side(
-            40, 40, 40, corner
+            40, 40, 40, corner, $fn=50
         );
 
         translate([wall, wall, wall])
         rounded_cube(
             40 - 2*wall, 40-2*wall, 40+10,
-            corner - 2*wall
+            corner - 2*wall, $fn=50
         );
     }
 }
@@ -1013,41 +982,37 @@ module test_cup() {
 module test_cup_vase() {
     vase_wall = nozzle;
     difference() {
-        rounded_cube_side(40, 40, 40, corner);
-//        translate([
-//            vase_wall, vase_wall, vase_wall
-//        ])
-//        rounded_cube(
-//            40 - 2*wall, 40 - 2*wall,
-//            40 + 10, corner - 2*wall
-//        );
+        rounded_cube_side(
+            40, 40, 40, corner, $fn=50
+        );
     }
 }
 
 module debug() {
 
+    color("blue")
     intersection() {
         translate([0, 0, height + 3/2 + 0.1])
         mirror([0, 0, 1])
-        color("blue")
         gasket();
 
         translate([-10, -10, 0])
         cube([width + 20, 21, height + 20]);
     }
 
+    color("green")
     intersection() {
         translate([
             0, 0, height + lid_height + 0.6
         ])
         mirror([0, 0, 1])
-        color("green")
         lid();
 
         translate([-10, -10, 0])
         cube([width + 20, 20, height + 20]);
     }
 
+    render()
     intersection() {
         reservoir();
 

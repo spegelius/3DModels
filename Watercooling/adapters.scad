@@ -9,10 +9,31 @@ thread_slop = 0.4;
 
 
 //debug();
-fitting_adapter_Eheim();
+adapter_g1_2_g1_4();
+//fitting_adapter_Eheim();
 
-module original_fitting_adapter_Eheim() {
-    
+module adapter_g1_2_g1_4() {
+
+    // G1/2 outer, G1/4 inner
+    difference() {
+        union() {
+            translate([0, 0, 5])
+            g1_2_thread(
+                14.5, slop=0
+            );
+
+            hexagon(22, height=5.7);
+        }
+
+        intersection() {
+            g1_4_thread(
+                11, slop=thread_slop
+            );
+        }
+
+        translate([0, 0, 10.9])
+        cylinder(d=11.5, h=20, $fn=60);
+    }
 }
 
 
