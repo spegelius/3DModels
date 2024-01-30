@@ -7,9 +7,18 @@ include <../lib/fittings.scad>;
 ////// VARIABLES //////
 $fn=60;
 
+stl_base_path = "../_downloaded/";
+bstruder_path = str(
+    stl_base_path, "B-struder_Bowden_extruder/"
+);
+
 ////// VIEW //////
 //translate([50, 0, 0])
 //orig_arm();
+//orig_motor_mount();
+//orig_lock_lever();
+//orig_MR105ZZ_support();
+//orig_spring_cap();
 
 //debug_orig_arm();
 
@@ -17,15 +26,15 @@ $fn=60;
 
 //debug_arm_E3D_HobGoblin_2x623zz();
 
-//debug_arm_Bondtech();
+debug_arm_Bondtech();
 //debug_bondtech_gear();
 //debug_bondtech_arm_supports();
 
 //arm_E3D_HobGoblin_U604zz();
 //arm_E3D_HobGoblin_U604zz(supports=true);
-arm_E3D_HobGoblin_U604zz(
-    threads=false, m4=true, supports=true
-);
+//arm_E3D_HobGoblin_U604zz(
+//    threads=false, m4=true, supports=true
+//);
 //arm_E3D_HobGoblin_U604zz(threads=false);
 
 //arm_E3D_HobGoblin_2x623zz();
@@ -57,70 +66,84 @@ arm_E3D_HobGoblin_U604zz(
 
 ////// MODULES //////
 module orig_arm() {
-    translate([0,0,-55])
-    import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_arm_40Tgear+U604_M6ends.stl", convexity=10);
+    translate([0, 0, -55])
+    import(str(
+        bstruder_path,
+        "2017-04-12_B-struder_arm_40Tgear+U604_M6ends.stl"
+    ), convexity=10);
 }
 
 module orig_motor_mount() {
-    translate([0,0,-55])
-    import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-studer_Motor_mount.stl", convexity=10);
-
+    translate([0, 0, -55])
+    import(str(
+        bstruder_path,
+        "2017-04-12_B-studer_Motor_mount.stl"
+    ), convexity=10);
 }
 
 module orig_lock_lever() {
-    translate([15.5,15.5,-53])
-    import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_lock_lever.stl");
+    translate([15.5, 15.5, -53])
+    import(str(
+        bstruder_path,
+        "2017-04-12_B-struder_lock_lever.stl"
+    ));
 }
 
 module orig_MR105ZZ_support() {
     translate([0,0,-71])
-    import("../_downloaded/B-struder_Bowden_extruder/2017-05-06_B-Struder-B-struder_MR105ZZ_support.stl", convexity=10);
+    import(str(
+        bstruder_path,
+        "2017-05-06_B-Struder-B-struder_MR105ZZ_support.stl"
+    ), convexity=10);
 }
 
 module orig_spring_cap() {
     translate([-32,9,-60.5])
-    import("../_downloaded/B-struder_Bowden_extruder/2017-04-12_B-struder_spring_cap.stl");
+    import(str(
+        bstruder_path,
+        "2017-04-12_B-struder_spring_cap.stl"
+    ));
 }
 
 module arm_body(height=15) {
     difference() {
         union() {
             hull() {
-                translate([-4,-18,0])
-                cube([22,1,height]);
+                translate([-4, -18, 0])
+                cube([22, 1, height]);
 
-                translate([15.5,15.5,0])
-                cylinder(d=18,h=height, $fn=40);
+                translate([15.5, 15.5, 0])
+                cylinder(d=18, h=height, $fn=40);
 
-                translate([0,28,0])
-                cube([12,1,height]);
+                translate([0, 28, 0])
+                cube([12, 1, height]);
             }
             hull() {
-                translate([0,9,0])
-                cube([1,19,height]);
+                translate([0, 9, 0])
+                cube([1, 19, height]);
 
-                translate([-10,34,0])
-                cylinder(d=5,h=height, $fn=30);
+                translate([-10, 34, 0])
+                cylinder(d=5, h=height, $fn=30);
             }
             hull() {
-                translate([-10,34,0])
+                translate([-10, 34, 0])
                 cylinder(d=5,h=height, $fn=30);
 
-                translate([-12,40,0])
-                cylinder(d=5,h=height, $fn=30);
+                translate([-12, 40, 0])
+                cylinder(d=5, h=height, $fn=30);
             }
         }
-        translate([0,29,0])
-        rotate([0,0,-13])
-        cube([40,10,height+1]);
+        translate([0, 29, 0])
+        rotate([0, 0, -13])
+        cube([40, 10, height + 1]);
 
-        translate([-10,-25,0])
-        rotate([0,0,-13])
-        cube([40,10,height+1]);
+        translate([-10, -25, 0])
+        rotate([0, 0, -13])
+        cube([40, 10, height + 1]);
 
-        translate([-16,-17,0])
-        rotate([0,0,-40])
-        cube([5,20,height+1]);
+        translate([-16, -17, 0])
+        rotate([0, 0, -40])
+        cube([5, 20, height + 1]);
     }
 }
 
@@ -130,51 +153,52 @@ module E3D_HobGoblin() {
         cylinder(d=8,h=11, $fn=30);
         cylinder(d=5,h=12, $fn=30);
 
-        translate([0,0,7.5])
-        donut(12.2,5);
+        translate([0, 0, 7.5])
+        donut(12.2, 5);
 
-        translate([0,0,2.9])
-        rotate([90,0,0]) cylinder(d=3,h=5,$fn=20);
+        translate([0, 0, 2.9])
+        rotate([90, 0, 0])
+        cylinder(d=3, h=5, $fn=20);
     }
-    translate([0,-2,2.9])
-    rotate([90,0,0])
-    cylinder(d=3,h=4,$fn=20);
+    translate([0, -2, 2.9])
+    rotate([90, 0, 0])
+    cylinder(d=3, h=4, $fn=20);
 }
 
 module Bondtech_gear() {
     difference() {
         union() {
-            cylinder(d=8,h=14,$fn=40);
+            cylinder(d=8, h=14, $fn=40);
             for (i=[0:16]) {
-                rotate([0,0,360/17*i])
-                translate([9.5/2-2/2,0,4.8/2])
-                cube([2,0.8,4.8],center=true);
+                rotate([0, 0, 360/17*i])
+                translate([9.5/2 - 2/2, 0, 4.8/2])
+                cube([2, 0.8, 4.8], center=true);
             }
         }
-        cylinder(d=5,h=30,center=true,$fn=40);
+        cylinder(d=5, h=30, center=true, $fn=40);
 
-        translate([0,0,11])
-        donut(11.5,4);
+        translate([0, 0, 11])
+        donut(11.5, 4);
     }
 }
 
 module _hinge_bearing() {
     hull() {
-        cylinder(d=6.2,h=3,center=true,$fn=40);
-        cylinder(d=3.2,h=6,center=true,$fn=40);
+        cylinder(d=6.2, h=3, center=true, $fn=40);
+        cylinder(d=3.2, h=6, center=true, $fn=40);
     }
 }
 
 module hinge(height=15) {
 
     // hinge
-    translate([15.5,15.5,0]) {
+    translate([15.5, 15.5, 0]) {
         difference() {
             union () {
-                cylinder(d=3.2,h=height+1,$fn=40);
+                cylinder(d=3.2, h=height + 1, $fn=40);
                 _hinge_bearing();
 
-                translate([0,0,height])
+                translate([0, 0, height])
                 _hinge_bearing();
             }
         }
@@ -184,12 +208,12 @@ module hinge(height=15) {
 module hinge_support(height=15) {
     difference() {
         hull() {
-            translate([0,0,3/2])
-            cylinder(d=6.6,h=height-8-3);
+            translate([0, 0, 3/2])
+            cylinder(d=6.6, h=height - 8 - 3);
 
-            cylinder(d=5.3,h=height-8,$fn=40);
+            cylinder(d=5.3, h=height - 8, $fn=40);
         }
-        cylinder(d=3.3,h=height-7,$fn=40);
+        cylinder(d=3.3, h=height - 7, $fn=40);
     }
 }
 
@@ -211,8 +235,8 @@ module fitting_hole_M5() {
             translate([-dist,-dist,0])
             cube([2,2,40], center=true);
         }
-        translate([0,0,4])
-        cylinder(d1=3.7, d2=5.5,h=2, $fn=40);
+        translate([0, 0, 4])
+        cylinder(d1=3.7, d2=5.5, h=2, $fn=40);
     }
 }
 
@@ -220,37 +244,37 @@ module fitting_hole_M6() {
     dist = 2.7;
     union() {
         difference() {
-            cylinder(d=5.7,h=5, $fn=40);
+            cylinder(d=5.7, h=5, $fn=40);
 
-            translate([dist,dist,0])
-            cube([2,2,40], center=true);
+            translate([dist, dist, 0])
+            cube([2, 2, 40], center=true);
 
-            translate([-dist,dist,0])
-            cube([2,2,40], center=true);
+            translate([-dist, dist, 0])
+            cube([2, 2, 40], center=true);
 
-            translate([dist,-dist,0])
-            cube([2,2,40], center=true);
+            translate([dist, -dist, 0])
+            cube([2, 2, 40], center=true);
 
-            translate([-dist,-dist,0])
-            cube([2,2,40], center=true);
+            translate([-dist, -dist, 0])
+            cube([2, 2, 40], center=true);
         }
-        translate([0,0,4.01])
-        cylinder(d1=4.7, d2=6.5,h=2, $fn=40);
+        translate([0, 0, 4.01])
+        cylinder(d1=4.7, d2=6.5, h=2, $fn=40);
     }
 }
 
 module spring_notch() {
     // spring notch
-    translate([13,-14.5,15/2+1])
-    rotate([-90,0,-75])
+    translate([13, -14.5, 15/2 + 1])
+    rotate([-90, 0, -75])
     difference() {
         hull() {
-            cylinder(d=8,h=9, $fn=40);
+            cylinder(d=8, h=9, $fn=40);
 
-            translate([8,0,0])
-            cylinder(d=18,h=9, $fn=40);
+            translate([8, 0, 0])
+            cylinder(d=18, h=9, $fn=40);
         }
-        cylinder(d1=4.5, d2=2.5,h=2, $fn=40);
+        cylinder(d1=4.5, d2=2.5, h=2, $fn=40);
     }
 }
 
