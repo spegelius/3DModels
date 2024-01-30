@@ -1,6 +1,7 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 use <../Dollo/NEW_long_ties/long_tie.scad>;
+use <../Dollo/NEW_long_ties/mockups.scad>;
 use <../PCParts/common.scad>;
 use <../PCParts/case_profile.scad>;
 use <../Stepdown_box/Stepdown_box.scad>;
@@ -42,7 +43,15 @@ echo(cover_d);
 //mock_5V_USB_transformer();
 //mock_12V_transformer();
 //mock_itec_psu();
+//mock_raspberry_pi();
 //mockup();
+
+//_chia_logo();
+//_raspi_logo_1();
+//_raspi_logo_2();
+//_bitcoin_logo_1();
+//_bitcoin_logo_2();
+//_hdd_logo();
 
 //debug_beam();
 //debug_hdd_pieces();
@@ -59,6 +68,10 @@ echo(cover_d);
 //debug_stepdown_box_clip();
 //debug_ac_cover();
 //debug_adapter_WD_E_5T();
+//debug_box4();
+//debug_raspberry_pi_clips();
+//debug_connector_clips();
+//debug_stepdown_converter_2_clip();
 
 //front_1();
 //front_2();
@@ -151,17 +164,19 @@ echo(cover_d);
 
 //cable_clip();
 
-//connector_clip();
+//connector_clip_medium();
+connector_clip_small();
 
 //fan_connector_pcb_clip();
 
 //stepdown_box_side_clip();
 //stepdown_box_clip();
+//stepdown_converter_2_clip();
 
 //dummy_hdd();
 
 //ac_cover();
-ac_cover_2();
+//ac_cover_2();
 
 
 module _transformer_form(h=20) {
@@ -374,6 +389,13 @@ module _hdd_logo() {
     
 }
 
+module mock_raspberry_pi() {
+    import(str(
+        raspi_stl_path, 
+        "Raspberry_Pi_3_Light_Version.STL"),
+        convexity=10);
+}
+
 module mock_5V_transformer() {
     translate([0, 0, 55/2])
     cube([34.5, 74.6, 55], center=true);
@@ -527,10 +549,106 @@ module mock_itec_psu() {
     }
 }
 
+module _mockup_box(beams=1) {
+    // side rods
+    translate([-440/2 + 10, 0, 2U_h - 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=500, center=true, $fn=30);
+
+    translate([-440/2 + 10, 0, 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=500, center=true, $fn=30);
+
+    translate([440/2 - 10, 0, 2U_h - 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=500, center=true, $fn=30);
+
+    translate([440/2 - 10, 0, 10])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=500, center=true, $fn=30);
+
+    translate([440/2 - 10, -400/2, 10])
+    rotate([90, 0, 0])
+    M8_nut(cone=false);
+
+    // front and back parts
+    render() {
+        translate([-220/2, -500/2 + 9, 2U_h/2])
+        rotate([-90, 0, 0])
+        front_1();
+
+        translate([220/2, -500/2 + 9, 2U_h/2])
+        rotate([-90, 0, 0])
+        front_2();
+
+        translate([-220/2, 500/2 - 7.5, 2U_h/2])
+        rotate([90, 0, 0])
+        back_1();
+
+        translate([220/2, 500/2 - 7.5, 2U_h/2])
+        rotate([90, 0, 0])
+        back_2();
+
+        translate([0, 500/2 - 7.5 - 5, 2U_h/2])
+        rotate([180, 0, 0])
+        ac_cover();
+    }
+
+    translate([0, 1.5/2, 0])
+    render()
+    debug_bottom();
+
+    translate([0, 1.5/2, 0])
+    render()
+    debug_side();
+
+    // beam 1 (raspi and usb hubs)
+    translate([0, -161, 10])
+    rotate([90, 0, 0])
+    debug_beam();
+
+    if (beams == 1) {
+        // beam 2 (hdd)
+        translate([0, -68, 10])
+        rotate([90, 0, 0])
+        debug_beam();
+
+        // beam 3 (hdd)
+        translate([0, 83.5, 10])
+        rotate([90, 0, 0])
+        debug_beam();
+    } else {
+        // beam 2 (hdd)
+        translate([0, -105, 10])
+        rotate([90, 0, 0])
+        debug_beam();
+
+        // beam 3 (hdd)
+        translate([0, 104, 10])
+        rotate([90, 0, 0])
+        debug_beam();
+    }
+
+    // beam 4 (power)
+    translate([0, 157.5, 10])
+    rotate([90, 0, 0])
+    debug_beam();
+
+    translate([-40, 500/2 - 9 + 3/2, 2U_h/2])
+    rotate([90, 0, 0])
+    cord_socket_mount();
+
+    translate([40, 500/2 - 9 + 3/2, 2U_h/2])
+    rotate([90, 0, 0])
+    mains_switch_mount();
+}
+
 module mockup() {
     // 2U
 //    %translate([0, 0, 2U_h/2])
 //    cube([440, 400, 2U_h], center=true);
+
+    _mockup_box();
 
     translate([-140, -161, 22])
     rotate([0, -90, 0])
@@ -635,86 +753,6 @@ module mockup() {
     translate([199, 71.75, 23])
     rotate([90, 0, -90])
     hdd_piece();
-
-    // side rods
-    translate([-440/2 + 10, 0, 2U_h - 10])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=30);
-
-    translate([-440/2 + 10, 0, 10])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=30);
-
-    translate([440/2 - 10, 0, 2U_h - 10])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=30);
-
-    translate([440/2 - 10, 0, 10])
-    rotate([90, 0, 0])
-    cylinder(d=8, h=500, center=true, $fn=30);
-
-    translate([440/2 - 10, -400/2, 10])
-    rotate([90, 0, 0])
-    M8_nut(cone=false);
-
-    // front and back parts
-    render() {
-        translate([-220/2, -500/2 + 9, 2U_h/2])
-        rotate([-90, 0, 0])
-        front_1();
-
-        translate([220/2, -500/2 + 9, 2U_h/2])
-        rotate([-90, 0, 0])
-        front_2();
-
-        translate([-220/2, 500/2 - 7.5, 2U_h/2])
-        rotate([90, 0, 0])
-        back_1();
-
-        translate([220/2, 500/2 - 7.5, 2U_h/2])
-        rotate([90, 0, 0])
-        back_2();
-
-        translate([0, 500/2 - 7.5 - 5, 2U_h/2])
-        rotate([180, 0, 0])
-        ac_cover();
-    }
-
-    translate([0, 1.5/2, 0])
-    render()
-    debug_bottom();
-
-    translate([0, 1.5/2, 0])
-    render()
-    debug_side();
-
-    // beam 1 (raspi and usb hubs)
-    translate([0, -161, 10])
-    rotate([90, 0, 0])
-    debug_beam();
-
-    // beam 2 (hdd)
-    translate([0, -68, 10])
-    rotate([90, 0, 0])
-    debug_beam();
-
-    // beam 3 (hdd)
-    translate([0, 83.5, 10])
-    rotate([90, 0, 0])
-    debug_beam();
-
-    // beam 4 (power)
-    translate([0, 157.5, 10])
-    rotate([90, 0, 0])
-    debug_beam();
-
-    translate([-40, 500/2 - 9 + 3/2, 2U_h/2])
-    rotate([90, 0, 0])
-    cord_socket_mount();
-
-    translate([40, 500/2 - 9 + 3/2, 2U_h/2])
-    rotate([90, 0, 0])
-    mains_switch_mount();
 
 //    translate([150, 163, 55])
 //    rotate([0, 110, 0])
@@ -861,8 +899,8 @@ module debug_D_link_clips() {
             D_link_hub_clip_front();
         }
 
-        translate([200/2, 0, 0])
-        cube([200, 200, 200], center=true);
+//        translate([200/2, 0, 0])
+//        cube([200, 200, 200], center=true);
     }
 }
 
@@ -1068,6 +1106,136 @@ module debug_adapter_WD_E_5T() {
     adapter_USB_HDD_WD_E_5T_top();
 }
 
+module debug_box4() {
+
+    // not viable probably
+
+    module _seagate_usb() {
+        union() {
+            cube([35, 176, 121], center=true);
+
+            translate([-35/2 + 9, -176/2, -121/2 + 23])
+            rotate([90, 0, 0])
+            cylinder(d=10, h=40, center=true);
+
+            translate([-35/2 + 6.5, -176/2, -121/2 + 42])
+            cube([4.5, 40, 16], center=true);
+        }
+    }
+
+    module _hdds() {
+        // WD 8T
+        translate([-134, 0, 49/2 + 5.55])
+        union() {
+            rotate([0, 90, 90])
+            cube([49, 139.7, 171], center=true);
+
+            translate([139.7/2, -171/2 + 30, 49/2 - 10])
+            rotate([0, 90, 0])
+            cylinder(d=10, h=40, center=true);
+        }
+
+        // Seagates
+        translate([142, 0, 2U_h - 35/2 - 4])
+        rotate([0, 90, 0])
+        _seagate_usb();
+
+        translate([2, 0, 35/2 + 3.5])
+        rotate([0, 90, 0])
+        _seagate_usb();
+
+        translate([142, 0, 35/2 + 4])
+        rotate([0, 90, 0])
+        _seagate_usb();
+
+        // other usb box
+        translate([4, 0, 2U_h - 32/2 - 4])
+        rotate([0, 90, 0])
+        cube([31.7, 182, 117], center=true);
+
+        // usb ssds
+        translate([8, -10, 45.75])
+        rotate([0, 90, 0])
+        cube([12.5, 123, 77], center=true);
+
+        translate([72, 0, 45])
+        rotate([0, 0, 0])
+        cube([12.5, 123, 77], center=true);
+
+        translate([-150, -10, 62])
+        rotate([0, 90, 0])
+        cube([13, 126, 75.5], center=true);
+
+        translate([-150, -10, 77])
+        rotate([0, 90, 0])
+        cube([13, 130, 78], center=true);
+
+        translate([-90, -10, 60])
+        rotate([0, 90, 0])
+        cube([9, 102, 32], center=true);
+    }
+
+    %_mockup_box(beams=2);
+
+    _hdds();
+
+    // hubs
+    translate([-70 + 64, -161.7, 32.7])
+    rotate([-90, 0, 90])
+    D_link_hub_clip_back();
+
+    translate([-70, -161.7, 32.7])
+    rotate([-90, 0, -90])
+    D_link_hub_clip_front();
+
+//    translate([15 + 67.3, -161.7, 32.7])
+//    rotate([-90, 0, 90])
+//    Targus_hub_clip_back();
+//
+//    translate([15, -161.7, 32.7])
+//    rotate([-90, 0, -90])
+//    Targus_hub_clip_front();
+
+//    translate([110, -161, 30])
+//    rotate([15, 0, 90])
+//    mock_USB_hub_Dlink();
+    translate([0, 100, 24])
+    rotate([0, 0, 90])
+    mock_PSU_240W();
+}
+
+module debug_raspberry_pi_clips() {
+
+    pi_mount();
+
+    translate([0, 0, 64])
+    rotate([180, 0, 0])
+    pi_mount();
+
+    %translate([5, -60/2 + 0.5, 67.3])
+    rotate([0, 90, 0])
+    mock_raspberry_pi();
+
+    %translate([-20/2, 0, 20])
+    _profile_v2(100);
+}
+
+module debug_connector_clips() {
+    connector_clip_small();
+
+    translate([0, -3, 22])
+    rotate([90, 90, 0])
+    mock_liitinrima_small(6);
+}
+
+module debug_stepdown_converter_2_clip() {
+    stepdown_converter_2_clip();
+
+    translate([12, -2, 11])
+    rotate([90, 0, 0])
+    mock_stepdown_converter_2();
+}
+
 module M6_thread(h=50) {
     v_screw(h=h, screw_d=6.2, pitch=1, direction=0,
             steps=40, depth=0.1, chamfer=false);
@@ -1088,7 +1256,6 @@ module bottom_pattern() {
         }
     }
 }
-
 
 module _joiner_form(l=30) {
     rotate([45, 0, 0])
@@ -2578,15 +2745,6 @@ module hdd_piece_clip_big_2() {
 }
 
 module pi_mount() {
-    %translate([5, -60/2 + 0.5, 67.3])
-    rotate([0, 90, 0])
-    import(str(
-        raspi_stl_path, 
-        "Raspberry_Pi_3_Light_Version.STL"),
-        convexity=10);
-
-    %translate([-20/2, 0, 0])
-    _profile_v2(100);
 
     difference() {
         union() {
@@ -2613,6 +2771,7 @@ module pi_mount() {
                 cylinder(d=6, h=6, $fn=30);
             }
         }
+
         translate([0, -49/2, 6/2])
         rotate([0, 90, 0])
         cylinder(d=2, h=20, center=true, $fn=10);
@@ -2628,7 +2787,6 @@ module pi_mount() {
         translate([0, 60/2, 30])
         rotate([45, 0, 0])
         cube([30, 30, 30],center=true);
-
     }
 }
 
@@ -3507,7 +3665,7 @@ module cable_clip() {
     }
 }
 
-module connector_clip() {
+module connector_clip_medium() {
     difference() {
         union() {
             translate([-11.75, 0, 0])
@@ -3528,7 +3686,34 @@ module connector_clip() {
         translate([0, 0, 30/2 + 19.5/2])
         rotate([90, 0, 0])
         cylinder(d=2.8, 15, center=true, $fn=10);
+    }
+}
 
+module connector_clip_small() {
+    difference() {
+        union() {
+            translate([-11.75, 0, 0])
+            scale([1, 1, 2.2])
+            _frame_clip_v2();
+
+            translate([0, 0, 44/2])
+            cube([13, 6, 44], center=true);
+        }
+
+        translate([0, 20/2 + 4.3, 45/2])
+        chamfered_cube(40, 20, 32, 7, center=true);
+
+        translate([0, 0, 5.65])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
+
+        translate([0, 0, 44 - 5.65])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
+
+        translate([0, 0, 44/2])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
     }
 }
 
@@ -3609,6 +3794,57 @@ module stepdown_box_clip() {
         translate([12.5, -3, 20 - 4.5])
         rotate([-90, 0, 0])
         cylinder(d=2, h=20, $fn=10);
+    }
+}
+
+module stepdown_converter_2_clip() {
+    difference() {
+        intersection() {
+            union() {
+                translate([-11.75, 0, 0])
+                //scale([1, 1, 1.2])
+                _frame_clip_v2();
+
+                translate([12, 1, 22/2])
+                //cube([56, 4, 24], center=true);
+                rotate([90, 0, 0])
+                chamfered_cube_side(
+                   58, 22, 3, 5, center=true
+                );
+
+                translate([-3, 0, 19.1])
+                rotate([90, 0, 0])
+                cylinder(d1=8, d2=6, h=2, $fn=20);
+
+                translate([27.1, 0, 2.9])
+                rotate([90, 0, 0])
+                cylinder(d1=8, d2=6, h=2, $fn=20);
+            }
+
+            translate([0, 0, 22/2])
+            cube([100, 100, 22], center=true);
+        }
+
+        translate([-3, 0, 19.1])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
+
+        translate([27.1, 0, 2.9])
+        rotate([90, 0, 0])
+        cylinder(d=2.8, 15, center=true, $fn=10);
+
+        // zip tie cuts
+        translate([-13.5, 0, 15])
+        cube([2.2, 10, 1.6], center=true);
+
+        translate([-13.5, 0, 8])
+        cube([2.2, 10, 1.6], center=true);
+
+        translate([37.5, 0, 15])
+        cube([2.2, 10, 1.6], center=true);
+
+        translate([37.5, 0, 8])
+        cube([2.2, 10, 1.6], center=true);
     }
 }
 
@@ -3903,7 +4139,6 @@ module ac_cover_2() {
     difference() {
         ac_cover();
 
-        translate([])
         cube([15, 60, 100], center=true);
     }
 }
