@@ -1,0 +1,19 @@
+
+#define X_PROBE_OFFSET_FROM_EXTRUDER 25.9     // Z probe to nozzle X offset: -left  +right
+#define Y_PROBE_OFFSET_FROM_EXTRUDER 2     // Z probe to nozzle Y offset: -front +behind
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.4  // Z probe to nozzle Z offset: -below (always!)
+
+X 25.9 - 22 = 3.9
+Y 2 - 0.6 = 1.4
+
+13 - 3.9  = 9.1,    6.4 - 1.4 = 5
+115 - 3.9 = 111.1,  6.4 - 1.4 = 5
+216 - 3.9 = 212.1,  6.4 - 1.4 = 5
+
+13 - 3.9  = 9.1,    104.4 - 1.4 = 103
+115 - 3.9 = 111.1,  104.4 - 1.4 = 103
+216 - 3.9 = 212.1,  104.4 - 1.4 = 103
+
+13 - 3.9  = 9.1,    202.4 - 1.4 = 201
+115 - 3.9 = 111.1,  202.4 - 1.4 = 201
+216 - 3.9 = 212.1,  202.4 - 1.4 = 201
