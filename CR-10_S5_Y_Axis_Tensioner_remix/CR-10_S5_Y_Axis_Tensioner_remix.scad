@@ -8,9 +8,14 @@ t_stl_path = str(
 
 
 
-debug();
+//debug();
 //debug_backplate();
+//_new_base_support_form();
+
 //new_base();
+//new_base_soluble_supports();
+new_base_nonsoluble_supports();
+
 //new_puller();
 //new_backplate();
 
@@ -29,9 +34,9 @@ module debug() {
         cylinder(d=4, h=24, center=true, $fn=30);
     }
 
-//    translate([0, 20/2, 20/2])
-//    rotate([90, 0, 0])
-//    new_base();
+    translate([0, 20/2, 20/2])
+    rotate([90, 0, 0])
+    new_base();
 
     translate([0, -45, 22])
     rotate([-90, 90, 0])
@@ -45,14 +50,44 @@ module debug() {
 module debug_backplate() {
     new_backplate();
 
-    translate([4, 0, 5])
+    translate([4, 0, 6])
     new_puller();
 }
 
+module _support_form(w, l, h, top=1, bottom=0.25) {
+
+    slot_w = w - 0.5;
+    slot_l = l - 0.5;
+    slot_h = h - top - bottom;
+
+    slots = floor(slot_l/6);
+    echo(slots);
+    slot = (slot_l - slots*0.5 - 0.5)/slots;
+    echo(slot);
+    
+    difference() {
+        translate([0, 0, h/2])
+        cube([slot_w, slot_l, h], center=true);
+
+        translate([0, -l/2 + 0.5 + slot/2, slot_h/2 + bottom])
+        for(i = [0: slots -1]) {
+            translate([
+                i%2 ? 0.5 : -0.5, i*(slot + 0.5), 0
+            ])
+            cube([slot_w, slot, slot_h], center=true);
+        }
+    }
+
+    translate([0, 0, h - top/2])
+    cube([w, l, top], center=true);
+}
 
 module new_base() {
     fname = "Revised_Base_B.stl";
 
+//    %translate([0, -20/2, 20/2])
+//    cube([200, 20, 20], center=true);
+    
     module _mount_hole() {
         cylinder(
             d=5.3, h=20,
@@ -65,159 +100,123 @@ module new_base() {
 
     difference() {
         union() {
-            translate([0, 20, 24.5])
-            rotate([0, -90, -90])
-            import(
-                str(t_stl_path, fname),
-                convexity=10
-            );
-
-            translate([-35.5, 0, 10])
-            rotate([-90, 0, 0])
-            cylinder(d=15, h=5);
-
-            translate([35.5, 0, 10])
-            rotate([-90, 0, 0])
-            cylinder(d=15, h=5);
-
-            hull() {
-                translate([-35.5, -20/2, 20 - 10])
-                rounded_cylinder(
-                    20, 15, 4, $fn=40
-                );
-
-                translate([35.5, -20/2, 20 - 10])
-                rounded_cylinder(
-                    20, 15, 4, $fn=40
-                );
-
-            }
-
-            hull() {
-
-                translate([
-                    -45.5 + 4/2, -20/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, -20/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, -20/2,
-                    20/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, -20/2,
-                    18
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, 5 - 4/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, 5 - 4/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, 5 - 4/2,
-                    10
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, 5 - 4/2,
-                    18
-                ])
-                sphere(d=4, $fn=60);
-            }
-
-            mirror([1, 0, 0])
-            hull() {
-
-                translate([
-                    -45.5 + 4/2, -20/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, -20/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, -20/2,
-                    20/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, -20/2,
-                    18
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, 5 - 4/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, 5 - 4/2,
-                    25 - 4/2
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -45.5 + 4/2, 5 - 4/2,
-                    10
-                ])
-                sphere(d=4, $fn=60);
-
-                translate([
-                    -13.75, 5 - 4/2,
-                    18
-                ])
-                sphere(d=4, $fn=60);
-            }
 
             difference() {
+                translate([0, 20, 24.5])
+                rotate([0, -90, -90])
+                import(
+                    str(t_stl_path, fname),
+                    convexity=10
+                );
+
+                translate([0, 30/2 + 4.9, 25/2 - 0.95])
+                cube([62, 30, 25], center=true);
+
+                translate([0, 30/2, 0])
+                cube([62, 30, 25], center=true);
+            }
+
+            translate([-18.625, 10/2 + 4, 13.5])
+            cube([13.75, 18, 23], center=true);
+
+            translate([18.625, 10/2 + 4, 13.5])
+            cube([13.75, 18, 23], center=true);
+
+            hull() {
+                translate([-35.5, 5, 20 - 10])
+                rotate([90, 0, 0])
+                rounded_cylinder(
+                    20, 30, 4, $fn=40
+                );
+
+                translate([35.5, 5, 20 - 10])
+                rotate([90, 0, 0])
+                rounded_cylinder(
+                    20, 30, 4, $fn=40
+                );
+            }
+
+            // 2020 cody
+            hull() {
+
+                translate([
+                    -45.5 + 4/2, -25 + 4/2,
+                    25 - 4/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    45.5 - 4/2, -25 + 4/2,
+                    25 - 4/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    -45.5 + 4/2, -25 + 4/2,
+                    20/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    45.5 - 4/2, -25 + 4/2,
+                    20/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    -45.5 + 4/2, 5 - 4/2,
+                    25 - 4/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    45.5 - 4/2, 5 - 4/2,
+                    25 - 4/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    -45.5 + 4/2, 5 - 4/2,
+                    20/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    45.5 - 4/2, 5 - 4/2,
+                    20/2
+                ])
+                sphere(d=4, $fn=60);
+
+                translate([
+                    -13.75, 5 - 4/2,
+                    18
+                ])
+                sphere(d=4, $fn=60);
+            }
+
+            // arms
+            difference() {
                 hull() {
-                    translate([-23.5, 8, 55])
+                    translate([-23.5, 8, 58])
                     sphere(d=4, $fn=40);
 
                     translate([-23.5, 7, 26 - 4/2])
                     sphere(d=4, $fn=40);
 
                     translate([
-                        -23.5, -20 + 4/2,
+                        -23.5, -25 + 4/2,
                         25 - 4/2
                     ])
                     sphere(d=4, $fn=40);
 
-                    translate([23.5, 8, 55])
+                    translate([23.5, 8, 58])
                     sphere(d=4, $fn=40);
 
-                    #translate([23.5, 7, 26 - 4/2])
+                    translate([23.5, 7, 26 - 4/2])
                     sphere(d=4, $fn=40);
 
                     translate([
-                        23.5, -20 + 4/2,
+                        23.5, -25 + 4/2,
                         25 - 4/2
                     ])
                     sphere(d=4, $fn=40);
@@ -225,15 +224,16 @@ module new_base() {
                 cube([23.5, 60, 200], center=true);
             }
 
-            translate([-25.5 + 3/2, 16, 40])
-            cube([3, 13, 30], center=true);
+            translate([-25.5 + 8/2, 16, 40])
+            cube([8, 13, 30], center=true);
 
-            translate([25.5 - 3/2, 16, 40])
-            cube([3, 13, 30], center=true);
+            translate([25.5 - 8/2, 16, 40])
+            cube([8, 13, 30], center=true);
         }
 
-        translate([0, -40/2, 0])
-        cube([200, 40.02, 40], center=true);
+        // beam cutout
+        translate([0, -20/2, 0])
+        cube([200, 20.1, 40], center=true);
 
         translate([-35.5, -20/2, 20])
         _mount_hole();
@@ -249,14 +249,66 @@ module new_base() {
         rotate([-90, 0, 0])
         _mount_hole();
 
-        translate([0, -30/2 + 1, 0])
-        cube([23.5, 30, 200], center=true);
+        translate([-25.5, -20, 20/2])
+        rotate([90, 0, 0])
+        _mount_hole();
 
+        translate([25.5, -20, 20/2])
+        rotate([90, 0, 0])
+        _mount_hole();
+
+        // chamfer for bed clearance
         translate([0, 26.7, 23.9])
         rotate([45, 0, 0])
-        cube([70, 10, 10], center=true);
+        cube([70, 15, 15], center=true);
+
+        hull() {
+            translate([0, 19.2, 20])
+            rotate([0, 90, 0])
+            cylinder(d=10, h=65, center=true, $fn=50);
+
+            translate([0, 22, 20])
+            rotate([0, 90, 0])
+            cylinder(d=10, h=65, center=true, $fn=50);
+
+            translate([0, 9.72, 0])
+            rotate([0, 90, 0])
+            cylinder(d=10, h=65, center=true, $fn=50);
+
+            translate([0, 20, 4])
+            rotate([0, 90, 0])
+            cylinder(d=10, h=65, center=true, $fn=50);
+        }
     }
 }
+
+module _new_base_support_form() {
+
+    //%new_base();
+
+    translate([0, -10, 0])
+    rotate([0, 0, 90])
+    _support_form(19.6, 92, 20, top=1, bottom=0.25);
+
+}
+
+module new_base_soluble_supports() {
+    intersection() {
+        _new_base_support_form();
+
+        translate([0, 0, 20 - 0.5/2])
+        cube([100, 100, 0.5], center=true);
+    }
+}
+
+module new_base_nonsoluble_supports() {
+    difference() {
+        _new_base_support_form();
+
+        new_base_soluble_supports();
+    }
+}
+
 
 module new_puller() {
     fname = "Puller.stl";
@@ -319,44 +371,58 @@ module new_puller() {
 module new_backplate() {
     fname = "Backplate.stl";
 
+    module _orig_plate() {
+        translate([4, 0, 0.566])
+        import(
+            str(t_stl_path, fname),
+            convexity=10
+        );
+    }
+    
     difference() {
         union() {
             intersection() {
-                translate([4, 0, 0.566])
-                import(
-                    str(t_stl_path, fname),
-                    convexity=10
-                );
+                _orig_plate();
 
-                cylinder(d=100, h=2);
+                translate([-0.8, 0, 2/2])
+                rounded_cube_side(
+                    22.4, 55, 2, 4, center=true, $fn=30
+                );
             }
 
-            translate([4, 0, 1.99 - 1])
+            translate([0, 0, 1.99 - 1])
             intersection() {
-                translate([0, 0, 0.566])
-                import(
-                    str(t_stl_path, fname),
-                    convexity=10
-                );
+                _orig_plate();
 
-                translate([0, 0, 1])
-                cylinder(d=100, h=2);
+                translate([-0.8, 0, 1 + 2/2])
+                rounded_cube_side(
+                    22.4, 55, 2, 4, center=true, $fn=30
+                );
             }
 
-            translate([4, 0, 1.99 + 2 - 3])
-            intersection() {
-                translate([0, 0, 0.566])
-                import(
-                    str(t_stl_path, fname),
-                    convexity=10
-                );
 
-                translate([0, 0, 3])
-                cylinder(d=100, h=2);
+            translate([0, 0, 1.99 + 1])
+            intersection() {
+                _orig_plate();
+
+                translate([-0.8, 0, 1 + 1/2])
+                rounded_cube_side(
+                    22.4, 55, 1, 4, center=true, $fn=30
+                );
+            }
+
+            translate([0, 0, 1.99 + 3 - 3])
+            intersection() {
+                _orig_plate();
+
+                translate([-0.8, 0, 3 + 2/2])
+                rounded_cube_side(
+                    22.4, 55, 2, 4, center=true, $fn=30
+                );
             }
         }
 
-        translate([0, 0, 10/2 + 3])
+        translate([0, 0, 10/2 + 4])
         rounded_cube(
             19, 27, 10, 2, center=true, $fn=40
         );
