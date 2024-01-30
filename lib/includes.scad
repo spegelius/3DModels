@@ -9,18 +9,30 @@ m4_bolt_dia = 4.2;
 //http://dkprojects.net/openscad-threads/
 use <../_downloaded/ISOThreads/threads.scad>;
 
-module threads(d=8, h=10, z_step=1.8, depth=0.5, direction=0) {
+module threads(
+    d=8, h=10, z_step=1.8, depth=0.5, direction=0
+) {
     
     function get_twist(dir) = (direction == 0) ? -360 : 360;
 
-    multiple = h/z_step+1;
-    
+    multiple = h/z_step + 1;
+
     intersection() {
         for (i = [0:multiple]) {
-        translate([0,0,i*z_step]) linear_extrude(height=z_step, center=true, convexity = 10, twist = get_twist(direction), $fn = 30) translate([depth, 0, 0]) circle(d=d-2*depth);
-         
+            translate([0, 0, i*z_step])
+            linear_extrude(
+                height=z_step, center=true,
+                convexity = 10,
+                twist = get_twist(direction), $fn = 30
+            )
+            translate([depth, 0, 0])
+            circle(d=d-2*depth);
         }
-        translate([0,0,h/2]) cube([d+depth*2,d+depth*2, h], center=true);
+
+        translate([0, 0, h/2])
+        cube([
+            d + depth*2, d + depth*2, h
+        ], center=true);
     }
 }
 
@@ -158,57 +170,7 @@ module chamfered_cube_side(x,y,z, chamfer, center=false) {
     }
 }
 
-module mock_g9_lamp() {
-    translate([0,0,-17.2/2]) difference() {
-        union() {
-            cube([14.2,5.2,17.2], center=true);
-            translate([0,0,17.2/2]) cylinder(d=17,h=4.7,$fn=40);
-            translate([0,0,17.2/2+4.7]) cylinder(d1=16.9, d2=15,h=25,$fn=40);
-        }
-        translate([0,2/2+1.85,0]) cube([10,2,17.2],center=true);
-        translate([0,-2/2-1.85,0]) cube([10,2,17.2],center=true);
-        
-        translate([0,0,-17/2+(17.2-12.9)-5/2]) {
-            cube([5,5,5],center=true);
-            translate([0,3/2+1.2/2,0]) cube([25,3,5],center=true);
-            translate([0,-3/2-1.2/2,0]) cube([25,3,5],center=true);
-        }
-    }
-}
 
-module g9_lamp_socket(h=30) {
-    
-    module _wire_hole(h) {
-        hull() {
-            cylinder(d=3.3,h=h,$fn=30);
-            cylinder(d=0.1,h=h+4,$fn=30);
-        }
-    }
-    
-    bolt_z = h - 17.2 + 4.3/2;
-    
-    difference() {
-        intersection() {
-            union() {
-                cylinder(d=22,h=h,$fn=50);
-                translate([14/2-3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=10,h=10,$fn=30);
-                translate([-14/2+3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=10,h=10,$fn=30);
-            }
-            translate([0,0,h/2]) cube([23,23,h],center=true);
-        }
-        translate([0,0,h]) mock_g9_lamp();
-
-        translate([14/2-3.3/2,1.15,-0.1]) _wire_hole(h-12);
-        translate([-14/2+3.3/2,1.15,-0.1]) _wire_hole(h-12);
-        
-        translate([14/2-3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=2.7,h=10,$fn=20);
-        translate([-14/2+3/2,1,bolt_z]) rotate([-90,0,0]) cylinder(d=2.7,h=10,$fn=20);
-        
-        translate([14/2-3/2,6,bolt_z]) rotate([-90,0,0]) cylinder(d=6.4,h=10,$fn=20);
-        translate([-14/2+3/2,6,bolt_z]) rotate([-90,0,0]) cylinder(d=6.4,h=10,$fn=20);
-
-    }
-}
 
 module tube(d=10,h=10,wall=1,center=false) {
     difference() {
@@ -217,16 +179,9 @@ module tube(d=10,h=10,wall=1,center=false) {
     }
 }
 
-module holee(slop, h) {
-    linear_extrude(h)
-        offset(delta=slop)
-        projection(cut=true)
-        children();
-}
-
 //dovetail(7, 5, 4, 10);
 //M8_nut();
 
 //chamfered_cube(10,10,10,2, false);
 //chamfered_cube_side(10,10,10,2, true);
-//g9_lamp_socket(h=18);
+
