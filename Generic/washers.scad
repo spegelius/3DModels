@@ -57,26 +57,34 @@ module washer_5_3_4() {
 
 module washer_plate(count_side, outer_d, inner_d, h) {
     union() {
-        for (i = [0:count_side-1]) {
-            for (j = [0:count_side-1]) {
-                translate([i*(outer_d+1),j*(outer_d+1),0])
+        for (i = [0:count_side - 1]) {
+            for (j = [0:count_side - 1]) {
+                translate([
+                    i*(outer_d + 1),
+                    j*(outer_d +1 ), 0
+                ])
                 _washer(outer_d, inner_d, h);
             }
         }
         
-        for (i = [0:count_side-2]) {
-            for (j = [0:count_side-1]) {
-                translate([i*(outer_d+1)+outer_d/2+1/2,
-                           j*(outer_d+1), 0.2/2])
-                cube([1.2,1,0.2],center=true);
+        for (i = [0:count_side - 2]) {
+            for (j = [0:count_side - 1]) {
+                translate([
+                    i*(outer_d + 1) + outer_d/2 + 1/2,
+                    j*(outer_d + 1), 0.2/2
+                ])
+                cube([1.2, 1.2, 0.2], center=true);
             }
         }
-        
-        for (i = [0:count_side-1]) {
-            for (j = [0:count_side-2]) {
-                translate([i*(outer_d+1),
-                           j*(outer_d+1)+outer_d/2+1/2, 0.2/2])
-                cube([1,1.2,0.2],center=true);
+
+        for (i = [0:count_side - 1]) {
+            for (j = [0:count_side - 2]) {
+                translate([
+                    i*(outer_d + 1),
+                    j*(outer_d + 1) + outer_d/2 + 1/2,
+                    0.2/2
+                ])
+                cube([1.2, 1.2, 0.2], center=true);
             }
         }
     }
@@ -90,6 +98,13 @@ module washer_plate(count_side, outer_d, inner_d, h) {
 //washer_7_5_2_5();
 //washer_20_5_20();
 //washer_16_8_2();
-washer_5_3_4();
+//washer_5_3_4();
 
 //washer_plate(4, 8.5, 3.2, 0.8);
+//washer_plate(4, 10, 4.2, 4);
+//washer_plate(3, 10, 4.2, 3);
+//washer_plate(3, 8, 3.3, 10);
+//washer_plate(3, 7.5, 3.3, 3);
+//washer_plate(3, 7.6, 5.3, 3.6);
+//washer_plate(3, 7.6, 5.3, 4);
+washer_plate(4, 7, 2.2, 1);
