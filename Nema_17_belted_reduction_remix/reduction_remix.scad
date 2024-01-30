@@ -1,45 +1,230 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/mockups.scad>;
 use <../generic/washers.scad>;
+include<../lib/bearings.scad>;
+
 
 ////// VARIABLES //////
-bearing_hole = 16.2;
+bearing_hole_d = 16.4;
 
 
 ////// VIEW //////
-//!_tapering_M3_nut();
+//_orig_gearbox();
+//_orig_cover();
+//_tapering_M3_nut();
 //debug_cover();
 //debug_cover_tall_pulley();
 //debug_full_cover();
+//debug_gearbox_bearing_holder();
 
+////// PRINT /////
+//gearbox_old();
 //gearbox();
 //gearbox_cover();
 //gearbox_cover_tall();
 //gearbox_full_cover();
+//gearbox_bearing_holder();
+//gearbox_washer_1();
+//gearbox_washer_2();
+gearbox_washer_3();
 
-axle_drill_jig();
+//axle_drill_jig();
+
 
 ////// MODULES //////
-module _tapering_M3_nut() {
-    rotate([0, 0, 360/12]) union() {
+module _tapering_M3_nut(bridging=true) {
+    union() {
+        cylinder(d=3.3, h=20, $fn=30);
+
         translate([0, 0, -0.1])
-        hull() {
-            cylinder(d=6.9, h=0.1, $fn=6);
-            translate([0, 0, 5])
-            cylinder(d=6.5, h=0.1, $fn=6);
-        }
-        cylinder(d=3.2, h=10, $fn=30);
-        translate([0, 0, 5])
-        intersection() {
-            cube([10, 3.2, 0.4], center=true);
-            cylinder(d=6.5, h=0.5, center=true, $fn=6);
-        }
-        translate([0, 0, 5.2])
-        cube([3.2, 3.2, 0.4], center=true);
+        M3_nut_tapering(h=6.2, cone=false, bridging=bridging);
     }
 }
 
-module gearbox(bridging=true, support=true) {
+module _bearing_hole(h=10) {
+    difference() {
+        cylinder(d=bearing_hole_d, h=h, $fn=30);
+
+        for(i = [0:5]) {
+            rotate([0, 0, 360/6*i])
+            translate([17/2 + 0.2, 0, 0])
+            cylinder(d=1.5, h=h, $fn=20);
+        }
+    }
+}
+
+module _orig_gearbox() {
+    // for positioning
+//    %cylinder(d=14, h=30, center=true);
+//
+//    translate([-31.9, 0, 0])
+//    %cylinder(d=2.5, h=30, center=true, $fn=20);
+
+    translate([-33.5, 29, 0])
+    import(
+        "Gearbox_for_nema17_extruder.stl",
+        convexity=10
+    );
+}
+
+module _orig_cover() {
+    // for positioning
+    //%cylinder(d=14, h=30, center=true);
+
+    translate([-3.02, -27, -0.102])
+    import(
+        "Gearbox_for_nema17_extruder_cover.stl",
+        convexity=10
+    );
+}
+
+module debug_cover() {
+    intersection() {
+        union() {
+            gearbox();
+
+            translate([0, 0, 18.9 + 9.6])
+            rotate([180, 0, 0])
+            gearbox_cover();
+        }
+
+        translate([-31.9, 0, -20])
+        cube([100, 100, 50]);
+    }
+    //translate([20,-20,0]) cube([1,40,13.9]);
+}
+
+module debug_gearbox_bearing_holder() {
+    intersection() {
+        gearbox();
+
+        translate([0, 100/2, 0])
+        cube([200, 100, 100], center=true);
+        
+    }
+
+    intersection() {
+        translate([0, 0, -2])
+        gearbox_bearing_holder();
+
+        translate([0, 100/2, 0])
+        cube([200, 100, 100], center=true);
+    }
+}
+
+module debug_cover_tall_pulley() {
+
+    module _pulley() {
+        difference() {
+            union() {
+                cylinder(d=20, h=22, $fn=30);
+                cylinder(d=42, h=1.5, $fn=30);
+
+                translate([0, 0, 14 - 1.5])
+                cylinder(d=42, h=1.5, $fn=30);
+
+                cylinder(d=38, h=14, $fn=40);
+            }
+            cylinder(d=5, h=100, center=true, $fn=20);
+        }
+    }
+
+    intersection() {
+        union() {
+            gearbox();
+
+            translate([0, 0, 9.6 + 23])
+            rotate([180, 0, 0])
+            gearbox_cover_tall();
+        }
+
+        translate([1.55, 0, -20])
+        cube([100, 100, 60]);
+    }
+    //translate([20,-20,0]) 
+    //cube([1,40,13.9]);
+
+    translate([0, 0, 9.6 + 17])
+    rotate([180, 0, 0])
+    _pulley();
+}
+
+module debug_full_cover() {
+    intersection() {
+        union() {
+            translate([0, 0, -9.6])
+            gearbox();
+
+            translate([0, 0, 19])
+            rotate([180, 0, 0])
+            gearbox_full_cover();
+
+            translate([0, 0, -9.6 - 2])
+            gearbox_bearing_holder();
+        }
+        translate([0, 100/2, 0])
+        cube([200, 100, 100], center=true);
+    }
+
+    %translate([-58, 0, 38.9])
+    rotate([-90, 0, 0])
+    mock_stepper_motor(geared=false, center=true);
+
+    %translate([-58, 0, -2])
+    mock_pulley_GT2_16t();
+
+//    %translate([-27,0,-29.6])
+//    rotate([90,0,0])
+//    mock_stepper_motor(geared=false, center=true);
+
+    %translate([0, 0, 12])
+    rotate([180, 0, 0])
+    import("../_downloaded/Parametric_pulley/GT2_64teeth.stl");
+    
+    %translate([0, 0, 12])
+    gearbox_washer_1();
+
+    %translate([0, 0, -6])
+    gearbox_washer_2();
+
+    // belt
+    %translate([-30, 13.5, 7.2])
+    rotate([0, 0, 15])
+    cube([50, 1, 6], center=true);
+}
+
+module gearbox_bearing_holder() {
+    difference() {
+        union() {
+            translate([0, 0, 6 - 0.65])
+            cylinder(d=26.7, h=0.65, $fn=60);
+
+            cylinder(d=22, h=5.6, $fn=60);
+
+            translate([0, 0, 5.6 - 3])
+            cylinder(d1=22, d2=26.7, h=2.75, $fn=60);
+
+            for(i = [0:8]) {
+                rotate([0, 0, 360/9*i])
+                translate([22/2 - 0.2, 0, 1])
+                cylinder(d2=1.2, d1=0.2, h=3, $fn=20);
+            }
+        }
+        // shaft bearing hole
+        translate([0, 0, 0.6])
+        _bearing_hole(h=6);
+
+        cylinder(
+            d=bearing_hole_d - 3, h=20,
+            center=true, $fn=40
+        );
+    }
+
+    translate([0, 0, 0.6])
+    %625zz();
+}
+
+module gearbox_old(bridging=true, support=true) {
     union() {
         difference() {
             union() {
@@ -53,13 +238,16 @@ module gearbox(bridging=true, support=true) {
                 translate([23 + 26.15, -10 - 5.66, 0])
                 cylinder(d=8, h=9.6);
 
-                translate([23 + 26.15, -10 -5.64 + 31.3, 0])
+                translate([23 + 26.15, -10 - 5.64 + 31.3, 0])
                 cylinder(d=8, h=9.6);
 
                 translate([23 + 26.15 - 31.3, -10 - 5.66, 0])
                 cylinder(d=8, h=9.6);
 
-                translate([23 + 26.15 - 31.3, -10 - 5.64 + 31.3, 0])
+                translate([
+                    23 + 26.15 - 31.3,
+                    -10 - 5.64 + 31.3, 0
+                ])
                 cylinder(d=8, h=9.6);
 
                 // fill center hole
@@ -82,8 +270,9 @@ module gearbox(bridging=true, support=true) {
             translate([23 + 26.15 - 31.3, -10 - 5.64 + 31.3, 0])
             _tapering_M3_nut();
 
-            translate([1.59, -0.1, 0]) {
-                cylinder(d1=10.5, d2=1, h=(10.5 - 1)/2, $fn=52);
+            // center indent
+            translate([1.59, -0.1, -0.1]) {
+                cylinder(d1=9, d2=2, h=4, $fn=52);
                 cylinder(d=2.9, h=18.5, $fn=30);
             }
         }
@@ -124,37 +313,204 @@ module gearbox(bridging=true, support=true) {
     }
 }
 
+module gearbox() {
+    difference() {
+        union() {
+            intersection() {
+                translate([0, 0, 9.6])
+                mirror([0, 0, 1])
+                _orig_gearbox();
+
+                // delete the motor centering part
+                translate([0, 0, 9.6/2])
+                cube([200, 200, 9.6], center=true);
+            }
+
+            // fill nut holes
+            translate([31/2, -31/2, 0])
+            cylinder(d=8, h=9.6);
+
+            translate([31/2, 31/2, 0])
+            cylinder(d=8, h=9.6);
+
+            translate([-31/2, 31/2, 0])
+            cylinder(d=8, h=9.6);
+
+            translate([-31/2, -31/2, 0])
+            cylinder(d=8, h=9.6);
+
+            // fill bearing hole
+            cylinder(d=31, h=9.6);
+
+            // fill the motor part
+            translate([-53, 0, 9.6/2])
+            chamfered_cube_side(
+                57, 41, 9.6, 4, center=true
+            );
+        }
+
+        // bearing cover holes
+        translate([0, 0, 4])
+        cylinder(d=31, h=30, $fn=80);
+        
+        translate([0, 0, -1])
+        cylinder(d=22.2, h=30, $fn=80);
+
+        hull() {
+            translate([0, 0, 3.35])
+            cylinder(d=26.9, h=30, $fn=80);
+
+            translate([0, 0, 0.5])
+            cylinder(d=22, h=2.85, $fn=80);
+        }
+       
+        // motor mount nuts
+        translate([31/2, 31/2, 10])
+        rotate([180, 0, 0])
+        _tapering_M3_nut(bridging=false);
+
+        translate([31/2, -31/2, 10])
+        rotate([180, 0, 0])
+        _tapering_M3_nut(bridging=false);
+
+        translate([-31/2, 31/2, 10])
+        rotate([180, 0, 0])
+        _tapering_M3_nut(bridging=false);
+
+        translate([-31/2, -31/2, 10
+        ])
+        rotate([180, 0, 0])
+        _tapering_M3_nut(bridging=false);
+
+        // center indent
+        translate([-31.9, 0, 9.6 - 3.9])
+        cylinder(d2=9, d1=2, h=4, $fn=52);
+
+        translate([-31.9, 0, -0.1])
+        cylinder(d=2.9, h=18.5, $fn=30);
+
+        translate([-31.9, 0, -1.4])
+        _tapering_M3_nut(bridging=true);
+
+        // motor center hole
+        translate([-61.7, 0, 0])
+        hull() {
+            cylinder(d=23.4, h=30, center=true, $fn=60);
+
+            translate([10, 0, 0])
+            cylinder(d=23.4, h=30, center=true, $fn=60);
+        }
+
+        // pulley tightening groove
+        translate([-70, 0, 9.6])
+        rotate([0, 90, 0])
+        cylinder(d=4, h=40, center=true, $fn=40);
+
+        // better motor mount grooves
+        hull() {
+            translate([-77.2, 31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+
+            translate([-67.2, 31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2, -31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+
+            translate([-67.2, -31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2 + 31, 31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+
+            translate([-67.2 + 31, 31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2 + 31, -31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+
+            translate([-67.2 + 31, -31/2, -1])
+            cylinder(d=3.3, h=10, $fn=30);
+        }
+
+        // screw head grooves
+        hull() {
+            translate([-77.2, 31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+
+            translate([-67.2, 31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2, -31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+
+            translate([-67.2, -31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2 + 31, 31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+
+            translate([-67.2 + 31, 31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+        }
+
+        hull() {
+            translate([-77.2 + 31, -31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+
+            translate([-67.2 + 31, -31/2, 5])
+            cylinder(d=7, h=10, $fn=30);
+        }
+    }
+
+}
+
 module gearbox_cover() {
     difference() {
         union() {
             difference() {
-                translate([0, -27, -0.102])
-                import(
-                    "Gearbox_for_nema17_extruder_cover.stl",
-                    convexity=10
+                _orig_cover();
+
+                translate([0, 0, 0.6])
+                _bearing_hole();
+
+                cylinder(
+                    d=bearing_hole_d - 3, h=20,
+                    center=true, $fn=40
                 );
 
-                translate([3, 0, 0.6])
-                cylinder(d=bearing_hole, h=30, $fn=80);
-
-                translate([-25, 0, 19])
+                translate([-25, 0, 18.9])
                 cylinder(d=30, h=5);
             }
-            translate([-28.99, 0.05, 0])
-            cylinder(d=10.2, h=19, $fn=52);
 
-            translate([-28.99, 0.05, 19])
-            cylinder(d1=10.2, d2=1, h=(10.2 - 1)/2, $fn=52);
+            translate([-31.9, 0, 0])
+            cylinder(d=10.3, h=18.9, $fn=52);
+
+            translate([-31.9, 0, 18.8])
+            cylinder(d1=8.9, d2=4.6, h=2.45, $fn=52);
         }
-        translate([-28.99, 0.1, -0.1])
+        translate([-31.9, 0.1, -0.1])
         cylinder(d=7, h=3.6, $fn=30);
 
-        translate([-28.99, 0.1, 3.49])
+        translate([-31.9, 0.1, 3.49])
         cylinder(d1=7, d2=3.5, h=3.5/2, $fn=30);
 
-        translate([-28.99, 0.1, 0])
+        translate([-31.9, 0.1, 0])
         cylinder(d=3.5, h=29, $fn=40);
     }
+
+    translate([0, 0, 0.6])
+    %625zz();
 }
 
 module gearbox_cover_tall() {
@@ -186,7 +542,7 @@ module gearbox_cover_tall() {
 
 module gearbox_full_cover() {
 
-    module screw_hole(d,h) {
+    module screw_hole(d, h) {
         hull() {
             cylinder(d=d, h=h, center=true, $fn=30);
 
@@ -196,16 +552,16 @@ module gearbox_full_cover() {
     }
 
     module screw_holes(d, h) {
-        translate([-74.4, -31/2, 0])
+        translate([-77.4, -31/2, 0])
         screw_hole(d, h);
 
-        translate([-74.4, 31/2, 0])
+        translate([-77.4, 31/2, 0])
         screw_hole(d, h);
 
-        translate([-74.4 + 31, -31/2, 0])
+        translate([-77.4 + 31, -31/2, 0])
         screw_hole(d, h);
 
-        translate([-74.4 + 31, 31/2, 0])
+        translate([-77.4 + 31, 31/2, 0])
         screw_hole(d, h);
     }
 
@@ -215,22 +571,22 @@ module gearbox_full_cover() {
         difference() {
             union() {
                 hull() {
-                    translate([-73.7, 0, 7/2])
+                    translate([-77.7, 0, 7/2])
                     chamfered_cube_side(
                         12, 42, 7, 4, center=true
                     );
 
-                    translate([-36, 0, 7/2])
+                    translate([-39, 0, 7/2])
                     chamfered_cube_side(
                         12, 42, 7, 4, center=true);
 
-                    cylinder(d=20, h=7, $fn=40);
+                    cylinder(d=25, h=7, $fn=40);
                 }
                 translate([0, 0, 18.9/2])
                 intersection() {
                     screw_holes(9.8, 18.9);
 
-                    translate([-74.4 + 31/2 + 5.2, 0, 0])
+                    translate([-77.4 + 31/2 + 5.2, 0, 0])
                     chamfered_cube(
                         52, 42, 100, 4, center=true
                     );
@@ -238,143 +594,54 @@ module gearbox_full_cover() {
             }
 
             // bearing hole
-            translate([3, 0, 5]) {
+            translate([0, 0, 5]) {
                 cylinder(d=20, h=30, center=true);
                 cylinder(d=60, h=5);
             }
 
             // belt path
             hull() {
-                translate([3, 0, 7])
-                cylinder(d=42, h=20);
+                translate([0, 0, 7])
+                cylinder(d=43, h=20);
 
-                translate([-58.7, 0, 7])
+                translate([-62.7, 0, 7])
                 cylinder(d=12, h=20);
             }
 
             // middle screw hole
-            translate([-29, 0, 0])
+            translate([-31.9, 0, 0])
             cylinder(d=8, h=30, center=true);
 
             // motor center hole
-            translate([-58.7, 0, 0])
+            translate([-61.7, 0, 0])
             hull() {
-                cylinder(d=23, h=30, center=true, $fn=30);
+                cylinder(d=23.4, h=30, center=true, $fn=60);
 
                 translate([10, 0, 0])
-                cylinder(d=23, h=30, center=true, $fn=30);
+                cylinder(d=23.4, h=30, center=true, $fn=60);
             }
 
             // screw holes
             screw_holes(3.4, 60);
+
+            // pulley tightening groove
+            translate([-70, 0, 7])
+            rotate([0, 90, 0])
+            cylinder(d=4, h=40, center=true, $fn=40);
         }
     }
 }
 
-module washer_1() {
-    _washer(7.4, 5.4, 2);
+module gearbox_washer_1() {
+    _washer(8, 5.4, 1.4);
 }
 
-module washer_2() {
-    _washer(7.4, 5.4, 2.5);
+module gearbox_washer_2() {
+    _washer(8, 5.4, 2.4);
 }
 
-module washer_3() {
-    _washer(7.4, 5.4, 1);
-}
-
-module debug_cover() {
-    intersection() {
-        union() {
-            rotate([180, 0, 0])
-            gearbox();
-
-            translate([30.5, 0, 18.89])
-            rotate([180, 0, 0])
-            gearbox_cover();
-        }
-
-        translate([1.55, 0, -20])
-        cube([100, 100, 50]);
-    }
-    //translate([20,-20,0]) cube([1,40,13.9]);
-}
-
-module debug_cover_tall_pulley() {
-
-    module _pulley() {
-        difference() {
-            union() {
-                cylinder(d=20, h=22, $fn=30);
-                cylinder(d=42, h=1.5, $fn=30);
-
-                translate([0, 0, 14 - 1.5])
-                cylinder(d=42, h=1.5, $fn=30);
-
-                cylinder(d=38, h=14, $fn=40);
-            }
-            cylinder(d=5, h=100, center=true, $fn=20);
-        }
-    }
-
-    intersection() {
-        union() {
-            rotate([180, 0, 0])
-            gearbox(support=false);
-
-            translate([30.5, 0, 23])
-            rotate([180, 0, 0])
-            gearbox_cover_tall();
-        }
-
-        translate([1.55, 0, -20])
-        cube([100, 100, 50]);
-    }
-    //translate([20,-20,0]) cube([1,40,13.9]);
-
-    translate([33.5, 0, 17])
-    rotate([180, 0, 0])
-    _pulley();
-}
-
-module debug_full_cover() {
-    intersection() {
-        union() {
-            rotate([180, 0, 0])
-            gearbox(bridging=false);
-
-            translate([30.5, 0, 18.9])
-            rotate([180, 0, 0])
-            gearbox_full_cover();
-        }
-        translate([0, 100/2, 0])
-        cube([200, 100, 100], center=true);
-    }
-
-    %translate([-27, 0, 38.9])
-    rotate([-90, 0, 0])
-    mock_stepper_motor(geared=false, center=true);
-
-    %translate([-27, 0, -2])
-    mock_pulley_GT2_16t();
-
-//    %translate([-27,0,-29.6])
-//    rotate([90,0,0])
-//    mock_stepper_motor(geared=false, center=true);
-
-    %translate([33.5, 0, 12])
-    rotate([180, 0, 0])
-    import("../_downloaded/Parametric_pulley/GT2_64teeth.stl");
-    
-    %translate([33.5, 0, 12])
-    washer_1();
-
-    %translate([33.5, 0, -6])
-    washer_2();
-
-    // belt
-    %translate([0, 20, 7.2])
-    cube([50, 1, 6], center=true);
+module gearbox_washer_3() {
+    _washer(21, 13, 0.8);
 }
 
 module axle_drill_jig(d=2) {
