@@ -45,11 +45,13 @@ module _profile_v2(h) {
             rotate([0, 0, i * 90])
             translate([-4.3, 20/2, 0])
             _profile_groove2(h);
-
         }
+
+        cylinder(d=5.9, h=h + 2, center=true, $fn=6);
+        %cylinder(d=5, h=h + 2, center=true, $fn=40);
     }
 }
-//_profile_v2(40);
+_profile_v2(40);
 
 module _joint_form(holes=true, extra=0) {
     difference() {
@@ -203,8 +205,8 @@ module _frame_clip() {
         }
     }
 
-    %translate([20/2 + 2.1, 20/2 + 3])
-    _profile(30);
+//    %translate([20/2 + 2.1, 20/2 + 3])
+//    _profile(30);
 }
 //_frame_clip();
 
@@ -232,7 +234,7 @@ module _frame_clip_v2() {
         }
     }
 
-    %translate([20/2 + 1.7, 20/2 + 3])
-    _profile_v2(30);
+//    %translate([20/2 + 1.7, 20/2 + 3])
+//    _profile_v2(30);
 }
 //_frame_clip_v2();

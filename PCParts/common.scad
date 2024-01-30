@@ -9,9 +9,6 @@ card_spacing = 20.32;
 fan_connector_width = 6.1;
 fan_connector_length = 7.9;
 
-fan_92mm = 92;
-fan_92mm_bolt_offset = 82.5/2;
-
 atx_mobo_w = 305; //12 * 25.4;
 atx_mobo_l = 244; //9.6 * 25.4;
 ee_atx_mobo_w = 347; //13.68 * 25.4;
@@ -19,6 +16,17 @@ ee_atx_mobo_l = 332; //13 * 25.4;
 
 switch_height = 12.9;
 switch_width = 19.2;
+
+hd_width = 102;
+hd_length = 146;
+hd_height = 26.1;
+
+ssd_width = 70;
+ssd_length = 100.5;
+ssd_height = 9.1;
+ssd_height_enterprise = 14.7;
+
+screw_dia = 3.6;
 
 atx_mobo_holes = [
     [atx_mobo_w - 0.65*25.4, 0.4*25.4],
@@ -75,13 +83,18 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_hd();
 //mock_dvdrom();
 //mock_ssd();
+//mock_ssd_enterprise();
+//atx_psu_holes();
+//atx_psu_back_cutout();
 //mock_atx_psu();
 //mock_fan_connector_male();
+//mock_fan_40mm();
 //mock_fan_60mm();
 //mock_fan_80mm();
 //mock_fan_92mm();
 //mock_fan_120mm();
 //mock_fan_140mm();
+//mock_fan_160mm();
 //mock_USB_HDD_Seagate_5T();
 //mock_USB_HDD_Seagate_5T_2();
 //mock_USB_HDD_Seagate_2T();
@@ -94,6 +107,12 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_USB_hub_Belkin();
 //mock_USB_hub_itec_16();
 //mock_stepdown_converter();
+//mock_stepdown_converter_2();
+//mock_stepdown_converter_3();
+//mock_liitinrima_small();
+//mock_liitinrima_big();
+//fan_mount_holes(80);
+
 
 module mock_pci_slot() {
     color("darkgrey")
@@ -278,7 +297,6 @@ module mobo_card_plate() {
 }
 
 module mobo_backplate() {
-
 
     difference() {
         union() {
@@ -579,7 +597,7 @@ module mock_ssd() {
     holy_2 = 90.60;
 
     difference() {
-        cube([70, 100.5, 9.1]);
+        cube([ssd_width, ssd_length, ssd_height]);
 
         translate([9.4, -1, 6.5])
         cube([41.4, 8, 1]);
@@ -587,6 +605,7 @@ module mock_ssd() {
         translate([10.4, -1, -1])
         cube([39.4, 8, 3]);
     }
+
     translate([0, holy_1, 3])
     rotate([0, -90, 0])
     cylinder(d=2.5, h=5, $fn=30);
@@ -616,10 +635,18 @@ module mock_ssd() {
     cylinder(d=2.5, h=5, $fn=30);
 }
 
-hd_width = 102;
-hd_height = 26.1;
+module mock_ssd_enterprise() {
+    // HGST Ultrastar SS200 SXHLL
+    union() {
+        mock_ssd();
 
-screw_dia = 3.6;
+        translate([0, 0, 9])
+        cube([
+            ssd_width, ssd_length,
+            ssd_height_enterprise - 9
+        ]);
+    }
+}
 
 module _sata_connector_cutout() {
     translate([21/2, 0, 2/2])
@@ -647,7 +674,7 @@ module _sata_connector_cutout() {
 module mock_hd() {
     color("white")
     difference() {
-        cube([hd_width, 146, hd_height]);
+        cube([hd_width, hd_length, hd_height]);
 
         translate([-1, 28.3, 6.40])
         rotate([0, 90, 0])
@@ -737,9 +764,10 @@ module atx_psu_holes(hole=3.2, h=5) {
     rotate([-90, 0, 0])
     cylinder(d=hole, h=h);
 
-    translate(
-        [-atx_psu_width/2 + 30,
-         0, atx_psu_height - 6])
+    translate([
+        -atx_psu_width/2 + 30,
+        0, atx_psu_height - 6
+    ])
     rotate([-90, 0, 0])
     cylinder(d=hole, h=h);
 }
@@ -942,7 +970,10 @@ module pin_connector(pins_x, pins_y=1, h=14, center=false) {
             translate([0, pins_y*2.54 - 2.54])
             _block();
 
-            translate([pins_x*2.54 - 2.54, pins_y*2.54 - 2.54])
+            translate([
+                pins_x*2.54 - 2.54,
+                pins_y*2.54 - 2.54
+            ])
             _block();
         }
     }
@@ -958,19 +989,21 @@ module pin_connector(pins_x, pins_y=1, h=14, center=false) {
 }
 
 module pin_connector_hole(
-    pins_x, pins_y, h=14, center=false) {
+    pins_x, pins_y, h=14, center=false
+) {
 
     holee(0.2, h)
     pin_connector(pins_x, pins_y, h=h, center=center);
 }
 
-module pcb_with_holes(w,l,h=1.6) {
+module pcb_with_holes(w, l, h=1.6) {
     pins_x = ceil(w/2.54);
     pins_y = ceil(l/2.54);
     
     color("lightyellow")
     difference() {
         cube([w, l, h]);
+
         for (x=[0:pins_x - 1]) {
             for (y = [0:pins_y - 1]) {
                 translate([x*2.54, y*2.54, 0])
@@ -980,13 +1013,16 @@ module pcb_with_holes(w,l,h=1.6) {
     }
 }
 
-module fan_mount_holes(fan_d) {
+module fan_mount_holes(fan_d, h_d=4.4, h=100) {
+
     module _fan_mount_holes(spacing) {
         for (i = [0:3]) {
             rotate([0, 0, i * 360/4])
-            translate([spacing/2, spacing/2, 0]) {
-                cylinder(d=4, h=55, center=true, $fn=30);
-            }
+            translate([spacing/2, spacing/2, 0])
+            cylinder(
+                d=h_d, h=h, center=true,
+                $fn=30
+            );
         }
     }
 
@@ -1004,6 +1040,8 @@ module fan_mount_holes(fan_d) {
         _fan_mount_holes(105);
     } else if (fan_d == 140) {
         _fan_mount_holes(124.5);
+    } else if (fan_d == 160) {
+        _fan_mount_holes(144.5);
     }
 }
 
@@ -1052,7 +1090,9 @@ module mock_fan_92mm() {
 module mock_fan_120mm() {
     difference() {
         cube([120, 120, 25], center=true);
-        cylinder(d=118, h=55, center=true, $fn=90);
+        cylinder(
+            d=118, h=55, center=true, $fn=90
+        );
 
         fan_mount_holes(120);
     }
@@ -1064,6 +1104,15 @@ module mock_fan_140mm() {
         cylinder(d=139, h=55, center=true, $fn=90);
 
         fan_mount_holes(140);
+    }
+}
+
+module mock_fan_160mm() {
+    difference() {
+        cube([160, 160, 25], center=true);
+        cylinder(d=159, h=55, center=true, $fn=90);
+
+        fan_mount_holes(160);
     }
 }
 
@@ -1551,14 +1600,21 @@ module cord_socket_hole() {
 module mains_switch_hole() {
     hull() {
         translate([0, 0, 3])
-        cube([switch_height, switch_width + 2, 1], center=true);
+        cube([
+            switch_height, switch_width + 2, 1
+        ], center=true);
 
         translate([0, 0, 0.5])
-        cube([switch_height, switch_width, 1], center=true);
+        cube([
+            switch_height, switch_width, 1
+        ], center=true);
     }
-    translate([0, 0, 1 + 3/2])
-    cube([switch_height + 1, switch_width + 3, 3], center=true);
+    translate([0, 0, 1 + 30/2])
+    cube([
+        switch_height + 1, switch_width + 3, 30
+    ], center=true);
 }
+//mains_switch_hole();
 
 module mock_stepdown_converter() {
     translate([0, 0, 1.6/2])
@@ -1566,6 +1622,134 @@ module mock_stepdown_converter() {
 
     translate([11/2 - 6.5/2 - 0.5, 0, 4.5/2])
     cube([6.5, 6.5, 4.5], center=true);
+}
+
+module _potentiometer() {
+    translate([0, 0, 11.5/2])
+    cube([9.5, 4.5, 11.5], center=true);
+
+    translate([-9.5/2 + 2.4/2, 4.5/2 - 2.4/2, 0])
+    cylinder(d=2.3, h=13, $fn=20);
+}
+
+module mock_stepdown_converter_2() {
+    // LM2596 DC-DC
+    difference() {
+        union() {
+            color("green")
+            translate([0, 0, 1.6/2])
+            cube([43.2, 21.2, 1.6], center=true);
+
+            translate([43.2/2 - 8/2 - 0.2, 0, 0])
+            cylinder(d=8, h=12, $fn=30);
+
+            translate([-43.2/2 + 8/2 + 0.5, 0, 0])
+            cylinder(d=8, h=12, $fn=30);
+
+            translate([
+                43.2/2 - 19 + 9.5/2,
+                21.2/2 - 4.5/2 - 1.8,
+                0
+            ])
+            _potentiometer();
+
+            translate([
+                43/2 - 22 + 12/2, -21.2/2 + 12/2 + 1.3,
+                9/2
+            ])
+            cube([12, 12, 9], center=true);
+
+            translate([
+                -43/2 + 20 - 9.5/2, 21.2/2 - 8.5/2 - 2.5,
+                6/2
+            ])
+            cube([9.5, 8.5, 6], center=true);
+        }
+
+        translate([43.2/2 - 1.7, 21.2/2 - 1.7, 0])
+        cylinder(d=1, h=10, center=true, $fn=10);
+
+        translate([43.2/2 - 1.7, -21.2/2 + 1.7, 0])
+        cylinder(d=1, h=10, center=true, $fn=10);
+
+        translate([-43.2/2 + 1.7, 21.2/2 - 1.7, 0])
+        cylinder(d=1, h=10, center=true, $fn=10);
+
+        translate([-43.2/2 + 1.7, -21.2/2 + 1.7, 0])
+        cylinder(d=1, h=10, center=true, $fn=10);
+
+        translate([43.2/2 - 6.5, -21.2/2 + 2.5])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+        translate([-43.2/2 + 6.6, 21.2/2 - 2.5])
+        cylinder(d=3, h=10, center=true, $fn=20);
+
+    }
+}
+
+module mock_stepdown_converter_3() {
+    // max 10A DC-DC
+    module _terminal() {
+        difference() {
+            translate([0, 0, 12/2])
+            cube([7.9, 10.4, 12], center=true);
+
+            translate([0, 5/2, 10])
+            cylinder(d=3.5, h=4, $fn=20);
+
+            translate([0, -5/2, 10])
+            cylinder(d=3.5, h=4, $fn=20);
+        }
+    }
+
+    difference() {
+        union() {
+            color("green")
+            translate([0, 0, 1.6/2])
+            cube([76, 22.7, 1.6], center=true);
+
+            translate([76/2 - 7.9/2 + 0.5, 0, 0])
+            _terminal();
+
+            translate([-76/2 + 7.9/2, 0, 0])
+            _terminal();
+
+            translate([
+                76/2 - 21.5 + 4.5/2,
+                0, 0
+            ])
+            rotate([0, 0, -90])
+            _potentiometer();
+
+            translate([76/2 - 12.5, -4.2, 0])
+            cylinder(d=8, h=14, $fn=30);
+
+            translate([76/2 - 12.5, 4.2, 0])
+            cylinder(d=8, h=14, $fn=30);
+
+            translate([-76/2 + 12.5, -4.2, 0])
+            cylinder(d=8, h=14, $fn=30);
+
+            translate([-76/2 + 12.5, 4.2, 0])
+            cylinder(d=8, h=14, $fn=30);
+
+            translate([-76/2 + 22, -4.5, 18/2 + 2])
+            rotate([0, 80, 7])
+            tube(18, 8.5, 5, $fn=30);
+        }
+
+        translate([76/2 - 3, 22.7/2 - 2.5, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+
+        translate([76/2 - 3, -22.7/2 + 2.5, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+
+        translate([-76/2 + 3, 22.7/2 - 2.5, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+
+        translate([-76/2 + 3, -22.7/2 + 2.5, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+    }
 }
 
 module mock_led_3mm() {
@@ -1594,4 +1778,72 @@ module mock_led_5mm() {
 
     translate([-3/2 + 0.5/2, 0, -10/2])
     cube([0.5, 0.5, 10], center=true);
+}
+
+module _liitinrima(
+    w=6, l=16.3, h=7.5, d=5.5, dh=12.8,
+    dspacing=1, count=2, spacing=2, sd=2.8
+) {
+
+    module _liitin() {
+        union() {
+            translate([0, 0, h/2])
+            cube([w, l, h], center=true);
+
+            translate([0, d/2 + dspacing/2, 0])
+            cylinder(d=d, h=12.8, $fn=20);
+
+            translate([0, -d/2 - dspacing/2, 0])
+            cylinder(d=d, h=12.8, $fn=20);
+        }
+    }
+
+    color("lightgrey")
+    translate([-(count - 1) * (w + spacing)/2, 0, 0])
+    difference() {
+        union() {
+            for (i = [0:count - 1]) {
+                translate([i*(spacing + w), 0, 0])
+                _liitin();
+            }
+
+            if (count > 1) {
+                for (i = [0:count - 2]) {
+                    translate([
+                        i*(spacing + w) + (w + spacing)/2,
+                        0, h/2
+                    ])
+                    cube([
+                        spacing + 1, sd + 1.7, h
+                    ], center=true);
+                }
+            }
+        }
+
+        if (count > 1) {
+            for (i = [0:count - 2]) {
+                translate([
+                    i*(spacing + w) + (w + spacing)/2,
+                    0, 0
+                ])
+                cylinder(d=sd, h=20, center=true, $fn=20);
+            }
+        }
+    }
+}
+
+module mock_liitinrima_small(count=2) {
+    _liitinrima(
+        w=6, l=16.3, h=7.5, d=5.5, dh=12.8,
+        dspacing=1, count=count,
+        spacing=2.167, sd=2.8
+    );
+}
+
+module mock_liitinrima_big(count=2) {
+    _liitinrima(
+        w=7.3, l=23.1, h=9.4, d=6.2, dh=17.2,
+        dspacing=3.8, count=count,
+        spacing=4.12, sd=3.7
+    );
 }
