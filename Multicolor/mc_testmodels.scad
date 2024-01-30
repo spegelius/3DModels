@@ -35,7 +35,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 
 //testmodel6_part1();
 //testmodel6_part2_support();
-//testmodel6_part3_soluble_support();
+testmodel6_part3_soluble_support();
 
 
 //testmodel7_part1();
@@ -405,8 +405,23 @@ module testmodel6_part1() {
 }
 
 module testmodel6_part2_support() {
-    translate([0, 0, 6/2])
-    cube([29, 10, 6], center=true);
+    //translate([0, 0, 6/2])
+    //cube([29, 10, 6], center=true);
+    difference() {
+        hull() {
+            translate([0, 0, 1/2])
+            cube([25, 10, 1], center=true);
+
+            translate([0, 0, 6 - 1/2])
+            cube([29.3, 10, 1], center=true);
+        }
+
+        translate([0, 0, 4.8/2 + 0.2])
+        rotate([0, 90, 0])
+        chamfered_cube_side(
+            4.8, 9, 33, 2.2, center=true
+        );
+    }
 }
 
 module testmodel6_part3_soluble_support() {
