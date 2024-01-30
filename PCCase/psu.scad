@@ -8,12 +8,15 @@ include <variables.scad>;
 
 //test_PSU_plate();
 
+//PSU_backplate(200);
 //PSU_backplate(230);
 //PSU_backplate(240);
+
 //PSU_plate_mount_1();
 //PSU_plate_mount_2();
+
 //PSU_bottom_support(230);
-PSU_bottom_support(240);
+//PSU_bottom_support(240);
 //PSU_bottom_support_long_bow_tie();
 
 //PSU_plate_long_tie();
@@ -22,14 +25,14 @@ PSU_bottom_support(240);
 
 
 module debug_PSU_plate() {
-    rotate([90,0,0])
+    rotate([90, 0, 0])
     PSU_backplate(230);
 
     translate([
         -atx_psu_width/2 - 9.75, -8 + 3 - 3/2,
         (atx_psu_height + 6)/2
     ])
-    PSU_plate_mount_1(230);
+    PSU_plate_mount_1();
 }
 
 module test_PSU_plate() {
@@ -42,11 +45,11 @@ module test_PSU_plate() {
     }
 }
 
-module PSU_backplate(width) {
+module _PSU_backplate_base(width) {
     //w = atx_psu_width + 10;
     h = atx_psu_height + 6;
 
-    w = width - 70;
+    w = width - 66;
 
     translate([0, 0, 3])
     rotate([-90, 0, 0])
@@ -54,39 +57,37 @@ module PSU_backplate(width) {
         union() {
             translate([0, 3/2, h/2 - 2])
             rotate([90, 0, 0])
-            cube([w, h, 3],center=true);
+            cube([w, h, 3], center=true);
 
+            // reinforcements
             hull() {
                 translate([0, 1/2, h - 6/2 - 2])
-                cube(
-                    [atx_psu_width, 1, 6],
-                    center=true);
+                cube([
+                    w - 11, 1, 6
+                ], center=true);
 
                 translate([
                     0, -3 + 1/2, h - 3/2 - 2
                 ])
-                cube(
-                    [atx_psu_width, 1, 3],
-                    center=true);
+                cube([
+                    w - 11, 1, 3
+                ], center=true);
             }
 
             hull() {
                 translate([0, 1/2, 4/2 - 2])
-                cube(
-                    [atx_psu_width, 1, 4],
-                    center=true);
+                cube([
+                    w - 11, 1, 4
+                ], center=true);
 
                 translate([0, -5 - 1, 3/2 - 2])
-                cube(
-                    [atx_psu_width, 1, 3],
-                    center=true);
+                cube([
+                    w - 11, 1, 3
+                ], center=true);
             }
         }
-        atx_psu_back_cutout(thickness=17);
 
-        translate([0, -17 + 1, 0])
-        atx_psu_holes(hole=8, h=17, $fn=30);
-
+        // plate mount grooves
         translate([-w/2  +2, 0, 0])
         rotate([0, 0, 45])
         cube([1.1, 1.1, 3*h], center=true);
@@ -109,10 +110,26 @@ module PSU_backplate(width) {
     }
 }
 
+module PSU_backplate(width) {
+    difference() {
+        _PSU_backplate_base(width);
+
+        // ATX cuts
+        translate([0, 0, 3])
+        rotate([-90, 0, 0])
+        atx_psu_back_cutout(thickness=17);
+
+        translate([0, 0, 3])
+        rotate([-90, 0, 0])
+        translate([0, -17 + 1, 0])
+        atx_psu_holes(hole=8, h=17, $fn=30);
+    }
+}
+
 module PSU_plate_mount_1() {
 
     h = atx_psu_height + 6;
-    x_off = 9.75;
+    x_off = 7.75;
 
     module _joint() {
         difference() {
@@ -173,50 +190,69 @@ module PSU_bottom_support(width) {
     difference() {
         intersection() {
             union() {
+                translate([0, -21/2 + 6 , 0])
                 cube([
-                    width - 40, 30, 10
+                    width - 40, 21, 10
                 ], center=true);
 
                 translate([
-                    -(width - 60)/2 + 20/2, 6,
+                    -(width - 60)/2 + 7.5, 1,
                     10/2 - 1/2
                 ])
                 hull() {
-                    cube([20, 18, 1], center=true);
+                    cube([25, 10, 1], center=true);
 
                     translate([-6, 0, 10])
-                    cube([8, 18, 1], center=true);
+                    cube([13, 10, 1], center=true);
                 }
 
                 translate([
-                    (width - 60)/2 - 20/2, 6,
+                    (width - 60)/2 - 7.5, 1,
                     10/2 - 1/2
                 ])
                 hull() {
-                    cube([20, 18, 1], center=true);
+                    cube([25, 10, 1], center=true);
 
                     translate([6, 0, 10])
-                    cube([8, 18, 1], center=true);
+                    cube([13, 10, 1], center=true);
                 }
             }
 
-            rotate([0, 0, 45])
-            cube([145, 145, 200], center=true);
+            intersection() {
+                rotate([0, 0, 45])
+                cube([
+                    width - 90, width - 90, 200
+                ], center=true);
+
+                translate([0, 0, 10/2])
+                union() {
+                    rotate([-90, 0, 0])
+                    cylinder(d=width - 50, h=20, $fn=60);
+
+                    rotate([90, 0, 0])
+                    cylinder(d=width - 40, h=20, $fn=60);
+                }
+
+            }
         }
 
-        translate([-(width - 30)/2, 6, 0])
-        cube([30, 30, 30], center=true);
+        difference() {
+            translate([-(width - 30)/2 + 0.5, 6, 0])
+            cube([30, 30, 35], center=true);
 
-        translate([(width - 30)/2, 6, 0])
-        cube([30, 30, 30], center=true);
+            translate([(-width + 60)/2, 6, -2])
+            rotate([90, 0, 0])
+            long_bow_tie_half(40);
 
-        translate([(width - 60)/2, 6, -20/2])
-        rotate([0, 0, 90])
-        male_dovetail(40);
+        }
+        difference() {
+            translate([(width - 30)/2 - 0.5, 6, 0])
+            cube([30, 30, 35], center=true);
 
-        translate([-(width - 60)/2, 6, -20/2])
-        rotate([0, 0, -90])
-        male_dovetail(40);
+            translate([(width - 60)/2, 6, -2])
+            rotate([90, 0, 0])
+            long_bow_tie_half(40);
+        }
 
         translate([0, 25, 0])
         chamfered_cube(

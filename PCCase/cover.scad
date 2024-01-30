@@ -13,13 +13,18 @@ include <variables.scad>;
 //debug_side_cover_mount();
 //debug_side_cover_split_clip();
 
+//debug_front_cover();
+
 //debug_cover_buttons();
 //debug_cover_buttons_4_leds();
 //debug_cover_lens();
 
 //bottom(230, 430);
+//bottom(230, 500);
 //bottom(240, 540);
 //bottom_clip();
+
+//bottom(200, 400, fan_hole=false);
 
 //side_cover_back(430, 480);
 
@@ -49,12 +54,19 @@ include <variables.scad>;
 //side_cover_front_p4(540, 525);
 
 //side_cover_mount();
-//side_cover_mount_split_center();
-//side_cover_mount_split_center(_offset=0.4);
-//side_cover_mount_split_center(_offset=0.8);
-//side_cover_mount_split_ring();
 
-//side_cover_split_clip();
+//side_cover_mount_split_center_front();
+//side_cover_mount_split_center_front(_offset=0.4);
+//side_cover_mount_split_center_front(_offset=0.8);
+//side_cover_mount_split_ring_front();
+
+//side_cover_mount_split_center_back();
+//side_cover_mount_split_center_back(_offset=0.4);
+//side_cover_mount_split_center_back(_offset=0.8);
+//side_cover_mount_split_ring_back();
+
+
+side_cover_split_clip();
 
 //test_bottom_clip();
 //test_side_cover_split_clip();
@@ -62,6 +74,8 @@ include <variables.scad>;
 //front_cover_bottom(230, 80);
 //front_cover_bottom(230, 60);
 //front_cover_bottom(230, 40);
+//front_cover_bottom(230, 32, snap=true);
+//front_cover_bottom(230, 100, snap=true);
 //front_cover_buttons(230, 80);
 
 //front_cover_grill(230, 300, 40, 4, supports=true);
@@ -71,11 +85,13 @@ include <variables.scad>;
 //front_cover_bottom(240, 80);
 //front_cover_bottom(240, 130);
 //front_cover_bottom(240, 40);
+//front_cover_bottom(230, 40);
+//front_cover_bottom(230, 60);
 
 //front_cover_buttons(230, 80);
 //front_cover_buttons(240, 70);
 
-front_cover_buttons_4_leds(240, 80);
+//front_cover_buttons_4_leds(240, 80);
 //front_cover_buttons_4_leds(240, 70);
 
 //front_cover_buttons_mount();
@@ -90,6 +106,10 @@ front_cover_buttons_4_leds(240, 80);
 //front_cover_grill(240, 420/2, 28, 10, supports=true);
 //front_cover_grill(240, 420/2, 29, 2, supports=true);
 
+//front_cover_snap_clip_left();
+//front_cover_snap_clip_right();
+
+//test_front_cover_snap_clip();
 
 //front_cover_plate_240();
 //front_cover_plate_240_top();
@@ -203,6 +223,23 @@ module debug_side_cover_split_clip() {
     side_cover_split_clip();
 }
 
+module debug_front_cover() {
+    render()
+
+    intersection() {
+        front_cover_grill(
+            230, 100, 10, 4,
+            supports=false
+        );
+
+        cube([500, 100, 100], center=true);
+    }
+
+    translate([-230/2 + 30/2, 0.3/2, 50-1])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_left();
+}
+
 module debug_cover_buttons() {
 
     translate([-35, -17 + 5, 30])
@@ -266,7 +303,7 @@ module debug_cover_lens() {
 
 //_side_indents(240, 200);
 
-module _bottom_form(w, d, h=10) {
+module _bottom_form(w, d, h=10, fan_hole=true) {
 
     difference() {
         translate([0, 0, h/2])
@@ -291,19 +328,21 @@ module _bottom_form(w, d, h=10) {
         rotate([0, 0, 45])
         cube([42, 42, 20], center=true);
 
-        // PSU fan hole
-        translate([0, -d/2 + 150/2 + 5, 0])
-        chamfered_cube(145, 150, 145, 15, center=true);
+        if (fan_hole) {
+            // PSU fan hole
+            translate([0, -d/2 + 150/2 + 5, 0])
+            chamfered_cube(145, 150, 145, 15, center=true);
+        }
     }
 }
 
-module _bottom_indents(w, d, h) {
+module _bottom_indents(w, d, h, fan_hole=true) {
 
     module _bottom_indent_frame() {
         linear_extrude(10)
         offset(-3)
         projection(cut=false)
-        _bottom_form(w, d, h);
+        _bottom_form(w, d, h, fan_hole=fan_hole);
     }
 
     count_w = ceil(w / 10);
@@ -351,14 +390,14 @@ module _bottom_indents(w, d, h) {
     }   
 }
 
-module bottom(width, depth) {
+module bottom(width, depth, fan_hole=true) {
     w = width - 60 - 0.2;
     d = depth - 60 - 0.2;
     h = 10;
 
     intersection() {
         difference() {
-            _bottom_form(w, d, h=10);
+            _bottom_form(w, d, h=10, fan_hole=fan_hole);
 
             translate([0, 0, h/2 + 4])
             cube([w - 4.4, d - 4.4, h], center=true);
@@ -373,7 +412,7 @@ module bottom(width, depth) {
                 cube([w - 4.8, d - 4.8, 3], center=true);
             }
 
-            _bottom_indents(w, d, h);
+            _bottom_indents(w, d, h, fan_hole=fan_hole);
 
         }
 
@@ -1069,21 +1108,29 @@ module side_cover_mount(_offset=0) {
     }
 }
 
-module side_cover_mount_split_center(_offset=0) {
+module side_cover_mount_split_center_front(_offset=0) {
     difference() {
         side_cover_mount(12);
 
-        translate([12 + _offset, 0, -1])
-        tube(54, 6.2, 6, $fn=60);
+        difference() {
+            union() {
+                translate([12 + _offset, 0, -1])
+                tube(54, 6.2, 6, $fn=60);
 
-        translate([12 + _offset, 0, 5/2])
-        cube_donut(
-            43, 2, angle=360, rotation=45, $fn=60
-        );
+                translate([12 + _offset, 0, 5/2])
+                cube_donut(
+                    43, 2, angle=360, rotation=45, $fn=60
+                );
+            }
+
+            translate([15 + _offset, -18.33])
+            rotate([0, 0, 15])
+            cube([4, 5, 20], center=true);
+        }
     }
 }
 
-module side_cover_mount_split_ring() {
+module side_cover_mount_split_ring_front() {
     difference() {
         intersection() {
             side_cover_mount(12);
@@ -1092,23 +1139,38 @@ module side_cover_mount_split_ring() {
             cylinder(d=60, h=5);
         }
 
-        difference() {
-            translate([12, 0, 0])
-            cylinder(d=42.1, h=30, center=true, $fn=60);
+        union() {
+            difference() {
+                translate([12, 0, 0])
+                cylinder(d=42.1, h=30, center=true, $fn=60);
 
-            translate([12, 0, 5/2])
-            cube_donut(
-                43, 1.9, angle=360, rotation=45, $fn=60
-            );
+                translate([12, 0, 5/2])
+                cube_donut(
+                    43, 1.9, angle=360, rotation=45, $fn=60
+                );
+            }
+            translate([15, -18.33])
+            rotate([0, 0, 15])
+            cube([4.2, 5.2, 20], center=true);
         }
     }
+}
+
+module side_cover_mount_split_center_back(_offset=0) {
+    mirror([1, 0, 0])
+    side_cover_mount_split_center_front(_offset);
+}
+
+module side_cover_mount_split_ring_back() {
+    mirror([1, 0, 0])
+    side_cover_mount_split_ring_front();
 }
 
 module side_cover_split_clip() {
     union() {
         difference() {
             rounded_cube_side(
-                14, 6.5, 10, 2, center=true, $fn=20
+                14, 6.5, 14, 2, center=true, $fn=20
             );
 
             translate([0, -2, 0])
@@ -1116,10 +1178,10 @@ module side_cover_split_clip() {
         }
 
         translate([5.4, -2.8, 0])
-        cylinder(d=1.9, h=10, center=true, $fn=20);
+        cylinder(d=1.9, h=14, center=true, $fn=20);
 
         translate([-5.4, -2.8, 0])
-        cylinder(d=1.9, h=10, center=true, $fn=20);
+        cylinder(d=1.9, h=14, center=true, $fn=20);
 
     }
 }
@@ -1140,38 +1202,87 @@ module test_side_cover_split_clip() {
     side_cover_split_clip();
 }
 
-module _front_cover(width, height, brim=true) {
+module _front_cover(
+    width, height, brim=true, snap=false
+) {
+
     wall = 1.6;
+
+    module _snap_hole() {
+
+        difference() {
+            union() {
+                translate([-0.4, 5/2 - 0.85, 0])
+                cube([6, 5, 15], center=true);
+
+                translate([-3.2, 0, 0])
+                cube([5, 7.8, 15], center=true);
+
+                translate([2.2, 0, 0])
+                cube([1.8, 8.5, 15], center=true);
+
+                // chamfers
+                translate([1.6, -0.3, 0])
+                rotate([0, 0, 40])
+                cube([2, 2, 15], center=true);
+
+                translate([-1, -0.3, 0])
+                rotate([0, 0, -40])
+                cube([2, 2, 15], center=true);
+                
+                // claws
+                translate([
+                    -1.3,
+                    -7.8/2 + 1.1/2 -0.08, 0
+                ])
+                cube([2, 1.7, 15], center=true);
+
+                translate([
+                    1.9,
+                    -7.8/2 + 1.1/2 -0.08, 0
+                ])
+                cube([2, 1.7, 15], center=true);
+
+            }
+
+            translate([4, -3.2, 15])
+            rotate([0, 45, -45])
+            cube([20, 30, 20], center=true);
+        }
+    }
 
     difference() {
         union() {
-            translate([width/2 - 30/2, 0.1, height/2])
-            rotate([-90, 0, 0])
-            long_tie_split(height);
+            if (!snap) {
+                translate([width/2 - 30/2, 0.1, height/2])
+                rotate([-90, 0, 0])
+                long_tie_split(height);
 
-            translate([width/2 - 30/2, 0.1, height/2])
-            cube([5, 0.3, height], center=true);
-
-            translate([-width/2 + 30/2, 0, height/2])
-            rotate([-90, 0, 0])
-            long_tie_split(height);
-
-            translate([-width/2 + 30/2, 0, height/2])
-            cube([5, 0.3, height], center=true);
-
-            if (brim) {
-                translate([width/2 - 30/2, 0, 0])
-                cylinder(d=20, h=0.2);
-
-                translate([-width/2 + 30/2, 0, 0])
-                cylinder(d=20, h=0.2);
+                translate([-width/2 + 30/2, 0, height/2])
+                rotate([-90, 0, 0])
+                long_tie_split(height);
             }
-            
+
+            translate([width/2 - 30/2, 0.1, height/2])
+            cube([5, 0.3, height], center=true);
+
+            translate([-width/2 + 30/2, 0, height/2])
+            cube([5, 0.3, height], center=true);
+
+            // side walls
             hull() {
                 translate([width/2 - 30/2 + 4, -wall/2, 0])
                 cylinder(d=wall, h=height, $fn=40);
 
+                translate([width/2 - 30/2 - 1, -6, 0])
+                cylinder(d=wall, h=height, $fn=100);
+            }
+
+            hull() {
                 translate([width/2 - 30/2 - 20, -17, 0])
+                cylinder(d=wall, h=height, $fn=100);
+
+                translate([width/2 - 30/2 - 1, -6, 0])
                 cylinder(d=wall, h=height, $fn=100);
             }
 
@@ -1179,10 +1290,19 @@ module _front_cover(width, height, brim=true) {
                 translate([-width/2 + 30/2 - 4, -wall/2, 0])
                 cylinder(d=wall, h=height, $fn=40);
 
-                translate([-width/2 + 30/2 + 20, -17, 0])
+                translate([-width/2 + 30/2 + 1, -6, 0])
                 cylinder(d=wall, h=height, $fn=100);
             }
 
+            hull() {
+                translate([-width/2 + 30/2 + 20, -17, 0])
+                cylinder(d=wall, h=height, $fn=100);
+
+                translate([-width/2 + 30/2 + 1, -6, 0])
+                cylinder(d=wall, h=height, $fn=100);
+            }
+
+            // middle wall
             hull() {
                 translate([-width/2 + 30/2 + 20, -17, 0])
                 cylinder(d=wall, h=height, $fn=100);
@@ -1191,6 +1311,7 @@ module _front_cover(width, height, brim=true) {
                 cylinder(d=wall, h=height, $fn=100);
             }
 
+            // side beams
             hull() {
                 translate([width/2 - 30/2 + 4, -wall/2, 0])
                 cylinder(d=wall, h=height, $fn=40);
@@ -1199,7 +1320,7 @@ module _front_cover(width, height, brim=true) {
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([
-                    width/2 - 30/2 - 1, -wall/2 - 3, 0
+                    width/2 - 30/2 - 2.4, -wall/2 - 6, 0
                 ])
                 cylinder(d=wall, h=height, $fn=40);
             }
@@ -1214,20 +1335,95 @@ module _front_cover(width, height, brim=true) {
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([
-                    -width/2 + 30/2 + 1, -wall/2 - 3, 0
+                    -width/2 + 30/2 + 2.4, -wall/2 - 6, 0
                 ])
                 cylinder(d=wall, h=height, $fn=40);
+            }
+
+            if (brim) {
+                translate([width/2 - 30/2, 0, 0])
+                cylinder(d=20, h=0.2);
+
+                translate([-width/2 + 30/2, 0, 0])
+                cylinder(d=20, h=0.2);
+
+                hull() {
+                    translate([-width/2 + 30/2 + 20, -17, 0])
+                    cylinder(d=10, h=0.2, $fn=20);
+
+                    translate([width/2 - 30/2 - 20, -17, 0])
+                    cylinder(d=10, h=0.2, $fn=20);
+                }
+
+                hull() {
+                    translate([width/2 - 30/2 + 4, -wall/2, 0])
+                    cylinder(d=10, h=0.2, $fn=20);
+
+                    translate([width/2 - 30/2 - 20, -17, 0])
+                    cylinder(d=10, h=0.2, $fn=20);
+                }
+
+                hull() {
+                    translate([
+                        -width/2 + 30/2 - 4, -wall/2, 0
+                    ])
+                    cylinder(d=10, h=0.2, $fn=20);
+
+                    translate([-width/2 + 30/2 + 20, -17, 0])
+                    cylinder(d=10, h=0.2, $fn=20);
+                }
+            }
+        }
+
+        if (snap) {
+            if (height > 20) {
+                translate([-width/2 + 30/2 + 2, 0, 20])
+                mirror([1, 0, 0])
+                _snap_hole();
+
+                translate([width/2 - 30/2 - 2, 0, 20])
+                _snap_hole();
+            }
+
+            if (height > 200) {
+                translate([
+                    -width/2 + 30/2 + 2, 0, height/2
+                ])
+                mirror([1, 0, 0])
+                _snap_hole();
+
+                translate([
+                    width/2 - 30/2 - 2, 0, height/2
+                ])
+                _snap_hole();
+            }
+
+            if (height > 60) {
+                translate([
+                    -width/2 + 30/2 + 2, 0, height - 20
+                ])
+                mirror([1, 0, 0])
+                _snap_hole();
+
+                translate([
+                    width/2 - 30/2 - 2, 0, height - 20
+                ])
+                _snap_hole();
             }
         }
     }
 }
 
-module front_cover_bottom(width, height, brim=true) {
+module front_cover_bottom(
+    width, height, brim=true, snap=false
+) {
     wall = 1.6;
 
     union() {
         difference() {
-            _front_cover(width, height, brim=brim);
+            _front_cover(
+                width, height - 20, brim=brim, snap=snap
+            );
 
             translate([0, -20, height])
             rotate([-30, 0, 0])
@@ -1273,11 +1469,15 @@ module front_cover_bottom(width, height, brim=true) {
                 cube([30, 50, 60], center=true);
             }
 
-            translate([0, 30/2 + 0.1, (height - 50)/2 + 9])
-            chamfered_cube(
-                width * 2, 30, height - 50,
-                6, center=true
-            );
+            if (!snap) {
+                translate([
+                    0, 30/2 + 0.1, (height - 50)/2 + 9
+                ])
+                chamfered_cube(
+                    width * 2, 30, height - 50,
+                    6, center=true
+                );
+            }
 
             translate([0, 10/2 + 0.1, height])
             cube([width, 10, 56], center=true);
@@ -1329,6 +1529,12 @@ module front_cover_bottom(width, height, brim=true) {
                         height - 30.42
                     ])
                     sphere(d=wall, $fn=60);
+
+                    translate([
+                        width/2 - 30/2 - 1, -6,
+                        height - 31.75
+                    ])
+                    sphere(d=wall, $fn=60);
                 }
 
                 hull() {
@@ -1364,6 +1570,12 @@ module front_cover_bottom(width, height, brim=true) {
                         height - 30.42
                     ])
                     sphere(d=wall, $fn=60);
+
+                    translate([
+                        width/2 - 30/2 - 1, -6,
+                        height - 31.75
+                    ])
+                    sphere(d=wall, $fn=60);
                     
                 }
 
@@ -1385,6 +1597,10 @@ module front_cover_bottom(width, height, brim=true) {
 
             translate([0, 0, height  + 10/2])
             cube([400, 10, 10], center=true);
+
+            translate([0, 0, - 10/2])
+            cube([400, 100, 10], center=true);
+
         }
     }
 }
@@ -1398,7 +1614,9 @@ module front_cover_grill(
 
     difference() {
         union() {
-            _front_cover(width, height, brim=brim);
+            _front_cover(
+                width, height, brim=brim, snap=true
+            );
 
             intersection() {
                 translate([0, 3, 21 + grill_z_pos])
@@ -1453,18 +1671,6 @@ module front_cover_grill(
             cube([1.2, 20, height], center=true);
 
         }
-
-        translate([0, 30/2 + 0.1, height/4 + 5/2])
-        chamfered_cube(
-            width * 2, 30, height/2 - 15,
-            6, center=true
-        );
-
-        translate([0, 30/2 + 0.1, height - height/4 - 5/2])
-        chamfered_cube(
-            width * 2, 30, height/2 - 15,
-            6, center=true
-        );
     }
 
     if (supports) {
@@ -1998,14 +2204,86 @@ module top_cover_grill_end(
         intersection() {
             front_cover_grill(
                 width, height - 27, grills,
-                grill_z_pos, supports=true, brim=brim
+                grill_z_pos, supports=supports, brim=brim
             );
 
-            translate([0, 0, (height - 37)/2])
-            cube([width, 70, height - 37], center=true);
+            translate([0, 0, (height - 32)/2])
+            cube([width, 70, height - 32], center=true);
         }
 
-        translate([0, 0, height - 39])
-        front_cover_bottom(width, 39, brim=false);
+        translate([0, 0, height - 32.1])
+        front_cover_bottom(
+            width, 32.1, brim=false, snap=true
+        );
     }
+}
+
+module front_cover_snap_clip_left() {
+    s_h = 8.4;
+
+    union() {
+        translate([0, 0, 15/2])
+        rotate([90, 0, 0])
+        long_tie_split(15);
+
+        // adhesion extra
+        translate([-(2.7 + 1.2/2)/2 + 1.4/2, 0, s_h/2])
+        cube([2.5 + 1.2/2, 0.2, s_h], center=true);
+
+        // base block
+        translate([-4.6/2 + 0.6, 1/2, s_h/2])
+        cube([4.6, 1, s_h], center=true);
+
+        // arms
+        translate([0, 4/2, s_h/2])
+        chamfered_cube(
+            1.2, 4, s_h, 0.4, center=true
+        );
+
+        translate([-3.4, 4/2, s_h/2])
+        chamfered_cube(
+            1.2, 4, s_h, 0.4, center=true
+        );
+
+        // claws
+        translate([0 - 0.2, 4 - 1/2, s_h/2])
+        chamfered_cube(
+            1.6, 1.6, s_h, 0.4, center=true
+        );
+
+        translate([-3.4 + 0.2, 4 - 1/2, s_h/2])
+        chamfered_cube(
+            1.6, 1.6, s_h, 0.4, center=true
+        );
+
+
+    }
+}
+
+module front_cover_snap_clip_right() {
+    mirror([1, 0, 0])
+    front_cover_snap_clip_left();
+}
+
+module test_front_cover_snap_clip() {
+    module _test_piece() {
+        intersection() {
+            translate([0, 0, -4])
+            front_cover_grill(
+                200, 100, 10, 4,
+                supports=false, brim=false
+            );
+
+            translate([-100, 0, 17/2])
+            cube([39, 30, 17], center=true);
+        }
+    }
+
+    translate([80, 0, 0])
+    _test_piece();
+
+    mirror([1, 0, 0])
+    translate([80, 0, 0])
+    _test_piece();
+    
 }

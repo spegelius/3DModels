@@ -3,8 +3,11 @@ use <../Dollo/NEW_long_ties/include.scad>;
 
 //debug_foot();
 
-foot();
+//foot();
 //foot_dampener();
+
+foot2();
+//foot2_dampener();
 
 
 module debug_foot() {
@@ -93,5 +96,80 @@ module foot_dampener() {
         
         translate([-10, -14, 1])
         cylinder(d=2, h=10, $fn=10);
+    }
+}
+
+module foot2() {
+    difference() {
+        hull() {
+            translate([0, 0, 2/2])
+            chamfered_cube_side(
+                30, 60, 2, 7, center=true
+            );
+
+            translate([0, 0, 10 - 1/2])
+            chamfered_cube_side(
+                30, 50, 1, 5, center=true
+            );
+        }
+
+        translate([0, -60/2, 10])
+        rotate([-90, 0, 0])
+        male_dovetail(60);
+
+        translate([9, 19, 2.4])
+        sphere(d=6, $fn=40);
+
+        translate([-9, 19, 2.4])
+        sphere(d=6, $fn=40);
+
+        translate([9, -19, 2.4])
+        sphere(d=6, $fn=40);
+
+        translate([-9, -19, 2.4])
+        sphere(d=6, $fn=40);
+
+    }
+}
+
+module foot2_dampener() {
+
+    difference() {
+        union() {
+            translate([0, 0, -2/2])
+            chamfered_cube_side(
+                28, 58, 2, 7, center=true
+            );
+
+            translate([9, 19, 2])
+            sphere(d=5.5, $fn=40);
+
+            translate([-9, 19, 2])
+            sphere(d=5.5, $fn=40);
+
+            translate([9, -19, 2])
+            sphere(d=5.5, $fn=40);
+
+            translate([-9, -19, 2])
+            sphere(d=5.5, $fn=40);
+
+        }
+
+        chamfered_cube(
+            13, 40, 20, 5, center=true
+        );
+
+        translate([9, 19, 1])
+        cylinder(d=2, h=10, $fn=10);
+
+        translate([-9, 19, 1])
+        cylinder(d=2, h=10, $fn=10);
+
+        translate([9, -19, 1])
+        cylinder(d=2, h=10, $fn=10);
+
+        translate([-9, -19, 1])
+        cylinder(d=2, h=10, $fn=10);
+
     }
 }

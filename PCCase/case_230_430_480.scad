@@ -42,13 +42,13 @@ module mockup() {
         e_count_d, e_count_h
     );
 
-    _hd_mocks(width, depth);
+    _hd_mocks(width, depth, height, count=10);
 
     _PSU(width);
 
     //_feet(width, depth);
 
-    //_mobo("ATX", width, depth, height);
+    _mobo("ATX", width, depth, height);
 
     translate([width/2 - 30/2, depth - 30/2 - 15, 100])
     rotate([90, 0, 180])
