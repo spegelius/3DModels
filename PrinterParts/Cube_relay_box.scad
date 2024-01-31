@@ -20,6 +20,22 @@ box_16_x = 200;
 box_16_y = 105;
 
 
+//debug_8();
+//debug_16();
+
+//box_8();
+//lid_8();
+connector_lid_8();
+
+//box_16();
+//lid_16();
+//extruder_lid_16();
+//connector_lid_16();
+
+//clip();
+//clip_2020();
+
+
 module _mock_relay_board(x, y, hole_offset_x, hole_offset_y) {
     difference() {
         cube([x, y, 1]);
@@ -97,6 +113,30 @@ module mock_connector_board_16() {
     translate([3*2.54+2.24,2*2.54+2.24,-1]) pin_header(3,2);
     translate([2*2.54+2.24,6*2.54+2.24,-1]) pin_header(4);
     translate([4*2.54+2.24,9*2.54+2.24,-1]) pin_header(2,4);
+}
+
+module debug_8() {
+    //%translate([3,7,4]) mock_relay_board_8();
+    %translate([151.8,12,30]) rotate([0,90,0]) mock_connector_board_8();
+    box_8();
+    translate([160,34.15,18.6]) rotate([0,-90,0]) connector_lid_8();
+    //translate([0,0,37]) mirror([0,0,1]) lid_8();
+    translate([20,36,0]) clip();
+}
+
+module debug_16() {
+    intersection() {
+        union() {
+            %translate([8,7,4]) mock_relay_board_16();
+            box_16();
+            translate([3.15,20,8.6]) rotate([0,-90,0]) mock_extruder_board_16();
+            translate([0,42.05,20.05]) rotate([0,-90,0]) extruder_lid_16();
+            translate([box_16_x-3,30,32]) rotate([0,90,0]) mock_connector_board_16();
+            translate([box_16_x,52.1,20.55]) rotate([0,90,0]) connector_lid_16();
+            translate([0,box_16_y,37.1]) rotate([180,0,0]) lid_16();
+        }
+        translate([0,4,0]) cube([250,200,50]);
+    }
 }
 
 module _connector_board_mount_holes_8(d=3.2,h=4) {
@@ -442,42 +482,3 @@ module clip_2020() {
             cube([5,12,12],center=true);
     }
 }
-
-module debug_8() {
-    //%translate([3,7,4]) mock_relay_board_8();
-    %translate([151.8,12,30]) rotate([0,90,0]) mock_connector_board_8();
-    box_8();
-    translate([160,34.15,18.6]) rotate([0,-90,0]) connector_lid_8();
-    //translate([0,0,37]) mirror([0,0,1]) lid_8();
-    translate([20,36,0]) clip();
-}
-
-module debug_16() {
-    intersection() {
-        union() {
-            %translate([8,7,4]) mock_relay_board_16();
-            box_16();
-            translate([3.15,20,8.6]) rotate([0,-90,0]) mock_extruder_board_16();
-            translate([0,42.05,20.05]) rotate([0,-90,0]) extruder_lid_16();
-            translate([box_16_x-3,30,32]) rotate([0,90,0]) mock_connector_board_16();
-            translate([box_16_x,52.1,20.55]) rotate([0,90,0]) connector_lid_16();
-            translate([0,box_16_y,37.1]) rotate([180,0,0]) lid_16();
-        }
-        translate([0,4,0]) cube([250,200,50]);
-    }
-}
-
-//debug_8();
-//debug_16();
-
-//box_8();
-//lid_8();
-//connector_lid_8();
-
-//box_16();
-//lid_16();
-//extruder_lid_16();
-//connector_lid_16();
-
-//clip();
-clip_2020();
