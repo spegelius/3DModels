@@ -1,6 +1,7 @@
 include <../../Dollo/NEW_long_ties/globals.scad>;
 use <../../Dollo/NEW_long_ties/include.scad>;
 use <../../Dollo/NEW_long_ties/mockups.scad>;
+use <../../lib/bearings.scad>;
 use <../Tronxy/Tronxy_X5S.scad>;
 use <mockups.scad>;
 use <drag_chain.scad>;
@@ -18,22 +19,33 @@ dc_stl_path = str(
 //debug();
 //debug_volcano();
 //debug_pcb_mount();
+//debug_extruder();
 
 //new_lid_M10(bridging=true);
+//new_lid_M10(bridging=false);
 //new_lid_M10_soluble_supports();
+new_lid_M10_nonsoluble_supports();
+
+//625zz_lid_part();
+
 //cr_extruder_carriage_mount();
 //cr_extruder_carriage_mount_e3d();
+
 //e3d_volcano_mount_1();
 //e3d_volcano_mount_2();
+
 //e3d_neck_filler();
+
 //bondtech_neck_filler();
+
 //cable_pcb_mount();
 //cable_pcb_clamp();
 //cable_pcb_mount_adapter();
+
 //drag_chain_arm();
 //drag_chain_mount();
 //drag_chain_support();
-drag_chain_support_level();
+//drag_chain_support_level();
 
 
 module _orig_lid_M10() {
@@ -48,12 +60,7 @@ module _orig_lid_M10() {
     );
 }
 
-module original_extruder_assembly() {
-
-    translate([0, 0, 29])
-    rotate([0, 180, 0])
-    _orig_lid_M10();
-
+module _orig_base() {
     fname2 =
         "Base_v3.stl";
 
@@ -62,17 +69,28 @@ module original_extruder_assembly() {
     import(
         str(dc_stl_path, fname2), convexity=10
     );
+}
 
-
+module _orig_latch() {
     fname3 =
         "Latch_v3.stl";
 
-    translate([319.5, 173.7, -59.55])
-    rotate([0, 0, 0])
+    rotate([0, 0, -2])
+    translate([319.5, 174.2, -59.55])
     import(
         str(dc_stl_path, fname3), convexity=10
     );
+}
 
+module original_extruder_assembly() {
+
+    translate([0, 0, 29])
+    rotate([0, 180, 0])
+    _orig_lid_M10();
+
+    _orig_base();
+
+    _orig_latch();
 }
 
 module debug() {
@@ -154,14 +172,44 @@ module debug_pcb_mount() {
     cable_pcb_clamp();
 }
 
+module debug_extruder() {
+
+    intersection() {
+        translate([0.05, -0.06])
+        union() {
+            translate([0, 0, 29.1])
+            rotate([0, 180, 0])
+            new_lid_M10(bridging=false);
+
+            _orig_base();
+            _orig_latch();
+        }
+
+        translate([0, 0, 0])
+        cube([60, 60, 100], center=true);
+    }
+
+    translate([0, 0, 6.1])
+    mock_bondtech_gear();
+
+    %translate([0, motor_side_length/2, -20])
+    rotate([90, 0, 0])
+    mock_stepper_motor(false);
+}
+
 module _lid_form() {
     hull()
     _orig_lid_M10();
 }
 
-module new_lid_M10(bridging=true) {
+module new_lid_M10(bridging=true, 625zz=false) {
 
-    module _filler() {
+//    %translate([0, 0, 1.4])
+//    MR105zz();
+    %translate([0, 0, 0.4])
+    625zz();
+
+    module _tube_filler() {
         intersection() {
             _orig_lid_M10();
 
@@ -173,12 +221,12 @@ module new_lid_M10(bridging=true) {
     difference() {
         union() {
             _orig_lid_M10();
-
+            
             translate([0, 0, -1.99])
-            _filler();
+            _tube_filler();
 
             translate([0, 0, -3.98])
-            _filler();
+            _tube_filler();
 
             if (bridging) {
                 translate([-16, -16, 2.817])
@@ -202,82 +250,121 @@ module new_lid_M10(bridging=true) {
         translate([-4.55, 0, 11.94])
         rotate([90, 0, 0])
         cylinder(d=1, h=50, center=true, $fn=10);
+
+        cylinder(d=16.6, h=10.81, center=true, $fn=50);
     }
 }
 
-module new_lid_M10_soluble_supports() {
+module 625zz_lid_part() {
+    union() {
+        // center fill for 625zz
+        tube(29, 5.4, 6.2, $fn=80);
 
-    %_orig_lid_M10();
+        for(i = [0:4]) {
+            rotate([0, 0, 360/5*i])
+            translate([17/2 + 0.2, 0, 0])
+            cylinder(d=1.3, h=5.4, $fn=20);
+        }
+    }
+}
+
+module _new_lid_M10_support_form() {
+    //%new_lid_M10();
 
     // hinge
+    render()
+    translate([-0.3, 0, 0])
     difference() {
-        hull() {
-            translate([-10, -4, 5])
-            cylinder(d=3, h=4.4, $fn=20);
+        union() {
+            hull() {
+                translate([-11, -4, 5.4])
+                cylinder(d=3, h=3.7, $fn=20);
 
-            translate([-13, -10, 0])
-            cylinder(d=6, h=9.4, $fn=20);
+                translate([-17, -22, 5.4])
+                cylinder(d=3, h=3.7, $fn=20);
 
-            translate([-12, -22, 0])
-            cylinder(d=3, h=9.4, $fn=20);
+                translate([-18, -22, 5.4])
+                cylinder(d=3, h=3.7, $fn=20);
 
-            translate([-18, -22, 0])
-            cylinder(d=3, h=9.4, $fn=20);
+                translate([-21, -22, 5.4])
+                cylinder(d=3, h=3.7, $fn=20);
 
-            translate([-22, -18, 0])
-            cylinder(d=3, h=9.4, $fn=20);
+                translate([-21, -14, 5.4])
+                cylinder(d=3, h=3.7, $fn=20);
+            }
+            translate([-14, -15.5, 5.4])
+            cylinder(d=9.7, h=3.7, $fn=20);
 
-            translate([-22, -14, 0])
-            cylinder(d=3, h=9.4, $fn=20);
+            translate([-14, -23, 8.6/2])
+            cube([17, 3, 8.6], center=true);
+
+            translate([-23.5, -19, 8.6/2])
+            cube([3, 11, 8.6], center=true);
         }
-        _orig_lid_M10();
+
+        new_lid_M10();
     }
 
-    // bolt had indents
+    // bolt head indents
+    render()
     difference() {
         union() {
             translate([15.5, -15.5, 0])
-            cylinder(d=7, h=3);
+            cylinder(d=6, h=3, $fn=20);
 
             translate([15.5, 15.5, 0])
-            cylinder(d=7, h=3);
+            cylinder(d=6, h=3, $fn=20);
 
             translate([-15.5, 15.5, 0])
-            cylinder(d=7, h=3);
+            cylinder(d=6, h=3, $fn=20);
+
+            translate([-15.5, -15.5, 0])
+            cylinder(d=6, h=3, $fn=20);
         }
-        _orig_lid_M10();
+        new_lid_M10();
     }
 
     // fitting holes
+    render()
     difference() {
 
         union() {
-            translate([-4.55, 0, 11.94])
-            rotate([-90, 0, 0])
+            translate([-4.7, 0, 11.94])
             union() {
-                translate([0, 0, -21])
-                cylinder(d=12, h=9);
+                //translate([0, 0, -21])
+                //cylinder(d=12, h=9);
+                translate([0, 17.3, 0])
+                cube([7, 7.8, 10], center=true);
 
-                translate([0, 0, 12.2])
-                cylinder(d=12, h=9);
+                //translate([0, 0, 12.2])
+                //cylinder(d=12, h=9);
+                translate([0, -17, 0])
+                cube([7, 8, 10], center=true);
 
-                cylinder(d=4.6, h=42, center=true);
+
+                //cylinder(d=4.6, h=42, center=true);
             }
             hull() {
-                translate([-2, 22, 0])
-                cylinder(d=3, h=10, $fn=30);
+                translate([-2, 23, 0])
+                cylinder(d=3, h=9, $fn=30);
 
-                translate([-7, 22, 0])
-                cylinder(d=3, h=10, $fn=30);
+                translate([-7, 23, 0])
+                cylinder(d=3, h=9, $fn=30);
             }
+
+            translate([-4.5, -22, 8])
+            cube([6, 4, 2], center=true);
 
             hull() {
-                translate([-2, -22, 0])
-                cylinder(d=3, h=10, $fn=30);
+                translate([-2, -23, 0])
+                cylinder(d=3, h=9, $fn=30);
 
-                translate([-10, -22, 0])
-                cylinder(d=3, h=10, $fn=30);
+                translate([-7, -23, 0])
+                cylinder(d=3, h=9, $fn=30);
             }
+
+            translate([-4.5, 22, 8])
+            cube([6, 4, 2], center=true);
         }
         new_lid_M10();
 
@@ -285,6 +372,57 @@ module new_lid_M10_soluble_supports() {
         cube([10, 12.4, 10], center=true);
     }
 
+}
+
+module new_lid_M10_soluble_supports() {
+    intersection() {
+        _new_lid_M10_support_form();
+
+        union() {
+            translate([15.5, -15.5, 2.4])
+            cylinder(d=7, h=0.6, $fn=20);
+
+            translate([15.5, -15.5, 2.2])
+            cylinder(d=4, h=1, $fn=20);
+
+            translate([15.5, 15.5, 2.4])
+            cylinder(d=7, h=0.6, $fn=20);
+
+            translate([15.5, 15.5, 2.2])
+            cylinder(d=4, h=1, $fn=20);
+
+            translate([-15.5, 15.5, 2.4])
+            cylinder(d=7, h=0.6, $fn=20);
+
+            translate([-15.5, 15.5, 2.2])
+            cylinder(d=4, h=1, $fn=20);
+
+            translate([-15.5, -15.5, 2.4])
+            cylinder(d=7, h=0.6, $fn=20);
+
+            translate([-15.5, -15.5, 2.2])
+            cylinder(d=4, h=1, $fn=20);
+
+            translate([-16, -11.3, 5.4 + 0.2/2])
+            cube([13, 20, 0.2], center=true);
+
+            translate([-16, -11.3, 9.1 - 0.5/2])
+            cube([13, 20, 0.5], center=true);
+
+            #translate([-4.7, 0.1, 7.9])
+            cube([8, 43, 2.2], center=true);
+
+            translate([-4.7, 0.1, 16.1])
+            cube([8, 44, 2.2], center=true);
+        }
+    }
+}
+
+module new_lid_M10_nonsoluble_supports() {
+    difference() {
+        _new_lid_M10_support_form();
+        new_lid_M10_soluble_supports();
+    }
 }
 
 module _cr_extruder_carriage_form(h) {

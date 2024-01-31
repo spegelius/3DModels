@@ -4,6 +4,7 @@ use <../../Dollo/NEW_long_ties/mockups.scad>;
 use <mockups.scad>;
 use <Bondtech_Style_Extruder.scad>;
 use <../Tronxy/common.scad>;
+use <CR-10_S5_Y-reinforcement/CR-10_S5_Y-reinforcement.scad>;
 
 
 w = 600;
@@ -29,6 +30,8 @@ CR10_S5_x_carriage_bondtech_e3d();
 CR10_S5_drag_chain_arm();
 CR10_S5_drag_chain_mount();
 CR10_S5_drag_chain_support();
+
+debug_y_reinforcement();
 
 
 module CR10_S5_frame() {

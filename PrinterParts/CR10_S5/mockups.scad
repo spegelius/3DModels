@@ -208,3 +208,20 @@ module mock_creality_x_carriage() {
         cylinder(d=3, h=15, center=true, $fn=20);
     }
 }
+
+module mock_bondtech_gear() {
+    difference() {
+        union() {
+            cylinder(d=8,h=14,$fn=40);
+            for (i=[0:16]) {
+                rotate([0,0,360/17*i])
+                translate([9.5/2-2/2,0,4.8/2])
+                cube([2,0.8,4.8],center=true);
+            }
+        }
+        cylinder(d=5,h=30,center=true,$fn=40);
+
+        translate([0,0,11])
+        donut(11.5,4);
+    }
+}
