@@ -5,12 +5,12 @@ use <../../Dollo/New_long_ties/include.scad>;
 use <common.scad>;
 use <../../Generic/washers.scad>;
 
-stl_path = "../../_downloaded/Tronxy_X5S_Mega_gantry_plates/";
+stl_path = "../../_downloaded/Tronxy/Tronxy_X5S_Mega_gantry_plates/";
 
 
-//debug();
+debug();
 
-tronxy_mega_gantry_left();
+//tronxy_mega_gantry_left();
 //tronxy_mega_gantry_right();
 
 //translate([0, -130, 0])
@@ -41,13 +41,13 @@ module debug() {
     intersection() {
         tronxy_mega_gantry_left();
 
-        translate([0, -18, 0])
-        cube([200, 100, 100], center=true);
+//        translate([0, -18, 0])
+//        cube([200, 100, 100], center=true);
         
     }
 
-//    translate([0, -4.65, -29.6])
-//    top_bearing_support_left();
+    translate([0, -4.65, -29.6])
+    top_bearing_support_left();
 
     %translate([23, 16 - 4.65, -12])
     mock_idler();

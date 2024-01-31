@@ -1,4 +1,10 @@
+frame_x = 530;
+frame_y = 500;
+frame_z = 570;
+bed_x = 330.1;
+bed_y = 330.1;
 
+z_plate_len = 330.8;
 
 //mock_idler();
 //mock_idler_24();

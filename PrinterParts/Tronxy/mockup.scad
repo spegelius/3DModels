@@ -1,5 +1,6 @@
 include<../../lib/bearings.scad>;
 include<../../Dollo/NEW_long_ties/mockups.scad>;
+include <common.scad>;
 use<../../Dollo/NEW_long_ties/extention.scad>;
 use<../../Dollo/NEW_long_ties/corner.scad>;
 use<../../PSUCover/PSUCover.scad>;
@@ -8,23 +9,26 @@ use <z_support_remix.scad>;
 use <Mega_gantry_remix.scad>;
 use <Tronxy_X5S.scad>;
 use <Motor_mount_remix.scad>;
-use <common.scad>;
 use <Top_frame.scad>;
 use <Purge_bucket.scad>;
 use <E3D_mount_remix.scad>;
+use <X5S_legs.scad>;
+use <duet_case.scad>;
+use <Bed_carriage.scad>;
 
 
 stl_base_path = "../../_downloaded/";
 
+z_pos = 420;
+
 
 ////// VIEW //////
-//X5S_frame_mockup();
-
+X5S_frame_mockup();
 X5S_x_carriage_mockup();
+X5S_bed_mockup();
 
-//debug_z_support();
+debug_z_support();
 //debug_PSUs();
-//debug_z_support();
 //debug_single_z();
 //debug_gantry_plates();
 //debug_corner_bearing_mounts();
@@ -34,6 +38,8 @@ X5S_x_carriage_mockup();
 //debug_tronxy_cable_pcb_mount();
 //debug_E3D_mount();
 debug_duet_case();
+//debug_legs();
+//debug_bed_carriage();
 
 
 ////// MODULES //////
@@ -41,32 +47,121 @@ module X5S_frame_mockup() {
 
     color("darkgrey")
     render()
-    translate([0, 0, 570/2])
+    translate([0, 0, frame_z/2])
     difference() {
-        cube([530, 500, 570], center=true);
-        cube([490, 600, 530], center=true);
-        cube([600, 440, 530], center=true);
-        cube([490, 460, 600], center=true);
+        cube([frame_x, frame_y, frame_z], center=true);
+
+        cube(
+            [frame_x - 40, 600, frame_z - 40],
+            center=true
+        );
+
+        cube(
+            [600, frame_y - 80, frame_z - 40],
+            center=true
+        );
+
+        cube(
+            [frame_x - 40, frame_y - 40, 600],
+            center=true
+        );
     }
 
     // x-beam
     color("darkgrey")
-    translate([0, 0, 570 - 20/2 + 4])
+    render()
+    translate([0, 0, frame_z - 20/2 + 4])
     cube([450, 20, 20], center=true);
 
     // z rods
     color("silver")
-    translate([-530/2 + 10, 65, 21])
+    render()
+    translate([-frame_x/2 + 10, 65, 21])
     cylinder(d=8, h=528, $fn=30);
 
     color("silver")
-    translate([-530/2 + 10, -65, 21])
+    render()
+    translate([-frame_x/2 + 10, -65, 21])
     cylinder(d=8, h=528, $fn=30);
+}
+
+module X5S_bed_mockup() {
+
+    _pos = 330/2 - 5;
+
+    module _bed() {
+
+        difference() {
+            cube([330, 330, 3], center=true);
+
+            translate([-_pos, -_pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+            translate([0, -_pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+            translate([_pos, -_pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+            translate([-_pos, _pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+            translate([0, _pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+            translate([_pos, _pos, 0])
+            cylinder(d=3, h=20, center=true, $fn=20);
+
+        }
+    }
+
+    module _bed_beam() {
+        difference() {
+            cube([542, 10, 10], center=true);
+
+            // mount holes
+            translate([-545/2 + 7.5, 0, 0])
+            cylinder(d=4, h=30, center=true, $fn=20);
+
+            translate([-545/2 + 27.5, 0, 0])
+            cylinder(d=4, h=30, center=true, $fn=20);
+
+            translate([545/2 - 7.5, 0, 0])
+            cylinder(d=4, h=30, center=true, $fn=20);
+
+            translate([545/2 - 27.5, 0, 0])
+            cylinder(d=4, h=30, center=true, $fn=20);
+
+            // bed mount holes
+            cylinder(d=3.5, h=30, center=true, $fn=20);
+
+            translate([bed_x/2 - 5, 0, 0])
+            cylinder(d=3.5, h=30, center=true, $fn=20);
+
+            translate([-bed_x/2 + 5, 0, 0])
+            cylinder(d=3.5, h=30, center=true, $fn=20);
+
+            // extra M3 thread mount holes
+            translate([-542/2 + 55, 0, 0])
+            cylinder(d=3, h=30, center=true, $fn=20);
+
+            translate([-542/2 + 65, 0, 0])
+            cylinder(d=3, h=30, center=true, $fn=20);
+        }
+    }
 
     // bed
-//    color("lightgrey")
-//    translate([0, 0, 380])
-//    cube([330, 330, 3], center=true);
+    color("lightgrey")
+    translate([0, 0, z_pos + 5/2])
+    _bed();
+
+    color("lightgrey")
+    translate([0, z_plate_len/2 - 10/2, z_pos - 10/2 - 7])
+    _bed_beam();
+
+    color("lightgrey")
+    translate([0, -z_plate_len/2 + 10/2, z_pos - 10/2 - 7])
+    _bed_beam();
 }
 
 module X5S_x_carriage_mockup() {
@@ -242,7 +337,7 @@ module X5S_x_carriage_mockup() {
 
 module debug_z_support() {
     render()
-    translate([-530/2 + 10, 0, 420])
+    translate([-frame_x/2 + 10, 0, z_pos])
     rotate([180, 0, -90])
     new_z_support(final_render=false);
 }
@@ -292,7 +387,7 @@ module debug_single_z() {
 
     translate([-530/2 + 10, 0, 570 - 20])
     rotate([180, 0, 180])
-    z_top(bearing=true);
+    z_top(screw_bearing=true);
 
     color("white")
     translate([-530/2 + 10, 65, 570 - 25])
@@ -510,17 +605,55 @@ module debug_E3D_mount() {
     tronxy_E3D_mount();
 }
 
-module debug_duet_case() {
+module debug_duet_case_old() {
     case_path = str(
         stl_base_path,
         "Duet_Wifi_2020_case/Bottom_V1_v3_rmx.stl"
     );
 
-    translate([500/2 - 5, 0, -81.5])
-    rotate([-90, 0, -90])
+    translate([-120, -150, -41.5])
+    rotate([0, 0, 90])
     import(case_path, convexity=10);
 
     translate([510/2, 0, -7/2])
     rotate([0, 0, 90])
     duet_case_frame_adapter();
+}
+
+module debug_duet_case() {
+
+    translate([158, 230, 280])
+    rotate([0, -90, -90])
+    debug_case();
+
+    translate([246.5, 252.5, 280])
+    rotate([0, 0, 180])
+    duet_case_mount_adapter();
+}
+
+module debug_legs() {
+    translate([-530/2 + 19, -500/2 + 19, 0])
+    rotate([180, 0, 0])
+    render()
+    leg(130);
+
+    translate([530/2 - 19, -500/2 + 19, 0])
+    rotate([180, 0, 90])
+    render()
+    leg(130);
+
+    translate([530/2 - 19, 500/2 - 19, 0])
+    rotate([180, 0, 180])
+    render()
+    leg(130);
+
+    translate([-530/2 + 19, 500/2 - 19, 0])
+    rotate([180, 0, -90])
+    render()
+    leg(130);
+}
+
+module debug_bed_carriage() {
+    translate([0, 0, z_pos - 21])
+    debug_X5S_bed_carriage();
 }

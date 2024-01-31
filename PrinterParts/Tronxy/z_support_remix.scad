@@ -1,19 +1,18 @@
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
 use <../../Dollo/New_long_ties/mockups.scad>;
+include <common.scad>;
 
 stl_base_path = "../../_downloaded/";
 
-plate_len = 330.7;
-
-//debug();
+debug();
 //debug_height_block();
 //_mock_z_plate();
 
 //new_z_support(final_render=false);
 //new_z_support(final_render=true);
 //height_block();
-height_block(10);
+//height_block(10);
 //support_fixing_spacer();
 //qnd_middle_support();
 
@@ -38,23 +37,23 @@ module _mock_z_plate() {
         cube([331, 35, 5], center=true);
 
         // bed carriage mount holes
-        translate([plate_len/2 - 5, 35/2 - 7.5, 0])
+        translate([z_plate_len/2 - 5, 35/2 - 7.5, 0])
         cylinder(d=5, h=20, center=true, $fn=20);
 
-        translate([plate_len/2 - 5, -35/2 + 7.5, 0])
+        translate([z_plate_len/2 - 5, -35/2 + 7.5, 0])
         cylinder(d=5, h=20, center=true, $fn=20);
 
-        translate([-plate_len/2 + 5, 35/2 - 7.5, 0])
+        translate([-z_plate_len/2 + 5, 35/2 - 7.5, 0])
         cylinder(d=5, h=20, center=true, $fn=20);
 
-        translate([-plate_len/2 + 5, -35/2 + 7.5, 0])
+        translate([-z_plate_len/2 + 5, -35/2 + 7.5, 0])
         cylinder(d=5, h=20, center=true, $fn=20);
 
         // bed adjustment screw holes
-        translate([-plate_len/2 + 25, 35/2 - 10, 0])
+        translate([-z_plate_len/2 + 25, 35/2 - 10, 0])
         cylinder(d=3, h=20, center=true, $fn=10);
 
-        translate([plate_len/2 - 25, 35/2 - 10, 0])
+        translate([z_plate_len/2 - 25, 35/2 - 10, 0])
         cylinder(d=3, h=20, center=true, $fn=10);
 
         // trapezoid nut hole and screw holes
@@ -133,15 +132,15 @@ module debug() {
     translate([-65, 0, 51.4 + 24/2 - 5])
     mock_LM8UU();
 
-    translate([plate_len/2 - 5, 0, 16.1])
+    translate([z_plate_len/2 - 5, 0, 16.1])
     rotate([180, 0, 0])
     height_block();
 
     translate([37/2, 0, -1.4])
-    support_fixing_spacers();
+    support_fixing_spacer();
 
     translate([-37/2, 0, -1.4])
-    support_fixing_spacers();
+    support_fixing_spacer();
 }
 
 module debug_height_block() {
@@ -313,7 +312,7 @@ module new_z_support(final_render=false) {
                     translate([-130/2, 42/2, 0])
                     cube([1, 42, 6], center=true);
 
-                    translate([-plate_len/2 + 11, 6/2, 0])
+                    translate([-z_plate_len/2 + 11, 6/2, 0])
                     cube([1, 6, 6], center=true);
                 }
 
@@ -321,7 +320,7 @@ module new_z_support(final_render=false) {
                     translate([130/2, 42/2, 0])
                     cube([1, 42, 6], center=true);
 
-                    translate([plate_len/2 - 11, 6/2, 0])
+                    translate([z_plate_len/2 - 11, 6/2, 0])
                     cube([1, 6, 6], center=true);
                 }
 
@@ -338,7 +337,7 @@ module new_z_support(final_render=false) {
     module _main_z_support_form() {
         union() {
             translate([0, 0, 6/2])
-            cube([plate_len, 35, 6], center=true);
+            cube([z_plate_len, 35, 6], center=true);
 
             translate([0, -35/2 + 6/2, 0])
             rotate([90, 0, 0])
@@ -362,10 +361,10 @@ module new_z_support(final_render=false) {
                 cylinder(d1=30, d2=27, h=24);
             }
 
-            translate([-plate_len/2 + 25, 35/2 - 10])
+            translate([-z_plate_len/2 + 25, 35/2 - 10])
             cylinder(d=8, h=14, $fn=30);
 
-            translate([plate_len/2 - 25, 35/2 - 10])
+            translate([z_plate_len/2 - 25, 35/2 - 10])
             cylinder(d=8, h=14, $fn=30);
 
         translate([-37/2, 0, 0])
@@ -420,36 +419,36 @@ module new_z_support(final_render=false) {
         }
 
         // bed carriage mount holes
-        translate([plate_len/2 - 5, -35/2 + 7.5, 0])
+        translate([z_plate_len/2 - 5, -35/2 + 7.5, 0])
         cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([plate_len/2 - 5, 35/2 - 7.5, 0])
+        translate([z_plate_len/2 - 5, 35/2 - 7.5, 0])
         cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([-plate_len/2 + 5, -35/2 + 7.5, 0])
+        translate([-z_plate_len/2 + 5, -35/2 + 7.5, 0])
         cylinder(d=5.2, h=20, center=true, $fn=40);
 
-        translate([-plate_len/2 + 5, 35/2 - 7.5, 0])
+        translate([-z_plate_len/2 + 5, 35/2 - 7.5, 0])
         cylinder(d=5.2, h=20, center=true, $fn=40);
 
         // height block indents
-        translate([plate_len/2 - 5, -35/2 + 7.5, 4])
+        translate([z_plate_len/2 - 5, -35/2 + 7.5, 4])
         cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
 
-        translate([plate_len/2 - 5, 35/2 - 7.5, 4])
+        translate([z_plate_len/2 - 5, 35/2 - 7.5, 4])
         cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
 
-        translate([-plate_len/2 + 5, -35/2 + 7.5, 4])
+        translate([-z_plate_len/2 + 5, -35/2 + 7.5, 4])
         cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
 
-        translate([-plate_len/2 + 5, 35/2 - 7.5, 4])
+        translate([-z_plate_len/2 + 5, 35/2 - 7.5, 4])
         cylinder(d2=8.2, d1=5.1, h=2.1, $fn=40);
 
         // adjust screw holes
-        translate([plate_len/2 - 25, 35/2 - 10])
+        translate([z_plate_len/2 - 25, 35/2 - 10])
         cylinder(d=3.6, h=40, center=true, $fn=30);
 
-        translate([-plate_len/2 + 25, 35/2 - 10])
+        translate([-z_plate_len/2 + 25, 35/2 - 10])
         cylinder(d=3.6, h=40, center=true, $fn=30);
 
         // main screw hole

@@ -3,7 +3,7 @@ use <../../PCParts/common.scad>;
 include <../../Dollo/New_long_ties/globals.scad>;
 use <../../Dollo/New_long_ties/include.scad>;
 use <../../Dollo/New_long_ties/mockups.scad>;
-use <../../lib/includes.scad>;
+//use <../../lib/includes.scad>;
 
 
 //debug_tronxy_cable_pcb_mount();
@@ -15,13 +15,14 @@ use <../../lib/includes.scad>;
 //tronxy_board_frame_adapters();
 //hotend_pcb();
 tronxy_cable_pcb_mount();
+//tronxy_cable_pcb_mount_tube_trap();
 //tronxy_cable_pcb_mount_fasterner();
 //tronxy_bed_spacer();
 //qnd_motor_mount_fix();
 //motor_mount_adapter_dollo();
 //tronxy_PTFE_holder();
 //tronxy_motor_mount_spacer();
-//rotate([90,0,0]) tronxy_z_endstop_mount();
+//rotate([90, 0, 0]) tronxy_z_endstop_mount();
 //tronxy_z_position_nut();
 //tronxy_wire_chain_support();
 //tronxy_corner_bearing_mount_right();
@@ -29,6 +30,8 @@ tronxy_cable_pcb_mount();
 //gt2_idler_625zz();
 //gt2_idler_625zz_retainer();
 //duet_case_frame_adapter();
+//z_chain_fix();
+//y_endstop_holder();
 
 
 module debug_tronxy_cable_pcb_mount() {
@@ -36,6 +39,10 @@ module debug_tronxy_cable_pcb_mount() {
 
     translate([10.6, 15, 3])
     tronxy_cable_pcb_mount_fasterner();
+
+    translate([-2, 2.75 + 9, 25])
+    rotate([0, 0, 90])
+    tronxy_cable_pcb_mount_tube_trap();
 }
 
 
@@ -152,7 +159,7 @@ module tronxy_cable_pcb_mount() {
                 rounded_cube_side(
                     pcw_mount_w + 2,
                     pcw_mount_l + 20,
-                    3, 9
+                    3, 9, $fn=60
                 );
 
                 translate([
@@ -170,12 +177,29 @@ module tronxy_cable_pcb_mount() {
                 cube([6.3, 22.5, 20]);
             }
 
+            // tube traps
+            hull() {
+                translate([6.3/2 - 2, -15 + 11.75, 25])
+                cube([6.3, 30, 10], center=true);
+
+                translate([6.3/2 - 2, -7.5, 35/2])
+                cube([6.3, 7, 35], center=true);
+            }
+
+            hull() {
+                translate([6.3/2 - 2, 25 + 11.75, 25])
+                cube([6.3, 10, 10], center=true);
+
+                translate([6.3/2 -2, 2.75 + 25, 35/2])
+                cube([6.3, 10, 35], center=true);
+            }
+
             // reinforcement
             hull() {
                 translate([-2, 20.5, 0])
                 cube([12.4, 3, 1]);
 
-                translate([-2, 20.5, h-1])
+                translate([-2, 20.5, h - 1])
                 cube([6.3, 3, 1]);
             }
 
@@ -249,6 +273,24 @@ module tronxy_cable_pcb_mount() {
             M3_nut(5);
         }
 
+        // tube trap holes
+        #translate([0, 11.75 + 25, 25])
+        rotate([0, 90, 0])
+        cylinder(d=3.3, h=30, center=true, $fn=30);
+
+        #translate([0, 11.75 - 25, 25])
+        rotate([0, 90, 0])
+        cylinder(d=3.3, h=30, center=true, $fn=30);
+
+        // tube trap holes
+        translate([5, 11.75 + 25, 25])
+        rotate([0, 90, 0])
+        cylinder(d=7.5, h=5, center=true, $fn=30);
+
+        translate([5, 11.75 - 25, 25])
+        rotate([0, 90, 0])
+        cylinder(d=7.5, h=5, center=true, $fn=30);
+        
         // PCB cuts
         translate([13, 24, -0.1])
         cube([21, 26, 4]);
@@ -279,8 +321,47 @@ module tronxy_cable_pcb_mount() {
                 13, 26, 4, 6,
                 center=true, $fn=40
             );
-
         }
+
+        // random holes for cable ties
+        translate([10, 55.6, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+
+        translate([20, -4.4, 0])
+        cylinder(d=4, h=10, center=true, $fn=30);
+    }
+}
+
+module tronxy_cable_pcb_mount_tube_trap() {
+    difference() {
+        intersection() {
+            rounded_cube_side(
+                60, 70, 10, 35, center=true, $fn=40
+            );
+
+            translate([0, 100/2, 0])
+            cube([100, 100, 100], center=true);
+        }
+
+        rounded_cube_side(
+            40, 50, 20, 15, center=true, $fn=40
+        );
+
+        // screw holes
+        translate([25, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d=3.3, h=30, center=true, $fn=30);
+        
+        translate([-25, 0, 0])
+        rotate([90, 0, 0])
+        cylinder(d=3.3, h=30, center=true, $fn=30);
+
+        // nut holes
+        translate([-25, 4, 10/2 - 6/2])
+        cube([6, 2, 10], center=true);
+
+        translate([25, 4, 10/2 - 6/2])
+        cube([6, 2, 10], center=true);
     }
 }
 
@@ -486,20 +567,23 @@ module tronxy_z_endstop_mount() {
         union() {
             chamfered_cube_side(20, 45, 5, 4);
 
-            translate([7, 0, -1.5])
-            cube([6, 45, 5]);
+            translate([7, 0, -2.3])
+            cube([6, 19, 5]);
+
+            translate([7, 30.5, 3])
+            rotate([0, 90, 0])
+            chamfered_cube_side(
+                5, 4, 6, 1.9
+            );
 
             translate([6, 0, 0])
-            cube([5, 20, 17]);
+            cube([5, 20, 18]);
         }
 
-        %translate([0, 0, 10])
-        rotate([90, 0, 90])
-        mechanical_endstop();
+        translate([-1, -1, -1])
+        cube([7, 21, 10]);
 
-        cube([6, 20, 10]);
-
-        translate([0, 20, 0])
+        translate([0, 20, 1])
         rotate([0, 0, 45])
         cube([sqrt(6*6*2), sqrt(6*6*2), 10], center=true);
 
@@ -509,14 +593,18 @@ module tronxy_z_endstop_mount() {
         translate([10, 40, 0])
         cylinder(d=4.5, h=11, center=true, $fn=20);
 
-        translate([3, 5, 13])
+        translate([3, 5, 14])
         rotate([0, 90, 0])
         cylinder(d=1.3, h=10, $fn=10);
 
-        translate([3, 15, 13])
+        translate([3, 15, 14])
         rotate([0, 90, 0])
         cylinder(d=1.3, h=10, $fn=10);
     }
+
+    %translate([0, 0, 11])
+    rotate([90, 0, 90])
+    mechanical_endstop();
 }
 
 module tronxy_z_position_nut() {
@@ -805,6 +893,150 @@ module duet_case_frame_adapter() {
 
         translate([83, 0, -4.5])
         cylinder(d=8, h=5, center=true, $fn=30);
-
     }
+}
+
+module z_chain_fix() {
+
+    module _chain_side() {
+        difference() {
+            hull() {
+                rotate([0, 90, 0])
+                cylinder(d=14.1, h=3, $fn=40);
+
+                translate([3/2, 10/2 - 0.5, 0])
+                cube([3, 10, 22], center=true);
+            }
+
+            difference() {
+                translate([-0.05, 0, 0])
+                rotate([0, 90, 0])
+                cylinder(d=6, h=5, $fn=40);
+
+                translate([-0.4, 0, 0])
+                rotate([0, 0, -12])
+                cube([2, 10, 10], center=true);
+            }
+
+            intersection() {
+                hull() {
+                    translate([1.8, 0, 0])
+                    rotate([0, 90, 0])
+                    cylinder(d=9, h=2, $fn=40);
+
+                    translate([1.8, -8, 0])
+                    rotate([0, 90, 0])
+                    cylinder(d=7.2, h=2, $fn=40);
+
+                    translate([3.7, 8, 0])
+                    rotate([0, 90, 0])
+                    cylinder(d=7.2, h=2, $fn=40);
+                }
+
+                translate([1.8 + 2/2, 0])
+                cube([2, 20, 7.2], center=true);
+            }
+        }
+    }
+
+    difference() {
+        union() {
+            translate([0, 0, 4/2])
+            rounded_cube_side(
+                20, 42.3, 4, 4, center=true, $fn=60
+            );
+
+            translate([0, 42/2 - 18/2, 4+ 3/2])
+            cube([18, 18, 3], center=true);
+
+            hull() {
+                translate([0, 42.3/2 + 4, 4 + 13.7/2])
+                rotate([0, 90, 0])
+                cylinder(d=13.7, h=18, center=true, $fn=40);
+
+                translate([0, 17, 4 + 13.7/2])
+                cube([18, 0.1, 13.7], center=true);
+
+                translate([0, 42/2 - 18 + 0.1/2, 4 + 6/2])
+                cube([18, 0.1, 6], center=true);
+            }
+        }
+
+        translate([0, 0, 4 + 3 + 15/2])
+        cube([10, 80, 15], center=true);
+
+        translate([0, 35.8, 0])
+        rotate([-45, 0, 0])
+        cube([10, 80, 15], center=true);
+
+        translate([-18/2 - 0.5, 42.3/2 + 4, 4 + 14/2])
+        _chain_side();
+
+        mirror([1, 0, 0])
+        translate([-18/2 - 0.5, 42.3/2 + 4, 4 + 14/2])
+        _chain_side();
+
+        translate([0, -42.3/2 + 6.1, 0])
+        cylinder(d=4.4, h= 20, center=true, $fn=30);
+
+        translate([0, -42.3/2 + 18.1, 0])
+        cylinder(d=4.4, h= 20, center=true, $fn=30);
+    }
+}
+
+module y_endstop_holder() {
+    difference() {
+        union() {
+            translate([0, 0, 8/2])
+            chamfered_cube_side(
+                40, 60, 8, 7, center=true
+            );
+
+            translate([40/2 - 10, 8, 8])
+            cube([6, 14, 4], center=true);
+
+            translate([40/2 - 10, -16, 8])
+            cube([6, 10, 4], center=true);
+
+            translate([-40/2 + 10, -8, 8])
+            cube([6, 10, 4], center=true);
+
+            translate([-40/2 + 10, -28, 8])
+            cube([6, 2, 4], center=true);
+
+
+        }
+
+        // chamfers
+        translate([-40/2 - 10, 60/2 - 15, 0])
+        chamfered_cube(
+            40, 60, 60, 10, center=true
+        );
+
+        translate([10, -35, 0])
+        rotate([0, 0, -45])
+        cube([20, 70, 60], center=true);
+
+        translate([10, 35, 0])
+        rotate([0, 0, 35])
+        cube([20, 70, 60], center=true);
+
+        // screw holes
+        translate([40/2 - 10, 60/2 - 35, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        translate([-40/2 + 10, 60/2 - 50, 0])
+        cylinder(d=4.3, h=20, center=true, $fn=30);
+
+        // endstop screw holes
+        translate([40/2 - 25, 60/2 - 4, 0])
+        cylinder(d=1.3, h=20, center=true, $fn=10);
+
+        translate([40/2 - 25, 60/2 - 14, 0])
+        cylinder(d=1.3, h=20, center=true, $fn=10);
+    }
+
+    %translate([-2, 31, 0])
+    rotate([180, 0, -90])
+    mechanical_endstop();
 }
