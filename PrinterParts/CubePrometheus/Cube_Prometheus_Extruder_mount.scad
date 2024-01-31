@@ -1,7 +1,7 @@
 slop = 0.15;
 
 
-//debug();
+debug();
 //debug_joint();
 
 //beam(left=true);
@@ -32,7 +32,7 @@ module single_mount(height=40) {
 
         cylinder(d=20, h=5, $fn=40);
 
-        translate([25, 0, 0])
+        #translate([25, 0, 0])
         cylinder(d=4 + 2*slop, h=5, $fn=40);
 
         translate([-25, 0, 0])
