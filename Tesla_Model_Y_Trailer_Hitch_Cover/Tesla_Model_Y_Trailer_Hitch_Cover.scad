@@ -1,9 +1,15 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 
+// VARIABLES
+h = 90.5;
+w1 = 381.5;
+w2 = 310.5;
 
+
+// ********** Debug etc models ********
 //debug();
 //debug_frame_clips();
-debug_frame_clips_flat();
+//debug_frame_clips_flat();
 
 //original_cover();
 
@@ -12,61 +18,80 @@ debug_frame_clips_flat();
 //_cover_body_flat();
 //_frame_body();
 //_frame_body_flat();
+//_tesla_logo();
 
+
+//test_side();
+
+// ******** Printable models ********
 //side_clips_left();
 //side_clips_right();
 //bottom_clips();
 //top_clips();
+//bottom_clips_split_1();
+//bottom_clips_split_2();
+//top_clips_split_1();
+//top_clips_split_2();
 
 //frame();
 //frame_flat();
 
-//cover_flat();
+//cover_flat(wood_screws=true, cover_holes=true);
+//cover_flat(wood_screws=true, cover_holes=false);
 
-//test_side();
+//cover_flat_logo_1(wood_screws=true, cover_holes=false);
+//cover_flat_logo_2(wood_screws=true, cover_holes=false);
+
+//cover_flat_logo_1(wood_screws=true, cover_holes=true);
+cover_flat_logo_2(wood_screws=true, cover_holes=true);
 
 
-module debug() {
+//magnet_clip();
 
-}
 
 
 module debug_frame_clips() {
+    render()
     frame();
 
-    translate([310/2 - 2/2, 0.1, 2/2])
-    rotate([0, 111.75, 0])
+    render()
+    translate([w2/2 - 2/2, 0.1, 2/2])
+    rotate([0, 111.86, 0])
     translate([2/2, 0, 0])
     _side_clips();
 
+    render()
     mirror([1, 0, 0])
-    translate([310/2 - 2/2, 0.1, 2/2])
-    rotate([0, 111.75, 0])
+    translate([w2/2 - 2/2, 0.1, 2/2])
+    rotate([0, 111.86, 0])
     translate([2/2, 0, 0])
     _side_clips();
 
+    render()
     translate([0, 0.1, 0])
     _top_clips();
 
+    render()
     translate([0, 0.1, 2])
     rotate([0, 180, 0])
     _bottom_clips();
 }
 
 module debug_frame_clips_flat() {
-    render()
+    //render()
+    rotate([-90 + 13.8, 0, 0])
     frame_flat();
 
     render()
-    translate([310/2 - 2/2, 0.1, 2/2])
-    rotate([0, 111.75, 0])
+    translate([w2/2 - 2/2, 0.1, 2/2])
+    rotate([0, 111.86, 0])
     translate([2/2, 0, 0])
     _side_clips();
 
     render()
     mirror([1, 0, 0])
-    translate([310/2 - 2/2, 0.1, 2/2])
-    rotate([0, 111.75, 0])
+    translate([w2/2 - 2/2, 0.1, 2/2])
+    rotate([0, 111.86, 0])
     translate([2/2, 0, 0])
     _side_clips();
 
@@ -81,49 +106,64 @@ module debug_frame_clips_flat() {
 
     cover_flat();
 
-    //%_magnet_holes();
+    %_magnet_holes();
+
+    %_cover_holes();
 }
 
 module _cover_holes() {
     // for positioning
-    //%translate([-159.5, 0, 91 - 10 - 48/2])
+    //%translate([-159.5, 0, h - 10 - 48/2])
     //cube([36, 50, 2], center=true);
 
     // electric hole
-    translate([-114, 0, 91 - 10 - 48/2])
-    rotate([0, 0, 10])
+    translate([-116, 0, 45])
+    //rotate([0, 0, 10])
     hull() {
-        rotate([90, 0, 0])
-        cylinder(d=50, h=100, center=true, $fn=40);
 
-        translate([-50/2 + 4/2, 0, -47])
+        rotate([90, 0, 0])
+        cylinder(d=55, h=100, center=true, $fn=40);
+
+        translate([-55/2 - 2, 0, -28])
+        rotate([90, 0, 0])
+        cylinder(d=4, h=100, center=true, $fn=20);
+        
+        translate([-55/2 - 2, 0, -37])
         rotate([90, 0, 0])
         cylinder(d=4, h=100, center=true, $fn=20);
 
-        translate([50/2 - 4/2 + 10, 0, -47])
+        translate([50/2 - 4/2 + 7, 0, -37])
         rotate([90, 0, 0])
         cylinder(d=4, h=100, center=true, $fn=20);
 
-        translate([50/2 - 4/2 + 10, 0, 50/2 - 4/2])
-        rotate([90, 0, 0])
-        cylinder(d=4, h=100, center=true, $fn=20);
+//        translate([50/2 - 4/2 + 10, 0, 50/2 - 4/2])
+//        rotate([90, 0, 0])
+//        cylinder(d=4, h=100, center=true, $fn=20);
 
     }
 
     // tow hook hole
+//    translate([(100 - 71)/2, 0, h/2])
+//    rounded_cube(
+//        90, 100, 70, 10, center=true, $fn=30
+//    );
+
     hull() {
-        translate([-7.5, 0, 25/2 + 16])
+        translate([-13, 0, h - 24.5])
         rotate([90, 0, 0])
-        cylinder(d=25, h=100, center=true, $fn=30);
+        cylinder(d=30, h=100, center=true, $fn=40);
 
-        translate([-7.5, 0, 92 - 25/2 - 16])
+        translate([-13, 0, 27])
         rotate([90, 0, 0])
-        cylinder(d=25, h=100, center=true, $fn=30);
+        cylinder(d=30, h=100, center=true, $fn=40);
 
-        translate([30, 0, (92 - 32)/2 + 16])
-        rounded_cube(
-            20, 100, 92 - 32, 10, center=true, $fn=30
-        );
+        translate([58, 0, h - 14.5])
+        rotate([90, 0, 0])
+        cylinder(d=10, h=100, center=true, $fn=40);
+
+        translate([58, 0, 17])
+        rotate([90, 0, 0])
+        cylinder(d=10, h=100, center=true, $fn=40);
     }
 }
 
@@ -144,19 +184,19 @@ module _bumper() {
 
 module _cover_form(d=2) {
     hull() {
-        translate([-381/2 + 2/2, 0, 91 - 2/2])
+        translate([-w1/2 + 2/2, 0, h - 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([381/2 - 2/2, 0, 91 - 2/2])
+        translate([w1/2 - 2/2, 0, h - 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([-310/2 + 2/2, 0, 2/2])
+        translate([-w2/2 + 2/2, 0, 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([310/2 - 2/2, 0, 2/2])
+        translate([w2/2 - 2/2, 0, 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
     }
@@ -164,19 +204,19 @@ module _cover_form(d=2) {
 
 module _cover_form_outer(d=2) {
     hull() {
-        translate([-389/2 + 2/2, 0, 91 - 2/2])
+        translate([-390/2 + 2/2, 0, h - 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([389/2 - 2/2, 0, 91 - 2/2])
+        translate([390/2 - 2/2, 0, h - 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([-318/2 + 2/2, 0, 2/2])
+        translate([-319/2 + 2/2, 0, 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
 
-        translate([318/2 - 2/2, 0, 2/2])
+        translate([319/2 - 2/2, 0, 2/2])
         rotate([-90, 0, 0])
         cylinder(d=d, h=100, $fn=40);
     }
@@ -211,31 +251,9 @@ module _cover_body_flat(inner=true) {
 //            rotate([0, 0, -90])
 //            donut(5200, 600, 20, $fn=200);
 
-            translate([0, -7.9, 0])
+            translate([0, -8.9, 0])
             rotate([13.8, 0, 0])
             cube([450, 60, 300], center=true);
-
-//            // side chamfers
-//            translate([381/2 - 30, 12.4, 0])
-//            rotate([11.5, 21.75, 0])
-//            rotate([0, 0, 45])
-//            cube([30, 30, 300], center=true);
-//
-//            translate([-381/2 + 30, 12.4, 0])
-//            rotate([11.5, -21.75, 0])
-//            rotate([0, 0, 45])
-//            cube([30, 30, 300], center=true);
-//
-//            // top chamfers
-//            translate([381/2, -4, 100])
-//            rotate([0, 0, 3])
-//            rotate([45 + 12, 0, 0])
-//            cube([300, 30, 30], center=true);
-//
-//            translate([-381/2, -4, 100])
-//            rotate([0, 0, -3])
-//            rotate([45 + 12, 0, 0])
-//            cube([300, 30, 30], center=true);
         }
 
         translate([0, 5200/2 - 300 + 24, -25])
@@ -244,22 +262,58 @@ module _cover_body_flat(inner=true) {
     }
 }
 
+module _tesla_logo() {
+    stl_path = "../Tesla Lug Nut Covers_remix/";
+
+    union() {
+        translate([-40, -1.6, 0])
+        import(str(
+            stl_path,
+            "new_letter_t.stl"
+        ), convexity=10);
+
+        translate([-20, 0, 0])
+        import(str(
+            stl_path,
+            "new_letter_e.stl"
+        ), convexity=10);
+
+        //translate([-20, 0, 0])
+        import(str(
+            stl_path,
+            "new_letter_s.stl"
+        ), convexity=10);
+
+        translate([20, 0, 0])
+        import(str(
+            stl_path,
+            "new_letter_l.stl"
+        ), convexity=10);
+
+        translate([40, 0, 0])
+        import(str(
+            stl_path,
+            "new_letter_a.stl"
+        ), convexity=10);
+    }
+}
+
 module _side_clips() {
 
     difference() {
         union() {
             translate([-2/2, 0, 0])
-            rotate([0, -111.75, 0])
-            translate([-310/2 + 2/2, 0, -2/2])
+            rotate([0, -111.86, 0])
+            translate([-w2/2 + 2/2, 0, -2/2])
             intersection() {
                 _cover_body();
 
                 hull() {
-                    translate([381/2 - 2/2, 0, 91 - 2/2])
+                    translate([w1/2 - 2/2, 0, h - 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
 
-                    translate([310/2 - 2/2, 0, 2/2])
+                    translate([w2/2 - 2/2, 0, 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
                 }
@@ -454,16 +508,21 @@ module _side_clips() {
             for(i = [0:5]) {
                 translate([-10 - i * 19.2, 0, 0])
                 rotate([-90, 0, 0])
-                scale([0.97, 0.97, 1])
+                scale([0.98, 0.98, 1])
+                triangle();
+
+                translate([-10 - i * 19.2, 0, -3.2])
+                rotate([-90, 180, 0])
+                scale([0.98, 0.98, 1])
                 triangle();
             }
 
             //translate([-2/2, 0, 0])
-            rotate([0, -111.75, 0])
-            translate([-310/2 + 2/2, 0, 0])
+            rotate([0, -111.86, 0])
+            translate([-w2/2 + 2/2, 0, 0])
             translate([0, 5200/2 - 300 + 24, -25])
             rotate([0, 0, -90])
-            donut(5200, 609.4, 20, $fn=200);
+            donut(5200, 607.4, 20, $fn=200);
         }
     }
 }
@@ -475,11 +534,11 @@ module _top_clips() {
                 _cover_body();
 
                 hull() {
-                    translate([381/2 - 2/2 - 2.2, 0, 91 - 2/2])
+                    translate([w1/2 - 2/2 - 2.2, 0, h - 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
 
-                    translate([-381/2 + 2/2 + 2.2, 0, 91 - 2/2])
+                    translate([-w1/2 + 2/2 + 2.2, 0, h - 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
                 }
@@ -489,32 +548,32 @@ module _top_clips() {
             %translate([0, 0.7, 0])
             cylinder(d=1, h=4, $fn=10);
             hull() {
-                translate([-22.5/2 + 3/2, 10, 91 - 2/2])
+                translate([-22.5/2 + 3/2, 10, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([22.5/2 - 3/2, 10, 91 - 2/2])
+                translate([22.5/2 - 3/2, 10, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([-22.4/2 + 3/2, 18, 91 - 2.2/2])
+                translate([-22.4/2 + 3/2, 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([22.4/2 - 3/2, 18, 91 - 2.2/2])
+                translate([22.4/2 - 3/2, 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([-12.7/2 + 3/2, 26.8, 91 - 2.4/2])
+                translate([-12.7/2 + 3/2, 26.8, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
 
-                translate([12.7/2 - 3/2, 26.8, 91 - 2.4/2])
+                translate([12.7/2 - 3/2, 26.8, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
@@ -532,32 +591,32 @@ module _top_clips() {
 
             translate([-75.4, 0, 0])
             hull() {
-                translate([-20.5/2 + 3/2, 2.37 + 9, 91 - 2/2])
+                translate([-20.5/2 + 3/2, 2.37 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([20.5/2 - 3/2, 1.6 + 9, 91 - 2/2])
+                translate([20.5/2 - 3/2, 1.6 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([-20.3/2 + 3/2, 2.37 + 18, 91 - 2.2/2])
+                translate([-20.3/2 + 3/2, 2.37 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([20.3/2 - 3/2, 1.6 + 18, 91 - 2.2/2])
+                translate([20.3/2 - 3/2, 1.6 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([-12.2/2 + 3/2, 2.37 + 23, 91 - 2.4/2])
+                translate([-12.2/2 + 3/2, 2.37 + 23, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
 
-                translate([12.2/2 - 3/2, 1.6 + 23.3, 91 - 2.4/2])
+                translate([12.2/2 - 3/2, 1.6 + 23.3, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
@@ -575,32 +634,32 @@ module _top_clips() {
             
             translate([-149.8, 0, 0])
             hull() {
-                translate([-20.5/2 + 3/2, 6.3 + 9, 91 - 2/2])
+                translate([-20.5/2 + 3/2, 6.3 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([20.5/2 - 3/2, 4.92 + 9, 91 - 2/2])
+                translate([20.5/2 - 3/2, 4.92 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([-20.3/2 + 3/2, 6.3 + 18, 91 - 2.2/2])
+                translate([-20.3/2 + 3/2, 6.3 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([20.3/2 - 3/2, 4.92 + 18, 91 - 2.2/2])
+                translate([20.3/2 - 3/2, 4.92 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([-12.2/2 + 3/2, 6.3 + 23, 91 - 2.4/2])
+                translate([-12.2/2 + 3/2, 6.3 + 23, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
 
-                translate([12.2/2 - 3/2, 4.92 + 23.6, 91 - 2.4/2])
+                translate([12.2/2 - 3/2, 4.92 + 23.6, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
@@ -619,32 +678,32 @@ module _top_clips() {
 
             translate([149.5, 0, 0])
             hull() {
-                translate([-20.5/2 + 3/2, 4.97 + 9, 91 - 2/2])
+                translate([-20.5/2 + 3/2, 4.97 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([20.5/2 - 3/2, 6.36 + 9, 91 - 2/2])
+                translate([20.5/2 - 3/2, 6.36 + 9, h - 2/2])
                 chamfered_cylinder(
                     3, 2, 0.6, center=true, $fn=20
                 );
 
-                translate([-20.3/2 + 3/2, 4.97 + 18, 91 - 2.2/2])
+                translate([-20.3/2 + 3/2, 4.97 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([20.3/2 - 3/2, 6.36 + 18, 91 - 2.2/2])
+                translate([20.3/2 - 3/2, 6.36 + 18, h - 2.2/2])
                 chamfered_cylinder(
                     3, 1.8, 0.6, center=true, $fn=20
                 );
 
-                translate([-12.2/2 + 3/2, 4.97 + 23.6, 91 - 2.4/2])
+                translate([-12.2/2 + 3/2, 4.97 + 23.6, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
 
-                translate([12.2/2 - 3/2, 6.36 + 23, 91 - 2.4/2])
+                translate([12.2/2 - 3/2, 6.36 + 23, h - 2.4/2])
                 chamfered_cylinder(
                     3, 1.6, 0.6, center=true, $fn=20
                 );
@@ -662,22 +721,22 @@ module _top_clips() {
 
             translate([43, 0, 0])
             hull() {
-                translate([-15.5/2 + 1/2, 1.18 + 9, 91 - 1.6/2 - 0.4])
+                translate([-15.5/2 + 1/2, 1.18 + 9, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([15.5/2 - 1/2, 1.4 + 9, 91 - 1.6/2 - 0.4])
+                translate([15.5/2 - 1/2, 1.4 + 9, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([-15.3/2 + 1/2, 1.18 + 19.4, 91 - 1.6/2 - 0.4])
+                translate([-15.3/2 + 1/2, 1.18 + 19.4, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([15.3/2 - 1/2, 1.4 + 19.4, 91 - 1.6/2 - 0.4])
+                translate([15.3/2 - 1/2, 1.4 + 19.4, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
@@ -695,22 +754,22 @@ module _top_clips() {
 
             translate([103, 0, 0])
             hull() {
-                translate([-15.5/2 + 1/2, 2.9 + 9, 91 - 1.6/2 - 0.4])
+                translate([-15.5/2 + 1/2, 2.9 + 9, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([15.5/2 - 1/2, 3.55 + 9, 91 - 1.6/2 - 0.4])
+                translate([15.5/2 - 1/2, 3.55 + 9, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([-15.3/2 + 1/2, 2.9 + 19.4, 91 - 1.6/2 - 0.4])
+                translate([-15.3/2 + 1/2, 2.9 + 19.4, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
 
-                translate([15.3/2 - 1/2, 3.55 + 19.4, 91 - 1.6/2 - 0.4])
+                translate([15.3/2 - 1/2, 3.55 + 19.4, h - 1.6/2 - 0.4])
                 chamfered_cylinder(
                     1, 1.6, 0.2, center=true, $fn=20
                 );
@@ -718,124 +777,124 @@ module _top_clips() {
 
             // middle claw
             hull() {
-                translate([0, 0.7 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([0, 0.7 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, 0])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([0, 0.7 + 15 + 1, 91 - 2/2])
+                translate([0, 0.7 + 15 + 1, h - 2/2])
                 cube([8, 2, 1], center=true);
 
-                translate([0, 0.7 + 15 + 4.5, 91 - 2/2])
+                translate([0, 0.7 + 15 + 4.5, h - 2/2])
                 cube([8, 1, 1], center=true);
             }
 
             // left claw 1
             hull() {
-                translate([-75.4, 2 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([-75.4, 2 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, -3])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-75.4, 2 + 15 + 1, 91 - 2/2])
+                translate([-75.4, 2 + 15 + 1, h - 2/2])
                 rotate([0, 0, -3])
                 cube([8, 2, 1], center=true);
 
-                translate([-75.4, 2 + 15 + 4.5, 91 - 2/2])
+                translate([-75.4, 2 + 15 + 4.5, h - 2/2])
                 rotate([0, 0, -3])
                 cube([8, 1, 1], center=true);
             }
 
             // left claw 2
             hull() {
-                translate([-149.8, 5.6 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([-149.8, 5.6 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, -5])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-149, 5.6 + 15 + 1, 91 - 2/2])
+                translate([-149, 5.6 + 15 + 1, h - 2/2])
                 rotate([0, 0, -5])
                 cube([8, 2, 1], center=true);
 
-                translate([-149, 5.6 + 15 + 4.5, 91 - 2/2])
+                translate([-149, 5.6 + 15 + 4.5, h - 2/2])
                 rotate([0, 0, -5])
                 cube([8, 1, 1], center=true);
             }
 
             // right claw 3
             hull() {
-                translate([149.5, 5.7 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([149.5, 5.7 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, 5])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([149.5, 5.7 + 15 + 1, 91 - 2/2])
+                translate([149.5, 5.7 + 15 + 1, h - 2/2])
                 rotate([0, 0, 5])
                 cube([8, 2, 1], center=true);
 
-                translate([149.5, 5.7 + 15 + 4.5, 91 - 2/2])
+                translate([149.5, 5.7 + 15 + 4.5, h - 2/2])
                 rotate([0, 0, 5])
                 cube([8, 1, 1], center=true);
             }
 
             // right claw 2
             hull() {
-                translate([103, 3.25 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([103, 3.25 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, 2.7])
                 cylinder(d=2, h=14.5, center=true, $fn=20);
 
-                translate([103, 3.25 + 15 + 1, 91 - 2/2])
+                translate([103, 3.25 + 15 + 1, h - 2/2])
                 rotate([0, 0, 2.7])
                 cube([14.5, 2, 1], center=true);
 
-                translate([103, 3.25 + 15 + 4.3, 91 - 2/2])
+                translate([103, 3.25 + 15 + 4.3, h - 2/2])
                 rotate([0, 0, 2.7])
                 cube([14.5, 1, 1], center=true);
             }
 
             // right claw 1
             hull() {
-                translate([43, 1.3 + 15 + 1, 91 - 2/2 + 1.8])
+                translate([43, 1.3 + 15 + 1, h - 2/2 + 1.8])
                 rotate([0, 90, 1])
                 cylinder(d=2, h=14.5, center=true, $fn=20);
 
-                translate([43, 1.3 + 15 + 1, 91 - 2/2])
+                translate([43, 1.3 + 15 + 1, h - 2/2])
                 rotate([0, 0, 1])
                 cube([14.5, 2, 1], center=true);
 
-                translate([43, 1.3 + 15 + 4.3, 91 - 2/2])
+                translate([43, 1.3 + 15 + 4.3, h - 2/2])
                 rotate([0, 0, 1])
                 cube([14.5, 1, 1], center=true);
             }
         }
 
-        translate([0, -4.5, 0])
+        translate([0, -5.5, 0])
         rotate([13.8, 0, 0])
         cube([450, 60, 300], center=true);
 
         // middle hole
         difference() {
             hull() {
-                translate([-7/2, 0.7 + 12, 91])
+                translate([-7/2, 0.7 + 12, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 0.7 + 12, 91])
+                translate([7/2, 0.7 + 12, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-7/2, 20, 91])
+                translate([-7/2, 20, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 20, 91])
+                translate([7/2, 20, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
             }
 
             hull() {
-                translate([-6/2, 10, 91])
+                translate([-6/2, 10, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 10, 91])
+                translate([6/2, 10, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([-6/2, 20, 91])
+                translate([-6/2, 20, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 20, 91])
+                translate([6/2, 20, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
             }
         }
@@ -844,30 +903,30 @@ module _top_clips() {
         translate([-75.4, 0, 0])
         difference() {
             hull() {
-                translate([-7/2, 12.5, 91])
+                translate([-7/2, 12.5, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 12.2, 91])
+                translate([7/2, 12.2, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-7/2, 21.3, 91])
+                translate([-7/2, 21.3, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 21, 91])
+                translate([7/2, 21, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
             }
 
             hull() {
-                translate([-6/2, 10, 91])
+                translate([-6/2, 10, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 10, 91])
+                translate([6/2, 10, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([-6/2, 21.3, 91])
+                translate([-6/2, 21.3, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 21, 91])
+                translate([6/2, 21, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
             }
         }
@@ -876,30 +935,30 @@ module _top_clips() {
         translate([-149.8, 0, 0])
         difference() {
             hull() {
-                translate([-7/2, 16.1, 91])
+                translate([-7/2, 16.1, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 15.6, 91])
+                translate([7/2, 15.6, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-7/2, 25.1, 91])
+                translate([-7/2, 25.1, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 24.6, 91])
+                translate([7/2, 24.6, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
             }
 
             hull() {
-                translate([-6/2, 14, 91])
+                translate([-6/2, 14, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 14, 91])
+                translate([6/2, 14, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([-6/2, 25.1, 91])
+                translate([-6/2, 25.1, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 24.6, 91])
+                translate([6/2, 24.6, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
             }
         }
@@ -908,30 +967,30 @@ module _top_clips() {
         translate([149.5, 0, 0])
         difference() {
             hull() {
-                translate([7/2, 16.1, 91])
+                translate([7/2, 16.1, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-7/2, 15.6, 91])
+                translate([-7/2, 15.6, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([7/2, 25.1, 91])
+                translate([7/2, 25.1, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
 
-                translate([-7/2, 24.6, 91])
+                translate([-7/2, 24.6, h])
                 cylinder(d=2, h=8, center=true, $fn=20);
             }
 
             hull() {
-                translate([6/2, 14, 91])
+                translate([6/2, 14, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([-6/2, 14, 91])
+                translate([-6/2, 14, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([6/2, 25.1, 91])
+                translate([6/2, 25.1, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
 
-                translate([-6/2, 24.6, 91])
+                translate([-6/2, 24.6, h])
                 cylinder(d=1, h=10, center=true, $fn=15);
             }
         }
@@ -940,14 +999,19 @@ module _top_clips() {
         intersection() {
             translate([-19.8/2, 0, 0])
             for(i = [0:19]) {
-                translate([-178 + i * 19.8, 0, 91 + 0.1])
+                translate([-178 + i * 19.8, 0, h + 0.1])
                 rotate([-90, 0, 0])
-                scale([1.02, 1.02, 1])
+                scale([1.035, 1.035, 1])
+                triangle();
+
+                translate([-178 + i * 19.8, 0, h + 0.1 - 3.2])
+                rotate([-90, 180, 0])
+                scale([1.035, 1.035, 1])
                 triangle();
             }
             translate([0, 5200/2 - 300 + 24, -25])
             rotate([0, 0, -90])
-            donut(5200, 609.4, 20, $fn=200);
+            donut(5200, 607.4, 20, $fn=200);
         }
     }
 }
@@ -961,11 +1025,11 @@ module _bottom_clips() {
                 _cover_body();
 
                 hull() {
-                    translate([-310/2 + 2/2 + 2.1, 0, 2/2])
+                    translate([-w2/2 + 2/2 + 2.1, 0, 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
 
-                    translate([310/2 - 2/2 - 2.1, 0, 2/2])
+                    translate([w2/2 - 2/2 - 2.1, 0, 2/2])
                     rotate([-90, 0, 0])
                     cylinder(d=2, h=100, $fn=40);
                 }
@@ -1233,7 +1297,7 @@ module _bottom_clips() {
             }
         }
 
-        translate([0, -4.5, 2])
+        translate([0, -5.5, 2])
         rotate([-13.8, 0, 0])
         cube([450, 60, 300], center=true);
 
@@ -1337,13 +1401,18 @@ module _bottom_clips() {
             for(i = [0:16]) {
                 translate([-144 + i * 19.2, 20, 2.1])
                 rotate([-90, 0, 0])
-                scale([0.97, 0.97, 1])
+                scale([0.98, 0.98, 1])
+                triangle();
+
+                translate([-144 + i * 19.2, 20, 2.1 - 3.2])
+                rotate([-90, 180, 0])
+                scale([0.98, 0.98, 1])
                 triangle();
             }
 
             translate([0, 5200/2 - 300 + 24, -25])
             rotate([0, 0, -90])
-            donut(5200, 609.4, 20, $fn=200);
+            donut(5200, 607.4, 20, $fn=200);
         }
     }
 }
@@ -1372,9 +1441,9 @@ module _frame_body_flat() {
 //            _cover_body();
         }
 
-        translate([0, 47.3 + 4.7, 0])
-        rotate([12, 0, 0])
-        cube([500, 30, 300], center=true);
+//        translate([0, 47.3 + 4.7, 0])
+//        rotate([12, 0, 0])
+//        cube([500, 30, 300], center=true);
     }
 }
 
@@ -1391,277 +1460,245 @@ module triangle() {
 }
 
 module _frame_flange_cut() {
-    intersection() {
+    difference() {
         difference() {
             cube([400, 100, 300], center=true);
 
             translate([0, 5200/2 - 300 + 24, -25])
             rotate([0, 0, -90])
-            donut(5200, 609.2, 20, $fn=200);
+            donut(5200, 607.2, 20, $fn=200);
         }
 
         union() {
             hull() {
-                translate([-381/2 + 2/2, 0, 91 - 2/2])
+                translate([w2/2 - 7.5, 0, 10])
                 rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
+                cylinder(d=4, h=100, $fn=40);
 
-                translate([381/2 - 2/2, 0, 91 - 2/2])
+                translate([w1/2 - 14, 0, h - 10])
                 rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
-            }
+                cylinder(d=4, h=100, $fn=40);
 
-            hull() {
-                translate([-310/2 + 2/2, 0, 2/2])
+                translate([-w2/2 + 7.5, 0, 10])
                 rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
+                cylinder(d=4, h=100, $fn=40);
 
-                translate([310/2 - 2/2, 0, 2/2])
+                translate([-w1/2 + 14, 0, h - 10])
                 rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
-            }
-
-            hull() {
-                translate([-381/2 + 2/2, 0, 91 - 2/2])
-                rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
-
-                translate([-310/2 + 2/2, 0, 2/2])
-                rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
-            }
-
-            hull() {
-                translate([381/2 - 2/2, 0, 91 - 2/2])
-                rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
-
-                translate([310/2 - 2/2, 0, 2/2])
-                rotate([-90, 0, 0])
-                cylinder(d=11.1, h=100, $fn=40);
+                cylinder(d=4, h=100, $fn=40);
             }
         }
     }
 }
 
-module _magnet_holes(d=20.2, h=4, z=-37) {
+module _magnet_positions(z=-37) {
     rotate([90 + 13.8, 0, 0])
-    translate([-160, 74, 0])
+    translate([-160.2, 74, 0])
     rotate([-13.8, 0, 0])
     translate([0, 0, z])
-    rounded_cylinder(d, h, 1, $fn=40);
+    children();
 
     rotate([90 + 13.8, 0, 0])
-    translate([-67, 21, 0])
+    translate([-51, 41, 0])
     rotate([-13.8, 0, 0])
     translate([0, 0, z])
-    rounded_cylinder(d, h, 1, $fn=40);
+    children();
 
     rotate([90 + 13.8, 0, 0])
-    translate([-34, 74, 0])
+    translate([79, 41, 0])
     rotate([-13.8, 0, 0])
     translate([0, 0, z])
-    rounded_cylinder(d, h, 1, $fn=40);
+    children();
 
     rotate([90 + 13.8, 0, 0])
-    translate([57, 74, 0])
+    translate([160.2, 74, 0])
     rotate([-13.8, 0, 0])
     translate([0, 0, z])
-    rounded_cylinder(d, h, 1, $fn=40);
+    children();
+}
 
-    rotate([90 + 13.8, 0, 0])
-    translate([160, 74, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    rounded_cylinder(d, h, 1, $fn=40);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([105, 21, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
+module _magnet_holes(d=20, h=4, z=-37) {
+    _magnet_positions(z=z)
     rounded_cylinder(d, h, 1, $fn=40);
 }
 
-module _cone(screw_holes=false) {
+module _cone() {
     difference() {
         hull() {
             cylinder(d=10, h=1, $fn=30);
 
             translate([0, 0, 9])
-            cylinder(d=19, h=5, $fn=30);
-        }
-
-        if (screw_holes) {
-            cylinder(d=8, h=4, center=true, $fn=30);
-
-            cylinder(d=2.8, h=20, center=true, $fn=30);
+            cylinder(d=18, h=5, $fn=30);
         }
     }
 }
 
-module _magnet_cone_holes(screw_holes=false) {
+module _magnet_cone_holes() {
     z = -33.1;
 
-    rotate([90 + 13.8, 0, 0])
-    translate([-160, 74, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([-67, 21, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([-34, 74, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([57, 74, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([160, 74, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
-
-    rotate([90 + 13.8, 0, 0])
-    translate([105, 21, 0])
-    rotate([-13.8, 0, 0])
-    translate([0, 0, z])
-    _cone(screw_holes=screw_holes);
+    _magnet_positions(z=z)
+    _cone();
 }
 
 module _frame_cutouts() {
 
-    _magnet_holes(d=20, h=10, z=-43);
+    bm = 6;
+
+    _magnet_holes(d=20, h=12, z=-45);
+
+    // for locking
+    _magnet_holes(d=21.2, h=2.1, z=-39.1);
 
     _magnet_cone_holes();
 
     // coutouts
     difference() {
         union() {
+            // leftest hole
             hull() {
-                translate([-150.5, 0, 20])
+                translate([-155.5, 0, 34])
                 rotate([90, 0, 0])
                 cylinder(d=3, h=100, center=true, $fn=20);
 
-                translate([-151, 0, 70])
+                translate([-156, 0, 70])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-170, 0, 70])
+                translate([-169, 0, 70])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
             }
 
+            // left hole (electric)
             hull() {
-                translate([-68, 0, 17])
-                rotate([90, 0, 0])
-                cylinder(d=16, h=100, center=true, $fn=20);
-
-                translate([-75, 0, 79])
+                translate([-69, 0, 9])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-27, 0, 11])
+                translate([-69, 0, 80])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-33, 0, 73])
+                translate([-146, 0, 9])
                 rotate([90, 0, 0])
-                cylinder(d=16, h=100, center=true, $fn=20);
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([-146, 0, 80])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
             }
 
+            // middle left hole
+            hull() {
+                translate([-59, 0, 11])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([-59, 0, 79])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([-44, 0, 11])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([-44, 0, 79])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+            }
+
+            // middle hole
+            hull() {
+                translate([-34, 0, 11])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([-34, 0, 79])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([65, 0, 11])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+
+                translate([65, 0, 79])
+                rotate([90, 0, 0])
+                cylinder(d=4, h=100, center=true, $fn=20);
+            }
+
+            // right hole
             hull() {
                 translate([145, 0, 11])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([53, 0, 76])
+                translate([75, 0, 79])
                 rotate([90, 0, 0])
-                cylinder(d=10, h=100, center=true, $fn=20);
+                cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([50, 0, 11])
+                translate([75, 0, 11])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
                 translate([160.5, 0, 71])
                 rotate([90, 0, 0])
                 cylinder(d=20, h=100, center=true, $fn=20);
-
             }
         }
-        _magnet_holes(d=26, h=40, z=-48);
+        _magnet_holes(d=24, h=40, z=-48);
 
         // beams
         hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([160.5, 64, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([162, 80, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
 
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 11, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([110, 7, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
         }
 
         hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([57, 64, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([71, 80, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
 
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 11, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([110, 7, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
         }
 
         hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 84, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([110, 83, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
 
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 11, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([155, 0, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
         }
 
         hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 74, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([110, 83, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
 
-            rotate([90 + 13.8, 0, 0])
-            translate([163, 0, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([68, 0, -38])
+            cylinder(d=bm, h=200, center=true, $fn=20);
         }
 
         hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([105, 74, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([-60, 83, -38])
+            cylinder(d=bm - 2, h=200, center=true, $fn=20);
 
-            rotate([90 + 13.8, 0, 0])
-            translate([47, 0, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
+            rotate([90, 0, 0])
+            translate([-43, 7, -38])
+            cylinder(d=bm - 2, h=200, center=true, $fn=20);
         }
 
-        hull() {
-            rotate([90 + 13.8, 0, 0])
-            translate([-34, 64, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
-
-            rotate([90 + 13.8, 0, 0])
-            translate([-67, 11, -38])
-            cylinder(d=5, h=100, center=true, $fn=20);
-        }
     }
 }
 
@@ -1677,7 +1714,7 @@ module frame() {
 
         // top dovetails
         for(i = [0:19]) {
-            translate([-178 + i * 19.8, 20, 91 - 2.1])
+            translate([-178 + i * 19.8, 20, h - 2.1])
             rotate([90, 0, 0])
             triangle();
         }
@@ -1690,8 +1727,8 @@ module frame() {
         }
 
         // left dovetails
-        translate([-310/2, 0, 0])
-        rotate([0, -111.75, 0])
+        translate([-w2/2, 0, 0])
+        rotate([0, -111.86, 0])
         for(i = [0:4]) {
             translate([10 + i * 19.2, 50, -0.3 - 2.1])
             rotate([90, 0, 0])
@@ -1699,8 +1736,8 @@ module frame() {
         }
 
         // right dovetails
-        translate([310/2, 0, 0])
-        rotate([0, 111.75, 0])
+        translate([w2/2, 0, 0])
+        rotate([0, 111.86, 0])
         for(i = [0:4]) {
             translate([-10 - i * 19.2, 50, -0.3 - 2.1])
             rotate([90, 0, 0])
@@ -1710,14 +1747,15 @@ module frame() {
 }
 
 module frame_flat() {
+    rotate([90 - 13.8, 0, 0])
     difference() {
         union() {
             _frame_body_flat();
 
-            _magnet_holes(d=26, h=10, z=-41);
+            _magnet_holes(d=24, h=10, z=-40);
         }
 
-        translate([0, -4.5, 0])
+        translate([0, -5.5, 0])
         rotate([13.8, 0, 0])
         cube([450, 60, 300], center=true);
 
@@ -1728,23 +1766,23 @@ module frame_flat() {
         _frame_cutouts();
 
         // side chamfers
-        translate([381/2 - 30, 12.4, 0])
+        translate([w1/2 - 30, 12.4, 0])
         rotate([11.5, 21.75, 0])
         rotate([0, 0, 45])
         cube([30, 30, 300], center=true);
 
-        translate([-381/2 + 30, 12.4, 0])
+        translate([-w1/2 + 30, 12.4, 0])
         rotate([11.5, -21.75, 0])
         rotate([0, 0, 45])
         cube([30, 30, 300], center=true);
 
         // top chamfers
-        translate([381/2, -4, 100])
+        translate([w1/2, -4, 100])
         rotate([0, 0, 3])
         rotate([45 + 12, 0, 0])
         cube([300, 30, 30], center=true);
 
-        translate([-381/2, -4, 100])
+        translate([-w1/2, -4, 100])
         rotate([0, 0, -3])
         rotate([45 + 12, 0, 0])
         cube([300, 30, 30], center=true);
@@ -1754,7 +1792,7 @@ module frame_flat() {
             union() {
                 // top dovetails
                 for(i = [0:19]) {
-                    translate([-178 + i * 19.8, 20, 91 - 2.1])
+                    translate([-178 + i * 19.8, 20, h - 2.1])
                     rotate([90, 0, 0])
                     triangle();
                 }
@@ -1767,8 +1805,8 @@ module frame_flat() {
                 }
 
                 // left dovetails
-                translate([-310/2, 0, 0])
-                rotate([0, -111.75, 0])
+                translate([-w2/2, 0, 0])
+                rotate([0, -111.86, 0])
                 for(i = [0:4]) {
                     translate([10 + i * 19.2, 50, -0.3 - 2.1])
                     rotate([90, 0, 0])
@@ -1776,8 +1814,8 @@ module frame_flat() {
                 }
 
                 // right dovetails
-                translate([310/2, 0, 0])
-                rotate([0, 111.75, 0])
+                translate([w2/2, 0, 0])
+                rotate([0, 111.86, 0])
                 for(i = [0:4]) {
                     translate([-10 - i * 19.2, 50, -0.3 - 2.1])
                     rotate([90, 0, 0])
@@ -1797,14 +1835,14 @@ module original_cover() {
     union() {
         _cover_body();
 
-        translate([310/2 - 2/2, 0, 2/2])
-        rotate([0, 111.75, 0])
+        translate([w2/2 - 2/2, 0, 2/2])
+        rotate([0, 111.86, 0])
         translate([2/2, 0, 0])
         _side_clips();
 
         mirror([1, 0, 0])
-        translate([310/2 - 2/2, 0, 2/2])
-        rotate([0, 111.75, 0])
+        translate([w2/2 - 2/2, 0, 2/2])
+        rotate([0, 111.86, 0])
         translate([2/2, 0, 0])
         _side_clips();
 
@@ -1835,66 +1873,208 @@ module bottom_clips() {
     _bottom_clips();
 }
 
+module bottom_clips_split_1() {
+    intersection() {
+        bottom_clips();
+
+        translate([400/2 - 11, 0, 0])
+        cube([400, 200, 100], center=true);
+    }
+}
+
+module bottom_clips_split_2() {
+    difference() {
+        bottom_clips();
+
+        translate([400/2 - 11.1, 0, 0])
+        cube([400, 200, 100], center=true);
+    }
+}
+
 module top_clips() {
-    translate([0, 0, -91 + 2])
+    translate([0, 0, -h + 2])
     _top_clips();
 }
 
-module cover_flat() {
+module top_clips_split_1() {
+    intersection() {
+        top_clips();
+
+        translate([400/2 - 11.4, 0, 0])
+        cube([400, 200, 100], center=true);
+    }
+}
+
+module top_clips_split_2() {
+    difference() {
+        top_clips();
+
+        translate([400/2 - 11.5, 0, 0])
+        cube([400, 200, 100], center=true);
+    }
+}
+
+module _wooden_screw_hole() {
     union() {
-        difference() {
-            intersection() {
-                _cover_body_flat(inner=false);
+        cylinder(d=5.1, h=30, $fn=30);
 
-                union() {
-                    translate([0, 5200/2 - 300 + 24, -25])
-                    rotate([0, 0, -90])
-                    donut(5200, 599.8, 20, $fn=200);
+        translate([0, 0, 25])
+        cylinder(d=10, h=5, $fn=30);
 
-                    translate([0, -4.5, 0])
-                    rotate([13.8, 0, 0])
-                    cube([450, 60, 300], center=true);
+        translate([0, 0, 25 - 3.1])
+        cylinder(d2=10, d1=5.1, h=3.1, $fn=30);
+    }
+}
+
+module _cover_flat(wood_screws=true, cover_holes=true) {
+    module _cover_flat_body() {
+        union() {
+            difference() {
+                intersection() {
+                    _cover_body_flat(inner=false);
+
+                    union() {
+                        translate([0, 5200/2 - 300 + 24, -25])
+                        rotate([0, 0, -90])
+                        donut(5200, 599.8, 20, $fn=200);
+
+                        translate([0, -4.5, 0])
+                        rotate([13.8, 0, 0])
+                        cube([450, 60, 300], center=true);
+                    }
                 }
+
+                if (cover_holes) {
+                    _cover_holes();
+                }
+
+                translate([0, -0.1, 0])
+                hull()
+                scale([1.001, 1, 1])
+                rotate([-90 + 13.8, 0, 0])
+                frame_flat();
+
+                // side chamfers
+                translate([w1/2 - 27, 10.4, 0])
+                rotate([11.5, 21.75, 0])
+                rotate([0, 0, 49])
+                cube([30, 30, 300], center=true);
+
+                translate([-w1/2 + 27, 10.4, 0])
+                rotate([11.5, -21.75, 0])
+                rotate([0, 0, -49])
+                cube([30, 30, 300], center=true);
+
+                // top chamfers
+                translate([w1/2, -6, 100])
+                rotate([0, 0, 3])
+                rotate([45 + 12, 0, 0])
+                cube([300, 30, 30], center=true);
+
+                translate([-w1/2, -6, 100])
+                rotate([0, 0, -3])
+                rotate([45 + 12, 0, 0])
+                cube([300, 30, 30], center=true);
+
+                translate([0, -11, 100])
+                rotate([45 + 12, 0, 0])
+                cube([300, 30, 30], center=true);
             }
 
-            _cover_holes();
+            difference() {
+                translate([0, -0.4, 0])
+                _magnet_cone_holes();
 
-            translate([0, -0.1, 0])
-            hull()
-            frame_flat();
+                translate([0, -7.8, 0])
+                rotate([13.8, 0, 0])
+                cube([450, 60, 300], center=true);
+            }
+        }
+    }
 
-            // side chamfers
-            translate([381/2 - 30, 10.4, 0])
-            rotate([11.5, 21.75, 0])
-            rotate([0, 0, 45])
-            cube([30, 30, 300], center=true);
+    difference() {
+        _cover_flat_body();
 
-            translate([-381/2 + 30, 10.4, 0])
-            rotate([11.5, -21.75, 0])
-            rotate([0, 0, 45])
-            cube([30, 30, 300], center=true);
+        if (wood_screws) {
+            _magnet_positions(z=-49)
+            _wooden_screw_hole();
+        }
+    }
+}
 
-            // top chamfers
-            translate([381/2, -6, 100])
-            rotate([0, 0, 3])
-            rotate([45 + 12, 0, 0])
-            cube([300, 30, 30], center=true);
+module cover_flat(wood_screws=true, cover_holes=true) {
+    translate([0, 0, -21.355])
+    rotate([90 - 13.8, 0, 0])
+    _cover_flat(
+        wood_screws=wood_screws,
+        cover_holes=cover_holes
+    );
+}
 
-            translate([-381/2, -6, 100])
-            rotate([0, 0, -3])
-            rotate([45 + 12, 0, 0])
-            cube([300, 30, 30], center=true);
+module cover_flat_logo_1(
+    wood_screws=true, cover_holes=true
+) {
+    difference() {
+        cover_flat(
+            wood_screws=wood_screws,
+            cover_holes=cover_holes
+        );
+
+        cover_flat_logo_2(
+            wood_screws=wood_screws,
+            cover_holes=false
+        );
+    }
+}
+
+module cover_flat_logo_2(
+    wood_screws=true, cover_holes=true
+) {
+    intersection() {
+        translate([-1, -45, 0])
+        scale([3.4, 3.4, 0.5/0.4])
+        _tesla_logo();
+
+        cover_flat(
+            wood_screws=wood_screws,
+            cover_holes=cover_holes
+        );
+    }
+}
+
+module magnet_clip() {
+    difference() {
+        union() {
+            rounded_cylinder(21.3, 1.9, 1.9/2 - 0.02, $fn=40);
+
+            translate([-3, 6.4, 0])
+            cylinder(d=5, h=4, $fn=30);
+
+            translate([3, 6.4, 0])
+            cylinder(d=5, h=4, $fn=30);
+        }
+
+        hull() {
+            cylinder(d=3, h=20, center=true);
+
+            translate([-4, 12, 0])
+            cylinder(d=0.1, h=20, center=true);
+
+            translate([4, 12, 0])
+            cylinder(d=0.1, h=20, center=true);
         }
 
         difference() {
-            translate([0, -0.2, 0])
-            _magnet_cone_holes(screw_holes=true);
+            cylinder(d=13, h=20, center=true, $fn=40);
 
-            translate([0, -7.8, 0])
-            rotate([13.8, 0, 0])
-            cube([450, 60, 300], center=true);
+            translate([-3, 6.4, 0])
+            cylinder(d=5, h=20, center=true, $fn=30);
+
+            translate([3, 6.4, 0])
+            cylinder(d=5, h=20, center=true, $fn=30);
         }
     }
+    
 }
 
 module test_side() {
@@ -1909,3 +2089,56 @@ module test_side() {
         cube([15, 200, 50], center=true);
     }
 }
+
+module test_magnet_dual_holder() {
+    %translate([-4, 0, 0])
+    rotate([0, -90, 0])
+    cylinder(d=19.8, h=3.8, $fn=40);
+
+    %translate([4, 0, 0])
+    rotate([0, 90, 0])
+    cylinder(d=19.8, h=3.8, $fn=40);
+
+    difference() {
+        cube([20, 25, 20], center=true);
+
+        hull() {
+
+            translate([-4, 0, 0])
+            rotate([0, -90, 0])
+            cylinder(d=19.8, h=3.8, $fn=40);
+
+            translate([-4, 0, 20])
+            rotate([0, -90, 0])
+            cylinder(d=19.8, h=3.8, $fn=40);
+        }
+
+        hull() {
+
+            translate([4, 0, 0])
+            rotate([0, 90, 0])
+            cylinder(d=19.8, h=3.8, $fn=40);
+
+            translate([4, 0, 20])
+            rotate([0, 90, 0])
+            cylinder(d=19.8, h=3.8, $fn=40);
+        }
+
+        cylinder(d=6.6, h=50, center=true, $fn=30);
+    }
+}
+
+//test_magnet_dual_holder();
+
+module screw_qnd_fix() {
+    difference() {
+        union() {
+            cylinder(d=19.7, h=6, $fn=30);
+            cylinder(d=10, h=10, $fn=30);
+        }
+
+        cylinder(d=4.2, h=30, center=true, $fn=30);
+    }
+}
+
+//screw_qnd_fix();
