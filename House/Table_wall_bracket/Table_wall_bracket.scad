@@ -9,16 +9,19 @@ h = 60;
 //debug_table_wall_bracket_2();
 
 //table_wall_bracket();
-table_wall_bracket_2();
-//table_bracket();
+//table_wall_bracket_2();
+table_bracket();
 //knob();
 //table_to_table_bracket();
+
 
 module screw_hole() {
     rotate([-90, 0, 0]) {
         cylinder(d=4.5, h=100, center=true, $fn=20);
-        cylinder(d1=10, d2=24, h=50,
-            center=true, $fn=20);
+        cylinder(
+            d1=10, d2=24, h=50,
+            center=true, $fn=20
+        );
     }
     
 }
