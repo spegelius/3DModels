@@ -128,6 +128,16 @@ module box_bottom() {
         rotate([90, 0, 0])
         scale([2.2, 1, 1])
         cylinder(d=1.2, h=l + 2, center=true, $fn=30);
+
+        // chamfer
+        translate([-w/2, 0, 5/2])
+        rotate([0, 45, 0])
+        cube([0.6, 50, 0.6], center=true);
+
+        translate([w/2, 0, 5/2])
+        rotate([0, 45, 0])
+        cube([0.6, 50, 0.6], center=true);
+
     }
 }
 
@@ -228,6 +238,15 @@ module box_top() {
         cylinder(d=1.2, h=l + 2, center=true, $fn=30);
 
         _grill();
+
+        // chamfer
+        translate([-w/2, 0, 5/2])
+        rotate([0, 45, 0])
+        cube([0.6, 50, 0.6], center=true);
+
+        translate([w/2, 0, 5/2])
+        rotate([0, 45, 0])
+        cube([0.6, 50, 0.6], center=true);
     }
 }
 
