@@ -33,7 +33,7 @@ module solublock(x) {
         translate([0, 0, 0.1/2])
         cube([x, 2.5, 0.1], center=true);
 
-        translate([0, 0,1/2 + 2])
+        translate([0, 0, 1/2 + 2])
         cube([x, 8.5, 1], center=true);
     }
 }
@@ -400,81 +400,87 @@ block = 18.8/3;
 module _infill() {
     module _infill_shape(h) {
         translate([0, 0, h/2])
-        cube([0.1, 0.1, h], center=true);
+        cube([0.1, block/3, h], center=true);
+
+        translate([0, block/4, 1])
+        cube([0.1, block, 0.1], center=true);
     }
 
     //infill
     translate([
-        3 * block - block/2, block/2, -1
+        3 * block - block/2, block/2, 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 
     translate([
         block/2, 3 * block - block/2,
-         2 * block - 1
+         2 * block + 1
     ])
-    _infill_shape(15);
+    _infill_shape(2*block - 2);
 
     translate([
         block/2, 5 * block - block/2,
-        3 * block - 1
+        3 * block + 1
     ])
-    _infill_shape(15);
+    _infill_shape(2*block - 2);
 
     translate([
         3 * block - block/2,
-        5 * block - block/2, 4 * block - 1
+        3 * block - block/2, 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 
     translate([
         3 * block - block/2,
-        7 * block - block/2, 4 * block - 1
+        7 * block - block/2, 4 * block + 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 
     translate([
         7 * block - block/2,
-        5 * block - block/2, 2 * block - 1
+        5 * block - block/2, 2 * block + 1
     ])
-    _infill_shape(15);
+    rotate([0, 0, 180])
+    _infill_shape(2*block - 2);
 
     translate([
         7 * block - block/2,
-        3 * block - block/2, 3 * block - 1
+        3 * block - block/2, 3 * block + 1
     ])
-    _infill_shape(15);
+    rotate([0, 0, 180])
+    _infill_shape(2*block - 2);
 
     translate([
         5 * block - block/2,
-        3 * block - block/2, 4 * block - 1
+        5 * block - block/2, 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 
     translate([
         5 * block - block/2,
-        block - block/2, 4 * block - 1
+        block - block/2, 4 * block + 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 
     translate([
         5 * block - block/2,
-        44 - block/2, -1
+        44 - block/2, 1
     ])
-    _infill_shape(20);
+    _infill_shape(3*block - 2);
 }
 
 
 module p1(infill=true) {
     difference() {
-        translate([-0.03, -0.03, -0.03])
+        translate([-0.03, 43.93, 43.93])
+        rotate([180, 0, 0])
         import(str(
             ss_stl_path,
             "Superstrings_628_03_003_S1.stl"
         ), convexity=10);
 
         if (infill) {
-            #_infill();
+            _infill();
         }
     }
 }
@@ -482,14 +488,15 @@ module p1(infill=true) {
 module p2(infill=true) {
     
     difference() {
-        translate([-0.03, -0.03, -0.03])
+        translate([-0.03, 43.93, 43.93])
+        rotate([180, 0, 0])
         import(str(
             ss_stl_path,
             "Superstrings_628_03_003_S2.stl"
         ), convexity=10);
 
         if (infill) {
-            #_infill();
+            _infill();
         }
     }
 }
@@ -513,6 +520,33 @@ module _p_supports(one=true) {
             chamfered_cube_side(
                 x - 1, z - 1, y + 1, 1, center=true
             );
+        }
+    }
+
+    module _support2(length, height) {
+        intersection() {
+            union() {
+                translate([0, 0, (height - block)/2])
+                cube(
+                    [1, length - block + 1, height - block],
+                    center=true
+                );
+
+                hull() {
+                    translate([0, 0, height - block])
+                    cube(
+                        [1, length - block + 1, 1],
+                        center=true
+                    );
+
+                    translate([0, 0, height - 1/2])
+                    cube(
+                        [block, length, 1],
+                        center=true
+                    );
+
+                }
+            }
         }
     }
 
@@ -598,137 +632,38 @@ module _p_supports(one=true) {
         cube([0.1, 50, 0.2], center=true);
     }
 
-    // towers
+    // center
     if (one) {
-        union() {
-            translate([2.5 * block + 0.2, 5 * block, 0])
-            intersection() {
-                rotate([7.7, 0, 0])
-                tube(
-                    d=10, h=100, wall=0.55,
-                    center=true, $fn=40
-                );
+        translate([2 * block, 4.5 * block, 0])
+        rotate([0, 0, 90])
+        _support2(2 * block, 6 * block - 0.6);
 
-                translate([0, 0, (4 * block - 0.6)/2])
-                cube(
-                    [40, 40, 4 * block - 0.6],
-                    center=true
-                );
-            }
-            translate([
-                2.5 * block + 0.2, 4.5 * block,
-                4 * block - 0.6 - 1
-            ])
-            cylinder(d=10, h=1, $fn=40);
-        }
-        // brim
-        translate([
-            3 * block - 3, 5.3 * block, 0.2/2
-        ])
-        cube([5, 14, 0.2], center=true);
+        translate([2.5 * block, 4 * block, 0])
+        _support2(2 * block, 6 * block - 0.6);
 
-        translate([
-            2.4 * block - 3, 5 * block, 0.2/2
-        ])
-        cube([19, 5, 0.2], center=true);
+        translate([4.5 * block, 3 * block, 0])
+        _support2(2 * block, 6 * block - 0.6);
+
+        translate([3.5 * block, 3.5 * block, 0])
+        rotate([0, 0, 90])
+        _support2(3 * block, 6 * block - 0.6);
+
+        translate([5 * block, 2.5 * block, 0])
+        rotate([0, 0, 90])
+        _support2(2 * block, 6 * block - 0.6);
+
     } else {
-        union() {
-            translate([2.5 * block - 3, 4.5 * block, 0])
-            intersection() {
-                rotate([0, 7.5])
-                tube(
-                    d=10, h=100, wall=0.55,
-                    center=true, $fn=40
-                );
+        translate([2.5 * block, 4.5 * block, 0])
+        rotate([0, 0, 90])
+        _support2(3 * block, 6 * block - 0.6);
 
-                translate([0, 0, (4 * block - 0.6)/2])
-                cube(
-                    [40, 40, 4 * block - 0.6],
-                    center=true
-                );
-            }
-            translate([
-                2.5 * block + 0.2, 4.5 * block,
-                4 * block - 0.6 - 1
-            ])
-            cylinder(d=10, h=1, $fn=40);
-        }
+        translate([3.5 * block, 3.5 * block, 0])
+        _support2(3 * block, 6 * block - 0.6);
 
-        // brim
-        translate([
-            2.5 * block - 3, 5 * block, 0.2/2
-        ])
-        cube([5, 19, 0.2], center=true);
+        translate([4.5 * block, 2.5 * block, 0])
+        rotate([0, 0, 90])
+        _support2(3 * block, 6 * block - 0.6);
 
-        translate([
-            2.1 * block - 3, 4.5 * block, 0.2/2
-        ])
-        cube([15, 5, 0.2], center=true);
-    }
-    if (one) {
-        union() {
-            translate([4.5 * block, 2 * block, 0])
-            intersection() {
-                rotate([-7.7, 0])
-                tube(
-                    d=10, h=100, wall=0.55,
-                    center=true, $fn=40
-                );
-
-                translate([0, 0, (4 * block - 0.6)/2])
-                cube(
-                    [40, 40, 4 * block - 0.6],
-                    center=true
-                );
-            }
-            translate([
-                4.5 * block, 2.5 * block,
-                4 * block - 0.6 - 1
-            ])
-            cylinder(d=10, h=1, $fn=40);
-        }
-        // brim
-        translate([
-            5 * block - 3, 1.8 * block, 0.2/2
-        ])
-        cube([5, 14, 0.2], center=true);
-
-        translate([
-            4.7 * block + 2, 2 * block, 0.2/2
-        ])
-        cube([19, 5, 0.2], center=true);
-    } else {
-        union() {
-            translate([4.5 * block + 3.2, 2.5 * block, 0])
-            intersection() {
-                rotate([0, -7.5])
-                tube(
-                    d=10, h=100, wall=0.55,
-                    center=true, $fn=40
-                );
-
-                translate([0, 0, (4 * block - 0.6)/2])
-                cube(
-                    [40, 40, 4 * block - 0.6],
-                    center=true
-                );
-            }
-            translate([
-                4.5 * block, 2.5 * block,
-                4 * block - 0.6 - 1
-            ])
-            cylinder(d=10, h=1, $fn=40);
-        }
-        // brim
-        translate([
-            5.5 * block - 3, 2 * block, 0.2/2
-        ])
-        cube([5, 19, 0.2], center=true);
-
-        translate([
-            5.1 * block + 2, 2.5 * block, 0.2/2
-        ])
-        cube([15, 5, 0.2], center=true);
     }
 
     // top left
@@ -746,26 +681,6 @@ module _p_supports(one=true) {
                 5.5 * block
             ])
             _support(s_block, 18, block - 1.2);
-
-            translate([
-                1.5 * block - 0.5, 4.5 * block,
-                6 * block - 1
-            ])
-            cube([block, s_block, 0.8], center=true);
-
-            hull() {
-                translate([
-                    2 * block - 0.5/2 - 0.7,
-                    4.5 * block, 6 * block - 1.1
-                ])
-                cube([0.5, s_block, 1], center=true);
-
-                translate([
-                    block, 4.5 * block,
-                    5 * block+1.1
-                ])
-                cube([0.5, s_block, 1], center=true);
-            }
         }
         translate([
             0.5 * block, 50/2 - 1, 5.5 * block
@@ -789,25 +704,6 @@ module _p_supports(one=true) {
             ])
             _support(s_block, 18, block - 1.2);
 
-            translate([
-                5.5 * block + 0.5, 2.5 * block,
-                6 * block - 1
-            ])
-            cube([block, s_block, 0.8], center=true);
-
-            hull() {
-                translate([
-                    5 * block + 0.5/2 + 0.7,
-                    2.5 * block, 6 * block - 1.1
-                ])
-                cube([0.5, s_block, 1], center=true);
-
-                translate([
-                    6 * block, 2.5 * block,
-                    5 * block + 1.1
-                ])
-                cube([0.5, s_block, 1], center=true);
-            }
         }
         translate([6.5 * block, 50/2 - 1, 5.5 * block])
         cube([0.1, 50, 0.2], center=true);
@@ -940,13 +836,6 @@ module _p_solubles(one=true) {
             ])
             cube([s_block, 18, 0.7], center=true);
 
-            translate([
-                11.5/2 + 0.5, 4.5 * block,
-                6 * block - 0.7/2 + 0.1
-            ])
-            cube([11.7, s_block, 0.7], center=true);
-
-
             // top right
             translate([
                 7 * block - 12/2 - 0.2,
@@ -974,30 +863,74 @@ module _p_solubles(one=true) {
             ])
             cube([s_block, 18, 0.7], center=true);
 
-            translate([
-                7 * block - 11.7/2 - 0.5,
-                2.5 * block,
-                6 * block - 0.7/2 + 0.1
-            ])
-            cube([11.7, s_block, 0.7], center=true);
+            // middle
+            if (one) {
+                translate([
+                    block + 3.6, 4.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube([3*s_block, s_block, 0.7], center=true);
 
+                translate([
+                    7 * block - block - 3.6,
+                    2.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube([3*s_block, s_block, 0.7], center=true);
 
-            // towers
-            translate([
-                2.5 * block + 0.1, 4.5 * block,
-                4 * block - 0.6 + 1/2
-            ])
-            chamfered_cube_side(
-                8, 8, 1, 0.7, center=true
-            );
+                translate([
+                    3.5 * block,
+                    3.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube(
+                    [3*block - 0.45, s_block, 0.7],
+                    center=true
+                );
 
-            translate([
-                4.5 * block, 2.5 * block,
-                4 * block - 0.6 + 1/2
-            ])
-            chamfered_cube_side(
-                8, 8, 1, 0.7, center=true
-            );
+                translate([
+                    2.5 * block,
+                    4 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube(
+                    [s_block, 2*s_block, 0.7],
+                    center=true
+                );
+
+                translate([
+                    4.5 * block,
+                    3 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube(
+                    [s_block, 2*s_block, 0.7],
+                    center=true
+                );
+            } else {
+                translate([
+                    2*block, 4.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube([4*s_block, s_block, 0.7], center=true);
+
+                translate([
+                    5 * block,
+                    2.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube([4*s_block, s_block, 0.7], center=true);
+
+                translate([
+                    3.5 * block,
+                    3.5 * block,
+                    6 * block - 0.7/2 + 0.1
+                ])
+                cube(
+                    [s_block, 3*s_block + 0.9, 0.7],
+                    center=true
+                );
+            }
         }
 
         if (one) {
