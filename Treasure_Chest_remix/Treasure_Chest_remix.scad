@@ -51,7 +51,10 @@ module _hinge_frame() {
 
 module _hinge_frame_bottom() {
     intersection() {
-        import(str(tc_path, "Hinge_Frame.stl"), convexity=10);
+        import(
+            str(tc_path, "Hinge_Frame.stl"),
+            convexity=10
+        );
 
         translate([110/2, 110/2 - 25, 50])
         cube([110, 110, 40], center=true);
@@ -62,7 +65,10 @@ module _hinge_frame_top() {
     translate([0, 163, 104.5])
     rotate([180, 0, 0])
     intersection() {
-        import(str(tc_path, "Hinge_Frame.stl"), convexity=10);
+        import(
+            str(tc_path, "Hinge_Frame.stl"),
+            convexity=10
+        );
 
         translate([110/2, 110/2 + 77, 50])
         cube([110, 110, 40], center=true);
@@ -237,25 +243,46 @@ module new_side() {
     }
 }
 
+// inserts for the hinge frame.
+// Due to OpenSCADS inability to merge the hinge frame
+// and these inserts, the merging is done in 
+// Prusaslicer:
+// - printer profile needs to have multiple toolheads!
+//   otherwise PS moves objects to origins separately
+// - import Hinge_frame.stl and 
+//   new_hinge_frame_inserts.stl together as one object
+//   (answwer yes)
+// - export the plate as new_hinge_frame.stl
+// - reimport the new stl to the printer profile 
+//   you'd like to use
 module new_hinge_frame_inserts() {
     od = 10.2;
     oh = 8.1;
     wall = 1.7;
 
     union() {
-        _hinge_frame();
+        %_hinge_frame();
 
-        translate([20.935, 81.438, 52.25])
+        translate([20.435, 81.438, 52.25])
         rotate([0, 90, 0])
         tube(od, oh, wall, $fn=40);
 
+        translate([21.435, 80.938, 46.25])
+        cube([oh - 1, 1, 2]);
+        
         translate([45.935, 81.438, 52.25])
         rotate([0, 90, 0])
         tube(od, oh, wall, $fn=40);
 
+        translate([46.435, 80.938, 46.25])
+        cube([oh - 1, 1, 2]);
+
         translate([70.935, 81.438, 52.25])
         rotate([0, 90, 0])
         tube(od, oh, wall, $fn=40);
+
+        translate([71.435, 80.938, 46.25])
+        cube([oh - 1, 1, 2]);
     }
 
 //    %translate([0, 81.438, 52.25])
