@@ -35,6 +35,9 @@ spath = str(
 //side_clip_left();
 //side_clip_right();
 
+//side_clip_left_old();
+//side_clip_right_old();
+
 new_electric_cover();
 
 //test_parts_side_clip();
@@ -157,6 +160,28 @@ module _clip_hole(screw_hole=true) {
     }
 }
 
+module _clip_hole_old(screw_hole=true) {
+    union() {
+        translate([0, 1, 0])
+        rotate([-9, 0, 0])
+        cube([10, 26, 50], center=true);
+
+        hull() {
+            translate([0, 1.6, 2.5])
+            cube([10, 30.5, 0.1], center=true);
+
+            translate([0, 1.6, 2.5])
+            cube([10, 27, 5.1], center=true);
+        }
+
+        if (screw_hole) {
+            translate([0, 0, 2.5])
+            rotate([0, 90, 0])
+            cylinder(d=2.5, h=30, center=true, $fn=20);
+        }
+    }
+}
+
 module _side_clip() {
     difference() {
         union() {
@@ -187,6 +212,56 @@ module _side_clip() {
         translate([-5/2, 0, 0])
         cube([5, 40, 13], center=true);
     }
+}
+
+module _side_clip_old() {
+    difference() {
+        union() {
+            translate([0, -23.25, -22.79])
+            rotate([0, 90, 0])
+            intersection() {
+                translate([198.5, 0, 0])
+                _orig_cover_left();
+
+                translate([-27.79, 23.25, 0])
+                scale([1, 0.99, 1])
+                _clip_hole_old(screw_hole=false);
+            }
+
+            translate([2.5, 0, 0])
+            cylinder(d=6, h=2.21, $fn=30);
+
+            translate([3.5, 1, 2.21/2])
+            cube([5, 23, 2.21], center=true);
+        }
+
+        translate([2.5, 1.6, 0])
+        cylinder(d=3, h=20, center=true, $fn=20);
+
+        translate([2.5, 1.6, 0.8])
+        cylinder(d1=3, d2=7, h=2, $fn=20);
+
+        translate([-5/2, 0, 0])
+        cube([5, 40, 13], center=true);
+    }
+}
+
+module side_clip_right() {
+    _side_clip();
+}
+
+module side_clip_left() {
+    mirror([1, 0, 0])
+    _side_clip();
+}
+
+module side_clip_right_old() {
+    _side_clip_old  ();
+}
+
+module side_clip_left_old() {
+    mirror([1, 0, 0])
+    _side_clip_old();
 }
 
 module _indent_form() {
@@ -235,15 +310,6 @@ module _indent_form_split() {
             93, 70, 4.9, 8, center=true, $fn=30
         );
     }
-}
-
-module side_clip_right() {
-    _side_clip();
-}
-
-module side_clip_left() {
-    mirror([1, 0, 0])
-    _side_clip();
 }
 
 module new_cover_left() {
@@ -666,9 +732,32 @@ module new_electric_cover() {
                 cube([6.5, 20, 1], center=true);
             }
 
-            translate([119, 15, 6])
+            hull() {
+                translate([120, 15, 13])
+                rotate([90, 0, 0])
+                cylinder(d=5, h=10, center=true, $fn=30);
+
+                translate([120 + 2, 15, 2/2])
+                cube([6.5 + 4, 10, 2], center=true);
+            }
+
+            // lip
+            translate([119.2, 15, 6])
             rotate([90, 0, 0])
             cylinder(d=6.7, h=20, center=true, $fn=30);
+        }
+
+        difference() {
+            translate([0, 0, 0])
+            linear_extrude(2.1)
+            offset(-4)
+            projection()
+            _electric_cover_hole_form();
+
+            translate([120, 15, 0])
+            chamfered_cube(
+                14.4, 26, 10, 3, center=true
+            );
         }
 
         // side roundings
