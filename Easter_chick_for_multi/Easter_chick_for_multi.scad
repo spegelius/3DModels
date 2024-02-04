@@ -1,5 +1,11 @@
 include <../Dollo/NEW_long_ties/include.scad>;
 
+//chick();
+//debug_sobules();
+
+solubles();
+//supports1();
+//supports2();
 
 module chick() {
     union() {
@@ -84,9 +90,3 @@ module debug_sobules() {
         //translate([0,-100/2,0]) cube([100,100,100]);
     }
 }
-//chick();
-debug_sobules();
-
-//solubles();
-//supports1();
-//supports2();

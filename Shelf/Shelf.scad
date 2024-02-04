@@ -96,6 +96,11 @@ if (!is_undef(section_quide_3))
 //    section_support="beam"
 //);
 
+shelf_section_bracket_support(
+    200, 15.5, 20, 200, 13,
+    section_support="beam", lip=false
+);
+
 //shelf_section_bracket_support(
 //    170, section_d, 20, 180, 10,
 //    section_support="arc", lip=false

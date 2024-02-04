@@ -18,10 +18,10 @@ bearing_hole = 16.5;
 
 //mock_shaft();
 
-small_gear();
+//small_gear();
 //large_gear();
 //bottom();
-//cover();
+cover();
 //cover_bearing_holder();
 
 

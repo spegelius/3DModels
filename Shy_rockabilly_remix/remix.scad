@@ -1,6 +1,6 @@
 
 part = 0;
-import("z:\\3DModels\\_downloaded\\Shy_Rockabilly_Extruder\\files\\Shy_Rockabilly_Face.stl", convexity=3);
+import("z:\\3DModels\\_downloaded\\Shy_Rockabilly_Extruder\\Shy_Rockabilly_Face.stl", convexity=3);
 
 /* [Vibration Absorber] */
 AbsorberWidth = 15;  // [10:0.1:30]

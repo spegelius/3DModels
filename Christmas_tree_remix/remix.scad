@@ -1,5 +1,12 @@
-use <../lib/includes.scad>;
+use <../lib/electric.scad>;
 use <../Dollo/NEW_long_ties/include.scad>;
+
+//mock_g9_lamp();
+//g9_lamp_socket();
+stand();
+//center();
+//screw_cap();
+//screw_washer();
 
 module stand() {
     
@@ -69,9 +76,3 @@ module screw_washer() {
 //import("../_downloaded/Christmas_tree/short_base_center.stl");
 
 
-//mock_g9_lamp();
-//g9_lamp_socket();
-//stand();
-//center();
-screw_cap();
-//screw_washer();

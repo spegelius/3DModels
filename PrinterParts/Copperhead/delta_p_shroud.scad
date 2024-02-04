@@ -2,9 +2,9 @@ use <../../Dollo/NEW_long_ties/include.scad>;
 use <common.scad>;
 
 
-//debug();
+debug();
 
-copperhead_delta_p_mount();
+//copperhead_delta_p_mount();
 
 
 module _delta_p_fan_mount_form() {

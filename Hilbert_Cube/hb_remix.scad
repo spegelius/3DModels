@@ -1,11 +1,6 @@
 
 include <../Dollo/NEW_long_ties/include.scad>;
 
-//supports_block_1();
-//supports_64thick();
-//support_blockers_1();
-supports_1();
-
 scaling = 1.67; //50x50x50
 //scaling = 1; // 30x30x30
 
@@ -14,6 +9,12 @@ infill_size = 0.2 * 1/scaling;
 
 blocker_size = 0.8 * 1/scaling;
 z_gap = 0.4 * 1/scaling;
+
+
+//supports_block_1();
+//supports_64thick();
+//support_blockers_1();
+supports_1();
 
 
 module hilbert_cube_1(scaling=scaling, infill=true) {

@@ -12,6 +12,17 @@ unit_w = 45.2 + 2*wall_1;
 
 magn_hole_d = 8.3;
 
+//translate([51.5, -53,0]) house_2x2_v6();
+
+//drawer_1x1_v6();
+//drawer_2x2_v6();
+
+//drawer_2x3_v6();
+//translate([0,6,90]) rotate([-90,0,0]) drawer_2x3_v6();
+
+//drawer_3x3_v6();
+//translate([26,6,90]) rotate([-90,0,0]) drawer_3x3_v6();
+
 module house_1x1_v6() {
 
     difference() {
@@ -261,13 +272,3 @@ intersection() {
     house_3x3_v6();
     //cube([25,50,10]);
 }
-//translate([51.5, -53,0]) house_2x2_v6();
-
-//drawer_1x1_v6();
-//drawer_2x2_v6();
-
-//drawer_2x3_v6();
-//translate([0,6,90]) rotate([-90,0,0]) drawer_2x3_v6();
-
-//drawer_3x3_v6();
-//translate([26,6,90]) rotate([-90,0,0]) drawer_3x3_v6();
