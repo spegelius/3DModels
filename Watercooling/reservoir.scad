@@ -8,18 +8,21 @@ slop = 0.15;
 nozzle = 0.45;
 wall = 2;
 
-//width = 95;
-//length = 150;
-//height = 130;
-//screws_x = 2;
-//screws_y = 3;
-
+// Res 1
 //width = 100;
 //length = 100;
 //height = 130;
 //screws_x = 2;
 //screws_y = 2;
 
+// Res 2
+//width = 95;
+//length = 150;
+//height = 130;
+//screws_x = 2;
+//screws_y = 3;
+
+// Res 3 big
 width = 140;
 length = 200;
 height = 140;
@@ -53,7 +56,7 @@ lid_screw_dia = 4;
 lid_screw_length = 15;
 lid_screw_hole_dia = lid_screw_dia - 1;
 lid_screw_hole_l = 
-    lid_screw_length - lid_height + 1;
+    lid_screw_length - lid_height + 4;
 lid_screw_corner_h = 
     height - lid_screw_hole_l;
 
@@ -83,7 +86,7 @@ inner_l = length - 2*wall;
 ////// VIEW //////
 //translate([-70, 0, 0])
 // %mock_pump();
-//debug();
+//debug_gasket();
 //debug_Eheim_1250_790();
 
 // Test models
@@ -96,7 +99,7 @@ inner_l = length - 2*wall;
 
 //reservoir();
 //lid();
-//gasket();
+gasket();
 //cork();
 //ring_gasket_passthrough();
 //ring_gasket_wire();
@@ -111,6 +114,59 @@ inner_l = length - 2*wall;
 
 
 ////// MODULES //////
+module debug_gasket() {
+
+    color("blue")
+    intersection() {
+        translate([0, 0, height + 3/2 + 0.1])
+        mirror([0, 0, 1])
+        gasket();
+
+        translate([-10, -10, 0])
+        cube([width + 20, 21, height + 20]);
+    }
+
+    color("green")
+    intersection() {
+        translate([
+            0, 0, height + lid_height + 0.6
+        ])
+        mirror([0, 0, 1])
+        lid();
+
+        translate([-10, -10, 0])
+        cube([width + 20, 20, height + 20]);
+    }
+
+    render()
+    intersection() {
+        reservoir();
+
+        translate([-10, -10, 0])
+        cube([width +20, 20, height + 20]);
+    }
+}
+
+module debug_Eheim_1250_790() {
+    %translate([45, 10, 46])
+    rotate([-90, -90, 0])
+    mock_pump_Eheim_1250_790();
+    
+    intersection() {
+        render(convexity=10)
+        reservoir();
+
+        translate([-20, -length/2, 0])
+        cube([width*2, length, height]);
+    }
+    
+    %translate([
+        passthrough_x2, 0, passthrough_h2
+    ])
+    rotate([-90, 0, 0])
+    cylinder(d=12, h=60, $fn=30);
+}
+
 module _screw_corner() {
 
     difference() {
@@ -125,10 +181,10 @@ module _screw_corner() {
             rotate([0, 0, 45]) {
                 translate([
                     -5 - screw_corner_d/2 + 0.1/2,
-                    0, -5 - screw_corner_d
+                    0, -8 - screw_corner_d
                 ])
                 cylinder(
-                    d=0.1, h=0.1, $fn=40
+                    d=1, h=0.1, $fn=40
                 );
 
                 translate([
@@ -155,7 +211,7 @@ module _reservoir_body() {
 
             // lid top edge
             translate([
-                0, 0, height - lid_edge/2 - 2
+                0, 0, height - lid_edge/1.5 - 2
             ])
             hull() {
                 rounded_cube_side(
@@ -166,7 +222,7 @@ module _reservoir_body() {
                 translate([
                     -lid_edge/2,
                     -lid_edge/2,
-                    lid_edge/2
+                    lid_edge/1.5
                 ])
                 rounded_cube_side(
                     lid_width, lid_length,
@@ -438,14 +494,14 @@ module lid() {
                 translate([i*30, 0, 0])
                 rotate([0, 0, 45])
                 cube([
-                    2*nozzle, 2*height,
+                    1.4, 2*height,
                     lid_height + 1
                 ]);
 
                 translate([-2*height + i*30, 0, 0])
                 rotate([0, 0, -45])
                 cube([
-                    2*nozzle, 2*height,
+                    1.4, 2*height,
                     lid_height + 1
                 ]);
             }
@@ -536,6 +592,7 @@ module cork() {
 }
 
 module _gasket(extra=0) {
+    e0 = 5.3 + extra;
     e1 = 5 + extra;
     e2 = 4 + extra;
 
@@ -568,6 +625,12 @@ module _gasket(extra=0) {
             rounded_cube_side(
                 width + e2, length + e2, 3,
                 corner + e2, $fn=50
+            );
+
+            translate([-e0/2, -e0/2, 3/2 - 0.2/2])
+            rounded_cube_side(
+                width + e0, length + e0, 0.2,
+                corner + e0, $fn=50
             );
         }
 
@@ -988,55 +1051,4 @@ module test_cup_vase() {
     }
 }
 
-module debug() {
 
-    color("blue")
-    intersection() {
-        translate([0, 0, height + 3/2 + 0.1])
-        mirror([0, 0, 1])
-        gasket();
-
-        translate([-10, -10, 0])
-        cube([width + 20, 21, height + 20]);
-    }
-
-    color("green")
-    intersection() {
-        translate([
-            0, 0, height + lid_height + 0.6
-        ])
-        mirror([0, 0, 1])
-        lid();
-
-        translate([-10, -10, 0])
-        cube([width + 20, 20, height + 20]);
-    }
-
-    render()
-    intersection() {
-        reservoir();
-
-        translate([-10, -10, 0])
-        cube([width +20, 20, height + 20]);
-    }
-}
-
-module debug_Eheim_1250_790() {
-    %translate([45, 10, 46])
-    rotate([-90, -90, 0])
-    mock_pump_Eheim_1250_790();
-    
-    intersection() {
-        render(convexity=10)
-        reservoir();
-
-        translate([-20, -length/2, 0])
-        cube([width*2, length, height]);
-    }
-    
-    %translate([
-        passthrough_x2, 0, passthrough_h2
-    ])
-    rotate([-90, 0, 0])
-    cylinder(d=12, h=60, $fn=30);
-}

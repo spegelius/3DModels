@@ -10,29 +10,51 @@ thread_slop = 0.4;
 
 //debug();
 adapter_g1_2_g1_4();
+//adapter_g1_2_g1_4(threads=false);
 //fitting_adapter_Eheim();
 
-module adapter_g1_2_g1_4() {
+module adapter_g1_2_g1_4(threads=true) {
 
     // G1/2 outer, G1/4 inner
     difference() {
         union() {
-            translate([0, 0, 5])
-            g1_2_thread(
-                14.5, slop=0
-            );
+            if (threads) {
+                translate([0, 0, 5])
+                g1_2_thread(
+                    14.5, slop=0
+                );
+            } else {
+                translate([0, 0, 5])
+                cylinder(
+                    d=20.9,
+                    h=14.5,
+                    $fn=40
+                );
+            }
 
             hexagon(22, height=5.7);
         }
 
-        intersection() {
+        if (threads) {
+            translate([0, 0, -1])
             g1_4_thread(
-                11, slop=thread_slop
+                12, slop=thread_slop
+            );
+        } else {
+            translate([0, 0, -1])
+            cylinder(
+                d=13.5,
+                h=12,
+                $fn=40
             );
         }
 
         translate([0, 0, 10.9])
         cylinder(d=11.5, h=20, $fn=60);
+
+        // chamfer
+        translate([0, 0, -0.1])
+        cylinder(d1=14.2, d2=12, h=1.1, $fn=40);
     }
 }
 
