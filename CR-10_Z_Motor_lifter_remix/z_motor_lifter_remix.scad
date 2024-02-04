@@ -8,6 +8,8 @@ zl_stl_path = str(
 
 
 //debug();
+//original();
+
 new_z_motor_lifter();
 
 
