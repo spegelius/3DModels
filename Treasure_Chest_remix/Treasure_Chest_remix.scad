@@ -263,7 +263,7 @@ module new_hinge_frame_inserts() {
     union() {
         %_hinge_frame();
 
-        translate([20.435, 81.438, 52.25])
+        translate([20.935, 81.438, 52.25])
         rotate([0, 90, 0])
         tube(od, oh, wall, $fn=40);
 
