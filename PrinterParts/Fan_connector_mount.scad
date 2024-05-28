@@ -14,7 +14,10 @@ spacing = 2.54 * 3;
 //mock_connector_pcb(3);
 
 //fan_connector_mount(3);
-fan_connector_mount_bottom(3);
+//fan_connector_mount_bottom(3);
+
+fan_connector_mount(4);
+//fan_connector_mount_bottom(4);
 
 //fan_connector_mount(5);
 //fan_connector_mount_bottom(5);
@@ -93,10 +96,10 @@ module fan_connector_mount(connectors=5) {
 
         // mount holes
         translate([(w + 5)/2 + 1, 0, 0])
-        cylinder(d=3.2, h=15, center=true, $fn=30);
+        cylinder(d=2.8, h=15, center=true, $fn=30);
 
         translate([-(w + 5)/2 - 1, 0, 0])
-        cylinder(d=3.2, h=30, center=true, $fn=30);
+        cylinder(d=2.8, h=30, center=true, $fn=30);
 
         // cable holes
         translate([-w/2 - 3, l/2 - 1.4, 3.6 + 7/2])
