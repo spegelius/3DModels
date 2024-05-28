@@ -5,9 +5,13 @@ include <common.scad>;
 
 //tube_bend1();
 //tube_bend1_flat();
+//tube_flat(tube1_outer_dia, 5, 1);
+tube1_flat();
+
 //adapter_11_12();
+
 //hose_bend_support_1();
-hose_bend_support_2();
+//hose_bend_support_2();
 
 
 module tube_flat(d1, d2, wall, length=30) {
@@ -15,16 +19,16 @@ module tube_flat(d1, d2, wall, length=30) {
 
     module _tflat(td1, td2, l) {
         hull() {
-            cylinder(d=td1, h=1);
+            cylinder(d=td1, h=1, $fn=80);
 
             translate([
                 -(d1 - d2)/2, 0, l - 0.1
             ])
             hull() {
-                cylinder(d=td2, h=0.1);
+                cylinder(d=td2, h=0.1, $fn=80);
 
                 translate([_offset, 0,0])
-                cylinder(d=td2, h=0.1);
+                cylinder(d=td2, h=0.1, $fn=80);
             }
         }
     }
@@ -38,7 +42,8 @@ module tube_flat(d1, d2, wall, length=30) {
 }
 
 module tube_bend(d, wall, bend, l=20) {
-    rotate([90, 45, 0]) {
+    rotate([90, 45, 0])
+    difference() {
         union() {
             intersection() {
                 difference() {
@@ -50,14 +55,22 @@ module tube_bend(d, wall, bend, l=20) {
                 translate([0, 0, -d])
                 cube([30, 30, 2*d]);
             }
-            translate([bend/2, 0.1, 0])
+            translate([bend/2, 0.01, 0])
             rotate([90, 0, 0])
-            tube(d, l, wall);
+            tube(d, l + 20, wall);
 
-            translate([0.1, bend/2, 0])
+            translate([0.01, bend/2, 0])
             rotate([0, -90, 0])
             tube(d, l, wall);
         }
+
+        #translate([bend/2, -l, 0])
+        cube([d - 1, 0.2, 20], center=true);
+
+        translate([bend/2 + d/2, -l])
+        rotate([0, 0, 45])
+        translate([-50/2, -50/2, 0])
+        cube([50, 50, 50], center=true);
     }
 }
 
@@ -65,51 +78,61 @@ module tube_bend_flat(
     d, wall, bend, flat_rot=0
 ) {
     rotate([90, 45, 0])
-    union() {
-        intersection() {
-            difference() {
-                donut(bend, d, $fn=80);
-                donut(
-                    bend, d - 2*wall, $fn=80
-                );
+    difference() {
+        union() {
+            intersection() {
+                difference() {
+                    donut(bend, d, $fn=80);
+                    donut(
+                        bend, d - 2*wall, $fn=80
+                    );
+                }
+                translate([0, 0, -d])
+                cube([30, 30, 2*d]);
             }
-            translate([0, 0, -d])
-            cube([30, 30, 2*d]);
-        }
-        translate([bend/2, 0.1, 0])
-        rotate([90, 0, 0])
-        tube(d, 20, wall, $fn=80);
+            translate([bend/2, 0.01, 0])
+            rotate([90, 0, 0])
+            tube(d, 40, wall, $fn=80);
 
-        translate([0.1, bend/2, 0])
-        rotate([0, -90, 0])
-        rotate([0, 0, flat_rot])
-        tube_flat(d, 5, wall, 20, $fn=80);
+            translate([0.01, bend/2, 0])
+            rotate([0, -90, 0])
+            rotate([0, 0, flat_rot])
+            tube_flat(d, 5, wall, 30, $fn=80);
+        }
+
+        translate([bend/2, -20, 0])
+        cube([d - 1, 0.2, 20], center=true);
+
+        translate([bend/2 + d/2, -20])
+        rotate([0, 0, 45])
+        translate([-50/2, -50/2, 0])
+        cube([50, 50, 50], center=true);
     }
 }
 
 module tube_bend1() {
-    intersection() {
-        translate([0, 0, 21])
-        tube_bend(
-            tube1_outer_dia, 1, 30, $fn=80
-        );
-
-        translate([-10, -20, 0])
-        cube([40, 40, 50]);
-    }
+    translate([0, 0, 25])
+    tube_bend(
+        tube1_outer_dia, 1, 30, 20, $fn=80
+    );
 }
 
 module tube_bend1_flat() {
-    intersection() {
-        translate([0, 0, 21])
-        tube_bend_flat(
-            tube1_outer_dia, 1, 30, 90
-        );
+    translate([0, 0, 25])
+    tube_bend_flat(
+        tube1_outer_dia, 1, 30, 90
+    );
+}
 
-        translate([-20, -20, 0])
-        cube([50, 50, 100]);
+module tube1_flat() {
+    union() {
+        tube(tube1_outer_dia, 15, 1, $fn=80);
+
+        translate([0, 0, 14.99])
+        tube_flat(tube1_outer_dia, 5, 1);
     }
 }
+
 
 module adapter_11_12() {
     difference() {

@@ -1,6 +1,8 @@
 
 use <../Dollo/NEW_long_ties/include.scad>;
 include <common.scad>;
+use <adapters.scad>;
+
 
 ////// VARIABLES //////
 slop = 0.15;
@@ -9,11 +11,11 @@ nozzle = 0.45;
 wall = 2;
 
 // Res 1
-//width = 100;
-//length = 100;
-//height = 130;
-//screws_x = 2;
-//screws_y = 2;
+width = 100;
+length = 100;
+height = 130;
+screws_x = 2;
+screws_y = 2;
 
 // Res 2
 //width = 95;
@@ -23,11 +25,11 @@ wall = 2;
 //screws_y = 3;
 
 // Res 3 big
-width = 140;
-length = 200;
-height = 140;
-screws_x = 3;
-screws_y = 3;
+//width = 140;
+//length = 200;
+//height = 140;
+//screws_x = 3;
+//screws_y = 3;
 
 // for faster viewing. Turn on for final render
 render_thread = true;
@@ -84,8 +86,9 @@ inner_w = width - 2*wall;
 inner_l = length - 2*wall;
 
 ////// VIEW //////
-//translate([-70, 0, 0])
-// %mock_pump();
+//debug();
+//debug_g1_2();
+//debug_ring_gaskets();
 //debug_gasket();
 //debug_Eheim_1250_790();
 
@@ -97,13 +100,18 @@ inner_l = length - 2*wall;
 //test_cup();
 //test_cup_vase();
 
+////// PRINT //////
 //reservoir();
 //lid();
-gasket();
+//gasket();
 //cork();
 //ring_gasket_passthrough();
+//gasket_passthrough();
+//ring_gasket_passthrough_g1_2();
+//gasket_passthrough_g1_2();
 //ring_gasket_wire();
-//cork_gasket();
+cork_gasket();
+//reservoir_wire_passthrough_adapter();
 //bottomvoir();
 
 //washer_passthrough($fn=40);
@@ -112,8 +120,79 @@ gasket();
 // Oldies
 //old_gasket();
 
+// fix parts
+//reservoir_fix_g1_2();
+
 
 ////// MODULES //////
+module debug() {
+    intersection() {
+        reservoir();
+
+        translate([10, -10, 0])
+        cube([width + 20, length + 20, height + 20]);
+    }
+
+    translate([50, 50, wall])
+    %mock_pump_Eheim_1000_new();
+}
+
+module debug_g1_2() {
+    intersection() {
+        reservoir_g1_2();
+
+        translate([50, -10, 0])
+        cube([width + 20, length + 20, height + 20]);
+    }
+
+    translate([50, 50, wall])
+    %mock_pump_Eheim_1000_new();
+
+    translate([passthrough_x2, -8, passthrough_h2])
+    rotate([-90, 0, 0])
+    adapter_g1_2_g1_4(threads=false);
+
+    translate([
+        passthrough_x2, -0.7 + 3.2 + 1,
+        passthrough_h2
+    ])
+    rotate([90, 0, 0])
+    ring_gasket_passthrough_g1_2();
+
+    translate([
+        passthrough_x2, -0.7,
+        passthrough_h2
+    ])
+    rotate([90, 0, 0])
+    gasket_passthrough_g1_2();
+}
+
+module debug_ring_gaskets() {
+    intersection() {
+        reservoir();
+
+//        translate([49, -10, 0])
+//        cube([width + 20, length + 20, height + 20]);
+
+        translate([18.2, -10, 0])
+        cube([width + 20, length + 20, height + 20]);
+    }
+
+    translate([
+        passthrough_x2, -0.7 + 3.2 + 1,
+        passthrough_h2
+    ])
+    rotate([90, 0, 0])
+    ring_gasket_passthrough();
+
+    translate([
+        passthrough_x1, -0.7 + 3.2 + 1,
+        passthrough_h1
+    ])
+    rotate([90, 0, 0])
+    ring_gasket_wire();
+}
+
 module debug_gasket() {
 
     color("blue")
@@ -280,7 +359,7 @@ module _lid_hole_positions() {
     }
 }
 
-module reservoir() {
+module reservoir(pt_grooves=true) {
     
     difference() {
         union() {
@@ -313,124 +392,160 @@ module reservoir() {
                     d=lid_screw_hole_dia,
                     h=lid_screw_hole_l, $fn=30
                 );
-                
             }
             // side hole additions
-            translate([
-                passthrough_x1, -1.4/2,
-                passthrough_h1
-            ])
-            rotate([-90, 0, 0])
-            cylinder(
-                d=wire_pass_thread_dia + 10,
-                h=wall + 1.4, $fn=40
-            );
+            hull() {
+                translate([
+                    passthrough_x1, -0.7,
+                    passthrough_h1
+                ])
+                rotate([-90, 0, 0])
+                cylinder(
+                    d=wire_pass_thread_dia + 11,
+                    h=3.2, $fn=40
+                );
 
-            translate([
-                passthrough_x2, -1.4/2,
-                passthrough_h2
-            ])
-            rotate([-90, 0, 0])
-            cylinder(
-                d=passthrough_thread_dia + 10,
-                h=wall + 1.4, $fn=40
-            );
+                translate([
+                    passthrough_x2, -0.7,
+                    passthrough_h2
+                ])
+                rotate([-90, 0, 0])
+                cylinder(
+                    d=passthrough_thread_dia + 11,
+                    h=3.2, $fn=40
+                );
 
-            translate([
-                passthrough_x3, -1.4/2,
-                passthrough_h3
-            ])
-            rotate([-90, 0, 0])
-            cylinder(
-                d=passthrough_thread_dia + 10,
-                h=wall + 1.4, $fn=40
-            );
+                translate([
+                    passthrough_x3, -0.7,
+                    passthrough_h3
+                ])
+                rotate([-90, 0, 0])
+                cylinder(
+                    d=passthrough_thread_dia + 11,
+                    h=3.2, $fn=40
+                );
+            }
         }
 
         // side holes
         translate([
-            passthrough_x1, -1,
+            passthrough_x1, -0.8,
             passthrough_h1
         ])
         rotate([-90, 0, 0])
         cylinder(
-            d=wire_pass_thread_dia,
-            h=wall+2, $fn=40
+            d=wire_pass_thread_dia + 3,
+            h=4.2, $fn=50
         );
 
         translate([
-            passthrough_x2, -1, passthrough_h2
+            passthrough_x2, -0.8, passthrough_h2
         ])
         rotate([-90, 0, 0])
         cylinder(
-            d=passthrough_thread_dia,
-            h=wall + 2, $fn=40
+            d=passthrough_thread_dia + 3,
+            h=4.2, $fn=40
         );
 
         translate([
-            passthrough_x3, -1, passthrough_h3
+            passthrough_x3, -0.8, passthrough_h3
         ])
         rotate([-90, 0, 0])
         cylinder(
-            d=passthrough_thread_dia,
-            h=wall + 2, $fn=40
+            d=passthrough_thread_dia + 3,
+            h=4.2, $fn=40
         );
 
-        translate([
-            passthrough_x1, -1.4, passthrough_h1
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            wire_pass_thread_dia + 5, 2, $fn=50
-        );
+        // passthrough gasket grooves
+        if (pt_grooves) {
+            translate([
+                passthrough_x1, -1.4, passthrough_h1
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                wire_pass_thread_dia + 6,
+                2, $fn=50
+            );
 
-        translate([
-            passthrough_x1, wall + 1.4,
-            passthrough_h1
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            wire_pass_thread_dia + 5, 2, $fn=50
-        );
-        
-        translate([
-            passthrough_x2, -1.4,
-            passthrough_h2
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            passthrough_thread_dia + 5, 2, $fn=50
-        );
+            translate([
+                passthrough_x1, 3.2,
+                passthrough_h1
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                wire_pass_thread_dia + 6,
+                2, $fn=50
+            );
+            
+            translate([
+                passthrough_x2, -1.4,
+                passthrough_h2
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                passthrough_thread_dia + 6,
+                2, $fn=50
+            );
 
-        translate([
-            passthrough_x2, wall + 1.4,
-            passthrough_h2
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            passthrough_thread_dia + 5, 2, $fn=50
-        );
+            translate([
+                passthrough_x2, 3.2,
+                passthrough_h2
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                passthrough_thread_dia + 6,
+                2, $fn=50
+            );
 
-        translate([
-            passthrough_x3, -1.4, passthrough_h3
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            passthrough_thread_dia + 5, 2, $fn=50
-        );
+            translate([
+                passthrough_x3, -1.4, passthrough_h3
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                passthrough_thread_dia + 6,
+                2, $fn=50
+            );
 
-        translate([
-            passthrough_x3, wall + 1.4,
-            passthrough_h3
-        ])
-        rotate([-90, 0, 0])
-        donut(
-            passthrough_thread_dia + 5, 2, $fn=50
-        );
+            translate([
+                passthrough_x3, 3.2,
+                passthrough_h3
+            ])
+            rotate([-90, 0, 0])
+            donut(
+                passthrough_thread_dia + 6,
+                2, $fn=50
+            );
+        }
 
         // gasket groove
         translate([0, 0, height - 3/2])
         _gasket(0.1);
+    }
+}
+
+module reservoir_g1_2() {
+    difference() {
+        union() {
+            reservoir(pt_grooves=false);
+        }
+
+        translate([
+            passthrough_x2, -0.8, passthrough_h2
+        ])
+        rotate([-90, 0, 0])
+        cylinder(
+            d=21 + 2,
+            h=wall + 2, $fn=40
+        );
+
+        translate([
+            passthrough_x3, -0.8, passthrough_h3
+        ])
+        rotate([-90, 0, 0])
+        cylinder(
+            d=21 + 2,
+            h=wall + 2, $fn=40
+        );
     }
 }
 
@@ -551,6 +666,7 @@ module cork() {
         union() {
             difference() {
                 rounded_cylinder(50, h, 3, $fn=50);
+
                 for (i = [0:indents]) {
                     rotate([0, 0, i*angle])
 
@@ -558,10 +674,18 @@ module cork() {
                     rotate([0, 0, 45])
                     cube([1, 1, h], center=true); 
                 }
-                cube([50, 5, 10], center=true);
-                cube([5, 50, 10], center=true);
+
+                hull() {
+                    cube([50, 5, 9], center=true);
+                    cube([50, 0.2, 14], center=true);
+                }
+
+                hull() {
+                    cube([5, 50, 9], center=true);
+                    cube([0.2, 50, 14], center=true);
+                }
                 
-                translate([0, 0, h + 1.6])
+                #translate([0, 0, h + 1.6])
                 rotate([0, 180, 0])
                 cork_gasket();
             }
@@ -581,8 +705,10 @@ module cork() {
                         h=lid_height + 2, $fn=50
                     );
                 }
+
                 cylinder(
-                    d=cork_thread_dia - 0.1, h=1, $fn=50
+                    d=cork_thread_dia - 0.1,
+                    h=1.2, $fn=150
                 );
             }
         }
@@ -592,6 +718,8 @@ module cork() {
 }
 
 module _gasket(extra=0) {
+    h = 4;
+
     e0 = 5.3 + extra;
     e1 = 5 + extra;
     e2 = 4 + extra;
@@ -600,7 +728,7 @@ module _gasket(extra=0) {
         hull() {
             translate([extra/2, extra/2, 0])
             rounded_cube_side(
-                width - extra, length - extra, 3,
+                width - extra, length - extra, h,
                 corner - extra, $fn=50
             );
 
@@ -617,19 +745,19 @@ module _gasket(extra=0) {
         hull() {
             translate([-e1/2, -e1/2, 1/2])
             rounded_cube_side(
-                width + e1, length + e1, 2,
+                width + e1, length + e1, h - 1,
                 corner + e1, $fn=50
             );
 
             translate([-e2/2, -e2/2, 0])
             rounded_cube_side(
-                width + e2, length + e2, 3,
+                width + e2, length + e2, h,
                 corner + e2, $fn=50
             );
 
-            translate([-e0/2, -e0/2, 3/2 - 0.2/2])
+            translate([-e0/2, -e0/2, h/2 - 1.2/2])
             rounded_cube_side(
-                width + e0, length + e0, 0.2,
+                width + e0, length + e0, 1.2,
                 corner + e0, $fn=50
             );
         }
@@ -637,14 +765,14 @@ module _gasket(extra=0) {
         // hole
         translate([extra/2, extra/2, -1])
         rounded_cube_side(
-            width - extra, length - extra, 5,
+            width - extra, length - extra, h*2,
             corner - extra, $fn=50
         );
 
-        translate([0, 0, 3 - 1/2])
+        translate([0, 0, h - 1/2])
         _inner_chamfer();
 
-        translate([0, 0, -3 + 1/2])
+        translate([0, 0, -h + 1/2])
         _inner_chamfer();
     }
 }
@@ -654,53 +782,104 @@ module gasket() {
 }
 
 module ring_gasket_passthrough() {
-    translate([0, 0, 1])
-    intersection() {
-        translate([0, 0, 0.45/2])
-        cube([
-            passthrough_thread_dia + 10,
-            passthrough_thread_dia + 10,
-            0.45
-        ], center=true);
 
-        translate([0, 0, -0.55])
-        donut(
-            passthrough_thread_dia + 5, 2, $fn=50
+    difference() {
+        union() {
+            intersection() {
+                cylinder(d=100, h=2);
+
+                translate([0, 0, 0.35])
+                donut(
+                    passthrough_thread_dia + 6,
+                    2, $fn=50
+                );
+            }
+
+            cylinder(
+                d=passthrough_thread_dia + 8,
+                h=1, $fn=50
+            );
+
+            cylinder(
+                d=passthrough_thread_dia + 3,
+                h=2.6, $fn=50
+            );
+        }
+
+        cylinder(
+            d=passthrough_thread_dia - 0.1,
+            h=30, center=true, $fn=50
         );
     }
+}
+
+module ring_gasket_passthrough_g1_2() {
+
     difference() {
+        union() {
+
+            cylinder(
+                d=30,
+                h=1, $fn=50
+            );
+
+            cylinder(
+                d=21 + 1.8,
+                h=4.4, $fn=50
+            );
+        }
+
+        translate([0, 0, -0.1])
+        g1_2_thread(
+            5, slop=0.4
+        );
+    }
+}
+
+module gasket_passthrough_g1_2() {
+
+    difference() {
+
         cylinder(
-            d=passthrough_thread_dia + 8,
+            d=30,
             h=1, $fn=50
         );
+
         cylinder(
-            d=passthrough_thread_dia - 0.2,
-            h=2, $fn=50
+            d=21.2,
+            h=5, center=true, $fn=50
         );
     }
 }
 
 module ring_gasket_wire() {
-    translate([0, 0, 1])
-    intersection() {
-        translate([0, 0, 0.45/2])
-        cube([
-            wire_pass_thread_dia + 10,
-            passthrough_thread_dia + 10, 0.45
-        ], center=true);
-        translate([0, 0, -0.55])
-        donut(
-            wire_pass_thread_dia + 5, 2, $fn=50
-        );
-    }
+
     difference() {
+        union() {
+            intersection() {
+                cylinder(d=100, h=2);
+
+                translate([0, 0, 0.35])
+                donut(
+                    wire_pass_thread_dia + 6,
+                    2, $fn=50
+                );
+            }
+
+            cylinder(
+                d=wire_pass_thread_dia + 9,
+                h=1, $fn=50
+            );
+
+            cylinder(
+                d=wire_pass_thread_dia + 3,
+                h=2.6, $fn=50
+            );
+        }
+
         cylinder(
-            d=wire_pass_thread_dia + 8,
-            h=1, $fn=50
-        );
-        cylinder(
-            d=wire_pass_thread_dia - 0.2,
-            h=1, $fn=50
+            d=wire_pass_thread_dia - 0.1,
+            h=30, center=true, $fn=50
         );
     }
 }
@@ -718,13 +897,13 @@ module cork_gasket() {
             translate([0, 0, -0.55])
             donut(
                 cork_thread_hole_dia + 2,
-                2, $fn=50
+                2, $fn=150
             );
 
             translate([0, 0, -0.55])
             donut(
                 cork_thread_hole_dia + 6,
-                2, $fn=50
+                2, $fn=150
             );
         }
     }
@@ -732,11 +911,12 @@ module cork_gasket() {
     difference() {
         cylinder(
             d=cork_thread_dia + 10,
-            h=1.6, $fn=50
+            h=1.6, $fn=150
         );
+
         cylinder(
             d=cork_thread_dia,
-            h=1.8, $fn=50
+            h=8, center=true, $fn=150
         );
     }
 }
@@ -763,6 +943,28 @@ module washer_wire_pass(){
         cylinder(
             d=wire_pass_thread_dia + 0.2,
             h=1.8
+        );
+    }
+}
+
+module reservoir_wire_passthrough_adapter() {
+    difference() {
+        union() {
+            cylinder(
+                d1=17,
+                d2=15,
+                h=2, $fn=50
+            );
+
+            cylinder(
+                d=14.7,
+                h=7, $fn=50
+            );
+        }
+
+        translate([0, 0, -0.1])
+        m12_thread(
+            8, slop=0.4
         );
     }
 }
@@ -1051,4 +1253,18 @@ module test_cup_vase() {
     }
 }
 
+module reservoir_fix_g1_2() {
+    width = 100;
+    length = 100;
+    height = 130;
+    screws_x = 2;
+    screws_y = 2;
 
+    intersection() {
+        translate([0, 0, -height + 40])
+        reservoir_g1_2();
+
+        translate([0, 0, 100/2])
+        cube([400, 400, 100], center=true);
+    }
+}
