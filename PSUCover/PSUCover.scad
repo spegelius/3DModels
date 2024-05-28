@@ -18,10 +18,11 @@ $fn=30;
 //cover2_360W_with_2020_ear();
 //cover_240W();
 //cover_240W_with_2020_ear();
-cover_240W_ATX();
+//cover_240W_ATX();
 
 //bottom_bracket1();
 //bottom_bracket2();
+bottom_bracket3();
 
 //translate([0, -25, 0])
 //cord_holder();
@@ -528,6 +529,34 @@ module bottom_bracket2() {
     }
     //%translate([-111/2, -187, 5])
     //mock_PSU_240W();
+}
+
+module bottom_bracket3() {
+    // for 360W PSU
+    difference() {
+        union() {
+            hull() {
+                translate([-25, 0, 0])
+                cylinder(d=20, h=5);
+
+                translate([65, 0, 0])
+                cylinder(d=20, h=5);
+            }
+        }
+        translate([65, 0, 0])
+        cylinder(d=4.2, h=11, center=true);
+
+        translate([-66, 22.5, 0])
+        cylinder(d=4.2, h=11, center=true);
+
+        translate([-25, 0, 0])
+        cylinder(d=4.2, h=11, center=true);
+
+        translate([25, 0, 0])
+        cylinder(d=4.2, h=11, center=true);
+    }
+    %translate([-114/2, -183, 5])
+    mock_PSU_600W();
 }
 
 module cord_holder(nut_holes=true) {
