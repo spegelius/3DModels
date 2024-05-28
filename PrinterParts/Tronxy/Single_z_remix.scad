@@ -23,7 +23,7 @@ single_z_path = str(
 //debug_z_motor_mount();
 
 
-//z_bottom();
+z_bottom();
 //z_bottom_top();
 
 //slot_centering_peg();
@@ -35,7 +35,7 @@ single_z_path = str(
 //z_screw_clip();
 
 //rotate([0, -90, 0])
-z_motor_mount();
+//z_motor_mount();
 //z_motor_mount_arm();
 //z_motor_mount_arm_cap();
 //z_motor_mount_arm_stopper();

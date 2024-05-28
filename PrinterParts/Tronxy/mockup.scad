@@ -19,6 +19,7 @@ use <Bed_carriage.scad>;
 
 stl_base_path = "../../_downloaded/";
 
+x_pos = -100;
 z_pos = 420;
 
 
@@ -27,51 +28,126 @@ X5S_frame_mockup();
 X5S_x_carriage_mockup();
 X5S_bed_mockup();
 
-debug_z_support();
+//debug_z_support();
 //debug_PSUs();
 //debug_single_z();
 //debug_gantry_plates();
 //debug_corner_bearing_mounts();
 //debug_motor_mount_remix();
 //debug_top_frame();
-//debug_purge_bucket();
+debug_purge_bucket();
 //debug_tronxy_cable_pcb_mount();
 //debug_E3D_mount();
-debug_duet_case();
+//debug_duet_case();
 //debug_legs();
 //debug_bed_carriage();
+//%debug_y_endstop_holder();
+//debug_frame_brace();
 
 
 ////// MODULES //////
 module X5S_frame_mockup() {
+    module _frame_beam_x() {
+        difference() {
+            rotate([0, 90, 0])
+            2020_vslot(frame_x);
+
+            translate([frame_x/2 - 20/2, 0, 0])
+            cylinder(d=5, h=40, center=true, $fn=30);
+
+            translate([-frame_x/2 + 20/2, 0, 0])
+            cylinder(d=5, h=40, center=true, $fn=30);
+        }
+    }
+
+    module _frame_beam_y() {
+        l = frame_y - 40;
+
+        difference() {
+            rotate([90, 0, 0])
+            2020_vslot(l);
+
+            // frame mount holes
+            translate([0, l/2 - 20/2, 0])
+            cylinder(d=5, h=40, center=true, $fn=30);
+
+            translate([0, -l/2 + 20/2, 0])
+            cylinder(d=5, h=40, center=true, $fn=30);
+
+            // z rod mount holes
+            translate([0, 65, 0])
+            cylinder(d=4, h=40, center=true, $fn=30);
+
+            translate([0, -65, 0])
+            cylinder(d=4, h=40, center=true, $fn=30);
+        }
+    }
+
+    module _frame_beam_z() {
+        rotate([0, 0, 90])
+        2040_vslot(530);
+    }
 
     color("darkgrey")
     render()
-    translate([0, 0, frame_z/2])
-    difference() {
-        cube([frame_x, frame_y, frame_z], center=true);
+    group() {
+        translate([0, -frame_y/2 + 20/2, 20/2])
+        _frame_beam_x();
 
-        cube(
-            [frame_x - 40, 600, frame_z - 40],
-            center=true
-        );
+        translate([0, frame_y/2 - 20/2, 20/2])
+        _frame_beam_x();
 
-        cube(
-            [600, frame_y - 80, frame_z - 40],
-            center=true
-        );
+        translate([0, -frame_y/2 + 20/2, frame_z - 20/2])
+        _frame_beam_x();
 
-        cube(
-            [frame_x - 40, frame_y - 40, 600],
-            center=true
-        );
+        translate([0, frame_y/2 - 20/2, frame_z - 20/2])
+        _frame_beam_x();
+
+
+        translate([-frame_x/2 + 20/2, 0, 20/2])
+        _frame_beam_y();
+
+        translate([frame_x/2 - 20/2, 0, 20/2])
+        _frame_beam_y();
+
+        translate([-frame_x/2 + 20/2, 0, frame_z - 20/2])
+        _frame_beam_y();
+
+        translate([frame_x/2 - 20/2, 0, frame_z - 20/2])
+        _frame_beam_y();
+
+
+        translate([
+            -frame_x/2 + 20/2,
+            -frame_y/2 + 40/2, frame_z/2
+        ])
+        _frame_beam_z();
+
+        translate([
+            frame_x/2 - 20/2,
+            -frame_y/2 + 40/2, frame_z/2
+        ])
+        _frame_beam_z();
+
+        translate([
+            -frame_x/2 + 20/2,
+            frame_y/2 - 40/2, frame_z/2
+        ])
+        _frame_beam_z();
+
+        translate([
+            frame_x/2 - 20/2,
+            frame_y/2 - 40/2, frame_z/2
+        ])
+        _frame_beam_z();
     }
 
     // x-beam
     color("darkgrey")
     render()
-    translate([0, 0, frame_z - 20/2 + 4])
-    cube([450, 20, 20], center=true);
+    translate([0, x_pos, frame_z - 20/2 + 4])
+    rotate([0, 90, 0])
+    2020_vslot(450);
 
     // z rods
     color("silver")
@@ -82,6 +158,16 @@ module X5S_frame_mockup() {
     color("silver")
     render()
     translate([-frame_x/2 + 10, -65, 21])
+    cylinder(d=8, h=528, $fn=30);
+
+    color("silver")
+    render()
+    translate([frame_x/2 - 10, 65, 21])
+    cylinder(d=8, h=528, $fn=30);
+
+    color("silver")
+    render()
+    translate([frame_x/2 - 10, -65, 21])
     cylinder(d=8, h=528, $fn=30);
 }
 
@@ -176,10 +262,14 @@ module X5S_x_carriage_mockup() {
                 translate([-70/2 + _d/2, 62/2 - _d/2, 0])
                 cylinder(d=_d, h=2, $fn=30);
 
-                translate([70/2 - _d/2, 62/2 - _d/2 - 46, 0])
+                translate([
+                    70/2 - _d/2, 62/2 - _d/2 - 46, 0
+                ])
                 cylinder(d=_d, h=2, $fn=30);
 
-                translate([-70/2 + _d/2, 62/2 - _d/2 - 46, 0])
+                translate([
+                    -70/2 + _d/2, 62/2 - _d/2 - 46, 0
+                ])
                 cylinder(d=_d, h=2, $fn=30);
 
                 translate([44/2, -62/2 + _d/2, 0])
@@ -190,10 +280,14 @@ module X5S_x_carriage_mockup() {
             }
 
             hull() {
-                translate([18/2 - _d/2, 62/2 + 22 -_d/2, 0])
+                translate([
+                    18/2 - _d/2, 62/2 + 22 -_d/2, 0
+                ])
                 cylinder(d=_d, h=2, $fn=30);
 
-                translate([-18/2 + _d/2, 62/2 + 22 -_d/2, 0])
+                translate([
+                    -18/2 + _d/2, 62/2 + 22 -_d/2, 0
+                ])
                 cylinder(d=_d, h=2, $fn=30);
 
                 translate([18/2 - _d/2, 62/2, 0])
@@ -285,7 +379,7 @@ module X5S_x_carriage_mockup() {
         tube(8, 8.5, 1.5, $fn=20);
     }
 
-    translate([0, -16.25, 570])
+    translate([0, -16.25 + x_pos, 570])
     rotate([90, 0, 180])
     group() {
         difference() {
@@ -463,7 +557,7 @@ module debug_single_z() {
 }
 
 module debug_gantry_plates() {
-    translate([-530/2 + 45.9, 0, 579])
+    translate([-530/2 + 45.9, x_pos, 579])
     rotate([0, 180, 90]) {
         tronxy_mega_gantry_left();
 
@@ -471,20 +565,20 @@ module debug_gantry_plates() {
         top_bearing_support_left();
     }
 
-    translate([530/2 - 41.45, 0, 579])
+    translate([530/2 - 41.45, x_pos, 579])
     rotate([0, 180, 90])
     tronxy_mega_gantry_right();
 
-    %translate([-530/2 + 30, -23, 580])
+    %translate([-530/2 + 30, -23 + x_pos, 580])
     mock_idler();
 
-    %translate([-530/2 + 30, -23, 592])
+    %translate([-530/2 + 30, -23 + x_pos, 592])
     mock_idler();
 
-    %translate([530/2 - 30, -23, 580])
+    %translate([530/2 - 30, -23 + x_pos, 580])
     mock_idler();
 
-    %translate([530/2 - 30, -23, 592])
+    %translate([530/2 - 30, -23 + x_pos, 592])
     mock_idler();
 }
 
@@ -572,6 +666,25 @@ module debug_top_frame() {
 }
 
 module debug_purge_bucket() {
+    stl_path = "../../_downloaded/Tronxy/Purge_bucket/";
+
+    render()
+    translate([-500/2 + 5, -500/2 + 40, 500])
+    rotate([90, 0, 0])
+    intersection() {
+        import(
+            str(stl_path, "purge_bucket-top.stl"),
+            covenxity=10
+        );
+
+        translate([])
+        cube([150, 100, 100], center=true);
+    }
+
+    translate([-170, -190, 501.5])
+    rotate([37, 0, 0])
+    cube([10, 50, 2], center=true);
+
     translate([0, -500/2 + 57, 570 - 100/2 - 20 - 35])
     bucket();
 
@@ -632,22 +745,22 @@ module debug_duet_case() {
 }
 
 module debug_legs() {
-    translate([-530/2 + 19, -500/2 + 19, 0])
+    translate([-530/2 + 19, -500/2 + 19, -6])
     rotate([180, 0, 0])
     render()
     leg(130);
 
-    translate([530/2 - 19, -500/2 + 19, 0])
+    translate([530/2 - 19, -500/2 + 19, -6])
     rotate([180, 0, 90])
     render()
     leg(130);
 
-    translate([530/2 - 19, 500/2 - 19, 0])
+    translate([530/2 - 19, 500/2 - 19, -6])
     rotate([180, 0, 180])
     render()
     leg(130);
 
-    translate([-530/2 + 19, 500/2 - 19, 0])
+    translate([-530/2 + 19, 500/2 - 19, -6])
     rotate([180, 0, -90])
     render()
     leg(130);
@@ -656,4 +769,25 @@ module debug_legs() {
 module debug_bed_carriage() {
     translate([0, 0, z_pos - 21])
     debug_X5S_bed_carriage();
+}
+
+module debug_y_endstop_holder() {
+    translate([530/2 + 8, -500/2 + 20, 542])
+    rotate([90, 0, -90])
+    y_endstop_holder();
+}
+
+module debug_frame_brace() {
+    translate([
+        -frame_x/2 + 20/2,
+        -frame_y/2 + 20/2, -6
+    ])
+    tronxy_frame_brace();
+
+    translate([
+        -frame_x/2 + 20/2,
+        frame_y/2 - 20/2, -6
+    ])
+    rotate([0, 0, -90])
+    tronxy_frame_brace(psu_mount=true);
 }

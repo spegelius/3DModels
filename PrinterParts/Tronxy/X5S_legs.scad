@@ -16,7 +16,7 @@ fast = false;
 //_pylon();
 
 //leg();
-leg(130);
+//leg(130);
 //leg_130_dc_1();
 //leg_130_dc_2();
 
@@ -102,7 +102,9 @@ module _leg_base(height=200) {
     difference() {
         union() {
             intersection() {
-                translate([-9, 70/2 - 2, height - 17/2 + 2])
+                translate([
+                    -9, 70/2 - 2, height - 17/2 + 2
+                ])
                 chamfered_cube(
                     20, 70, 17, 2, center=true
                 );
@@ -112,7 +114,9 @@ module _leg_base(height=200) {
             }
 
             intersection() {
-                translate([70/2 - 2, -9, height - 17/2 + 2])
+                translate([
+                    70/2 - 2, -9, height - 17/2 + 2
+                ])
                 chamfered_cube(
                     70, 20, 17, 2, center=true
                 );
@@ -274,8 +278,8 @@ module peg() {
             depth=3, height=15
         );
 
-        translate([0, -4/2, 15/2])
-        cube([6, 4, 15], center=true);
+        translate([0, -3/2, 15/2])
+        cube([6, 3, 15], center=true);
     }
 }
 
