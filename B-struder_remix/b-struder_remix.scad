@@ -26,7 +26,7 @@ bstruder_path = str(
 
 //debug_arm_E3D_HobGoblin_2x623zz();
 
-debug_arm_Bondtech();
+//debug_arm_Bondtech();
 //debug_bondtech_gear();
 //debug_bondtech_arm_supports();
 
@@ -57,7 +57,7 @@ debug_arm_Bondtech();
 //lock_lever();
 
 //MR105zz_support_Hobbgoblin();
-//MR105zz_support_Bondtech();
+MR105zz_support_Bondtech();
 
 //spring_cap_8mm_spring();
 
@@ -744,79 +744,116 @@ module _motor_mount_base() {
 }
 
 module _motor_mount_infill() {
-    translate([32,3,0])
+    // arm spring mount infill
+    translate([32, 3, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([33.15, -1, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([34.3, -5, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([35.45, -9, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([36.6, -13, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([33.6, -16.3, 0])
+    cylinder(d=0.1, h=30);
+
+    translate([29, -17.4, 0])
     cylinder(d=0.1,h=30);
 
-    translate([33.15,-1,0])
-    cylinder(d=0.1,h=30);
+    translate([25, -18.5, 0])
+    cylinder(d=0.1, h=30);
 
-    translate([34.3,-5,0])
-    cylinder(d=0.1,h=30);
+    // main body infill
+    translate([0, 10, 1])
+    cube([55, 0.1, 2]);
 
-    translate([35.45,-9,0])
-    cylinder(d=0.1,h=30);
+    translate([0, 6, 1])
+    cube([55, 0.1, 2]);
 
-    translate([36.6,-13,0])
-    cylinder(d=0.1,h=30);
+    translate([0, 2, 1])
+    cube([55, 0.1, 2]);
 
-    translate([33.6,-16.3,0])
-    cylinder(d=0.1,h=30);
+    translate([0, -2, 1])
+    cube([55, 0.1, 2]);
 
-    translate([29,-17.4,0])
-    cylinder(d=0.1,h=30);
+    translate([0, -6, 1])
+    cube([55, 0.1, 2]);
 
-    translate([25,-18.5,0])
-    cylinder(d=0.1,h=30);
+    translate([0, -10, 1])
+    cube([55, 0.1, 2]);
 
-    translate([0,10,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,6,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,2,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,-2,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,-6,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,-10,4/2-0.2/2])
-    cube([55,0.1,0.2]);
-
-    translate([0,-14,4/2-0.2/2])
-    cube([55,0.1,0.2]);
+    translate([0, -14, 1])
+    cube([55, 0.1, 2]);
 }
 
 module motor_mount() {
     difference() {
         union() {
-            difference() {
+            intersection() {
                 _motor_mount_base();
-                translate([0,0,5/2+5])
-                cube([40,40,5],center=true);
 
-                cylinder(d=22.4,h=15,$fn=70,center=true);
-            }
-            translate([31/2,31/2,0]) {
-                cylinder(d=9,h=5,$fn=30);
-                hull() {
-                    cylinder(d=6,h=5+1.5,$fn=40);
-                    cylinder(d=3,h=5+3,$fn=40);
+                difference() {
+                    union() {
+                        translate([0, 0, 4/2])
+                        cube(
+                            [160, 160, 4],
+                            center=true
+                        );
+
+                        translate([30, 0, 0])
+                        cube(
+                            [30, 70, 100],
+                            center=true
+                        );
+                    }
+
+                    // middle motor hole
+                    cylinder(
+                        d=22.4, h=15,
+                        $fn=70, center=true
+                    );
                 }
             }
-            translate([-2,-14.2,2])
-            rotate([0,0,-15])
-            cube([10,2,3]);
-        }
-        translate([31/2,-31/2,2.51])
-        cylinder(d1=3,d2=6,h=1.5,$fn=30);
 
-        translate([31/2,31/2,-0.1])
-        cylinder(d=3.2,h=8.5,$fn=30);
-        
+            // arm mount nub
+            translate([31/2, 31/2, 0]) {
+                cylinder(d=9, h=5, $fn=30);
+
+                hull() {
+                    cylinder(d=6, h=5 + 1.5, $fn=40);
+                    cylinder(d=3, h=5 + 3, $fn=40);
+                }
+            }
+
+            // arm supports
+            hull() {
+                translate([-0.5, -13.7, 2])
+                cylinder(d=1.8, h=3, $fn=20);
+
+                translate([11.5, -13.7, 2])
+                cylinder(d=1.8, h=3, $fn=20);
+            }
+
+            hull() {
+                translate([24, -7, 2])
+                cylinder(d=1.8, h=3, $fn=20);
+
+                translate([10.1, -7, 2])
+                cylinder(d=1.8, h=3, $fn=20);
+            }
+        }
+        translate([31/2, -31/2, 2.51])
+        cylinder(d1=3, d2=6, h=1.5, $fn=30);
+
+        translate([31/2, 31/2, -0.1])
+        cylinder(d=3.2, h=8.5, $fn=30);
+
         _motor_mount_infill();
     }
 }
@@ -825,14 +862,15 @@ module motor_mount_extra_mount() {
     difference() {
         union() {
             motor_mount();
-            translate([-30,-20,0])
-            cube([12.5,40,4]);
-        }
-        translate([-26, 15,0])
-        cylinder(d=4.2,h=5,$fn=30);
 
-        translate([-26, -14,0])
-        cylinder(d=4.2,h=5,$fn=30);
+            translate([-31, -20, 0])
+            cube([12.5, 40, 4]);
+        }
+        translate([-26, 15, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
+
+        translate([-26, -14, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
 
         _motor_mount_infill();
     }
@@ -843,20 +881,20 @@ module motor_mount_extra_mount2() {
         union() {
             motor_mount();
 
-            translate([18.5,-21.15,0])
-            chamfered_cube_side(35.5,42.3,4,4);
+            translate([18.5, -21.15, 0])
+            chamfered_cube_side(35.5, 42.3, 4,4);
 
-            translate([17,16.15,0])
-            cube([6,5,4]);
+            translate([17, 16.15, 0])
+            cube([6, 5, 4]);
             
-            translate([17,-21.15,0])
-            cube([6,1,4]);
+            translate([17, -21.15, 0])
+            cube([6, 1, 4]);
         }
-        translate([49.5, 15,0])
-        cylinder(d=4.2,h=5,$fn=30);
+        translate([49.5, 15, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
 
-        translate([49.5, -14,0])
-        cylinder(d=4.2,h=5,$fn=30);
+        translate([49.5, -14, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
 
         _motor_mount_infill();
     }
@@ -868,26 +906,48 @@ module motor_mount_extra_mount3() {
             motor_mount();
 
             difference() {
-                translate([-21.15,-13-28.3,0])
-                chamfered_cube_side(42.2,28.3,4,4);
+                translate([-21.15, -13 - 28.3, 0])
+                chamfered_cube_side(42.2, 28.3, 4,4);
 
-                translate([-31/2,-31/2,-0.1])
-                cylinder(d=5,h=5,$fn=8);
+                translate([-31/2, -31/2, -0.1])
+                cylinder(d=5, h=5, $fn=8);
 
-                translate([31/2,-31/2,-0.1])
-                cylinder(d=7,h=5,$fn=8);
+                translate([31/2, -31/2, -0.1])
+                cylinder(d=7, h=5, $fn=8);
             }
         }
         translate([-15, -37,-0.1])
-        cylinder(d=4.2,h=5,$fn=30);
+        cylinder(d=4.2, h=5, $fn=30);
 
-        translate([-15+9, -37,-0.1])
-        cylinder(d=4.2,h=5,$fn=30);
+        translate([-15 + 9, -37, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
 
-        translate([-15+29, -37,-0.1])
-        cylinder(d=4.2,h=5,$fn=30);
+        translate([-15 + 29, -37, -0.1])
+        cylinder(d=4.2, h=5, $fn=30);
 
         _motor_mount_infill();
+
+        // more infill
+        translate([-12, -70, 1])
+        cube([0.1, 55, 2]);
+        
+        translate([-8, -70, 1])
+        cube([0.1, 55, 2]);
+
+        translate([-4, -70, 1])
+        cube([0.1, 55, 2]);
+
+        translate([0, -70, 1])
+        cube([0.1, 55, 2]);
+
+        translate([4, -70, 1])
+        cube([0.1, 55, 2]);
+
+        translate([8, -70, 1])
+        cube([0.1, 55, 2]);
+
+        translate([12, -70, 1])
+        cube([0.1, 55, 2]);
     }
 }
 
@@ -916,50 +976,73 @@ module _MR105zz_support(h) {
         union() {
             orig_MR105ZZ_support();
 
-            translate([31/2,31/2,0])
-            cylinder(d=9.5,h=h,$fn=40);
+            translate([31/2, 31/2, 0])
+            cylinder(d=9.5, h=h, $fn=40);
 
-            translate([-31/2,31/2,0])
-            cylinder(d=9.5,h=h-16.4,$fn=40);
-
-            hull() {
-                translate([-31/2,31/2,0])
-                cylinder(d=9.5,h=5,$fn=40);
-
-                translate([10,12,5/2])
-                rotate([0,0,-45])
-                cube([2,19,5],center=true);
-            }
-            translate([31/2,-31/2,0])
-            cylinder(d=9.5,h=h-15.4,$fn=40);
+            // arm extension
+            translate([-31/2, 31/2, 0])
+            cylinder(d=9.5, h=h - 16.4, $fn=40);
 
             hull() {
-                translate([31/2,-31/2,0])
-                cylinder(d=9.5,h=5,$fn=40);
+                translate([-31/2, 31/2, 0])
+                cylinder(d=9.5, h=5, $fn=40);
 
-                translate([12,12,5/2])
-                rotate([0,0,-45])
-                cube([2,13,5],center=true);
+                translate([10, 12, 5/2])
+                rotate([0, 0, -45])
+                cube([2, 19, 5], center=true);
             }
-            translate([-31/2,31/2,0]) {
-                //cylinder(d=9.5,h=4+1.2,$fn=40);
+
+            // lock lever part
+
+            hull() {
+                translate([31/2, -31/2, 0])
+                cylinder(d=9.5, h=h, $fn=40);
+
+                translate([31/2, -10, 0])
+                cylinder(d=9.5, h=h, $fn=40);
+            }
+
+            hull() {
+                translate([31/2, -31/2, 0])
+                cylinder(d=9.5, h=5, $fn=40);
+
+                translate([31/2, 31/2, 0])
+                cylinder(d=9.5, h=5, $fn=40);
+
+                translate([10, 12, 0])
+                cylinder(d=9.5, h=5, $fn=40);
+            }
+
+            // arm nub
+            translate([-31/2, 31/2, 0]) {
+                //cylinder(d=9.5, h=4 + 1.2, $fn=40);
 
                 hull() {
-                    cylinder(d=6,h=h-16.4+1.7+0.2,$fn=40);
-                    cylinder(d=3,h=h-16.4+3.2+0.2,$fn=40);
+                    cylinder(
+                        d=6, h=h - 16.4 + 1.7 + 0.2, $fn=40
+                    );
+
+                    cylinder(
+                        d=3, h=h - 16.4 + 3.2 + 0.2, $fn=40
+                    );
                 }
             }
         }
-        translate([31/2,31/2,0])
-        cylinder(d=3.3,h=h+1,$fn=20);
 
-        translate([-31/2,31/2,0])
-        cylinder(d=3.3,h=22,$fn=40,center=true);
+        translate([31/2, -31/2, h - 15.6])
+        cylinder(d=10.5, h=h, $fn=40);
 
-        translate([31/2,-31/2,0])
-        cylinder(d=3.3,h=22,$fn=40,center=true);
+        // screw holes
+        translate([31/2, 31/2, 0])
+        cylinder(d=3.3, h=h + 1, $fn=20);
+
+        translate([-31/2, 31/2, 0])
+        cylinder(d=3.3, h=22, $fn=40, center=true);
+
+        translate([31/2, -31/2, 0])
+        cylinder(d=3.3, h=22, $fn=40, center=true);
     }
-    //%translate([0,0,1])
+    //%translate([0, 0, 1])
     //MR105zz();
 }
 
