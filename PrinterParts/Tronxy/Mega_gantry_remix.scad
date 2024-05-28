@@ -387,48 +387,6 @@ module top_bearing_support_right() {
     _top_bearing_support();
 }
 
-module 2020_vslot(h=100) {
-    iw = 20 - 2*(4.3 + 1.8);
-    iw2 = iw - sqrt((1.5 * 1.5)/2) * 2;
-    
-    ih = 4.3 - (11 - iw2)/2;
-    echo(iw, iw2, ih);
-    
-
-    difference() {
-        rounded_cube_side(
-            20, 20, h, .8, center=true, $fn=15
-        );
-
-        cylinder(d=4.2, h=h*2, center=true, $fn=30);
-        for (i=[0:3]) {
-            rotate([0, 0, i * 90])
-            translate([0, 20/2 + 10/2, 0])
-            hull() {
-                cube([
-                    6.2, 10 + (9.55 - 6.2), h * 2
-                ], center=true);
-
-                cube([9.55, 10, h*2], center=true);
-            }
-
-            rotate([0, 0, i * 90])
-            translate([0, 20/2, 0])
-            cube([6.2, 5, h*2], center=true);
-
-            rotate([0, 0, i * 90])
-            hull() {
-                translate([0, 20/2 - 1.8 - ih/2, 0])
-                cube([11, ih, h*2], center=true);
-
-                translate([0, iw/2 + 0.1/2, 0])
-                cube([iw2, 0.1, h*2], center=true);
-            }
-            
-        }
-    }
-}
-
 module v_slot_guide(length) {
     intersection() {
         union() {
