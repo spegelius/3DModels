@@ -22,6 +22,14 @@ bewel = 0.4;
 
 center_cube_side = 7;
 
+//intersection() {
+//    bearing4();
+//    cube([100,100,100]);
+//}
+bearing4();
+//top(10,5);
+
+
 module beweled_cylinder(d, h, b) {
     hull() {
         cylinder(d=d-2*b, h=h);
@@ -105,10 +113,5 @@ module bearing4() {
     }
 }
 
-//intersection() {
-//    bearing4();
-//    cube([100,100,100]);
-//}
-bearing4();
-//top(10,5);
+
 

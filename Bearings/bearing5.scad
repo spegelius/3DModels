@@ -27,6 +27,19 @@ center_cube_side = 9;
 //roll_height = 160 - 2*14 - 2;
 roll_height = 174 - 2*14 - 2;
 
+
+//roll(roll_height, width, edges=false);
+//roll(roll_height, width, edges=false, dent=true);
+//center_square_hole();
+//center_circle_hole(dent=true);
+//center_block();
+
+//bearing5(7, 50, dent=true);
+//test();
+
+//washer();
+
+
 module ball_path(ball_size=ball_size, ball_position=ball_position, dent=false) {
     cube_donut(ball_position*2, ball_size);
     if (dent == true) {
@@ -173,13 +186,8 @@ intersection() {
 }
 
 
-//roll(roll_height, width, edges=false);
-//roll(roll_height, width, edges=false, dent=true);
-//center_square_hole();
-center_circle_hole(dent=true);
-//center_block();
 
-//bearing5(7, 50, dent=true);
+
 
 module washer() {
     difference() {
@@ -191,6 +199,4 @@ module washer() {
     }
 }
 
-//test();
 
-//washer();

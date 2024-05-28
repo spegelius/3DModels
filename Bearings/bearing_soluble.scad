@@ -6,6 +6,15 @@ ball_slop = 0.1;
 balls = 13;
 bearing_h = 9;
 
+
+debug();
+
+//bearing_body();
+//balls();
+//ball_support();
+//ball_interface();
+
+
 module balls(ball_d=ball_d) {
     for (i=[1:balls]) {
         rotate([0,0,360/balls*i]) translate([35/2,0,0]) sphere(d=ball_d-ball_slop, $fn=60);
@@ -57,9 +66,3 @@ module debug() {
     }
 }
 
-//debug();
-
-//bearing_body();
-//balls();
-ball_support();
-//ball_interface();

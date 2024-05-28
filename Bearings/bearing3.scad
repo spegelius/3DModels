@@ -7,6 +7,11 @@ $fn=80;
 simple = true;
 //simple = false;
 
+bearing3_608();
+//key_8mm();
+//drill_bit_8mm();
+
+
 module top(d,h) {
     difference() {
         translate([0,0,h/2]) cube([d,d,h],center=true);
@@ -174,6 +179,4 @@ module bearing3_608() {
     }
 }
 
-//bearing3_608();
-//key_8mm();
-drill_bit_8mm();
+
