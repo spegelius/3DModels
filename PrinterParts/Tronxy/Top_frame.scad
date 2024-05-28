@@ -7,6 +7,7 @@ use <../../Dollo/NEW_long_ties/corner.scad>;
 top_frame_assembly();
 
 //frame_mount();
+//frame_mount(supports=false);
 //middle_extention(230);
 //middle_extention(230/2);
 //extention_t_part_back();
@@ -14,8 +15,9 @@ top_frame_assembly();
 
 
 ////// MODULES //////
-module frame_mount() {
+module frame_mount(supports=true) {
     c_h = 7*2 + 20.2;
+
     difference() {
         union() {
             translate(
@@ -35,29 +37,31 @@ module frame_mount() {
                 rotate([0, 0, 45])
                 cube([7, 7, 6], center=true);
             }
+
+            // side reinforcements
             hull() {
                 translate(
-                    [-30/2 + 4/2, -10 + 1/2, c_h - 8/2]
+                    [-30/2 + 7/2, -8 + 1/2, c_h - 12/2]
                 )
-                cube([4, 1, 8], center=true);
+                cube([7, 1, 12], center=true);
 
                 translate([
-                    -30/2 + 4/2, 10 + 1/2,
-                    c_h - 8/2 + 20
+                    -30/2 + 7/2, 10 + 1/2,
+                    c_h - 12/2 + 20
                 ])
-                cube([4, 1, 8], center=true);
+                cube([7, 1, 12], center=true);
             }
             hull() {
                 translate(
-                    [30/2 - 4/2, -10 + 1/2, c_h - 8/2]
+                    [30/2 - 7/2, -8 + 1/2, c_h - 12/2]
                 )
-                cube([4, 1, 8], center=true);
+                cube([7, 1, 12], center=true);
 
                 translate([
-                    30/2 - 4/2, 10 + 1/2,
-                    c_h - 8/2 + 20
+                    30/2 - 7/2, 10 + 1/2,
+                    c_h - 12/2 + 20
                 ])
-                cube([4, 1, 8], center=true);
+                cube([7, 1, 12], center=true);
             }
         }
         translate([0, -1/2, 20.2/2 + 7])
@@ -69,54 +73,64 @@ module frame_mount() {
 
         // holes
         hull() {
-            cylinder(d=9, h=2, $fn=40);
+            cylinder(d=10, h=6, center=true, $fn=40);
 
             translate([0, -20, 0])
-            cylinder(d=9, h=2, $fn=40);
+            cylinder(d=10, h=6, center=true, $fn=40);
         }
-        translate([0, 0, 2.2])
+        translate([0, 0, 3.2])
         hull() {
-            cylinder(d=4.3, h=6, $fn=40);
+            cylinder(d=4.2, h=6, $fn=40);
 
             translate([0, -20, 0])
-            cylinder(d=4.3, h=6, $fn=40);
+            cylinder(d=4.2, h=6, $fn=40);
         }
-        translate([0, 0, 7*2 + 20.2 - 2])
+        translate([0, 0, 7*2 + 20.2])
         hull() {
-            cylinder(d=9, h=2, $fn=40);
+            cylinder(d=10, h=6, center=true, $fn=40);
 
             translate([0, -20, 0])
-            cylinder(d=9, h=2, $fn=40);
+            cylinder(d=10, h=6, center=true, $fn=40);
         }
         translate([0, 0, 7*2 + 20.2 - 6.8])
         hull() {
-            cylinder(d=4.3, h=6, $fn=40);
+            cylinder(d=4.2, h=6, $fn=40);
 
             translate([0, -20, 0])
-            cylinder(d=4.3, h=6, $fn=40);
+            cylinder(d=4.2, h=6, $fn=40);
+        }
+
+        // chamfers
+        translate([11, 34, 10])
+        hull() {
+            cube([1.98, 15, 5], center=true);
+
+            translate([10, 0, 0])
+            cube([1.98, 15, 5 + 24], center=true);
+        }
+
+        mirror([1, 0, 0])
+        translate([11, 34, 10])
+        hull() {
+            cube([1.98, 15, 5], center=true);
+
+            translate([10, 0, 0])
+            cube([1.98, 15, 5 + 24], center=true);
         }
     }
 
     // supports
-    translate([0, -10 + 19.5/2, 7.2 + 19.8/2])
-    difference() {
-        cube([30, 19.5, 19.8], center=true);
+    if (supports) {
+        translate([0, -10 + 19.5/2, 7.2 + 19.8/2])
+        difference() {
+            cube([30, 19.5, 19.8], center=true);
 
-        translate([0, 0.25, -1.3])
-        hull() {
-            cube([29, 19, 19.2], center=true);
-            cube([27, 17, 21.2], center=true);
+            translate([0, 0.25, -1.3])
+            hull() {
+                cube([29, 19, 19.2], center=true);
+                cube([27, 17, 21.2], center=true);
+            }
         }
-    }
-
-    translate([-30/2 + 1, 28, 0]) {
-        cylinder(d=8, h=0.2);
-        cylinder(d=4, h=9.5);
-    }
-
-    translate([30/2 - 1, 28, 0]) {
-        cylinder(d=8, h=0.2);
-        cylinder(d=4, h=9.5);
     }
 }
 
