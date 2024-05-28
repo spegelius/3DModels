@@ -6,7 +6,7 @@ stl_path = str(
     "Ball_in_a_box/"
 );
 
-//debug();
+debug();
 
 //_original();
 //_supports_form_box();
