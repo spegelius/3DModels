@@ -7,7 +7,7 @@ w2 = 310.5;
 
 
 // ********** Debug etc models ********
-debug_cover_magnets();
+//debug_cover_magnets();
 //debug_cover_screws();
 //debug_frame_clips();
 //debug_frame_clips_flat();
@@ -23,9 +23,8 @@ debug_cover_magnets();
 //_frame_body_flat();
 //_tesla_logo();
 
-
-//test_side();
 //test_cover_magnet_cap();
+//frame();
 
 // ******** Printable models ********
 //side_clips_left();
@@ -37,14 +36,11 @@ debug_cover_magnets();
 //top_clips_split_1();
 //top_clips_split_2();
 
-//frame();
 //frame_flat();
 //frame_flat(wood_screws=true);
 
 //cover_flat(wood_screws=true, cover_holes=false);
 //cover_flat(wood_screws=true, cover_holes=true);
-
-//cover_flat(cover_holes=false);
 
 //cover_flat_logo_1(wood_screws=true, cover_holes=false);
 //cover_flat_logo_2(wood_screws=true, cover_holes=false);
@@ -52,21 +48,18 @@ debug_cover_magnets();
 //cover_flat_logo_1(wood_screws=true, cover_holes=true);
 //cover_flat_logo_2(wood_screws=true, cover_holes=true);
 
+//cover_flat(cover_holes=false);
+//cover_flat(cover_holes=true);
+
 //cover_flat_logo_1(cover_holes=false);
 //cover_flat_logo_2(cover_holes=false);
 
 //cover_flat_logo_1(cover_holes=true);
 //cover_flat_logo_2(cover_holes=true);
 
-//magnet_clip();
 //magnet_screw_cap();
-//magnet_screw_cap(id=20.2, d=16.8);
 //magnet_screw_cap_tool();
-//bolt_holder();
-//bolt_spacer();
-
-//magnet_2_mount();
-//magnet_2_spacer();
+magnet_spacer();
 
 
 module debug_cover_magnets() {
@@ -90,41 +83,30 @@ module debug_cover_magnets() {
     translate([79, -28, 5.5])
     rotate([180, 0, 0])
     intersection() {
-        magnet_screw_cap(id=20.2, d=16.8);
+        rotate([0, 0, 90])
+        magnet_screw_cap();
 
         translate([50/2, 0, 0])
         cube([50, 50, 20], center=true);
     }
 
-//    translate([79, -28, 5])
-//    mock_M8_bolt();
+    color("lightgrey")
+    translate([79, -28, 9.8])
+    rotate([180, 0, 0])
+    mock_magnet();
 
-//    translate([79, -28, 10.6])
-//    rotate([0, 0, 0])
-//    bolt_holder();
-
-//    translate([79, -28, 10.5])
-//    bolt_spacer();
+    color("grey")
+    translate([79, -28, 9.8])
+    magnet_spacer();
 
     // hole clip mockup
-//    %union() {
-//        translate([0, -40, 0])
-//        cylinder(d=49, h=10, center=true);
-//
-//        translate([0, -40, 0])
-//        cube([96, 20.5, 10], center=true);
-//    }
+    %union() {
+        translate([0, -40, 0])
+        cylinder(d=49, h=10, center=true);
 
-    translate([79, -28, 9.8])
-    rotate([180, 0, 0])
-    mock_magnet_2();
-
-    translate([79, -28, 23.25])
-    rotate([180, 0, 0])
-    magnet_2_mount();
-
-    translate([79, -28, 9.8])
-    magnet_2_spacer();
+        translate([0, -40, 0])
+        cube([96, 20.5, 10], center=true);
+    }
 }
 
 module debug_cover_screws() {
@@ -208,20 +190,10 @@ module debug_frame_clips_flat() {
     rotate([0, 180, 0])
     _bottom_clips();
 
-    cover_flat();
-
-    %_magnet_holes();
-
     %_cover_holes();
 }
 
 module debug_magnet_screw_cap() {
-//    intersection() {
-//        cover_flat(wood_screws=false);
-//
-//        translate([200/2 + 79, -50])
-//        cube([200, 200, 100], center=true);
-//    }
 
     translate([79, -28, 5.6])
     rotate([180, 0, 0])
@@ -241,26 +213,22 @@ module debug_magnet_screw_cap() {
     magnet_screw_cap_tool();
 }
 
-module mock_magnet_1() {
-    rounded_cylinder(
-        19.8, 3.8, 0.5, $fn=40
-    );
-}
+module mock_magnet() {
+    difference() {
+        intersection() {
+            rounded_cylinder(
+                16.06, 10.12, 4, $fn=40
+            );
 
-module mock_magnet_2() {
-    intersection() {
-        rounded_cylinder(
-            16.06, 10.12, 4, $fn=40
+            cylinder(d=20, h=5.06);
+        }
+
+        cylinder(d=3.2, h=20, center=true, $fn=20);
+
+        translate([0, 0, 5.06])
+        cylinder(
+            d2=11.2, d1=3.2, h=4, center=true, $fn=20
         );
-
-        cylinder(d=20, h=5.06);
-    }
-}
-
-module mock_M8_bolt() {
-    union() {
-       M8_nut(cone=false);
-       cylinder(d=7.81, h=25, $fn=30);
     }
 }
 
@@ -1712,7 +1680,7 @@ module _magnet_screw_cap(d=24, h=5) {
     v_screw(
         h=h,
         screw_d=d,
-        pitch=1,
+        pitch=1.2,
         direction=0,
         steps=80
     );
@@ -1724,18 +1692,19 @@ module _magnet_screw_cap_holes(d=20, h=4, z=-37) {
 }
 
 module _cone() {
-    difference() {
-        hull() {
-            cylinder(d=10, h=1, $fn=30);
+    hull() {
+        cylinder(d=6.9, h=1, $fn=30);
 
-            translate([0, 0, 8])
-            cylinder(d=18, h=1, $fn=30);
-        }
+        translate([0, 0, 1.5])
+        cylinder(d=10, h=1, $fn=30);
+
+        translate([0, 0, 9.5])
+        cylinder(d=18, h=1, $fn=30);
     }
 }
 
 module _screw_cones() {
-    z = -32.1;
+    z = -34.7;
 
     _magnet_positions(z=z)
     _cone();
@@ -1747,16 +1716,20 @@ module _frame_cutouts(wood_screws=false) {
 
     _magnet_positions(z=-23)
     union() {
-        hull() {
-            cylinder(d=24, h=8, center=true, $fn=40);
-            //cylinder(d=14, h=18, center=true, $fn=40);
-            cylinder(d=8, h=24, center=true, $fn=40);
-        }
-
         if (wood_screws) {
+            hull() {
+                cylinder(d=25, h=6, center=true, $fn=40);
+                cylinder(d=4.2, h=26, center=true, $fn=40);
+            }
+
             cylinder(d=4.2, h=54, center=true, $fn=30);
         } else {
-            cylinder(d=8, h=54, center=true, $fn=40);
+            hull() {
+                cylinder(d=25, h=6, center=true, $fn=40);
+                cylinder(d=2.8, h=29.2, center=true, $fn=40);
+            }
+
+            cylinder(d=2.8, h=54, center=true, $fn=40);
         }
     }
 
@@ -1765,18 +1738,17 @@ module _frame_cutouts(wood_screws=false) {
         union() {
             // leftest hole
             hull() {
-                translate([-155.5, 0, 28])
+                translate([-156, 0, 31])
                 rotate([90, 0, 0])
                 cylinder(d=3, h=100, center=true, $fn=20);
 
-                translate([-156, 0, 58])
+                translate([-156, 0, 54])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-167, 0, 58])
+                translate([-164.5, 0, 54])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
-
             }
 
             // left hole (electric)
@@ -1785,7 +1757,7 @@ module _frame_cutouts(wood_screws=false) {
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-69, 0, 80])
+                translate([-69, 0, 79.5])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
@@ -1793,7 +1765,7 @@ module _frame_cutouts(wood_screws=false) {
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([-146, 0, 80])
+                translate([-146, 0, 79.5])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
             }
@@ -1808,7 +1780,7 @@ module _frame_cutouts(wood_screws=false) {
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([65, 0, 12    ])
+                translate([65, 0, 12])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
@@ -1819,11 +1791,11 @@ module _frame_cutouts(wood_screws=false) {
 
             // right hole
             hull() {
-                translate([145, 0, 11])
+                translate([146, 0, 11])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([88, 0, 54])
+                translate([88, 0, 79.5])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
@@ -1831,111 +1803,34 @@ module _frame_cutouts(wood_screws=false) {
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([162, 0, 54])
+                translate([146, 0, 79.5])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
             }
-
-//            #hull() {
-//                translate([145, 0, 11])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//
-//                translate([88, 0, 11])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//
-//                translate([145, 0, 18])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//
-//                translate([88, 0, 18])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//            }
 
             hull() {
-                translate([145, 0, 79])
+                translate([156, 0, 31])
+                rotate([90, 0, 0])
+                cylinder(d=3, h=100, center=true, $fn=20);
+
+                translate([156, 0, 54])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
 
-                translate([88, 0, 79])
-                rotate([90, 0, 0])
-                cylinder(d=4, h=100, center=true, $fn=20);
-
-                translate([88, 0, 48])
-                rotate([90, 0, 0])
-                cylinder(d=4, h=100, center=true, $fn=20);
-
-                translate([145, 0, 48])
+                translate([164.5, 0, 54])
                 rotate([90, 0, 0])
                 cylinder(d=4, h=100, center=true, $fn=20);
             }
-
-//            hull() {
-//                translate([85, 0, 18])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//
-//                translate([95, 0, 18])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//
-//                translate([95, 0, 28])
-//                rotate([90, 0, 0])
-//                cylinder(d=4, h=100, center=true, $fn=20);
-//            }
-            
         }
         _magnet_positions(z=-48)
         rounded_cube(
             15, 15, 50, 4, center=true, $fn=30
         );
-
-        // beams
-//        hull() {
-//            rotate([90, 0, 0])
-//            translate([162, 80, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//
-//            rotate([90, 0, 0])
-//            translate([110, 7, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//        }
-//
-//        hull() {
-//            rotate([90, 0, 0])
-//            translate([71, 80, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//
-//            rotate([90, 0, 0])
-//            translate([110, 7, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//        }
-//
-//        hull() {
-//            rotate([90, 0, 0])
-//            translate([110, 83, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//
-//            rotate([90, 0, 0])
-//            translate([155, 0, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//        }
-//
-//        hull() {
-//            rotate([90, 0, 0])
-//            translate([110, 83, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//
-//            rotate([90, 0, 0])
-//            translate([68, 0, -38])
-//            cylinder(d=bm, h=200, center=true, $fn=20);
-//        }
     }
 }
 
 module frame() {
+    // not implemented properly
     difference() {
         _frame_body();
 
@@ -1984,12 +1879,7 @@ module frame_flat(wood_screws=false, body_only=false) {
     difference() {
         union() {
             _frame_body_flat();
-
-            if (wood_screws) {
-                _magnet_holes(d=15, h=20, z=-38.5);
-            } else {
-                _magnet_holes(d=15, h=20, z=-40.5);
-            }
+            _magnet_holes(d=15, h=20, z=-40.5);
         }
 
         _frame_flange_cut();
@@ -2194,14 +2084,7 @@ module _cover_flat(wood_screws=false, cover_holes=true) {
             }
 
             if (wood_screws) {
-                difference() {
-
-                    _screw_cones();
-
-//                    translate([0, -7.8, 0])
-//                    rotate([13.8, 0, 0])
-//                    cube([450, 60, 300], center=true);
-                }
+                _screw_cones();
             }
         }
     }
@@ -2214,19 +2097,18 @@ module _cover_flat(wood_screws=false, cover_holes=true) {
             _wooden_screw_hole();
         } else {
             // magnet holes
-            //_magnet_holes(h=6, z=-28.355);
-            _magnet_screw_cap_holes(d=23.8, h=6, z=-28.355);
+            _magnet_screw_cap_holes(d=24.2, h=6, z=-28.355);
         }
     }
 }
 
-module magnet_screw_cap(id=19.8, d=15) {
+module magnet_screw_cap(id=20.2, d=16.8) {
     difference() {
         intersection() {
-            _magnet_screw_cap(d=23.6, h=4.5);
+            _magnet_screw_cap(d=24, h=4.5);
 
             chamfered_cylinder(
-                23.6, 4.5, 0.6, $fn=60
+                24, 4.5, 0.6, $fn=60
             );
         }
 
@@ -2268,13 +2150,28 @@ module magnet_screw_cap_tool() {
         translate([0, 0, -3])
         rotate([-10, 0, 0])
         translate([0, 0, -1])
-        cylinder(d=24.8, h=40, $fn=6);
+        cylinder(d=24.9, h=40, $fn=6);
 
         translate([0, 0, -10])
         cylinder(d=50, h=10);
 
         translate([0, -70, -1])
         cylinder(d=16, h=20, $fn=50);
+    }
+}
+
+module magnet_spacer() {
+    difference() {
+        intersection() {
+            translate([0, 0, -8.1])
+            hull() {
+                cylinder(d=25, h=6, center=true, $fn=40);
+                
+                cylinder(d=2.8, h=29.2, center=true, $fn=40);
+            }
+            cylinder(d=30, h=5);
+        }
+        cylinder(d=3.5, h=30, center=true, $fn=40);
     }
 }
 
@@ -2318,126 +2215,6 @@ module cover_flat_logo_2(
     }
 }
 
-module magnet_clip() {
-    difference() {
-        union() {
-            rounded_cylinder(21.3, 1.9, 1.9/2 - 0.02, $fn=40);
-
-            translate([-3, 6.4, 0])
-            cylinder(d=5, h=4, $fn=30);
-
-            translate([3, 6.4, 0])
-            cylinder(d=5, h=4, $fn=30);
-        }
-
-        hull() {
-            cylinder(d=3, h=20, center=true);
-
-            translate([-4, 12, 0])
-            cylinder(d=0.1, h=20, center=true);
-
-            translate([4, 12, 0])
-            cylinder(d=0.1, h=20, center=true);
-        }
-
-        difference() {
-            cylinder(d=13, h=20, center=true, $fn=40);
-
-            translate([-3, 6.4, 0])
-            cylinder(d=5, h=20, center=true, $fn=30);
-
-            translate([3, 6.4, 0])
-            cylinder(d=5, h=20, center=true, $fn=30);
-        }
-    }
-}
-
-module bolt_holder() {
-    difference() {
-        union() {
-            translate([0, 0, 7.1])
-            rotate([180, 0, 0])
-            v_screw(
-                h=7.1,
-                screw_d=16.7,
-                pitch=1.25,
-                direction=0,
-                steps=70,
-                chamfer=true
-            );
-
-            translate([0, 0, 7])
-            M8_nut(cone=false);
-
-            hull() {
-                translate([0, 0, 6.1])
-                cylinder(d=19, h=1, $fn=40);
-
-                translate([0, 0, 7 - (20.8 - 15)/2])
-                cylinder(d=15, h=1, $fn=40);
-            }
-                
-        }
-
-        translate([0, 0, -1])
-        M8_thread(20);
-    }
-}
-
-module bolt_spacer() {
-    difference() {
-        intersection() {
-            translate([0, 0, -8.5])
-            hull() {
-                cylinder(d=24, h=8, center=true, $fn=40);
-                
-                cylinder(d=8, h=24, center=true, $fn=40);
-            }
-            cylinder(d=30, h=3.2);
-        }
-        cylinder(d=8.1, h=30, center=true, $fn=40);
-    }
-}
-
-module magnet_2_mount() {
-    difference() {
-        union() {
-            cylinder(d=7.9, h=13.4, $fn=40);
-            M8_nut(4.1, cone=false);
-        }
-
-        cylinder(d=2.8, h=100, center=true, $fn=20);
-    }
-}
-
-module magnet_2_spacer() {
-    difference() {
-        intersection() {
-            translate([0, 0, -8.1])
-            hull() {
-                cylinder(d=24, h=8, center=true, $fn=40);
-                
-                cylinder(d=8, h=24, center=true, $fn=40);
-            }
-            cylinder(d=30, h=3.2);
-        }
-        cylinder(d=8.2, h=30, center=true, $fn=40);
-    }
-}
-
-module test_side() {
-    intersection() {
-        rotate([-90, 0, 0])
-        translate([150, -35.865, 0])
-        rotate([-12, 0, 0])
-        frame();
-
-        translate([-3, 0, 0])
-        rotate([0, 0, 21])
-        cube([15, 200, 50], center=true);
-    }
-}
-
 module test_cover_magnet_cap() {
     intersection() {
         cover_flat(wood_screws=false);
@@ -2446,56 +2223,3 @@ module test_cover_magnet_cap() {
         cylinder(d=32, h=10);
     }
 }
-
-module test_magnet_dual_holder() {
-    %translate([-4, 0, 0])
-    rotate([0, -90, 0])
-    cylinder(d=19.8, h=3.8, $fn=40);
-
-    %translate([4, 0, 0])
-    rotate([0, 90, 0])
-    cylinder(d=19.8, h=3.8, $fn=40);
-
-    difference() {
-        cube([20, 25, 20], center=true);
-
-        hull() {
-
-            translate([-4, 0, 0])
-            rotate([0, -90, 0])
-            cylinder(d=19.8, h=3.8, $fn=40);
-
-            translate([-4, 0, 20])
-            rotate([0, -90, 0])
-            cylinder(d=19.8, h=3.8, $fn=40);
-        }
-
-        hull() {
-
-            translate([4, 0, 0])
-            rotate([0, 90, 0])
-            cylinder(d=19.8, h=3.8, $fn=40);
-
-            translate([4, 0, 20])
-            rotate([0, 90, 0])
-            cylinder(d=19.8, h=3.8, $fn=40);
-        }
-
-        cylinder(d=6.6, h=50, center=true, $fn=30);
-    }
-}
-
-//test_magnet_dual_holder();
-
-module screw_qnd_fix() {
-    difference() {
-        union() {
-            cylinder(d=19.7, h=6, $fn=30);
-            cylinder(d=10, h=10, $fn=30);
-        }
-
-        cylinder(d=4.2, h=30, center=true, $fn=30);
-    }
-}
-
-//screw_qnd_fix();
