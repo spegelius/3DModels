@@ -11,9 +11,10 @@ include <variables.scad>;
 
 //hdd_mount(230);
 //hdd_mount(240);
-hdd_mount_rails(230);
+//hdd_mount_rails(230);
 //hdd_mount_rails(240);
 //hdd_mount_joiner();
+hdd_mount_cable_support();
 
 
 module debug_hdd_mount() {
@@ -43,6 +44,13 @@ module debug_hdd_mount_rails() {
 
     translate([74.5, -77, 0])
     extention(units=4, support=false);
+
+    translate([4.7, 95.5, 0])
+    hdd_mount_cable_support();
+
+    // positioning
+//    #translate([4.575, 100, 50])
+//    cube([105.5, 2, 10], center=true);
 }
 
 module hdd_mount(width, supports=true) {
@@ -533,6 +541,48 @@ module hdd_mount_joiner() {
         hull() {
             cube([8, 10, 15], center=true);
             cube([4, 10, 19], center=true);
+        }
+    }
+}
+
+module hdd_mount_cable_support() {
+    difference() {
+        union() {
+            intersection() {
+                scale([1, 1, 1.2])
+                rotate([45, 0, 0])
+                cube([109.4, 7.8, 7.8], center=true);
+
+                cube([200, 200, 10], center=true);
+            }
+
+            intersection() {
+                translate([0, -400/2 + 13, 0])
+                cylinder(
+                    d=400, h=10,
+                    center=true, $fn=100
+                );
+
+                translate([0, 4, 0])
+                cube([105.5, 19, 10], center=true);
+            }
+        }
+
+        intersection() {
+            translate([0, -400/2 + 13, 0])
+            cylinder(
+                d=394, h=20,
+                center=true, $fn=100
+            );
+
+            translate([0, 4, 0])
+            cube([100, 20, 20], center=true);
+        }
+
+        for (i = [0:6]) {
+            translate([-45 + i*15, 0, 0])
+            rotate([90, 0, 0])
+            cylinder(d=3, h=60, center=true, $fn=20);
         }
     }
 }
