@@ -28,7 +28,7 @@ module _mobo(
         rotate([0, 90, 0])
         mock_mobo_card();
 
-        translate([15, 18, height - 60 - top_offset])
+        translate([12, 18, height - 60 - top_offset])
         rotate([0, 90, 0])
         motherboard_tray_atx(
             depth, render_threads=debug_threads,
@@ -60,7 +60,7 @@ module _mobo(
         rotate([0, 90, 0])
         mock_mobo_ee_atx();
 
-        translate([15, 18, height - 60 - top_offset])
+        translate([12, 18, height - 60 - top_offset])
         rotate([0, 90, 0])
         motherboard_tray_ee_atx(
             depth, render_threads=debug_threads,

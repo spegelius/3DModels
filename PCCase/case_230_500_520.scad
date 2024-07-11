@@ -43,7 +43,7 @@ e_count_h = 3;
 //motherboard_card_cover_iec_c8_wire_cover_lid();
 
 // view only
-//mockup();
+mockup();
 
 // w x 4 : 110 DONE BLACK
 // d : 140t + 120 + 120 = 380 BLACK DONE
@@ -72,50 +72,50 @@ module mockup() {
         width, height, e_count_w, e_count_d, e_count_h
     );
 
-    _front_beams(
-        width, depth, height, e_count_w,
-        e_count_d, e_count_h
-    );
+//    _front_beams(
+//        width, depth, height, e_count_w,
+//        e_count_d, e_count_h
+//    );
 
     _side_beams(
         width, depth, height,  e_count_w,
         e_count_d, e_count_h
     );
 
-    _hd_mocks(
-        width, depth, height, count=6, top_offset=150
-    );
+//    _hd_mocks(
+//        width, depth, height, count=6, top_offset=150
+//    );
 
-    _PSU(width);
+//    _PSU(width);
 
     //_feet(width, depth);
 
     _mobo("ATX", width, depth, height, top_offset=28);
 
-    translate([width/2 - 30/2, depth - 30/2 - 15, 115])
-    rotate([90, 0, 180])
-    fan_mount_140mm(width);
-
-    translate([width/2 - 30/2, depth - 30/2 - 15, 261.7])
-    rotate([90, 0, 180])
-    fan_mount_dual_140mm(width);
-
-    translate([width/2 - 30/2, depth - 30/2 - 15, 406.3])
-    rotate([90, 180, 180])
-    fan_mount_140mm(width);
+//    translate([width/2 - 30/2, depth - 30/2 - 15, 115])
+//    rotate([90, 0, 180])
+//    fan_mount_140mm(width);
+//
+//    translate([width/2 - 30/2, depth - 30/2 - 15, 261.7])
+//    rotate([90, 0, 180])
+//    fan_mount_dual_140mm(width);
+//
+//    translate([width/2 - 30/2, depth - 30/2 - 15, 406.3])
+//    rotate([90, 180, 180])
+//    fan_mount_140mm(width);
 
     //_bottom_cover(width, depth);
 
-    render()
-    front_covers();
-
-    render()
-    _top_covers(width, depth, height);
+//    render()
+//    front_covers();
+//
+//    render()
+//    _top_covers(width, depth, height);
 
     //_right_cover(width, depth, height);
 //    _left_cover(width, depth, height);
 
-    _warercooling();
+//    _warercooling();
 }
 
 module _top_covers(width, depth, height) {

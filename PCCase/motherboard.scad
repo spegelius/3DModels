@@ -21,12 +21,12 @@ use <frame_parts.scad>;
 //motherboard_tray_atx(430, render_threads=false);
 //motherboard_tray_atx(500);
 //motherboard_tray_atx(500, render_threads=false);
+//motherboard_tray_ee_atx(540);
 //motherboard_tray_ee_atx(540, render_threads=false);
-//motherboard_tray_ee_atx(540, render_threads=true);
-//motherboard_tray_ee_atx_1_1(540, render_threads=true);
-//motherboard_tray_ee_atx_1_2(540, render_threads=true);
-//motherboard_tray_ee_atx_2_1(540, render_threads=true);
-//motherboard_tray_ee_atx_2_2(540, render_threads=true);
+//motherboard_tray_ee_atx_1_1(540);
+//motherboard_tray_ee_atx_1_2(540);
+//motherboard_tray_ee_atx_2_1(540);
+//motherboard_tray_ee_atx_2_2(540);
 
 //motherboard_tray_mount_1();
 //motherboard_tray_mount_2();
@@ -37,7 +37,7 @@ use <frame_parts.scad>;
 //motherboard_tray_long_bow_tie_half();
 
 //motherboard_tray_screw();
-//motherboard_tray_screw_reinforced();
+motherboard_tray_screw_reinforced();
 
 //motherboard_back_plate(230, 480);
 //motherboard_back_plate(230, 520);
@@ -94,11 +94,11 @@ module debug_motherboard_tray() {
         430, render_threads=debug_threads
     );
 
-    translate([-15, -3, 26])
+    translate([-12, -3, 26])
     rotate([0, -90, -90])
     motherboard_tray_mount_1();
 
-    translate([-29, 9, 41])
+    translate([-25.5, 9, 41])
     rotate([0, 90, 0])
     motherboard_tray_screw(
         render_threads=false
@@ -221,7 +221,7 @@ module _mount_thread(h, render_threads) {
 }
 
 module _mount_stud() {
-    cylinder(d=7, h=3.1, $fn=20);
+    cylinder(d=7.2, h=6.1, $fn=20);
 }
 
 module _mounts(h, hole_matrix) {
@@ -1159,9 +1159,9 @@ module motherboard_tray_mount_1() {
                 cube([20, 15, 19], center=true);
             }
 
-            translate([50/2 - 20/2, 18/2, 21/2])
+            translate([50/2 - 20/2, 15/2, 21/2])
             chamfered_cube_side(
-                20, 18, 21, 1.2, center=true
+                20, 15, 21, 1.2, center=true
             );
 
         }
@@ -1177,18 +1177,18 @@ module motherboard_tray_mount_1() {
         );
 
         // mount groove
-        translate([50/2 - 20/2, 15 + 10/2, 0])
+        translate([50/2 - 20/2, 12 + 10/2, 0])
         cube([14, 10, 80], center=true);
 
-        translate([50/2 - 20/2, 18 + 10/2 - 1.2, 0])
+        translate([50/2 - 20/2, 15 + 10/2 - 1.2, 0])
         chamfered_cube_side(17, 10, 80, 1.5, center=true);
 
         // chamfers
-        translate([0, 21, 0])
+        translate([0, 18, 0])
         rotate([45, 0, 0])
         cube([60, 15, 15], center=true);
 
-        translate([0, 21, 24])
+        translate([0, 18, 24])
         rotate([45, 0, 0])
         cube([60, 15, 15], center=true);
 
@@ -1263,21 +1263,21 @@ module motherboard_tray_screw(render_threads=true) {
 
     difference() {
         union() {
-            translate([0, 0, 6.5/2])
+            translate([0, 0, 6/2])
             hull() {
                 cylinder(
-                    d=17.7, h=5.1, center=true, $fn=6
+                    d=17.7, h=4.6, center=true, $fn=6
                 );
                 cylinder(
-                    d=15.7, h=6.5, center=true, $fn=6
+                    d=16.2, h=6, center=true, $fn=6
                 );
             }
 
             cylinder(
-                d=mount_screw_d, h=6.5 + 22.3, $fn=30
+                d=mount_screw_d, h=6.5 + 18.3, $fn=30
             );
 
-            translate([0, 0, 6.5 + 22.2])
+            translate([0, 0, 6.5 + 18.2])
             _screw_thread();
         }
 
@@ -1296,7 +1296,7 @@ module motherboard_tray_screw_reinforced(
 
         cylinder(d=3.2, h=100, center=true, $fn=30);
 
-        translate([0, 0, 6.5 + 22.2 + 9 - 2])
+        translate([0, 0, 6.5 + 18.2 + 9 - 2])
         cylinder(d1=3.2, d2=6, h=2.1, $fn=30);
 
         M3_nut(cone=false, bridging=true);
