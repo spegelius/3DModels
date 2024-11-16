@@ -209,21 +209,21 @@ module sieve_4_5mm() {
     module _body() {
         difference() {
             union() {
-                cylinder(d=140, h=38, $fn=120);
+                cylinder(d=140, h=48, $fn=120);
 
-                translate([0, 0, 36.4])
+                translate([0, 0, 46.4])
                 chamfered_cylinder(
                     143.3, 20, (143.2 - 140)/2, $fn=120
                 );
             }
 
-            translate([0, 0, 50])
+            translate([0, 0, 60])
             cylinder(d=200, h=20);
 
             translate([0, 0, -1])
             cylinder(d=137.75, h=100, $fn=120);
 
-            translate([0, 0, 40])
+            translate([0, 0, 50])
             cylinder(d=141, h=30, $fn=120);
         }
     }
