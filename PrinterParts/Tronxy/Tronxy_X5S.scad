@@ -7,8 +7,6 @@ use <../../lib/bearings.scad>;
 
 
 //debug_tronxy_cable_pcb_mount();
-//debug_gt2_idler_625zz();
-
 
 //gt2_belt();
 //rounded_gt2_belt(10, 30);
@@ -29,9 +27,7 @@ use <../../lib/bearings.scad>;
 //tronxy_corner_bearing_mount_right();
 //tronxy_corner_bearing_mount_left();
 //tronxy_corner_bearing_mount_spacers();
-gt2_idler_625zz();
-//gt2_idler_625zz_retainer();
-//gt2_idler_625zz_spacer();
+
 //duet_case_frame_adapter();
 //z_chain_fix();
 //y_endstop_holder();
@@ -48,37 +44,6 @@ module debug_tronxy_cable_pcb_mount() {
     translate([-2, 2.75 + 9, 25])
     rotate([0, 0, 90])
     tronxy_cable_pcb_mount_tube_trap();
-}
-
-module debug_gt2_idler_625zz() {
-    intersection() {
-        rotate([0, 0, 22])
-        gt2_idler_625zz();
-
-        translate([0, 50/2, 0])
-        cube([50, 50, 50], center=true);
-    }
-
-    intersection() {
-        translate([0, 0, 11.01])
-        rotate([180, 0, 40])
-        gt2_idler_625zz_retainer();
-
-        translate([0, 50/2, 0])
-        cube([50, 50, 50], center=true);
-    }
-
-    translate([0, 0, 5.4])
-    gt2_idler_625zz_spacer();
-
-    %translate([0, 0, 0.4])
-    625zz();
-
-    %translate([0, 0, 11 - 5.4])
-    625zz();
-
-    translate([30, 0, 0])
-    gt2_idler_625zz_retainer();
 }
 
 module tronxy_z_rod_top_washer() {
@@ -159,8 +124,8 @@ module hotend_pcb() {
         translate([-0.4, -0.4, 0])
         for (i = [0:12]) {
             for (j = [0:12]) {
-                translate([i*2.54, j*2.54, 0])
-                cube([0.8, 0.8, 2]);
+                translate([i*2.54, j*2.54, -1])
+                cube([0.8, 0.8, 3]);
             }
         }
     }
@@ -904,108 +869,6 @@ module tronxy_corner_bearing_mount_spacers() {
     // middle spacer
     translate([5, 9, 0])
     tube(8.3, 1, (8.3 - 5.2)/2, $fn=60);   
-}
-
-module gt2_idler_625zz() {
-
-    d = 24;
-    h = 11;
-
-    union() {
-        difference() {
-            union() {
-                // edge
-                hull() {
-                    cylinder(d=d + 4, h=0.8, $fn=100);
-                    cylinder(d=d + 2.8, h=1.4, $fn=100);
-                }
-
-                // main idler
-                cylinder(d=d, h=h - 1.4, $fn=100);
-
-                // retainer locking part
-                translate([0, 0, h - 1.4])
-                cylinder(
-                    d1=d - 4, d2=d - 2.2,
-                    h=1, $fn=100
-                );
-            }
-            translate([0, 0, 0.4])
-            cylinder(d=16 + 0.2, h=h*3, $fn=100);
-
-            translate([0, 0, -0.4])
-            cylinder(d=14.2, h=2, $fn=100);
-
-            for(i = [0:3]) {
-                rotate([0, 0, 360/4*i])
-                translate([
-                    (d - 5)/2 + 2/2, 0,
-                    h - 1.4 + 2/2
-                ])
-                cube([2, 6, 2], center=true);
-            }
-        }
-        for(i = [0:6]) {
-            rotate([0, 0, 360/7*i])
-            translate([17/2, 0, 0])
-            cylinder(d=1.2, h=h - 0.4, $fn=20);
-        }
-
-//        #translate([0, 0, h/2])
-//        cube_donut(17, 2);
-    }
-}
-
-module gt2_idler_625zz_retainer() {
-    d = 24;
-    h = 11;
-
-    union() {
-        difference() {
-            // edge
-            hull() {
-                cylinder(d=d + 4, h=0.8, $fn=100);
-                cylinder(d=d + 2.8, h=1.4, $fn=100);
-            }
-
-            translate([0, 0, 0.4])
-            cylinder(d=d - 1.8, h=2, $fn=100);
-
-            translate([0, 0, -0.4])
-            cylinder(d=14.2, h=2, $fn=100);
-
-            for (i = [0:3]) {
-                rotate([0, 0, i*90 + 45])
-                translate([9, 0, 0])
-                cylinder(d=2, h=2, center=true, $fn=30);
-            }
-        }
-
-        difference() {
-            for (i = [0:3]) {
-                rotate([0, 0, i*90 + 45])
-                translate([
-                    (d - 4.8)/2 + 2/2, 0, 1/2 + 0.4
-                ])
-                cube([2, 5.5, 1], center=true);
-            }
-
-            translate([0, 0, 0.4])
-            cylinder(
-                d2=d - 3.8, d1=d - 2, h=1, $fn=100
-            );
-
-            translate([0, 0, 1.2])
-            cylinder(d=20.2, h=1.2, $fn=100);
-        }
-    }
-}
-
-module gt2_idler_625zz_spacer() {
-   difference() {
-       cylinder(d=15.9, h=0.2, $fn=50);
-       cylinder(d=10, h=2, center=true, $fn=50);
-   }
 }
 
 module duet_case_frame_adapter() {

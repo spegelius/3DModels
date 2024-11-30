@@ -20,10 +20,10 @@ single_z_path = str(
 //_original();
 //_original_motor_mount();
 //debug();
-//debug_z_motor_mount();
+debug_z_motor_mount();
 
 
-z_bottom();
+//z_bottom();
 //z_bottom_top();
 
 //slot_centering_peg();
@@ -40,7 +40,7 @@ z_bottom();
 //z_motor_mount_arm_cap();
 //z_motor_mount_arm_stopper();
 
-//623zz_idler_pulley();
+
 //pulley_washer();
 //center_rod_mount();
 //z_rod_support();
@@ -910,19 +910,6 @@ module z_motor_mount_arm_stopper() {
         }
 
         cylinder(d=4.3, h=10, $fn=30);
-    }
-}
-
-module 623zz_idler_pulley() {
-    difference() {
-        union() {
-            cylinder(d=13, h=8, $fn=60);
-            cylinder(d1=15.5, d2=13, h=1.25, $fn=60);
-
-            translate([0, 0, 8 - 1.25])
-            cylinder(d2=15.5, d1=13, h=1.25, $fn=60);
-        }
-        cylinder(d=10.1, h=50, center=true, $fn=60);
     }
 }
 
