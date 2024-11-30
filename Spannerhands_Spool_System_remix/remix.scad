@@ -1,6 +1,6 @@
 // original models from: https://www.thingiverse.com/thing:2119644
 
-//use <../lib/includes.scad>;
+use <../lib/bearings.scad>;
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Bearings/bearing5.scad>;
 
@@ -36,7 +36,7 @@ sph_stl_path = str(
 //debug_small_core_bearing();
 //debug_core_universal();
 //debug_core_universal_small();
-debug();
+//debug();
 //debug_thin();
 
 
@@ -63,8 +63,8 @@ debug();
 
 //new_thin_lid2_window();
 
-//nut();
-//bolt();
+//lid_nut();
+//lid_bolt();
 
 //new_base();
 //new_thin_base();
@@ -79,6 +79,12 @@ debug();
 //new_lid_bracket();
 //new_clasp_bracket();
 //new_ptfe_nozle();
+
+//bearing_bolt();
+//bearing_bolt_small();
+//bearing_spacer();
+bearing_spacer_small();
+//new_bearing_mount();
 
 //new_core_750g_50mm();
 //new_core_750g_51mm();
@@ -117,16 +123,35 @@ debug();
 //PTFE_coupler_printed_M4_seal();
 
 
+
+
 ////// MODULES //////
 module debug_core_1kg() {
-    translate([0, 0, 5.7])
-    new_core_1kg_50mm();
+    translate([14.5, 0, 0])
+    rotate([0, 90, 0])
+    intersection() {
+        union() {
+            new_core_1kg_50mm();
 
-    bearing_mount();
+            translate([0, 0, -5.6])
+            new_bearing_mount();
 
-    translate([0, 0, 87.5 + 2*5.7])
-    rotate([180, 0, 0])
-    bearing_mount();
+            translate([0, 0, 87.6 + 5.6])
+            rotate([180, 0, 0])
+            new_bearing_mount();
+        }
+
+        translate([100/2, 0, 0])
+        cube([100, 100, 200], center=true);
+    }
+
+    intersection() {
+        translate([0, 0, -111])
+        new_base1();
+
+//        translate([200/2 + 8, 0, 0])
+//        cube([200, 200, 400], center=true);
+    }
 }
 
 module debug_small_core() {
@@ -152,22 +177,35 @@ module debug_small_core() {
 }
 
 module debug_core_universal() {
+    translate([13.75, 0, 0])
+    rotate([0, 90, 0])
     intersection() {
         union() {
-            translate([0, 0, 5.7])
             core_1kg_universal();
 
-            bearing_mount();
+            %608zz();
 
-            translate([0, 0, 89.2 + 2*5.7])
+            translate([0, 0, 82])
+            %608zz();
+
+            translate([0, 0, -5.6])
+            new_bearing_mount();
+
+            translate([0, 0, 89 + 5.6])
             rotate([180, 0, 0])
-            bearing_mount();
+            new_bearing_mount();
+
+            translate([0, 0, 99/2 - 5])
+            rotate([0, 90, 100])
+            bearing_bolt();
         }
-        cube([100, 100, 200]);
+
+        translate([0, -100/2, 0])
+        cube([100, 100, 200], center=true);
     }
-    translate([0, 0, -8])
-    rotate([0, -90, 0])
-    new_lid1();
+
+    translate([0, 0, -111])
+    new_base1();
 }
 
 module debug_core_universal_small() {
@@ -294,8 +332,10 @@ module debug_thin() {
 
 module debug_new_bases() {
     translate([w_1kg/2 + 200, -34.25, 87.14])
-    import(str(sph_stl_path,
-        "BASE_v3_0_1kg_Spool.stl"), convexity=10);
+    import(str(
+        sph_stl_path,
+        "BASE_v3_0_1kg_Spool.stl"
+    ), convexity=10);
 
     intersection() {
         new_base2(support=false);
@@ -1518,7 +1558,91 @@ module new_ptfe_nozle() {
     nut_cylinder(d1=9, h=5.6);
 }
 
-module nut() {
+module new_bearing_mount() {
+    //%bearing_mount();
+
+    difference() {
+        union() {
+            hull() {
+                cylinder(d=27.5, h=1, $fn=90);
+
+                translate([0, 0, 2])
+                cylinder(d=30, h=3, $fn=90);
+            }
+
+            translate([0, 0, 4])
+            tube(22, 1.4, 1, $fn=90);
+
+            cylinder(d=11, h=5.6, $fn=70);
+        }
+
+        translate([0, 0, 0.6])
+        _threads(
+            d=8, h=20, z_step=1.8, depth=0.5,
+            direction=0, $fn=50
+        );
+    }
+}
+
+module bearing_bolt(h=89) {
+    hh = h + 10;
+    td = 8 - 4*0.15;
+    d = 7.9;
+
+    intersection() {
+        translate([0, 0, d/2 - 0.8])
+        union() {
+            translate([hh/2 - 5, 0, 0])
+            rotate([0, 90, 0])
+            _threads(
+                d=td, h=5.1, z_step=1.8,
+                depth=0.5, direction=0,$fn=50
+            );
+
+            translate([-hh/2 + 5, 0, 0])
+            rotate([0, 90, 180])
+            _threads(
+                d=td, h=5.1, z_step=1.8,
+                depth=0.5, direction=0,$fn=50
+            );
+
+            rotate([0, 90, 0])
+            cylinder(d=d, h=hh - 10, center=true, $fn=50);
+
+        }
+
+        difference() {
+            union() {
+                translate([0, 0, 8/2])
+                cube([hh - 10, 20, 8], center=true);
+
+                translate([-hh/2, 0, 6.4/2])
+                cube([10, 20, 6.4], center=true);
+
+                translate([hh/2, 0, 6.4/2])
+                cube([10, 20, 6.4], center=true);
+            }
+
+            translate([0, 0, d/2 - 0.8])
+            rotate([0, 90, 0])
+            cylinder(d=0.2, h=200, center=true, $fn=10);
+        }
+    }
+}
+
+module bearing_spacer(h=89) {
+    tube(10, h - 14, (10 - 8.2)/2, $fn=40);
+}
+
+module bearing_spacer_small() {
+    bearing_spacer(h=55.1);
+}
+
+module bearing_bolt_small() {
+    bearing_bolt(h=55.1);
+}
+
+module lid_nut() {
     difference() {
         M8_nut(h=15, cone=false);
 
@@ -1530,12 +1654,13 @@ module nut() {
     }
 }
 
-module bolt() {
+module lid_bolt() {
     l = 83 - 2*8 + 2*11;
     d = 8 - 4*0.15;
+
     difference() {
         intersection() {
-            translate([0,l/2, 8/2 - 1.1])
+            translate([0, l/2, 8/2 - 1.1])
             rotate([90, 0, 0]) {
                 _threads(
                     d=d, h=11, z_step=1.8,
@@ -1615,7 +1740,10 @@ module small_core_bearing() {
                 cylinder(d=50, h=5);
             }
             union() {
-                translate([0, 0, 5*1.05 + sqrt(ball_size*ball_size*2)/2])
+                translate([
+                    0, 0,
+                    5*1.05 + sqrt(ball_size*ball_size*2)/2
+                ])
                 cube_donut(30, ball_size);
 
                 translate([0, 0, 5*1.05])
@@ -1625,7 +1753,8 @@ module small_core_bearing() {
                         $fn=100
                     );
                     cylinder(
-                        d=26, h=sqrt(ball_size*ball_size*2) + 1,
+                        d=26,
+                        h=sqrt(ball_size*ball_size*2) + 1,
                         $fn=100
                     );
                 }
@@ -1633,7 +1762,9 @@ module small_core_bearing() {
                 translate([0, 0, 5*1.05])
                 cylinder(
                     d=12,
-                    h=sqrt(ball_size*ball_size*2)/2 - 7/2 - 0.1
+                    h=sqrt(
+                        ball_size*ball_size*2
+                    )/2 - 7/2 - 0.1
                 );
             }
         }
@@ -1694,17 +1825,28 @@ module _small_core(diameter) {
 }
 
 module _core_universal(h=89) {
-    
+
     module _wing() {
-        wall = 1;
+        wall = 1.4;
+
         intersection() {
             difference() {
                 cylinder(d=50, h=h, $fn=50);
-                cylinder(d=50 - wall*2, h=h, $fn=50);
+                cylinder(
+                    d=50 - wall*2, h=h*3,
+                    center=true, $fn=50
+                );
             }
+
             cube([26, 26, h]);
+
+            translate([-8, 0, 0])
+            rounded_cube(
+                50, 40, h, 8, $fn=30
+            );
         }
     }
+    //!_wing();
 
     module _core() {
         inner_d = 22.5;
@@ -1714,18 +1856,20 @@ module _core_universal(h=89) {
                 cylinder(d=inner_d + 3, h=h, $fn=80);
                 cylinder(d=22.5, h=h, $fn=80);
             }
-            translate([0, 0, 7 + sqrt(2)/2])
+            translate([0, 0, 7.1 + sqrt(2)/2])
             cube_donut(inner_d, 2);
 
-            translate([0, 0, h - (7 + sqrt(2)/2)])
+            translate([0, 0, h - (7.1 + sqrt(2)/2)])
             cube_donut(inner_d, 2);
 
-            for(i = [0:3]) {
-                rotate([0, 0, 360/4 * i]) {
+            for(i = [0:4]) {
+                rotate([0, 0, 360/5 * i]) {
                     translate([0, inner_d/2 + 0.2, 7/2])
                     cube([1, 1, 7], center=true);
 
-                    translate([0, inner_d/2 + 0.2, h - 7/2])
+                    translate([
+                        0, inner_d/2 + 0.2, h - 7/2
+                    ])
                     cube([1, 1, 7], center=true);
                 }
             }
@@ -1736,7 +1880,7 @@ module _core_universal(h=89) {
     intersection() {
         union() {
             _core();
-            for(i = [0:wings-1]) {
+            for(i = [0 : wings - 1]) {
                 rotate([0, 0, 360/wings*i])
                 translate([1.4, -12.5, 0])
                 _wing();
