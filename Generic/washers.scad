@@ -1,10 +1,33 @@
+//washer_M4(1.8);
+//washer_tronxy_idler();
+//tronxy_idler_spacer();
+//washer_13_8_1();
+//washer_7_5_2();
+//washer_7_5_2_5();
+//washer_20_5_20();
+//washer_16_8_2();
+//washer_5_3_4();
+//washer_29_19_1_2();
+//washer_19_12_1_4();
+//washer_19_12_1();
+
+//washer_plate(4, 8.5, 3.2, 0.8);
+//washer_plate(4, 10, 4.2, 4);
+//washer_plate(3, 10, 4.2, 3);
+//washer_plate(3, 8, 3.3, 10);
+//washer_plate(3, 7.5, 3.3, 3);
+//washer_plate(3, 7.6, 5.3, 3.6);
+//washer_plate(3, 7.6, 5.3, 4);
+//washer_plate(4, 7, 2.2, 1);
+washer_plate(4, 7.2, 3.5, 3);
 
 
-module _washer(outer_d, inner_d, h) {
+module _washer(outer_d,
+ inner_d, h) {
     $fn=80;
     difference() {
-        cylinder(d=outer_d,h=h);
-        cylinder(d=inner_d,h=h*3,center=true);
+        cylinder(d=outer_d, h=h);
+        cylinder(d=inner_d, h=h*3, center=true);
     }
 }
 
@@ -43,6 +66,14 @@ module washer_7_5_2_5() {
     _washer(7, 5.3, 2.5);
 }
 
+module washer_19_12_1_4() {
+    _washer(20, 12, 1.4);
+}
+
+module washer_19_12_1() {
+    _washer(20, 12, 1);
+}
+
 module washer_20_5_20() {
     _washer(20, 5.3, 20);
 }
@@ -54,6 +85,11 @@ module washer_16_8_2() {
 module washer_5_3_4() {
     _washer(5, 3.3, 4);
 }
+
+module washer_29_19_1_2() {
+    _washer(29, 19, 1.2);
+}
+
 
 module washer_plate(count_side, outer_d, inner_d, h) {
     union() {
@@ -90,21 +126,3 @@ module washer_plate(count_side, outer_d, inner_d, h) {
     }
 }
 
-//washer_M4(1.8);
-//washer_tronxy_idler();
-//tronxy_idler_spacer();
-//washer_13_8_1();
-//washer_7_5_2();
-//washer_7_5_2_5();
-//washer_20_5_20();
-//washer_16_8_2();
-//washer_5_3_4();
-
-//washer_plate(4, 8.5, 3.2, 0.8);
-//washer_plate(4, 10, 4.2, 4);
-//washer_plate(3, 10, 4.2, 3);
-//washer_plate(3, 8, 3.3, 10);
-//washer_plate(3, 7.5, 3.3, 3);
-//washer_plate(3, 7.6, 5.3, 3.6);
-//washer_plate(3, 7.6, 5.3, 4);
-washer_plate(4, 7, 2.2, 1);
