@@ -1,28 +1,43 @@
 include <../Dollo/New_long_ties/include.scad>;
 use <../Dollo/snappy-reprap/publicDomainGearV1.1.scad>;
 use <../Dollo/New_long_ties/mockups.scad>;
+use <../lib/bearings.scad>;
 
+
+// total teeth should be 44
 num_teeth_small = 14;
 num_teeth_large = 30;
+num_teeth_small_2 = 16;
+num_teeth_large_2 = 28;
+
 mm_per_tooth = 3.5;
 pressure_angle = 18;
-s_step = 360/num_teeth_small;
-l_step = 360/num_teeth_large;
 
-bearing_hole = 16.5;
+function steps_per_t(num_teeth) = 360/num_teeth;
+
+//s_step = 360/num_teeth_small;
+//l_step = 360/num_teeth_large;
+
+bearing_hole = 16.25;
 
 
 
 //debug_gears();
+//debug_gears_2();
 //debug();
 
 //mock_shaft();
 
 //small_gear();
 //large_gear();
+small_gear_2();
+//large_gear_2();
 //bottom();
-cover();
+//cover();
 //cover_bearing_holder();
+//large_gear_spacer_bottom();
+//large_gear_spacer_top();
+//gear_collar_jig();
 
 
 module _m3_bolt(h=6) {
@@ -39,8 +54,9 @@ module _m3_bolt(h=6) {
 module mock_shaft() {
     h = 27 + 2 + 22;
     echo(h);
+
     difference() {
-        cylinder(d=5, h=27 + 2 + 22, $fn=20);
+        cylinder(d=5, h=h, $fn=20);
 
         translate([5/2, 0, 0])
         cube([1, 5, 46], center=true);
@@ -53,6 +69,9 @@ module mock_shaft() {
 module debug_gears() {
 
     steps = 0;
+
+    s_step = steps_per_t(num_teeth_small);
+    l_step = steps_per_t(num_teeth_large);
 
     intersection() {
         union() {
@@ -68,20 +87,48 @@ module debug_gears() {
     }
 }
 
+module debug_gears_2() {
+
+    steps = 0;
+
+    s_step = steps_per_t(num_teeth_small_2);
+    l_step = steps_per_t(num_teeth_large_2);
+
+    intersection() {
+        union() {
+            translate([24.7, 0, 0])
+            rotate([0, 0, -steps * s_step])
+            small_gear_2();
+
+            rotate([0, 0, l_step/2 + steps * l_step])
+            large_gear_2();
+        }
+
+        //cylinder(d=80, h=5);
+    }
+}
+
 module debug() {
-    %translate([0, 0, -20])
+    %translate([0.3, 0, -20])
     rotate([90, 0, 45])
     mock_stepper_motor(center=true);
 
     intersection() {
         union() {
-            translate([0, 0, 6])
-            rotate([0, 0, 45])
-            small_gear();
+//            translate([0, 0, 6.2])
+//            rotate([0, 0, 45])
+//            //small_gear();
+//            small_gear_2();
+//
+//            translate([25, 0, 6.2])
+//            rotate([0, 0, -3])
+//            //large_gear();
+//            large_gear_2();
 
-            translate([25, 0, 6])
-            rotate([0, 0, -3])
-            large_gear();
+            translate([25, 0, 6.2])
+            rotate([0, 0, 180])
+            //debug_gears();
+            debug_gears_2();
 
             bottom();
 
@@ -92,17 +139,32 @@ module debug() {
             translate([25, 0, 0])
             rotate([0, 0, 87])
             mock_shaft();
+
+            translate([25, 0, 24.2])
+            cover_bearing_holder();
         }
         translate([0, 100/2, 0])
         cube([200, 100, 100],center=true);
     }
+
+    translate([25, 0, 5.6])
+    large_gear_spacer_bottom();
+
+    translate([25, 0, 23.2])
+    large_gear_spacer_top();
+
+    %translate([25, 0, 0.6])
+    625zz();
+
+    %translate([25, 0, 24.2])
+    625zz();
 }
 
-module small_gear() {
+module _small_gear(teeth) {
 
     // gear
-    twist = 16.85;
-    twist_constant = rack_h/2/twist;
+    s_twist = 16.85;
+    twist_constant = rack_h/2/s_twist;
 
     difference() {
 
@@ -112,9 +174,9 @@ module small_gear() {
             translate([0, 0, 10.4])
             hull() {
                 translate([0, 0, 1/2])
-                cylinder(d=18.5, h=6.61);
+                cylinder(d=17.1, h=6.61, $fn=50);
 
-                cylinder(d=17.5, h=7.61);
+                cylinder(d=16.1, h=7.61, $fn=50);
             }
 
             // lower gear half
@@ -122,10 +184,10 @@ module small_gear() {
                 translate([0, 0, 5.4/2 - 0.4])
                 gear (
                     mm_per_tooth    = mm_per_tooth,
-                    number_of_teeth = num_teeth_small,
+                    number_of_teeth = teeth,
                     thickness       = 5.4,
                     hole_diameter   = 2,
-                    twist           = -twist,
+                    twist           = -s_twist,
                     teeth_to_hide   = 0,
                     pressure_angle  = pressure_angle,
                     backlash        = 0
@@ -138,10 +200,10 @@ module small_gear() {
             mirror([0, 0, 1])
             gear (
                 mm_per_tooth    = mm_per_tooth,
-                number_of_teeth = num_teeth_small,
+                number_of_teeth = teeth,
                 thickness       = 5.4,
                 hole_diameter   = 2,
-                twist           = -twist,
+                twist           = -s_twist,
                 teeth_to_hide   = 0,
                 pressure_angle  = pressure_angle,
                 backlash        = 0
@@ -179,25 +241,32 @@ module small_gear() {
     _m3_bolt(8);   
 }
 
-module large_gear() {
+module small_gear() {
+    _small_gear(num_teeth_small);
+}
+
+module small_gear_2() {
+    _small_gear(num_teeth_small_2);
+}
+
+module _large_gear(teeth) {
 
     l_twist = 7.3;
 
     difference() {
         union() {
             // body
-            translate([0, 0, 10])
+            translate([0, 0, 9.9])
             hull() {
-                cylinder(d=19, h=6.61);
-
-                cylinder(d=18, h=7.11);
+                cylinder(d=17.1, h=6.6, $fn=50);
+                cylinder(d=16.1, h=7.1, $fn=50);
             }
 
             // lower gear half
             translate([0, 0, 5/2])
             gear (
                 mm_per_tooth    = mm_per_tooth,
-                number_of_teeth = num_teeth_large,
+                number_of_teeth = teeth,
                 thickness       = 5,
                 hole_diameter   = 2,
                 twist           = l_twist,
@@ -211,7 +280,7 @@ module large_gear() {
             mirror([0, 0, 1])
             gear (
                 mm_per_tooth    = mm_per_tooth,
-                number_of_teeth = num_teeth_large,
+                number_of_teeth = teeth,
                 thickness       = 5,
                 hole_diameter   = 2,
                 twist           = l_twist,
@@ -226,7 +295,7 @@ module large_gear() {
 
         translate([0, 0, 13.5])
         rotate([90, 30, 0])
-        cylinder(d=3.4, h=30, center=true);
+        cylinder(d=3.1, h=30, $fn=20, center=true);
 
         translate([0, -19/2 + 3.5, 13.5])
         rotate([90, 0, 0])
@@ -236,10 +305,11 @@ module large_gear() {
         rotate([-90, 0, 0])
         cylinder(d1=1, d2=7, h=3.5, $fn=30);
 
-        translate([0, -4.6, 13.5 + (8 - 6)/2])
+        // m3 square nut holes
+        translate([0, -4.3, 13.5 + (8 - 6)/2])
         cube([6, 2, 8], center=true);
 
-        translate([0, 4.6, 13.5 + (8 - 6)/2])
+        translate([0, 4.3, 13.5 + (8 - 6)/2])
         cube([6, 2, 8], center=true);
     }
 
@@ -250,6 +320,32 @@ module large_gear() {
     %translate([0, -19/2 - 0.9, 13.5])
     rotate([-90, 0, 0])
     _m3_bolt(8);
+}
+
+module large_gear() {
+    difference() {
+        _large_gear(num_teeth_large);
+
+        // hex
+        for(i = [0:7]) {
+            rotate([0, 0, i*360/8])
+            translate([11.5, 0, 0])
+            cylinder(d=5.5, h=40, center=true, $fn=6);
+        }
+    }
+}
+
+module large_gear_2() {
+    difference() {
+        _large_gear(num_teeth_large_2);
+
+        // hex
+        for(i = [0:7]) {
+            rotate([0, 0, i*360/8])
+            translate([0, 10.9, 0])
+            cylinder(d=5, h=40, center=true, $fn=6);
+        }
+    }
 }
 
 module _bolt_tower(h=20, indent=false, nub=false) {
@@ -410,6 +506,20 @@ module bottom() {
             cylinder(d=22.5, h=20, center=true, $fn=40);
         }
 
+        // motor hole chamfer
+        hull() {
+            translate([-0.5, 0, 0])
+            cylinder(
+                d1=18, d2=25, h=12,
+                center=true, $fn=40
+            );
+
+            translate([1.5, 0, 0])
+            cylinder(
+                d1=18, d2=25, h=12,
+                center=true, $fn=40
+            );
+        }
 
         // shaft bearing hole
         translate([25, 0, 0.6])
@@ -703,13 +813,15 @@ module cover() {
 module cover_bearing_holder() {
     difference() {
         union() {
-            cylinder(d=26.7, h=1, $fn=30);
-            cylinder(d=22, h=5, $fn=30);
+            cylinder(d=27, h=1, $fn=40);
+            cylinder(d=22.2, h=5.2, $fn=40);
         }
         // shaft bearing hole
         translate([0, 0, -1])
         difference() {
-            cylinder(d=bearing_hole, h=10, $fn=40);
+            chamfered_cylinder(
+                bearing_hole, 6.3, 0.5, $fn=60
+            );
 
             for(i = [0:4]) {
                 rotate([0, 0, 360/5*i])
@@ -717,5 +829,53 @@ module cover_bearing_holder() {
                 cylinder(d=1.5, h=10, $fn=20);
             }            
         }        
+    }
+}
+
+module large_gear_spacer_bottom() {
+     tube(8.3, 0.6, (8.3 - 5.2)/2, $fn=60);
+}
+
+module large_gear_spacer_top() {
+     tube(8.3, 1, (8.3 - 5.2)/2, $fn=60);
+}
+
+module gear_collar_jig() {
+    difference() {
+        union() {
+            cylinder(d=35, h=12);
+
+            translate([0, 0, 12/2])
+            cube([23, 50, 12], center=true);
+        }
+
+        cylinder(d=10, h=30, center=true);
+
+        translate([0, 0, 5])
+        tube(19.1, 8, 1.1, $fn=50);
+
+        translate([0, 0, 12 - 3.5])
+        rotate([90, 0, -20])
+        cylinder(d=2, h=60, $fn=15);
+
+        translate([0, 0, 12 - 3.5])
+        rotate([90, 0, 20])
+        cylinder(d=3, h=60, $fn=20);
+
+        translate([0, 0, 12 - 3.5])
+        rotate([90, 0, 200])
+        cylinder(d=2, h=60, $fn=15);
+
+        translate([0, 0, 12 - 3.5])
+        rotate([90, 0, 160])
+        cylinder(d=3, h=60, $fn=20);
+
+
+        translate([14/2 + 17/2, 0, 10/2 + 4.8])
+        cube([14, 5, 10], center=true);
+
+        translate([-14/2 - 17/2, 0, 10/2 + 4.8])
+        cube([14, 5, 10], center=true);
+
     }
 }
