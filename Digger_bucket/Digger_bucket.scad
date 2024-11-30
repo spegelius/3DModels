@@ -3,12 +3,15 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //_original_bucket();
 //debug_rotating_bucket();
 //debug_rotating_bucket_dc();
-test_rotating();
+//test_rotating();
 
 //rotating_bucket();
 //rotating_bucket_dc_yellow();
 //rotating_bucket_dc_black();
 
+//v_ditching_bucket();
+v_ditching_bucket_dc_black();
+//v_ditching_bucket_dc_yellow();
 
 
 module test_rotating() {
@@ -31,18 +34,18 @@ module test_rotating() {
 
 module _mount_axle() {
     // mount axle
-    translate([0, 0, 25/2])
+    translate([0, 0, 22/2])
     rotate([0, 90, 0])
-    cylinder(d=14, h=24, center=true);
+    cylinder(d=11, h=24, center=true, $fn=40);
 }
 
 module _arm() {
     // arm
     difference() {
         hull() {
-            translate([0, 0, 25/2])
+            translate([0, 0, 22/2])
             rotate([0, 90, 0])
-            cylinder(d=25, h=20, center=true);
+            cylinder(d=22, h=20, center=true, $fn=40);
 
             translate([0, -90, 25/2 + 1])
             cube([20, 1, 27], center=true);
@@ -56,13 +59,13 @@ module _arm() {
         rotate([-7, 0, 0])
         cube([10, 35, 50], center=true);
         
-        translate([-6, -44, 25])
-        rotate([-1.2, 0, 0])
-        cube([2, 50, 3], center=true);
+        translate([-6, -44, 24])
+        rotate([-2.4, 0, 0])
+        cube([2, 50, 3.4], center=true);
 
-        translate([6, -44, 25])
-        rotate([-1.2, 0, 0])
-        cube([2, 50, 3], center=true);
+        translate([6, -44, 24])
+        rotate([-2.4, 0, 0])
+        cube([2, 50, 3.4], center=true);
 
         translate([-6, -53, 0])
         cube([2, 60, 3], center=true);
@@ -73,42 +76,42 @@ module _arm() {
         translate([2, 0, 0])
         difference() {
             hull() {
-                translate([0, 0, 25/2])
+                translate([0, 0, 22/2])
                 rotate([0, 90, 0])
-                cylinder(d=27, h=2, center=true);
+                cylinder(d=24, h=2, center=true, $fn=40);
 
                 translate([0, -90, 25/2 + 1])
                 cube([2, 1, 29], center=true);
             }
 
             hull() {
-                translate([0, 0, 25/2])
+                translate([0, 0, 22/2])
                 rotate([0, 90, 0])
-                cylinder(d=21, h=2, center=true);
+                cylinder(d=19, h=2, center=true, $fn=40);
 
-                translate([0, -90, 25/2 + 1])
-                cube([2, 1, 23], center=true);
+                translate([0, -90, 22/2 + 1])
+                cube([2, 1, 21], center=true);
             }
         }
 
         translate([-2, 0, 0])
         difference() {
             hull() {
-                translate([0, 0, 25/2])
+                translate([0, 0, 22/2])
                 rotate([0, 90, 0])
-                cylinder(d=27, h=2, center=true);
+                cylinder(d=24, h=2, center=true, $fn=40);
 
                 translate([0, -90, 25/2 + 1])
                 cube([2, 1, 29], center=true);
             }
 
             hull() {
-                translate([0, 0, 25/2])
+                translate([0, 0, 22/2])
                 rotate([0, 90, 0])
-                cylinder(d=21, h=2, center=true);
+                cylinder(d=19, h=3, center=true, $fn=40);
 
-                translate([0, -90, 25/2 + 1])
-                cube([2, 1, 23], center=true);
+                translate([0, -90, 22/2 + 1])
+                cube([3, 1, 21], center=true);
             }
         }
     }
@@ -176,50 +179,48 @@ module _handles() {
     }
 
     union() {
-        translate([0, -27, 17])
+        translate([0, -29, 14])
         rotate([0, 90, 0])
         cylinder(d=9, h=60, center=true, $fn=40);
 
-        translate([60/2, -27, 17])
+        translate([60/2, -29, 14])
         rotate([0, 90, 0])
         _handle_end();
 
-        translate([-60/2, -27, 17])
+        translate([-60/2, -29, 14])
         rotate([0, 90, 0])
         _handle_end();
     }
 }
 
 module _arm_removed() {
-    translate([0, 0, 25/2])
+    translate([0, 0, 22/2])
     rotate([0, 90, 0])
     cylinder(d=4, h=34, center=true, $fn=30);
 
-    translate([8, 0, 25/2])
+    translate([8, 0, 22/2])
     rotate([0, 90, 0])
-    cylinder(d1=4, d2=12, h=5, $fn=30);
+    cylinder(d1=4, d2=10, h=4.5, $fn=30);
 
-    translate([-8, 0, 25/2])
+    translate([-8, 0, 22/2])
     rotate([0, -90, 0])
-    cylinder(d1=4, d2=12, h=5, $fn=30);
+    cylinder(d1=4, d2=10, h=4.5, $fn=30);
 
-    translate([0, -27, 17])
+    translate([0, -29, 14])
     rotate([0, 90, 0])
     cylinder(d=1, h=85, center=true, $fn=40);
 
-    translate([30, -27, 17])
+    translate([30, -29, 14])
     rotate([0, 90, 0])
     cylinder(d1=6, d2=14, h=5, $fn=30);
 
-    translate([-30, -27, 17])
+    translate([-30, -29, 14])
     rotate([0, -90, 0])
     cylinder(d1=6, d2=14, h=5, $fn=30);
 
     translate([0, -35, 27/2])
     rotate([90, 0, 0])
     cylinder(d=4, h=70, center=true, $fn=40);
-
-
 }
 
 module _bucket_removed() {
@@ -454,5 +455,122 @@ module rotating_bucket_dc_black() {
         }
         _arm_removed();
         _bucket_removed();
+    }
+}
+
+module _v_ditching_bucket() {
+
+    translate([0, -50, 0])
+    union() {
+        intersection() {
+            translate([50, -10, 70])
+            sphere(d=200, $fn=150);
+
+            translate([-50, -10, 70])
+            sphere(d=200, $fn=150);
+
+            translate([0, -10, 70])
+            rotate([0, 90, 0])
+            cylinder(d=165, h=110, center=true, $fn=150);
+
+            translate([0, -65, 40/2])
+            rotate([-10, 0, 0])
+            union() {
+                cube([200, 60, 40], center=true);
+
+                hull() {
+                    translate([0, 4, 40/2 - 9/2])
+                    cube([200, 60, 9], center=true);
+
+                    translate([0, 0, 40/2 - 10/2 - 5])
+                    cube([200, 60, 10], center=true);
+                }
+            }
+
+            translate([0, -78, 47/2])
+            cube([100, 100, 47], center=true);
+        }
+
+        intersection() {
+            translate([0, -10, 70])
+            rotate([0, 90, 0])
+            tube(165, 15, 2, center=true, $fn=150);
+
+            translate([0, -80, 46/2])
+            cube([100, 100, 46], center=true);
+        }
+    }
+}
+
+module _v_ditching_bucket_removed() {
+    translate([0, -50, 0])
+    union() {
+        intersection() {
+            translate([50, -10, 70])
+            sphere(d=196, $fn=150);
+
+            translate([-50, -10, 70])
+            sphere(d=196, $fn=150);
+
+            translate([0, -10, 70])
+            rotate([0, 90, 0])
+            cylinder(d=161, h=110, center=true, $fn=150);
+
+            translate([0, -65, 40/2])
+            rotate([-10, 0, 0])
+            union() {
+                cube([200, 56, 46], center=true);
+
+                translate([0, 4, 40/2 - 10/2 + 3])
+                cube([200, 62, 10], center=true);
+            }
+
+            translate([0, -80, 46/2 + 2])
+            cube([100, 200, 46], center=true);
+        }
+    }
+}
+
+module v_ditching_bucket() {
+    difference() {
+        union() {
+            _mount_axle();
+            _arm();
+            _v_ditching_bucket();
+            _handles();
+        }
+        _arm_removed();
+        _v_ditching_bucket_removed();
+    }
+}
+
+module _v_ditching_bucket_dc_form() {
+    difference() {
+        hull() {
+            translate([0, 0, 11])
+            rotate([0, 90, 0])
+            cylinder(d=19.1, h=30, center=true, $fn=40);
+
+            translate([0, -80, 23/2 + 1])
+            rotate([-10, 0, 0])
+            cube([30, 0.1, 23], center=true);
+        }
+        translate([0, -29, 14])
+        rotate([0, 90, 0])
+        cylinder(d=9.05, h=60, center=true, $fn=40);
+    }
+}
+
+module v_ditching_bucket_dc_black() {
+    difference() {
+        v_ditching_bucket();
+        _v_ditching_bucket_dc_form();
+    }
+}
+
+module v_ditching_bucket_dc_yellow() {
+    intersection() {
+        v_ditching_bucket();
+        _v_ditching_bucket_dc_form();
     }
 }
