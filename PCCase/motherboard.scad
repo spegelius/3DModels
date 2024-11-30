@@ -20,7 +20,7 @@ use <frame_parts.scad>;
 //motherboard_tray_atx(430);
 //motherboard_tray_atx(430, render_threads=false);
 //motherboard_tray_atx(500);
-//motherboard_tray_atx(500, render_threads=false);
+motherboard_tray_atx(500, render_threads=false);
 //motherboard_tray_ee_atx(540);
 //motherboard_tray_ee_atx(540, render_threads=false);
 //motherboard_tray_ee_atx_1_1(540);
@@ -37,7 +37,7 @@ use <frame_parts.scad>;
 //motherboard_tray_long_bow_tie_half();
 
 //motherboard_tray_screw();
-motherboard_tray_screw_reinforced();
+//motherboard_tray_screw_reinforced();
 
 //motherboard_back_plate(230, 480);
 //motherboard_back_plate(230, 520);
@@ -237,8 +237,8 @@ module _mounts(h, hole_matrix) {
         for(xy = hole_matrix) {
             translate([xy[0], xy[1], -0.1]) {
                 cylinder(
-                    d=3.5,h=h*4,
-                    center=true,$fn=30
+                    d=3.5, h=h*4,
+                    center=true, $fn=30
                 );
 
                 M3_nut(

@@ -11,8 +11,8 @@ use <../Dollo/NEW_long_ties/include.scad>;
 use <../lib/electric.scad>;
 
 
-width = 230;
-depth = 500;
+width = 330;
+depth = 520;
 height = 520;
 
 e_count_w = 1;
@@ -38,12 +38,12 @@ e_count_h = 3;
 
 //debug_iec_c8_wire_cover();
 //motherboard_io_cover_230_28();
-motherboard_card_cover_iec_c8_230_520_28();
+//motherboard_card_cover_iec_c8_230_520_28();
 //motherboard_card_cover_iec_c8_wire_cover();
 //motherboard_card_cover_iec_c8_wire_cover_lid();
 
 // view only
-//mockup();
+mockup();
 
 // w x 4 : 110 DONE BLACK
 // d : 140t + 120 + 120 = 380 BLACK DONE
@@ -140,10 +140,16 @@ module _top_covers(width, depth, height) {
 module _warercooling() {
 
     translate([
-        width/2 - 15, depth/2 - 25,
+        15 + 132/2, depth/2 - 25,
         height - 50
     ])
-    mock_radiator_360();
+    mock_radiator_360(fans=false);
+
+    translate([
+        15 + 132/2 + 132, depth/2 - 25,
+        height - 50
+    ])
+    mock_radiator_360(fans=false);
 
     translate([
         width/2 - 15, depth/2 - 228,
@@ -478,8 +484,7 @@ module motherboard_card_cover_iec_c8_230_520_28() {
     mock_iec_c8_female_connector();
 
     %translate([-51, 0, 5])
-    rotate([-90, 0, 0])
-    motherboard_card_cover_iec_c8_wire_cover();
+    iec_c8_230_520_28_wire_cover();
 }
 
 module motherboard_io_cover_230_28() {
