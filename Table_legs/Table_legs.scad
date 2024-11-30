@@ -25,7 +25,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //small_leg_2();
 //small_leg_3();
 
-//foot();
+foot();
 //small_foot();
 
 //holk();
@@ -489,8 +489,11 @@ module foot() {
     intersection() {
         difference() {
             union() {
-                v_screw(h=40, screw_d=38 - 0.5, pitch=3, direction=0,
-                    steps=100, depth=0.2, chamfer=true);
+                v_screw(
+                    h=40, screw_d=38 - 0.5, pitch=3,
+                    direction=0, steps=100,
+                    depth=0.2, chamfer=true
+                );
 
                 difference() {
                     scale([1.15, 1.15, 1])
