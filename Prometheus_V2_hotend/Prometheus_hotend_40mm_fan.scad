@@ -13,9 +13,10 @@ wall = 1.5;
 stl_path = "../_downloaded/";
 
 
-//debug();
+debug();
+//hotend_body();
 
-fan_shroud_40mm();
+//fan_shroud_40mm();
 //fan_shroud_40mm_cube_mount();
 
 
@@ -34,6 +35,8 @@ module debug() {
 //    rotate([78, 0, 0])
 //    translate([0, 0, 10/2])
 //    mock_fan_40mm();
+    %translate([0, 31, 0])
+    prometheus_v2_heat_sink_4mm();
 }
 
 module hotend_body() {
