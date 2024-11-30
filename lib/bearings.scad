@@ -12,7 +12,7 @@ module U604zz() {
 module 608zz() {
     difference() {
         cylinder(d=22, h=7, $fn=50);
-        cylinder(d=8, h=8, $fn=50);
+        cylinder(d=8, h=80, center=true, $fn=50);
     }
 }
 
