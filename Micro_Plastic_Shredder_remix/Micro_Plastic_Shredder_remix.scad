@@ -14,14 +14,17 @@ spath = str(
 
 //debug();
 //debug_reinforcement();
-//debug_hopper_extension();
+//debug_hopper_big();
 //debug_jar_adapter();
 //debug_plunger();
+//debug_filament_pelletizer();
 //_supports();
 
 
 //ChopSueySlim_BodyV2_1();
 //ChopSueySlim_BodyV2_1_special();
+
+//ChopSueySlim_HopperV2();
 
 //ChopSueySlim_BodyV2_reinforcement();
 
@@ -34,12 +37,17 @@ spath = str(
 
 //ChopSueySlim_Plunger_v2();
 //ChopSueySlim_Plunger_v2(15);
+//ChopSueySlim_Plunger_v2(28);
+
+//ChopSueySlim_Plunger_v2_pelletizer();
 
 //ChopSueySlim_output_extension();
 
-//ChopSueySlim_jar_adapter();
+ChopSueySlim_jar_adapter();
 
-test_holes_special();
+//test_holes_special();
+
+//reinforcement_qnd_fix();
 
 
 module _orig_body() {
@@ -106,6 +114,11 @@ module debug() {
         cube([300, 200, 300], center=true);
     }
 
+    translate([56.62, 19, 32.25])
+    rotate([-90, 0, 0])
+    //_orig_hopper();
+    ChopSueySlim_HopperV2();
+
 //    color("grey")
 //    translate([56.62 - 12.7/2 - 1/2 - 0.02, -19.875, 60/2 + 9])
 //    cube([1, 17, 60], center=true);
@@ -127,23 +140,24 @@ module debug() {
 module debug_reinforcement() {
     ChopSueySlim_BodyV2_1();
 
-    translate([28, -20, 54.7/2 + 5 + 0.3/2])
-    rotate([0, 90, 0])
+    translate([38, -20, 54.7/2 + 5 + 0.3/2])
+    rotate([0, -90, 0])
     ChopSueySlim_BodyV2_reinforcement();
 }
 
-module debug_hopper_extension() {
+module debug_hopper_big() {
 //    translate([0, 0, -5.65])
 //    rotate([0, 76.86, 0])
 
     translate([0, 0, -100])
-    _orig_hopper();
+    //_orig_hopper();
+    ChopSueySlim_HopperV2();
 
     // mouth size testing
 //    %translate([0, 0, 10])
 //    cube([30, 55, 1], center=true);
 
-    %ChopSueySlim_Hopper_extension();
+    %ChopSueySlim_Hopper_big();
 
     rotate([180, 0, 0])
     ChopSueySlim_Hopper_extension_clamp_1();
@@ -167,18 +181,40 @@ module debug_plunger() {
     intersection() {
         translate([56.62, 19, 32.25])
         rotate([-90, 0, 0])
-        _orig_hopper();
+        //_orig_hopper();
+        ChopSueySlim_HopperV2();
 
         cube([300, 300, 60], center=true);
     }
 
     intersection() {
-        translate([56.62, 64, 18])
+        translate([56.62, 64, 17])
         //_orig_plunger();
         ChopSueySlim_Plunger_v2();
 
         //cube([300, 200, 160], center=true);
     }
+}
+
+module debug_filament_pelletizer() {
+    intersection() {
+        _orig_body();
+
+        translate([0, 0, -200/2 + 30])
+        cube([200, 200, 200], center=true);
+    }
+
+    intersection() {
+        translate([56.62, 19, 32.25])
+        rotate([-90, 0, 0])
+        //_orig_hopper();
+        ChopSueySlim_HopperV2();
+
+        cube([300, 300, 60], center=true);
+    }
+
+    translate([56.62, 64, 18])
+    ChopSueySlim_Plunger_v2_pelletizer();
 }
 
 module ChopSueySlim_BodyV2_1() {
@@ -231,23 +267,55 @@ module ChopSueySlim_BodyV2_reinforcement() {
         translate([0, 0, 10/2])
         cube([54.7, 30, 10], center=true);
 
-        translate([-23, 10, 0])
+        // frame mount holes
+        translate([-22, 10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
 
-        translate([23, 10, 0])
+        translate([22, 10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
 
         translate([0, 10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
 
-        translate([-23, -10, 0])
+        translate([-22, -10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
 
-        translate([23, -10, 0])
+        translate([22, -10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
 
         translate([0, -10, 0])
         cylinder(d=2.5, h=30, center=true, $fn=30);
+
+        // adjustment screw holes
+        translate([22.5, -2, 0])
+        cylinder(d=3.5, h=30, center=true, $fn=30);
+
+        translate([11.75, -2, 0])
+        cylinder(d=3.5, h=30, center=true, $fn=30);
+
+        translate([1, -2, 0])
+        cylinder(d=3.5, h=30, center=true, $fn=30);
+
+        translate([-9.75, -2, 0])
+        cylinder(d=3.5, h=30, center=true, $fn=30);
+
+        translate([-20.5, -2, 0])
+        cylinder(d=3.5, h=30, center=true, $fn=30);
+
+        translate([22.5, -2, 3])
+        cylinder(d1=6, d2=8, h=10, $fn=30);
+
+        translate([11.75, -2, 3])
+        cylinder(d1=6, d2=8, h=10, $fn=30);
+
+        translate([1, -2, 3])
+        cylinder(d1=6, d2=8, h=10, $fn=30);
+
+        translate([-9.75, -2, 3])
+        cylinder(d1=6, d2=8, h=10, $fn=30);
+
+        translate([-20.5, -2, 3])
+        cylinder(d1=6, d2=8, h=10, $fn=30);
     }
 }
 
@@ -472,6 +540,37 @@ module ChopSueySlim_BodyV2_1_supports_soluble() {
         cube([200, 200, 34], center=true);
 
         cube([200, 200, 15], center=true);
+    }
+}
+
+module ChopSueySlim_HopperV2() {
+    difference() {
+        union() {
+            _orig_hopper();
+
+            difference() {
+                translate([0, 0, 80/2])
+                chamfered_cube_side(
+                    20, 43.6, 80, 8.2, center=true
+                );
+
+                hull() {
+                    translate([0, 0, 60])
+                    chamfered_cube_side(
+                        17, 23.4, 1, 1, center=true
+                    );
+
+                    translate([0, 0, 80])
+                    chamfered_cube_side(
+                        21, 39.4, 1, 1, center=true
+                    );
+                }
+            }
+        }
+        translate([0, 0, 80/2])
+        chamfered_cube_side(
+            12.7, 35, 88, 5, center=true
+        );
     }
 }
 
@@ -764,7 +863,7 @@ module ChopSueySlim_output_extension() {
 
 module ChopSueySlim_jar_adapter() {
     difference() {
-        cylinder(d=66, h=21, $fn=50);
+        cylinder(d=67, h=21, $fn=50);
 
         translate([0, 0, 3])
         difference() {
@@ -805,21 +904,42 @@ module ChopSueySlim_jar_adapter() {
     }
 }
 
-module ChopSueySlim_Plunger_v2(h=28) {
+module ChopSueySlim_Plunger_v2(h=30) {
     //%_orig_plunger();
 
     union() {
-        intersection() {
-            translate([0, 0, h/2])
-            cube([4, 150, h], center=true);
+        difference() {
+            intersection() {
+                translate([0, 5, h/2])
+                cube([4, 155, h], center=true);
 
-            union() {
-                translate([0, 150/2 - 50/2, h/2])
-                rotate([0, 90, 0])
-                cylinder(d=50, h=20, center=true, $fn=80);
+                union() {
+                    translate([0, 150/2 - 40/2 + 3, h/2])
+                    rotate([0, 90, 0])
+                    rounded_cylinder(
+                        40, 4, 3.4, center=true, $fn=70
+                    );
 
-                translate([0, -20, 0])
-                cube([20, 110, 80], center=true);
+                    translate([0, -13, 0])
+                    cube([4, 124, 80], center=true);
+                }
+            }
+            intersection() {
+                translate([-5, 150/2 - 40/2 + 6, h/2])
+                scale([0.4, 1, 1])
+                sphere(d=30, $fn=50);
+
+                translate([-10/2 - 1, 82, 0])
+                cube([10, 50, 100], center=true);
+            }
+
+            intersection() {
+                translate([5, 150/2 - 40/2 + 6, h/2])
+                scale([0.4, 1, 1])
+                sphere(d=30, $fn=50);
+
+                translate([10/2 + 1, 82, 0])
+                cube([10, 50, 100], center=true);
             }
         }
 
@@ -834,16 +954,53 @@ module ChopSueySlim_Plunger_v2(h=28) {
             cube([40, 40, 100], center=true);
         }
 
-        hull() {
-            translate([0, -150/2, h/2])
+        translate([0, -16, h/2])
+        rotate([90, 0, 0])
+        chamfered_cube_side(
+            10.2, h, 120, 3, center=true
+        );
+    }
+}
+
+module ChopSueySlim_Plunger_v2_pelletizer() {
+    difference() {
+        union() {
+            ChopSueySlim_Plunger_v2(h=30);
+
+            translate([0, -43, 30/2])
             rotate([90, 0, 0])
             chamfered_cube_side(
-                9, h, 2, 2.5, center=true
-            );
+                10.2, 30, 2, 3, center=true
+            );            
 
-            translate([0, -150/2 + 9, h/2])
-            cube([4, 1, h], center=true);
+            translate([1.35, -8, 30/2])
+            rotate([90, 0, -2])
+            scale([1, 1.3, 1])
+            cylinder(d=6.8, h=133, center=true, $fn=30);
         }
+
+        translate([1.35, -8, 30/2])
+        rotate([90, 0, -2])
+        scale([1, 1.1, 1])
+        cylinder(d=3, h=143, center=true, $fn=30);
+
+        translate([1.35, -8, 30/2])
+        rotate([-90, 0, -2])
+        translate([0, 0, 63.7])
+        scale([1, 1.1, 1])
+        cylinder(d1=3, d2=5, h=6, center=true, $fn=30);
+    }
+}
+
+module reinforcement_qnd_fix() {
+    difference() {
+        cube([21, 12, 10], center=true);
+
+        translate([21/2 - 12.8, 12/2 - 5, 0])
+        cylinder(d=3.6, h=30, center=true, $fn=30);
+
+        translate([21/2 - 0.2, 12/2 - 4, 0])
+        cylinder(d=3.6, h=30, center=true, $fn=30);
 
     }
 }
