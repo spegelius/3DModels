@@ -109,9 +109,11 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_stepdown_converter();
 //mock_stepdown_converter_2();
 //mock_stepdown_converter_3();
+//mock_buck_converter();
 //mock_liitinrima_small();
 //mock_liitinrima_big();
 //fan_mount_holes(80);
+//mock_am4_cpu();
 
 
 module mock_pci_slot() {
@@ -635,7 +637,7 @@ module mock_ssd() {
     cylinder(d=2.5, h=5, $fn=30);
 }
 
-module mock_ssd_enterprise() {
+module mock_ssd_enterprise(connector=false) {
     // HGST Ultrastar SS200 SXHLL
     union() {
         mock_ssd();
@@ -645,6 +647,15 @@ module mock_ssd_enterprise() {
             ssd_width, ssd_length,
             ssd_height_enterprise - 9
         ]);
+    }
+
+    // SAS cable connector
+    translate([47/2 + 6.3, -13/2, 8/2 - 1])
+    union() {
+        cube([47, 13, 8], center=true);
+
+        translate([0, -2, 0])
+        cube([34, 13, 5.4], center=true);
     }
 }
 
@@ -1053,7 +1064,7 @@ module mock_fan_40mm(h=10) {
 
         cylinder(d=38, h=55, center=true, $fn=90);
 
-        fan_mount_holes(40);
+        fan_mount_holes(40, h_d=4);
     }
 }
 
@@ -1752,6 +1763,86 @@ module mock_stepdown_converter_3() {
     }
 }
 
+module mock_buck_converter() {
+    difference() {
+        // PCB
+        cube([26.2, 61.7, 1.6], center=true);
+
+        // M3 holes
+        translate([26.2/2 - 2.6, 61.7/2 - 2.8, 0])
+        cylinder(d=3, h=5, center=true, $fn=20);
+
+        translate([-26.2/2 + 2.5, 61.7/2 - 2.8, 0])
+        cylinder(d=3, h=5, center=true, $fn=20);
+
+        translate([26.2/2 - 2.6, -61.7/2 + 2.8, 0])
+        cylinder(d=3, h=5, center=true, $fn=20);
+
+        translate([-26.2/2 + 2.5, -61.7/2 + 2.8, 0])
+        cylinder(d=3, h=5, center=true, $fn=20);
+    }
+
+    // connector legs
+    translate([5/2, 61.7/2 - 3, -1])
+    cylinder(d=0.7, h=1.8, center=true, $fn=10);
+
+    translate([-5/2, 61.7/2 - 3, -1])
+    cylinder(d=0.7, h=1.8, center=true, $fn=10);
+
+    translate([5/2, -61.7/2 + 3, -1])
+    cylinder(d=0.7, h=1.8, center=true, $fn=10);
+
+    translate([-5/2, -61.7/2 + 3, -1])
+    cylinder(d=0.7, h=1.8, center=true, $fn=10);
+
+    // connectors
+    translate([0, 61.7/2 - 7.5/2, 10/2 + 1.6/2])
+    cube([10, 7.5, 10], center=true);
+
+    translate([0, -61.7/2 + 7.5/2, 10/2 + 1.6/2])
+    cube([10, 7.5, 10], center=true);
+
+    // potentiometers
+    translate([
+        26.2/2 - 0.8 - 4.4/2, 9.5/2 + 2.5, 10/2 + 1.6/2
+    ]) {
+        cube([4.4, 9.5, 10], center=true);
+
+        translate([4.4/2 - 1.2, 9.5/2 - 1.2, 10/2])
+        cylinder(d=2.2, h=2, $fn=20);
+    }
+    translate([
+        26.2/2 - 0.8 - 4.4/2, -9.5/2 + 1.5, 10/2 + 1.6/2
+    ]) {
+        cube([4.4, 9.5, 10], center=true);
+
+        translate([4.4/2 - 1.2, 9.5/2 - 1.2, 10/2])
+        cylinder(d=2.2, h=2, $fn=20);
+    }
+
+    // coil
+    translate([0, -2, 1.6/2 + 15/2])
+    rotate([90, 0, 0])
+    cylinder(d=15, h=7.5, $fn=40);
+
+    //wires
+    translate([-3/2, 61.7/2, 3])
+    rotate([-90, 0, 0])
+    cylinder(d=1, h=20);
+
+    translate([3/2, 61.7/2, 3])
+    rotate([-90, 0, 0])
+    cylinder(d=1,h=20);
+
+    translate([-3/2, -61.7/2, 3])
+    rotate([90, 0, 0])
+    cylinder(d=1, h=20);
+
+    translate([3/2, -61.7/2, 3])
+    rotate([90, 0, 0])
+    cylinder(d=1, h=20);
+}
+
 module mock_led_3mm() {
     hull() {
         translate([0, 0, 4.6 - 2.8/2])
@@ -1846,4 +1937,43 @@ module mock_liitinrima_big(count=2) {
         dspacing=3.8, count=count,
         spacing=4.12, sd=3.7
     );
+}
+
+module mock_am4_cpu() {
+    // Package Height (IHS + PCB): .180" or 4.57mm (+.005" or .013mm for pin base/solder)
+    // PCB Height : .050" or 1.27mm
+    // IHS Width: 1.474" or 37.44
+    // PCB Width: 1.575" or 40.01
+
+    // Deducted IHS Height: .130" or 3.30mm
+    // Deducted Margin either side of IHS : .0505" or 1.283
+    // (Not touching the pins because I don't want to risk damage)
+    // https://en.wikichip.org/wiki/amd/packages/socket_am4
+
+    h = 2.11 + 4.56;
+
+    union() {
+        translate([0, 0, h - 1.3/2 - 3.35])
+        cube([40.2, 40.2, 1.3], center=true);
+
+        translate([0, 0, 2.11 + 4.56/2])
+        rounded_cube_side(
+            37.6, 37.6, 4.56, 4, center=true, $fn=30
+        );
+
+        difference() {
+            translate([0, 0, 2.2/2])
+            cube([39, 39, 2.2], center=true);
+
+            translate([-39/2, 39/2, 0])
+            cube([3.5, 3.5, 6], center=true);
+
+            for (i = [0:2]) {
+                rotate([0, 0, i*-90])
+                translate([39/2, 39/2, 0])
+                rotate([0, 0, 45])
+                cube([3.5, 3.5, 6], center=true);
+            }
+        }
+    }
 }
