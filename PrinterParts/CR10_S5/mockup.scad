@@ -5,6 +5,10 @@ use <mockups.scad>;
 use <Bondtech_Style_Extruder.scad>;
 use <../Tronxy/common.scad>;
 use <CR-10_S5_Y-reinforcement/CR-10_S5_Y-reinforcement.scad>;
+use <CR-10_S5_Y_Axis_motor_bracket/CR-10_S5_Y_Axis_motor_bracket.scad>;
+use <CR-10_S5_bed_insulation_retainers/bed_insulation_retainers.scad>;
+
+use <raspi_mount.scad>;
 
 
 w = 600;
@@ -20,8 +24,11 @@ echo(x_beam_y_pos);
 x_pos = 0;
 x_z_pos = 500;
 
+y_pos = 170;
+
 
 CR10_S5_frame();
+CR10_S5_bed();
 CR10_S5_hotend();
 //CR10_S5_hotend_e3d();
 CR10_S5_x_carriage();
@@ -30,8 +37,16 @@ CR10_S5_x_carriage_bondtech_e3d();
 CR10_S5_drag_chain_arm();
 CR10_S5_drag_chain_mount();
 CR10_S5_drag_chain_support();
+CR10_S5_control_box();
 
 debug_y_reinforcement();
+
+translate([0, 0, -9])
+debug_y_motor_bracket();
+
+translate([-469.9, 130.3, 115])
+rotate([0, 90, 180])
+debug_raspi_mount();
 
 
 module CR10_S5_frame() {
@@ -119,6 +134,38 @@ module CR10_S5_frame() {
         x_beam_z_pos + x_z_pos + 45 - 2.5/2,
     ])
     cube([50, 15, 2.5], center=true);
+}
+
+module CR10_S5_bed() {
+    translate([0, y_pos,  44 + 20 - 15])
+    union() {
+        translate([0, 0, 15 + 3.2/2])
+        cube([510, 510, 3.2], center=true);
+
+        color("lightgrey")
+        render()
+        translate([0, 0, 15/2])
+        difference() {
+            cube([510 - 60, 510 - 60, 15], center=true);
+            cube([510 - 120, 510 - 120, 16], center=true);
+        }
+
+        for(i = [0:3]) {
+            rotate([0, 0, i*360/4])
+            translate([510/2 - 85, 510/2 - 85, 0])
+            cylinder(d=4, h=15, $fn=20);
+        }
+
+        // heater
+        color("darkgrey")
+        translate([0, 0, 15 + 3.2/2 - 2])
+        cube([310, 310, 3.2], center=true);
+    }
+
+    color("darkgrey")
+    render()
+    translate([0, y_pos, 44 + 20 - 15])
+    debug_bed_insulation_retainers();
 }
 
 module CR10_S5_hotend() {
@@ -242,4 +289,22 @@ module CR10_S5_drag_chain_support() {
     translate([17.5, y + 87, z + 6.5])
     rotate([-90, 0, 180])
     drag_chain_support_level();
+}
+
+module CR10_S5_control_box() {
+    translate([-400, 0, 120/2])
+    difference() {
+        hull() {
+            cube([125.5, 300, 118], center=true);
+        }
+
+        translate([-125.5/2 + 13, 300/2 - 24, 118/2 - 5])
+        cylinder(d=3, h=10, $fn=20);
+
+        translate([
+            -125.5/2 + 13 + 22.75, 300/2 - 24, 118/2 - 5
+        ])
+        cylinder(d=3, h=10, $fn=20);
+
+    }
 }

@@ -24,7 +24,7 @@ dc_stl_path = str(
 //new_lid_M10(bridging=true);
 //new_lid_M10(bridging=false);
 //new_lid_M10_soluble_supports();
-new_lid_M10_nonsoluble_supports();
+//new_lid_M10_nonsoluble_supports();
 
 //625zz_lid_part();
 
@@ -44,7 +44,7 @@ new_lid_M10_nonsoluble_supports();
 
 //drag_chain_arm();
 //drag_chain_mount();
-//drag_chain_support();
+drag_chain_support();
 //drag_chain_support_level();
 
 
@@ -68,6 +68,42 @@ module _orig_base() {
     rotate([0, 0, 0])
     import(
         str(dc_stl_path, fname2), convexity=10
+    );
+}
+
+module _v6_duct() {
+    fname = "V6.6_Duct.stl";
+    stl_path = str(
+        stl_base_path,
+        "E3D-v6_fan_duct/"
+    );
+
+    import(
+        str(stl_path, fname), convexity=10
+    );
+}
+
+module _e3d_volcano_5015_duct() {
+    fname = "e3d-5015volcano.stl";
+    stl_path = str(
+        stl_base_path,
+        "E3D_Volcano_5015_fan_shroud/"
+    );
+
+    import(
+        str(stl_path, fname), convexity=10
+    );
+}
+
+module _e3d_volcano_5015_duct_remix() {
+    fname = "e3d_volcano_fan_duct.stl";
+    stl_path = str(
+        "../../",
+        "E3D_Volcano_fan_duct_remix/"
+    );
+
+    import(
+        str(stl_path, fname), convexity=10
     );
 }
 
@@ -121,30 +157,30 @@ module debug() {
 
 
 module debug_volcano() {
-    mock_creality_x_carriage();
+//    mock_creality_x_carriage();
 
     translate([16.6, -15.6, -48.2])
-    rotate([0, 0, 180])
+    rotate([0, 0, 0])
     e3d_Volcano();
 
-    #translate([16.6, -15.6, -26])
-    cylinder(d=2, h=60, $fn=30);
-
-    translate([21.1, -32.6, 46])
-    rotate([90, 0, 180])
-    original_extruder_assembly();
-
-    translate([58 - 20, -14.5/2 + 9, 11.5])
-    rotate([0, -90, 0])
-    cr_extruder_carriage_mount_e3d();
-
-    translate([16.6, -5.6, 17.5])
-    rotate([90, 0, 0])
-    e3d_volcano_mount_1();
-
-    translate([16.6, -25.6, 17.5])
-    rotate([-90, 0, 0])
-    e3d_volcano_mount_2();
+//    #translate([16.6, -15.6, -26])
+//    cylinder(d=2, h=60, $fn=30);
+//
+//    translate([21.1, -32.6, 46])
+//    rotate([90, 0, 180])
+//    original_extruder_assembly();
+//
+//    translate([58 - 20, -14.5/2 + 9, 11.5])
+//    rotate([0, -90, 0])
+//    cr_extruder_carriage_mount_e3d();
+//
+//    translate([16.6, -5.6, 17.5])
+//    rotate([90, 0, 0])
+//    e3d_volcano_mount_1();
+//
+//    translate([16.6, -25.6, 17.5])
+//    rotate([-90, 0, 0])
+//    e3d_volcano_mount_2();
 
     translate([-30, -10, 75])
     //rotate([0, -52.5, 0])
@@ -157,6 +193,18 @@ module debug_volcano() {
     translate([-50, 9, 65.5])
     rotate([90, 0, 0])
     cable_pcb_mount_adapter();
+
+    translate([16.6, -15.6, -20.1])
+    rotate([90, 0, 90])
+    _v6_duct();
+
+//    translate([3.1, -54, 4])
+//    rotate([-76.3, 0, 0])
+//    _e3d_volcano_5015_duct();
+
+    translate([9.8, -42.5, -44.5])
+    rotate([-76.3, 0, 0])
+    _e3d_volcano_5015_duct_remix();
 }
 
 module debug_pcb_mount() {
@@ -191,6 +239,12 @@ module debug_extruder() {
 
     translate([0, 0, 6.1])
     mock_bondtech_gear();
+
+    translate([8.57, 0.21, 6.1])
+    mock_bondtech_gear();
+
+//    #translate([8.57, 0.21, 6.1])
+//    cylinder(d=3, h=100, $fn=30);
 
     %translate([0, motor_side_length/2, -20])
     rotate([90, 0, 0])
@@ -1087,15 +1141,19 @@ module drag_chain_mount() {
 module drag_chain_support() {
     difference() {
         union() {
-            translate([0, 0, 10/2])
+            translate([0, 0, 10/2 + 4])
             rotate([0, 90, 0])
             chamfered_cube_side(10, 30, 5, 3, center=true);
+
+            translate([0, 0, 14/2])
+            rotate([0, 90, 0])
+            chamfered_cube_side(14, 30, 5, 6.9, center=true);
 
             translate([86/2, 0, 5/2])
             chamfered_cube(86, 7, 5, 1.4, center=true);
 
             hull() {
-                translate([5/2 - 1/2, 0, 10/2])
+                translate([5/2 - 1/2, 0, 10/2 + 4])
                 cube([1, 4.2, 10], center=true);
 
                 translate([20, 0, 5/2])
@@ -1103,66 +1161,85 @@ module drag_chain_support() {
             }
 
             // v-slot guides
-            translate([-1.8, 0, 10/2])
+            translate([-1.8, 0, 10/2 + 4])
             hull() {
                 cube([4, 7, 6.2], center=true);
                 cube([4 - 2 * 1.9, 7, 6.2 + 2 * 1.7], center=true);
             }
-            translate([-2.5, 0, 10/2])
+            translate([-2.5, 0, 10/2 + 4])
             cube([4, 7, 6.2], center=true);
         }
 
-        translate([0, 10, 10/2])
+        translate([0, 10, 10/2 + 4])
         rotate([0, 90, 0])
         cylinder(d=3.5, h=20, center=true, $fn=30);
 
-        translate([0, -10, 10/2])
+        translate([0, -10, 10/2 + 4])
         rotate([0, 90, 0])
         cylinder(d=3.5, h=20, center=true, $fn=30);
 
-        translate([1, 10, 10/2])
+        translate([1, 10, 10/2 + 4])
         rotate([0, 90, 0])
         cylinder(d=7, h=20, $fn=30);
 
-        translate([1, -10, 10/2])
+        translate([1, -10, 10/2 + 4])
         rotate([0, 90, 0])
         cylinder(d=7, h=20, $fn=30);
     }
 }
 
 module drag_chain_support_level() {
+    rotate([-30, 0, 0])
     difference() {
         union() {
-            translate([0, 2/2, 25/2])
-            cube([470, 2, 25], center=true);
+            translate([0, 2/2, 27/2])
+            cube([470, 2, 27], center=true);
 
-            translate([0, 8/2, 3/2])
-            cube([470, 8, 3], center=true);
+            rotate([30, 0, 0])
+            translate([0, -9/2 + 2, 0])
+            cube([470, 9, 2], center=true);
 
-            translate([460/2 - 25/2, 8/2, 25/2])
-            chamfered_cube_side(10, 8, 25, 1.4 + 3/4, center=true);
+            translate([0, 0, 27])
+            rotate([-30, 0, 0])
+            translate([0, -9/2 + 2, 0])
+            cube([470, 9, 2], center=true);
 
-            translate([460/2 - 25/2 - 133, 8/2, 25/2])
-            chamfered_cube_side(10, 8, 25, 1.4 + 3/4, center=true);
+            // mount bodies
+            translate([460/2 - 25/2, 8/2, 27/2])
+            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
 
-            translate([460/2 - 25/2 - 2*133, 8/2, 25/2])
-            chamfered_cube_side(10, 8, 25, 1.4 + 3/4, center=true);
+            translate([460/2 - 25/2 - 133, 8/2, 27/2])
+            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
 
-            translate([460/2 - 25/2 - 3*133, 8/2, 25/2])
-            chamfered_cube_side(10, 8, 25, 1.4 + 3/4, center=true);
+            translate([460/2 - 25/2 - 2*133, 8/2, 27/2])
+            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
+
+            translate([460/2 - 25/2 - 3*133, 8/2, 27/2])
+            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
         }
 
-        translate([460/2 - 25/2, 8/2, 25/2 + 1])
-        chamfered_cube_side(7.2, 5.2, 25, 1.42, center=true);
+        // mount holes
+        translate([460/2 - 25/2, 8/2, 27/2 + 1.5])
+        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
 
-        translate([460/2 - 25/2 - 133, 8/2, 25/2 + 1])
-        chamfered_cube_side(7.2, 5.2, 25, 1.42, center=true);
+        translate([460/2 - 25/2 - 133, 8/2, 27/2 + 1.5])
+        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
 
-        translate([460/2 - 25/2 - 2*133, 8/2, 25/2 + 1])
-        chamfered_cube_side(7.2, 5.2, 25, 1.42, center=true);
+        translate([460/2 - 25/2 - 2*133, 8/2, 27/2 + 1.5])
+        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
 
-        translate([460/2 - 25/2 - 3*133, 8/2, 25/2 + 1])
-        chamfered_cube_side(7.2, 5.2, 25, 1.42, center=true);
+        translate([460/2 - 25/2 - 3*133, 8/2, 27/2 + 1.5])
+        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
 
+        // chamfers
+
+        translate([0, 0, 27 + 5])
+        rotate([-30, 0, 0])
+        cube([480, 25, 6.7], center=true);
+
+        translate([0, 0, -5])
+        rotate([30, 0, 0])
+        cube([480, 25, 6.7], center=true);
+        
     }
 }
