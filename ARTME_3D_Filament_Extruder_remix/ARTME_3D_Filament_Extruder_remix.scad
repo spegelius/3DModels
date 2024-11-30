@@ -1,5 +1,6 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/mockups.scad>;
+use <../PCParts/common.scad>;
 
 use <../M4_slide_t-nut_3030_remix/M4_slide_t-nut_3030_remix.scad>;
 
@@ -12,6 +13,7 @@ spath = str(
 
 
 //_orig_MK3_ed_c();
+//_orig_MK3_el_h();
 //_MK3_ed_c_supports();
 //_623zz_bearing_hole();
 
@@ -26,7 +28,9 @@ spath = str(
 //MK3_cheapass_filament_gauge_tnut();
 //MK3_cheapass_filament_gauge_arm();
 //MK3_cheapass_filament_gauge_small_arm();
-MK3_cheapass_filament_gauge_test_sticks();
+//MK3_cheapass_filament_gauge_test_sticks();
+
+MK3_el_h_40mm_fan_addition();
 
 
 module _orig_MK3_ed_c() {
@@ -43,6 +47,17 @@ module _orig_MK3_ed_c() {
 //    rotate([90, 0, 0])
 //    cylinder(d=30.8, h=80, center=true, $fn=50);
     
+}
+
+module _orig_MK3_el_h() {
+    import(
+        str(
+            spath,
+            "EL (Electronics)/",
+            "el-h.stl"
+        ),
+        convexity=10
+    );  
 }
 
 module _orig_MK3_pu_a() {
@@ -89,14 +104,7 @@ module _orig_MK3_pu_e() {
     );  
 }
 
-module debug_MK3_cheapass_filament_gauge() {
-    //gap = 0;
-    //gap = 1.5;
-    //gap = 1.75;
-    gap = 2;
-
-    angle1 = gap/(2*PI*15.5)*360;
-
+module _MK3_assembly() {
     translate([-75, -27, 40])
     rotate([0, 90, 0])
     import(
@@ -107,17 +115,49 @@ module debug_MK3_cheapass_filament_gauge() {
         ), convexity=10
     );
 
+    // puller
     translate([6.5, -22, 34.4])
     rotate([0, 0, 180])
     mock_stepper_motor();
 
-    %translate([6.5, -45, 55.5])
-    rotate([90, 0, 0])
-    tube(13, 10, 4, $fn=60);
-
     translate([46.5 - 40, -17.5, 26])
     rotate([-90, 0, 0])
     _orig_MK3_pu_a();
+
+    %translate([6.5, -33.55, 14])
+    rotate([-90, 0, 0])
+    _orig_MK3_pu_c();
+
+    translate([7.4, -16, -5])
+    rotate([90, 0, 90])
+    _orig_MK3_pu_e();
+
+    translate([-20, -100, -70])
+    rotate([80, 0, -90])
+    _orig_MK3_el_h();
+
+    translate([-20, -100, -70])
+    rotate([80, 0, -90])
+    translate([0, 0, -2])
+    rotate([0, 180, 0])
+    MK3_el_h_40mm_fan_addition();
+
+    // puller gear
+    translate([6.5, -45, 55.5])
+    rotate([90, 0, 0])
+    tube(13, 10, 4, $fn=60);
+}
+
+module debug_MK3_cheapass_filament_gauge() {
+    //gap = 0;
+    gap = 1.35;
+    //gap = 1.5;
+    //gap = 1.75;
+    //gap = 2;
+
+    angle1 = gap/(2*PI*15.5)*360;
+
+    _MK3_assembly();
 
     translate([22, -43, 40.05])
     rotate([0, -91.8, 0])
@@ -126,6 +166,7 @@ module debug_MK3_cheapass_filament_gauge() {
     union() {
         MK3_pu_b_gauge();
 
+        // bearing
         %translate([15.5, -4.4, 2])
         rotate([90, 0, 0])
         tube(13, 5, 4.5, $fn=60);
@@ -136,16 +177,8 @@ module debug_MK3_cheapass_filament_gauge() {
 //    tube(57*2 + 2, 10, 1, $fn=100);
 
     color("darkgrey")
-    translate([6.5 + 13/2 + 1.75/2, -49, 55.5])
-    cube([1.75, 2, 10], center=true);
-
-    %translate([6.5, -33.55, 14])
-    rotate([-90, 0, 0])
-    _orig_MK3_pu_c();
-
-    translate([7.4, -16, -5])
-    rotate([90, 0, 90])
-    _orig_MK3_pu_e();
+    translate([6.5 + 13/2 + gap/2, -49, 55.5])
+    cube([gap, 2, 10], center=true);
 
     translate([55, -15, -8])
     rotate([90, 0, 0])
@@ -182,6 +215,15 @@ module debug_MK3_cheapass_filament_gauge() {
         translate([31.45, -26.8, 96.55])
         rotate([90, 7.65, 0])
         MK3_cheapass_filament_gauge_small_arm();
+    } else if (gap == 1.35) {
+        color("darkgrey")
+        translate([55, -21.4, 83])
+        rotate([90, -5.05, 0])
+        MK3_cheapass_filament_gauge_arm();
+
+        translate([30.91, -26.8, 96.645])
+        rotate([90, 7.65, 0])
+        MK3_cheapass_filament_gauge_small_arm();
     } else if (gap == 0) {
         color("darkgrey")
         translate([55, -21.4, 83])
@@ -199,6 +241,9 @@ module _623zz_bearing_hole() {
 
     difference() {
         cylinder(d=d + 0.1, h=7, $fn=60);
+
+        // for angle debugging
+        //cylinder(d=2.8, h=7, $fn=60);
 
         for(i = [0:4]) {
             rotate([0, 0, 360/5*i])
@@ -328,7 +373,7 @@ module MK3_cheapass_filament_gauge() {
             cube([1, 4, 4], center=true);
 
             color("black")
-            translate([-17, -28, 0])
+            translate([-18, -28, 0])
             rotate([0, 0, 35])
             linear_extrude(4)
             text("2.0", size=4, font="Arial:style=Bold");
@@ -346,7 +391,7 @@ module MK3_cheapass_filament_gauge() {
             cube([1, 4, 4], center=true);
 
             color("black")
-            translate([-9, -30, 0])
+            translate([-10, -30.5, 0])
             rotate([0, 0, 35])
             linear_extrude(4)
             text("1.75", size=4, font="Arial:style=Bold");
@@ -364,10 +409,22 @@ module MK3_cheapass_filament_gauge() {
             cube([1, 4, 4], center=true);
 
             color("black")
-            translate([3, -29.5, 0])
+            translate([2, -30, 0])
             rotate([0, 0, 35])
             linear_extrude(4)
             text("1.5", size=4, font="Arial:style=Bold");
+
+            // 1.35mm mark
+            color("black")
+            translate([9.65, -18.4, 4/2])
+            rotate([0, 0, 8])
+            cube([1, 2, 4], center=true);
+
+            color("black")
+            translate([10, -29.5, 0])
+            rotate([0, 0, 35])
+            linear_extrude(4)
+            text("1.35", size=4, font="Arial:style=Bold");
         }
 
         hull() {
@@ -509,26 +566,65 @@ module MK3_cheapass_filament_gauge_small_arm() {
 
 module MK3_cheapass_filament_gauge_test_sticks() {
     union() {
-        translate([0, 0, 2.4/2])
+        translate([0, 1, 2.4/2])
         chamfered_cube(
             120, 1.75, 2.4, 0.3, center=true
         );
 
-        translate([0, -5, 2.4/2])
+        translate([0, -2.5, 2.4/2])
         chamfered_cube(
             120, 1.5, 2.4, 0.3, center=true
         );
+
+        translate([0, -5, 2.4/2])
+        chamfered_cube(
+            120, 1.35, 2.4, 0.3, center=true
+        );        
 
         translate([0, 5, 2.4/2])
         chamfered_cube(
             120, 2, 2.4, 0.3, center=true
         );
 
+        // brims
         translate([-57.2, 0, 0.2/2])
         cube([5, 18, 0.2], center=true);
 
         translate([57.2, 0, 0.2/2])
         cube([5, 18, 0.2], center=true);
+    }
+}
 
+module MK3_el_h_40mm_fan_addition() {
+//    %rotate([0, 180, 0])
+//    _orig_MK3_el_h();
+
+    difference() {
+        hull() {
+            translate([50, 27])
+            rounded_cube_side(
+                50, 15, 4, 4, center=true, $fn=30
+            );
+
+            translate([50, -17])
+            rounded_cube_side(
+                43, 10, 4, 6, center=true, $fn=30
+            );
+        }
+
+        translate([50, 51, 0])
+        cylinder(d2=52, d1=49, h=5, center=true, $fn=50);
+
+        translate([50, 1, 0])
+        cylinder(d2=42, d1=39, h=5, center=true, $fn=50);
+
+        translate([50, 1, 0])
+        fan_mount_holes(40, h_d=2.7, h=100);
+
+        translate([50 - 20.43, 30.57, 0])
+        cylinder(d=2.7, h=20, center=true, $fn=20);
+
+        translate([50 + 20.43, 30.57, 0])
+        cylinder(d=2.7, h=20, center=true, $fn=20);
     }
 }
