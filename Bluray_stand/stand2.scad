@@ -28,7 +28,7 @@ back_beam_slot_w = 10;
 
 ////// VIEW //////
 //mock_assembly();
-//view_proper();
+view_proper();
 //plate();
 
 //foot_middle();
@@ -36,24 +36,24 @@ back_beam_slot_w = 10;
 //foot_right();
 
 // Left
-//translate([0,0,30/2-5])
-//rotate([-90,0,0])
+//translate([0, 0, 30/2 - 5])
+//rotate([-90, 0, 0])
 //side_beam(slot_count, 0, brim=true);
 
 // Right
-//translate([0,0,30/2-5])
-//rotate([-90,0,0])
+//translate([0, 0, 30/2-5])
+//rotate([-90, 0, 0])
 //side_beam(slot_count, 1, brim=true);
 
 // Both (middle)
-//translate([0,0,30/2-5])
-//rotate([-90,0,0])
+//translate([0, 0, 30/2 - 5])
+//rotate([-90, 0, 0])
 //side_beam(slot_count, 2, brim=true);
 
 // Back beam
-translate([0,0,35/2])
-rotate([0,90,0])
-back_beam(slot_count, brim=true);
+//translate([0, 0, 35/2])
+//rotate([0, 90, 0])
+//back_beam(slot_count, brim=true);
 
 //plate_middle();
 //plate_left();
@@ -607,26 +607,57 @@ module end_cap() {
 }
 
 module view_proper() {
-    count=5;
-    translate([0,95.5,0])
+    count = 18;
+
+    foot();
+
+    translate([0, 95.5, 2.65])
     back_beam(count);
 
-    translate([box_h/2+5,0,interval/cos(angle)+10.55])
+    translate([
+        box_h/2 + 5, 0, interval/cos(angle) + 13.15
+    ])
     side_beam(count, 0);
 
-    translate([-box_h/2-5,0,interval/cos(angle)+10.55])
+    translate([
+        -box_h/2 - 5, 0, interval/cos(angle) + 13.15
+    ])
     side_beam(count, 1);
     
-    %translate([-box_h/2,-35,102.1])
-    rotate([-angle,0,0])
-    rotate([0,90,0])
+    %translate([-box_h/2, -35, 104.9])
+    rotate([-angle, 0, 0])
+    rotate([0, 90, 0])
     mock_bluray_box();
 
-    translate([0,95.5+10.5,interval*count+3.5])
+    translate([0, 95.5 + 10.4, 0.7])
     plate();
-    
-    translate([0,0,-interval+13.8])
-    foot();
+
+    translate([
+        0, 95.5 + 10.4, 0.7 + interval/cos(angle) * count
+    ])
+    plate();
+
+    translate([
+        0, 97.5, 3.65 + interval/cos(angle) * count
+    ])
+    rotate([0, -90, 0])
+    end_cap_back();
+
+    translate([
+        -box_h/2 - 5, 10,
+        interval/cos(angle) * count + 36.9
+    ])
+    rotate([90, 0, 0])
+    end_cap();
+
+    translate([
+        box_h/2 + 5, 10,
+        interval/cos(angle) * count + 36.9
+    ])
+    rotate([90, 0, 0])
+    end_cap();
+
+    %cylinder(d=200, h=376);
 }
 
 
