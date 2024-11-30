@@ -412,7 +412,26 @@ module bracket_v2_front() {
 
 module bracket_v2_back() {
     mirror([1, 0, 0])
-    _bracker_v2_form();
+    difference() {
+        _bracker_v2_form();
+
+        // motor screw holes
+        translate([23, -33.5, 34.5])
+        rotate([0, -90, 0])
+        translate([
+            motor_bolt_hole_distance/2,
+            motor_bolt_hole_distance/2, 1.4
+        ])
+        cylinder(d=7.5, h=15, $fn=40);
+
+        translate([23, -33.5, 34.5])
+        rotate([0, -90, 0])
+        translate([
+            -motor_bolt_hole_distance/2,
+            -motor_bolt_hole_distance/2, 1.4
+        ])
+        cylinder(d=7.5, h=15, $fn=40);
+    }
 }
 
 module bracket_v2_pulley() {
