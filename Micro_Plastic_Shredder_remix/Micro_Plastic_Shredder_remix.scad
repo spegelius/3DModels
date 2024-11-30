@@ -35,15 +35,15 @@ spath = str(
 //ChopSueySlim_Hopper_big_clamp_1();
 //ChopSueySlim_Hopper_big_clamp_2();
 
-//ChopSueySlim_Plunger_v2();
-//ChopSueySlim_Plunger_v2(15);
-//ChopSueySlim_Plunger_v2(28);
+//ChopSueySlim_Plunger_v3();
+//ChopSueySlim_Plunger_v3(15);
+//ChopSueySlim_Plunger_v3(28);
 
-//ChopSueySlim_Plunger_v2_pelletizer();
+ChopSueySlim_Plunger_v3_pelletizer();
 
 //ChopSueySlim_output_extension();
 
-ChopSueySlim_jar_adapter();
+//ChopSueySlim_jar_adapter();
 
 //test_holes_special();
 
@@ -904,7 +904,7 @@ module ChopSueySlim_jar_adapter() {
     }
 }
 
-module ChopSueySlim_Plunger_v2(h=30) {
+module ChopSueySlim_Plunger_v3(h=30) {
     //%_orig_plunger();
 
     union() {
@@ -962,10 +962,10 @@ module ChopSueySlim_Plunger_v2(h=30) {
     }
 }
 
-module ChopSueySlim_Plunger_v2_pelletizer() {
+module ChopSueySlim_Plunger_v3_pelletizer() {
     difference() {
         union() {
-            ChopSueySlim_Plunger_v2(h=30);
+            ChopSueySlim_Plunger_v3(h=30);
 
             translate([0, -43, 30/2])
             rotate([90, 0, 0])
