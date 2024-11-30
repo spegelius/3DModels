@@ -1,0 +1,120 @@
+Changing monitoring state from "Offline" to "Detecting serial connection"
+Performing autodetection with 7 port/baudrate candidates: /dev/ttyUSB0@250000, /dev/ttyUSB0@115200, /dev/ttyUSB0@230400, /dev/ttyUSB0@57600, /dev/ttyUSB0@38400, /dev/ttyUSB0@19200, /dev/ttyUSB0@9600
+Trying port /dev/ttyUSB0, baudrate 250000
+Connecting to port /dev/ttyUSB0, baudrate 250000
+Handshake attempt #1 with timeout 2.0s
+Connected to: Serial<id=0x6f983c30, open=True>(port='/dev/ttyUSB0', baudrate=250000, bytesize=8, parity='N', stopbits=1, timeout=2.0, xonxoff=False, rtscts=False, dsrdtr=False), starting monitor
+Send: N0 M110 N0*125
+Recv: start
+Changing monitoring state from "Detecting serial connection" to "Operational"
+Recv: echo:Marlin 2.0.5.3
+Recv: 
+Recv: echo: Last Updated: 2020-03-31 | Author: Spegelius
+Send: N0 M110 N0*125
+Recv: echo:Compiled: Sep 15 2020
+Recv: echo: Free Memory: 2934  PlannerBufferBytes: 1632
+Recv: echo:V76 stored settings retrieved (668 bytes; crc 8167)
+Recv: echo:SD card ok
+Recv: ok
+Send: N1 M115*39
+Recv: FIRMWARE_NAME:Marlin 2.0.5.3 (GitHub) SOURCE_CODE_URL:https://github.com/MarlinFirmware/Marlin PROTOCOL_VERSION:1.0 MACHINE_TYPE:Dollo3D.2 EXTRUDER_COUNT:1 UUID:c5e2c1a5-6c1d-4036-a4bd-16767b149837
+Recv: Cap:SERIAL_XON_XOFF:0
+Recv: Cap:BINARY_FILE_TRANSFER:0
+Recv: Cap:EEPROM:1
+Recv: Cap:VOLUMETRIC:1
+Recv: Cap:AUTOREPORT_TEMP:1
+Recv: Cap:PROGRESS:0
+Recv: Cap:PRINT_JOB:1
+Recv: Cap:AUTOLEVEL:0
+Recv: Cap:Z_PROBE:0
+Recv: Cap:LEVELING_DATA:1
+Recv: Cap:BUILD_PERCENT:0
+Recv: Cap:SOFTWARE_POWER:0
+Recv: Cap:TOGGLE_LIGHTS:0
+Recv: Cap:CASE_LIGHT_BRIGHTNESS:0
+Recv: Cap:EMERGENCY_PARSER:0
+Recv: Cap:PROMPT_SUPPORT:0
+Recv: Cap:AUTOREPORT_SD_STATUS:0
+Recv: Cap:THERMAL_PROTECTION:1
+Recv: Cap:MOTION_MODES:0
+Recv: Cap:CHAMBER_TEMPERATURE:0
+Recv: ok
+Send: M21
+Recv: echo:SD card ok
+Recv: ok
+Send: M105
+Recv: ok T:29.12 /0.00 B:26.18 /0.00 @:0 B@:0
+Send: M503
+Recv: echo:  G21    ; Units in mm (mm)
+Recv: echo:  M149 C ; Units in Celsius
+Recv: 
+Recv: echo:; Filament settings: Disabled
+Recv: echo:  M200 D1.75
+Recv: echo:  M200 D0
+Recv: echo:; Steps per unit:
+Recv: echo: M92 X160.60 Y160.30 Z2133.34 E209.00
+Recv: echo:; Maximum feedrates (units/s):
+Recv: echo:  M203 X150.00 Y150.00 Z7.00 E100.00
+Recv: echo:; Maximum Acceleration (units/s2):
+Recv: echo:  M201 X2000.00 Y2000.00 Z100.00 E10000.00
+Recv: echo:; Acceleration (units/s2): P<print_accel> R<retract_accel> T<travel_accel>
+Recv: echo:  M204 P800.00 R2000.00 T1200.00
+Recv: echo:; Advanced: B<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate> J<junc_dev>
+Recv: echo:  M205 B20000.00 S0.00 T0.00 J0.02
+Recv: echo:; Home offset:
+Recv: echo:  M206 X0.00 Y0.00 Z0.00
+Recv: echo:; Mesh Bed Leveling:
+Recv: echo:  M420 S0 Z4.00
+Recv: echo:  G29 S3 I0 J0 Z-0.09000
+Recv: echo:  G29 S3 I1 J0 Z-0.09000
+Recv: echo:  G29 S3 I2 J0 Z-0.03000
+Recv: echo:  G29 S3 I3 J0 Z-0.21000
+Recv: echo:  G29 S3 I0 J1 Z-0.16500
+Recv: echo:  G29 S3 I1 J1 Z-0.13500
+Recv: echo:  G29 S3 I2 J1 Z-0.06000
+Recv: echo:  G29 S3 I3 J1 Z-0.19500
+Recv: echo:  G29 S3 I0 J2 Z0.01500
+Recv: echo:  G29 S3 I1 J2 Z0.06000
+Recv: echo:  G29 S3 I2 J2 Z0.10500
+Recv: echo:  G29 S3 I3 J2 Z-0.06000
+Recv: echo:  G29 S3 I0 J3 Z-0.07500
+Recv: echo:  G29 S3 I1 J3 Z-0.04500
+Recv: echo:  G29 S3 I2 J3 Z0.07500
+Recv: echo:  G29 S3 I3 J3 Z0.03000
+Recv: echo:  G29 S4 Z0.00000
+Recv: echo:; Material heatup parameters:
+Recv: echo:  M145 S0 H180 B70 F0
+Recv: echo:  M145 S1 H240 B110 F0
+Recv: echo:; PID settings:
+Recv: echo:  M301 P25.87 I2.15 D77.87
+Recv: echo:; Linear Advance:
+Recv: echo:  M900 K0.60
+Recv: echo:; Filament load/unload lengths:
+Recv: echo:  M603 L400.00 U400.00
+Recv: echo:; Backlash compensation:
+Recv: echo:  M425 F1.00 X0.20 Y0.10 Z0.00
+Recv: ok
+Send: M420V1
+Recv: Mesh Bed Level data:
+Recv: 4x4 mesh. Z offset: 0.00000
+Recv: Measured points:
+Recv:         0        1        2        3
+Recv:  0 -0.09000 -0.09000 -0.03000 -0.21000
+Recv:  1 -0.16500 -0.13500 -0.06000 -0.19500
+Recv:  2 +0.01500 +0.06000 +0.10500 -0.06000
+Recv:  3 -0.07500 -0.04500 +0.07500 +0.03000
+Recv: 
+Recv: echo:Bed Leveling OFF
+Recv: echo:Fade Height 4.00
+Recv: ok
+Send: M851
+Recv: echo:Unknown command: "M851"
+Recv: ok
+Send: M155 S2
+Recv: ok
+Send: M20
+Recv: Begin file list
+Recv: End file list
+Recv: ok
+Recv:  T:29.15 /0.00 B:26.10 /0.00 @:0 B@:0
+Recv:  T:29.12 /0.00 B:26.18 /0.00 @:0 B@:0
