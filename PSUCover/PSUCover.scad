@@ -4,25 +4,29 @@ include <../Dollo/NEW_long_ties/mockups.scad>;
 
 include <../PCParts/common.scad>;
 
-
-
 $fn=30;
+
+
 
 //%translate([53, 2.5, 35])
 //rotate([90, 0, 180])
 //mock_PSU_600W();
-//cord_socket_hole_AC_14_F1(nuts=true);
+
+//_cord_socket_hole_AC_14_F1(nuts=false);
 
 //cover1_360W();
 //cover2_360W();
 //cover2_360W_with_2020_ear();
+
 //cover_240W();
+cover_240W_2();
 //cover_240W_with_2020_ear();
+//cover_240W_AC_14_F1();
 //cover_240W_ATX();
 
 //bottom_bracket1();
 //bottom_bracket2();
-bottom_bracket3();
+//bottom_bracket3();
 
 //translate([0, -25, 0])
 //cord_holder();
@@ -30,10 +34,19 @@ bottom_bracket3();
 //translate([20, -25, 0])
 //cord_holder(false);
 
-//cord_socket_hole();
 
+module _grill(l) {
+    rotate([90, 0, 0])
+    hull() {
+        translate([-l/2, 0, 0])
+        cylinder(d=3, h=10, $fn=50, center=true);
 
-module cord_socket_hole_AC_14_F1(nuts=false) {
+        translate([l/2, 0, 0])
+        cylinder(d=3, h=10, $fn=50, center=true);
+    }
+}
+
+module _cord_socket_hole_AC_14_F1(nuts=false) {
     cut_side = 8.5;
     
     difference() {
@@ -218,21 +231,142 @@ module cover2_360W_with_2020_ear() {
     }
 }
 
-module cover_240W(grills=true, socket_hole=true) {
+module cover_240W(grills=true) {
     w = 111 + 4.5;
     l = 50 + 4.5;
     h = 70;
 
-    module grill(l) {
-        rotate([90, 0, 0])
-        hull() {
-            translate([-l/2, 0, 0])
-            cylinder(d=3, h=10, $fn=50, center=true);
+    difference() {
+        union() {
+            _cover_240W(grills=grills);
 
-            translate([l/2, 0, 0])
-            cylinder(d=3, h=10, $fn=50, center=true);
+            translate([30 - 20, -l/2 + 1/2, 1/2 + 1.5])
+            hull() {
+                cube([8, 1, 1], center=true);
+
+                translate([0, 3, 11])
+                cube([8, 4, 8], center=true);
+            }
+
+            translate([30 + 20, -l/2 + 1/2, 1/2 + 1.5])
+            hull() {
+                cube([8, 1, 1], center=true);
+
+                translate([0, 3, 11])
+                cube([8, 4, 8], center=true);
+            }
+        }
+
+        // cables hole
+        translate([20, 15, 0])
+        cylinder(d=12, h=5, center=true);
+
+        translate([-5, -l/2 - 0.01, 16])
+        rotate([-90, 0, 0])
+        mains_switch_hole();
+
+        translate([30, -l/2 - 1, 13])
+        rotate([-90, 0, 0])
+        cord_socket_hole();
+
+        translate([30 - 20, -l/2 + 2, 13])
+        rotate([0, 90, 90])
+        M3_nut(4);
+
+        translate([30 + 20, -l/2 + 2, 13])
+        rotate([0, 90, 90])
+        M3_nut(4);
+    }
+}
+
+module cover_240W_2(grills=true) {
+    w = 111 + 4.5;
+    l = 50 + 4.5;
+    h = 70;
+
+    difference() {
+        union() {
+            _cover_240W(grills=grills);
+
+            translate([20 - 20, -5, 4/2])
+            cylinder(d=11, h=4, $fn=6);
+
+            translate([20 + 20, -5, 4/2])
+            cylinder(d=11, h=4, $fn=6);
+        }
+
+        // cables hole
+        translate([-40, -5, 0])
+        cylinder(d=12, h=5, center=true);
+
+        translate([-15, -5, -0.01])
+        mains_switch_hole();
+
+        translate([20, -5, -1])
+        cord_socket_hole();
+
+        translate([20 - 20, -5, 2])
+        M3_nut(4);
+
+        translate([20 + 20, -5, 2])
+        M3_nut(4);
+
+        if (grills) {
+            translate([30, -l/2, h - 28])
+            _grill(25);
+
+            translate([30, -l/2, h - 36])
+            _grill(25);
+
+            translate([30, -l/2, h - 44])
+            _grill(25);
         }
     }
+}
+
+module cover_240W_AC_14_F1(grills=true) {
+    w = 111 + 4.5;
+    l = 50 + 4.5;
+    h = 70;
+
+    difference() {
+        union() {
+            _cover_240W(grills=grills);
+
+            translate([25, -l/2 + 3.5, 8/2 + 1.5])
+            cube([8, 4, 8], center=true);
+
+            translate([25, -l/2 + 3.5, 39 + 8/2 + 1.5])
+            hull() {
+                cube([8, 4, 8], center=true);
+
+                translate([0, -3, -2])
+                cube([8, 1, 10], center=true);
+            }
+        }
+
+        // cables hole
+        translate([20, 15, 0])
+        cylinder(d=12, h=5, center=true);
+
+        translate([26, -l/2, 25])
+        rotate([90, 0, 0])
+        _cord_socket_hole_AC_14_F1();
+
+        translate([25, -l/2 + 3.5, 8/2 + 1.5])
+        rotate([0, 90, 90])
+        M3_nut();
+
+        translate([25, -l/2 + 3.5, 39 + 8/2 + 1.5])
+        rotate([0, 90, 90])
+        M3_nut();
+    }
+}
+
+module _cover_240W(grills=true) {
+    w = 111 + 4.5;
+    l = 50 + 4.5;
+    h = 70;
 
     difference() {
         union() {
@@ -275,20 +409,6 @@ module cover_240W(grills=true, socket_hole=true) {
 
                 translate([-11, 0, -8/2])
                 cube([1, 43, 18], center=true);
-            }
-
-            // socket hole nut bodies
-            if (socket_hole) {
-                translate([25, -l/2 + 3.5, 8/2 + 1.5])
-                cube([8, 4, 8], center=true);
-
-                translate([25, -l/2 + 3.5, 39 + 8/2 + 1.5])
-                hull() {
-                    cube([8, 4, 8], center=true);
-
-                    translate([0, -3, -2])
-                    cube([8, 1, 10], center=true);
-                }
             }
         }
 
@@ -340,64 +460,46 @@ module cover_240W(grills=true, socket_hole=true) {
         rotate([0, 90, -90])
         M4_nut();
 
-        if (socket_hole) {
-            translate([26, -l/2, 25])
-            rotate([90, 0, 0])
-            cord_socket_hole_AC_14_F1();
-
-            translate([25, -l/2 + 3.5, 8/2 + 1.5])
-            rotate([0, 90, 90])
-            M3_nut();
-
-            translate([25, -l/2 + 3.5, 39 + 8/2 + 1.5])
-            rotate([0, 90, 90])
-            M3_nut();
-        }
-
-        // cables hole
-        translate([20, 15, 0])
-        cylinder(d=12, h=5, center=true);
-
         // grills
         if (grills) {
             translate([-w/2, 3, h - 20])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([-w/2, 3, h - 28])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([-w/2, 3, h - 36])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([w/2, 3, h - 20])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([w/2, 3, h - 28])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([w/2, 3, h - 36])
             rotate([0, 0, 90])
-            grill(20);
+            _grill(20);
 
             translate([30, -l/2, h - 20])
-            grill(25);
+            _grill(25);
 
             translate([-30, -l/2, h - 20])
-            grill(25);
+            _grill(25);
 
             translate([-30, -l/2, h - 28])
-            grill(25);
+            _grill(25);
 
             translate([-30, -l/2, h - 36])
-            grill(25);
+            _grill(25);
 
             translate([-30, -l/2, h - 44])
-            grill(25);
+            _grill(25);
         }
     }
 
