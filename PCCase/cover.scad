@@ -1440,7 +1440,9 @@ module front_cover_bottom(
             cube([30, 50, 60], center=true);
             
             hull() {
-                translate([-width/2 + 28, 0, height - 13])
+                translate([
+                    -width/2 + 28, 0, height - 13
+                ])
                 rotate([0, 45, 0])
                 translate([-30/2, -30/2 - 1.4, 0])
                 cube([30, 30, 60], center=true);
@@ -1627,10 +1629,14 @@ module front_cover_grill(
                     ])
                     hull() {
                         translate([-grill_w/2, 0, 0])
-                        cylinder(d=grill_d, h=30, $fn=30);
+                        cylinder(
+                            d=grill_d, h=30, $fn=30
+                        );
 
                         translate([grill_w/2, 0, 0])
-                        cylinder(d=grill_d, h=30, $fn=30);
+                        cylinder(
+                            d=grill_d, h=30, $fn=30
+                        );
                     }
                 }
 
@@ -1649,18 +1655,28 @@ module front_cover_grill(
                 difference() {
                     hull() {
                         translate([-grill_w/2, 0, 0])
-                        cylinder(d=grill_d - 3, h=31, $fn=30);
+                        cylinder(
+                            d=grill_d - 3,
+                            h=31, $fn=30
+                        );
 
                         translate([grill_w/2, 0, 0])
-                        cylinder(d=grill_d - 3, h=31, $fn=30);
+                        cylinder(
+                            d=grill_d - 3,
+                            h=31, $fn=30
+                        );
                     }
                     translate([0, -grill_d/2, grill_d/2])
                     hull() {
                         translate([-grill_w/2, 0, 0])
-                        cylinder(d=grill_d, h=30, $fn=30);
+                        cylinder(
+                            d=grill_d, h=30, $fn=30
+                        );
 
                         translate([grill_w/2, 0, 0])
-                        cylinder(d=grill_d, h=30, $fn=30);
+                        cylinder(
+                            d=grill_d, h=30, $fn=30
+                        );
                     }
                 }
             }
@@ -1742,7 +1758,9 @@ module front_cover_buttons(width, height, brim=true) {
                 rotate([0, 0, 35])
                 cube([50, 30, 25], center=true);
 
-                translate([-width/2 + 20, -17 - 8, b_pos])
+                translate([
+                    -width/2 + 20, -17 - 8, b_pos
+                ])
                 rotate([0, 0, -35])
                 cube([50, 30, 25], center=true);
             }

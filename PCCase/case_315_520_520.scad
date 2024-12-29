@@ -19,6 +19,8 @@ e_count_w = 1;
 e_count_d = 3;
 e_count_h = 3;
 
+// WIP, not ready yet!
+
 // case specific models to print
 //front_cover_grill_230_500_520_1();
 //front_cover_grill_230_500_520_2();

@@ -38,12 +38,12 @@ e_count_h = 3;
 
 //debug_iec_c8_wire_cover();
 //motherboard_io_cover_230_28();
-motherboard_card_cover_iec_c8_230_520_28();
+//motherboard_card_cover_iec_c8_230_520_28();
 //motherboard_card_cover_iec_c8_wire_cover();
 //motherboard_card_cover_iec_c8_wire_cover_lid();
 
 // view only
-//mockup();
+mockup();
 
 // w x 4 : 110 DONE BLACK
 // d : 140t + 120 + 120 = 380 BLACK DONE
@@ -72,51 +72,58 @@ module mockup() {
         width, height, e_count_w, e_count_d, e_count_h
     );
 
-//    _front_beams(
-//        width, depth, height, e_count_w,
-//        e_count_d, e_count_h
-//    );
+    _front_beams(
+        width, depth, height, e_count_w,
+        e_count_d, e_count_h
+    );
 
     _side_beams(
         width, depth, height,  e_count_w,
         e_count_d, e_count_h
     );
 
-//    _hd_mocks(
-//        width, depth, height, count=6, top_offset=150
-//    );
+    _hd_mocks(
+        width, depth, height, count=6, top_offset=150
+    );
 
-//    _PSU(width);
+    _PSU(width);
 
-    //_feet(width, depth);
+    _feet(width, depth);
 
     _mobo("ATX", width, depth, height, top_offset=28);
+    
+    _fans_front(width, depth);
 
-//    translate([width/2 - 30/2, depth - 30/2 - 15, 115])
-//    rotate([90, 0, 180])
-//    fan_mount_140mm(width);
-//
-//    translate([width/2 - 30/2, depth - 30/2 - 15, 261.7])
-//    rotate([90, 0, 180])
-//    fan_mount_dual_140mm(width);
-//
-//    translate([width/2 - 30/2, depth - 30/2 - 15, 406.3])
-//    rotate([90, 180, 180])
-//    fan_mount_140mm(width);
+    _bottom_cover(width, depth);
 
-    //_bottom_cover(width, depth);
+    front_covers();
 
-//    render()
-//    front_covers();
-//
-//    render()
-//    _top_covers(width, depth, height);
+    _top_covers(width, depth, height);
 
-    //_right_cover(width, depth, height);
-//    _left_cover(width, depth, height);
+    _right_cover(width, depth, height);
+
+    _left_cover(width, depth, height);
 
     _warercooling();
 }
+
+module _fans_front(width, depth) {
+    render()
+    translate([width/2 - 30/2, depth - 30/2 - 15, 115])
+    rotate([90, 0, 180])
+    fan_mount_140mm(width);
+
+    render()
+    translate([width/2 - 30/2, depth - 30/2 - 15, 261.7])
+    rotate([90, 0, 180])
+    fan_mount_dual_140mm(width);
+
+    render()
+    translate([width/2 - 30/2, depth - 30/2 - 15, 406.3])
+    rotate([90, 180, 180])
+    fan_mount_140mm(width);
+}
+
 
 module _top_covers(width, depth, height) {
 
@@ -126,15 +133,19 @@ module _top_covers(width, depth, height) {
 
     translate([width/2 - 15, 35.1, height - 15])
     rotate([90, 180, 180])
-    top_cover_grill_230_500_520_1(supports=false);
+    top_cover_grill_230_500_520_1(
+        brim=false, supports=false
+    );
 
     translate([width/2 - 15, 35.2 + 190, height - 15])
     rotate([90, 180, 180])
-    top_cover_grill_230_500_520_2(supports=false);
+    top_cover_grill_230_500_520_2(
+        brim=false, supports=false
+    );
 
     translate([width/2 - 15, 35.3 + 380, height - 15])
     rotate([90, 180, 180])
-    front_cover_bottom(width, 60);
+    front_cover_bottom(width, 60, brim=false);
 }
 
 module _warercooling() {
@@ -188,13 +199,13 @@ module front_covers() {
         height - 80 - 25
     ])
     rotate([0, 0, 180])
-    front_cover_buttons(width, 80);
+    front_cover_buttons(width, 80, brim=false);
 
     translate([
         width/2 - 30/2, depth - 30/2, 80 - 5
     ])
     rotate([180, 0, 0])
-    front_cover_bottom(width, 80);
+    front_cover_bottom(width, 80, brim=false);
 
     h = height - 80 - 80 - 20;
     echo("Front grills height:", h)
@@ -205,30 +216,32 @@ module front_covers() {
     ])
     rotate([0, 0, 180]) {
         front_cover_grill_230_500_520_1(
-            supports=false
+            brim=false, supports=false
         );
 
         translate([0, 0, 170.05])
         front_cover_grill_230_500_520_2(
-            supports=false
+            brim=false, supports=false
         );
     }
 }
 
 // case specific models
 module front_cover_grill_230_500_520_1(
-    supports=true
+    brim=true, supports=true
 ) {
     front_cover_grill(
-        width, 170, 23, 7.75, supports=supports
+        width, 170, 23, 7.75,
+        brim=brim, supports=supports
     );
 }
 
 module front_cover_grill_230_500_520_2(
-    supports=true
+    brim=true, supports=true
 ) {
     front_cover_grill(
-        width, 170, 23, 0.4, supports=supports
+        width, 170, 23, 0.4,
+        brim=brim, supports=supports
     );
 }
 
@@ -299,18 +312,20 @@ module front_cover_bottom_230_500_520_red() {
 }
 
 module top_cover_grill_230_500_520_1(
-    supports=true
+    brim=true, supports=true
 ) {
     front_cover_grill(
-        width, 190, 26, 6, supports=supports
+        width, 190, 26, 6,
+        brim=brim, supports=supports
     );
 }
 
 module top_cover_grill_230_500_520_2(
-    supports=true
+    brim=true, supports=true
 ) {
     front_cover_grill(
-        width, 190, 26, 0, supports=supports
+        width, 190, 26, 0,
+        brim=brim, supports=supports
     );
 }
 

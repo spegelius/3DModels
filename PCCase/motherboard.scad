@@ -1635,12 +1635,14 @@ module motherboard_tray_long_bow_tie_half() {
 }
 
 
-module motherboard_back_plate_ee_atx(width, height) {
+module motherboard_back_plate_ee_atx(
+    width, height, top_offset=0
+) {
     w = height - 160;
     d = width - 60;
 
     motherboard_back_plate(
-        width, height, top_offset=42
+        width, height, top_offset=42 + top_offset
     );
 }
 
