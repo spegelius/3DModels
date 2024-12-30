@@ -13,44 +13,55 @@ sf = 160;
 
 //debug();
 
-//side_cover_back_p1_pcmr_black(540, 550);
-//side_cover_back_p1_pcmr_white(540, 550);
-//side_cover_back_p1_pcmr_rest(540, 550);
-//side_cover_back_p1_pcmr_gold(540, 550);
+//side_cover_left_pcmr_black(540, 550);
+//side_cover_left_pcmr_gold(540, 550);
+//side_cover_left_pcmr_rest(540, 550);
+//side_cover_left_pcmr_white(540, 550);
 
-//side_cover_back_p2_pcmr_black(540, 550);
-//side_cover_back_p2_pcmr_white(540, 550);
-//side_cover_back_p2_pcmr_rest(540, 550);
-//side_cover_back_p2_pcmr_gold(540, 550);
-
-//side_cover_back_p3_pcmr_black(540, 550);
-//side_cover_back_p3_pcmr_white(540, 550);
-//side_cover_back_p3_pcmr_rest(540, 550);
-
-//side_cover_back_p4_pcmr_black(540, 550);
-//side_cover_back_p4_pcmr_white(540, 550);
-//side_cover_back_p4_pcmr_gold(540, 550);
-//side_cover_back_p4_pcmr_rest(540, 550);
+//side_cover_right_pcmr_black(540, 550);
+//side_cover_right_pcmr_gold(540, 550);
+//side_cover_right_pcmr_rest(540, 550);
+side_cover_right_pcmr_white(540, 550);
 
 
-//side_cover_front_p1_pcmr_black(540, 550);
-//side_cover_front_p1_pcmr_white(540, 550);
-//side_cover_front_p1_pcmr_rest(540, 550);
-//side_cover_front_p1_pcmr_gold(540, 550);
+//side_cover_left_p1_pcmr_black(540, 550);
+//side_cover_left_p1_pcmr_gold(540, 550);
+//side_cover_left_p1_pcmr_rest(540, 550);
+//side_cover_left_p1_pcmr_white(540, 550);
 
-//side_cover_front_p2_pcmr_black(540, 550);
-//side_cover_front_p2_pcmr_white(540, 550);
-//side_cover_front_p2_pcmr_rest(540, 550);
-//side_cover_front_p2_pcmr_gold(540, 550);
+//side_cover_left_p2_pcmr_black(540, 550);
+//side_cover_left_p2_pcmr_gold(540, 550);
+//side_cover_left_p2_pcmr_rest(540, 550);
+//side_cover_left_p2_pcmr_white(540, 550);
 
-side_cover_front_p3_pcmr_black(540, 550);
-//side_cover_front_p3_pcmr_white(540, 550);
-//side_cover_front_p3_pcmr_rest(540, 550);
+//side_cover_left_p3_pcmr_black(540, 550);
+//side_cover_left_p3_pcmr_rest(540, 550);
+//side_cover_left_p3_pcmr_white(540, 550);
 
-//side_cover_front_p4_pcmr_black(540, 550);
-//side_cover_front_p4_pcmr_white(540, 550);
-//side_cover_front_p4_pcmr_gold(540, 550);
-//side_cover_front_p4_pcmr_rest(540, 550);
+//side_cover_left_p4_pcmr_black(540, 550);
+//side_cover_left_p4_pcmr_gold(540, 550);
+//side_cover_left_p4_pcmr_rest(540, 550);
+//side_cover_left_p4_pcmr_white(540, 550);
+
+
+//side_cover_right_p1_pcmr_black(540, 550);
+//side_cover_right_p1_pcmr_gold(540, 550);
+//side_cover_right_p1_pcmr_rest(540, 550);
+//side_cover_right_p1_pcmr_white(540, 550);
+
+//side_cover_right_p2_pcmr_black(540, 550);
+//side_cover_right_p2_pcmr_gold(540, 550);
+//side_cover_right_p2_pcmr_rest(540, 550);
+//side_cover_right_p2_pcmr_white(540, 550);
+
+//side_cover_right_p3_pcmr_black(540, 550);
+//side_cover_right_p3_pcmr_rest(540, 550);
+//side_cover_right_p3_pcmr_white(540, 550);
+
+//side_cover_right_p4_pcmr_black(540, 550);
+//side_cover_right_p4_pcmr_gold(540, 550);
+//side_cover_right_p4_pcmr_rest(540, 550);
+//side_cover_right_p4_pcmr_white(540, 550);
 
 
 function scaling(depth, height) = 
@@ -181,362 +192,458 @@ module debug() {
     side_cover_front(540, 550);
 }
 
-// back
-module side_cover_back_p1_pcmr_black(depth, height) {
+// left side
+module side_cover_left_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_back_p1_pcmr_white(depth, height) {
+module side_cover_left_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_back_p1_pcmr_gold(depth, height) {
+module side_cover_left_pcmr_gold(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_back_p1_pcmr_rest(depth, height) {
+module side_cover_left_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();
     }
 }
 
-module side_cover_back_p2_pcmr_black(depth, height) {
+module side_cover_left_p1_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_back_p2_pcmr_white(depth, height) {
+module side_cover_left_p1_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_back_p2_pcmr_gold(depth, height) {
+module side_cover_left_p1_pcmr_gold(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_back_p2_pcmr_rest(depth, height) {
+module side_cover_left_p1_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();
     }
 }
 
-module side_cover_back_p3_pcmr_black(depth, height) {
+module side_cover_left_p2_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_back_p3_pcmr_white(depth, height) {
+module side_cover_left_p2_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_back_p3_pcmr_rest(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    difference() {
-        side_cover_back_p3(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_form();
-    }
-}
-
-module side_cover_back_p4_pcmr_black(depth, height) {
+module side_cover_left_p2_pcmr_gold(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p4(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_black();
-    }
-}
-
-module side_cover_back_p4_pcmr_white(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    intersection() {
-        side_cover_back_p4(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_white();
-    }
-}
-
-module side_cover_back_p4_pcmr_gold(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    intersection() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_back_p4_pcmr_rest(depth, height) {
+module side_cover_left_p2_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();
     }
 }
 
-// front
-module side_cover_front_p1_pcmr_black(depth, height) {
+module side_cover_left_p3_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p3(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_front_p1_pcmr_white(depth, height) {
+module side_cover_left_p3_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p3(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_front_p1_pcmr_gold(depth, height) {
+module side_cover_left_p3_pcmr_rest(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    difference() {
+        side_cover_left_p3(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_form();
+    }
+}
+
+module side_cover_left_p4_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_black();
+    }
+}
+
+module side_cover_left_p4_pcmr_white(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_left_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_white();
+    }
+}
+
+module side_cover_left_p4_pcmr_gold(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_left_p4(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_front_p1_pcmr_rest(depth, height) {
+module side_cover_left_p4_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p4(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();
     }
 }
 
-module side_cover_front_p2_pcmr_black(depth, height) {
+// right side
+module side_cover_right_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p2(depth, height);
+        side_cover_right(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_front_p2_pcmr_white(depth, height) {
+module side_cover_right_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p2(depth, height);
+        side_cover_right(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_front_p2_pcmr_gold(depth, height) {
+module side_cover_right_pcmr_gold(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p2(depth, height);
+        side_cover_right(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_front_p2_pcmr_rest(depth, height) {
+module side_cover_right_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_front_p2(depth, height);
+        side_cover_right(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();
     }
 }
 
-module side_cover_front_p3_pcmr_black(depth, height) {
+module side_cover_right_p1_pcmr_black(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_black();
     }
 }
 
-module side_cover_front_p3_pcmr_white(depth, height) {
+module side_cover_right_p1_pcmr_white(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_white();
     }
 }
 
-module side_cover_front_p3_pcmr_rest(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    difference() {
-        side_cover_front_p3(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_form();
-    }
-}
-
-module side_cover_front_p4_pcmr_black(depth, height) {
+module side_cover_right_p1_pcmr_gold(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p4(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_black();
-    }
-}
-
-module side_cover_front_p4_pcmr_white(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    intersection() {
-        side_cover_front_p4(depth, height);
-
-        scale([scaling, scaling, 1])
-        _pcmr_white();
-    }
-}
-
-module side_cover_front_p4_pcmr_gold(depth, height) {
-
-    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
-
-    intersection() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_gold();
     }
 }
 
-module side_cover_front_p4_pcmr_rest(depth, height) {
+module side_cover_right_p1_pcmr_rest(depth, height) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     difference() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p1(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_form();
+    }
+}
+
+module side_cover_right_p2_pcmr_black(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p2(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_black();
+    }
+}
+
+module side_cover_right_p2_pcmr_white(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p2(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_white();
+    }
+}
+
+module side_cover_right_p2_pcmr_gold(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p2(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_gold();
+    }
+}
+
+module side_cover_right_p2_pcmr_rest(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    difference() {
+        side_cover_right_p2(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_form();
+    }
+}
+
+module side_cover_right_p3_pcmr_black(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p3(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_black();
+    }
+}
+
+module side_cover_right_p3_pcmr_white(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p3(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_white();
+    }
+}
+
+module side_cover_right_p3_pcmr_rest(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    difference() {
+        side_cover_right_p3(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_form();
+    }
+}
+
+module side_cover_right_p4_pcmr_black(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_black();
+    }
+}
+
+module side_cover_right_p4_pcmr_white(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_white();
+    }
+}
+
+module side_cover_right_p4_pcmr_gold(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _pcmr_gold();
+    }
+}
+
+module side_cover_right_p4_pcmr_rest(depth, height) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    difference() {
+        side_cover_right_p4(depth, height);
 
         scale([scaling, scaling, 1])
         _pcmr_form();

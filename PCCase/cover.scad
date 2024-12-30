@@ -19,92 +19,142 @@ include <variables.scad>;
 //debug_cover_buttons_4_leds();
 //debug_cover_lens();
 
+
+// BOTTOM COVER MODELS
+//bottom(200, 400, fan_hole=false);
 //bottom(230, 430);
 //bottom(230, 500);
 //bottom(240, 540);
-//bottom_clip();
+//bottom_mount_clip();
 
-//bottom(200, 400, fan_hole=false);
+//test_bottom_clip();
 
-//side_cover_back(430, 480);
 
-//side_cover_back_p1(430, 480);
-//side_cover_back_p2(430, 480);
-//side_cover_back_p3(430, 480);
-//side_cover_back_p4(430, 480);
+// SIDE COVER MODELS 430x480
+//side_cover_left(430, 480);
+//side_cover_right(430, 480);
 
-//side_cover_front(430, 480);
+//side_cover_left_p1(430, 480);
+//side_cover_left_p2(430, 480);
+//side_cover_left_p3(430, 480);
+//side_cover_left_p4(430, 480);
 
-//side_cover_front_p1(430, 480);
-//side_cover_front_p2(430, 480);
-//side_cover_front_p3(430, 480);
-//side_cover_front_p4(430, 480);
+//side_cover_right_p1(430, 480);
+//side_cover_right_p2(430, 480);
+//side_cover_right_p3(430, 480);
+//side_cover_right_p4(430, 480);
 
-//side_cover_back(540, 525);
 
-//side_cover_back_p1(540, 525);
-//side_cover_back_p2(540, 525);
-//side_cover_back_p3(540, 525);
-//side_cover_back_p4(540, 525);
+// SIDE COVER MODELS 540x525
+//side_cover_left(540, 525);
+//side_cover_right(540, 525);
 
-//side_cover_front(540, 525);
-//side_cover_front_p1(540, 525);
-//side_cover_front_p2(540, 525);
-//side_cover_front_p3(540, 525);
-//side_cover_front_p4(540, 525);
+//side_cover_left_p1(540, 525);
+//side_cover_left_p2(540, 525);
+//side_cover_left_p3(540, 525);
+//side_cover_left_p4(540, 525);
+
+//side_cover_right_p1(540, 525);
+//side_cover_right_p2(540, 525);
+//side_cover_right_p3(540, 525);
+//side_cover_right_p4(540, 525);
+
+// SIDE COVER MODELS 540x550
+//side_cover_left(540, 550);
+//side_cover_right(540, 550);
+
+//side_cover_left_p1(540, 550);
+//side_cover_left_p2(540, 550);
+//side_cover_left_p3(540, 550);
+//side_cover_left_p4(540, 550);
+
+//side_cover_right_p1(540, 550);
+//side_cover_right_p2(540, 550);
+//side_cover_right_p3(540, 550);
+//side_cover_right_p4(540, 550);
+
+
+// SIDE COVER MODELS 500x520
+//side_cover_left(500, 520);
+//side_cover_right(500, 520);
+
+//side_cover_left_p1(500, 520);
+//side_cover_left_p2(500, 520);
+//side_cover_left_p3(500, 520);
+//side_cover_left_p4(500, 520);
+
+//side_cover_right_p1(500, 520);
+//side_cover_right_p2(500, 520);
+//side_cover_right_p3(500, 520);
+//side_cover_right_p4(500, 520);
+
+
+// GENERIC SIDE COVER MODELS
+//side_cover_split_clip();
 
 //side_cover_mount();
 
-//side_cover_mount_split_center_front();
-//side_cover_mount_split_center_front(_offset=0.4);
-//side_cover_mount_split_center_front(_offset=0.8);
-//side_cover_mount_split_ring_front();
+//side_cover_mount_split_center_left();
+//side_cover_mount_split_center_left(_offset=0.4);
+//side_cover_mount_split_center_left(_offset=0.8);
+//side_cover_mount_split_ring_left();
 
-//side_cover_mount_split_center_back();
-//side_cover_mount_split_center_back(_offset=0.4);
-//side_cover_mount_split_center_back(_offset=0.8);
-//side_cover_mount_split_ring_back();
+//side_cover_mount_split_center_right();
+//side_cover_mount_split_center_right(_offset=0.4);
+//side_cover_mount_split_center_right(_offset=0.8);
+//side_cover_mount_split_ring_right();
 
-
-side_cover_split_clip();
-
-//test_bottom_clip();
 //test_side_cover_split_clip();
 
-//front_cover_bottom(230, 80);
-//front_cover_bottom(230, 60);
-//front_cover_bottom(230, 40);
-//front_cover_bottom(230, 32, snap=true);
-//front_cover_bottom(230, 100, snap=true);
-//front_cover_buttons(230, 80);
 
-//front_cover_grill(230, 300, 40, 4, supports=true);
-//front_cover_grill(230, 150, 20, 8, supports=true);
-//front_cover_grill(230, 150, 21, 0, supports=true);
+// FRONT COVER MODELS
+//front_cover_end(230, 40);
+//front_cover_end(230, 60);
+//front_cover_end(230, 60, snap=true);
+//front_cover_end(230, 80);
+//front_cover_end(230, 80, snap=true);
+//front_cover_end(230, 100);
+//front_cover_end(230, 100, snap=true);
 
-//front_cover_bottom(240, 80);
-//front_cover_bottom(240, 130);
-//front_cover_bottom(240, 40);
-//front_cover_bottom(230, 40);
-//front_cover_bottom(230, 60);
+//front_cover_end(240, 40);
+//front_cover_end(240, 80);
+//front_cover_end(240, 80, snap=true);
+//front_cover_end(240, 130);
+//front_cover_end(240, 130, snap=true);
 
+//front_cover_buttons(230, 70);
 //front_cover_buttons(230, 80);
 //front_cover_buttons(240, 70);
+//front_cover_buttons(240, 80);
 
-//front_cover_buttons_4_leds(240, 80);
 //front_cover_buttons_4_leds(240, 70);
+//front_cover_buttons_4_leds(240, 80);
 
 //front_cover_buttons_mount();
 //front_cover_buttons_mount_4_leds();
 
-//front_cover_grill(240, 172, 23, 10, supports=true);
-//front_cover_grill(240, 173, 23, 1, supports=true);
+// 230x480 case
+//front_cover_grill(230, 300, 40, 4, supports=true);
+//front_cover_grill(230, 300, 40, 4, supports=false);
+//front_cover_grill(230, 150, 21, 1.5, supports=true);
+//front_cover_grill(230, 150, 21, 1.5, supports=false);
 
-//front_cover_grill(240, 175, 24, 6, supports=true);
-//front_cover_grill(240, 175, 21, 0, supports=true);
+// 230x520 case
+//front_cover_grill(230, 170, 24, 0, supports=true);
+//front_cover_grill(230, 170, 24, 0, supports=false);
 
-//front_cover_grill(240, 420/2, 28, 10, supports=true);
-//front_cover_grill(240, 420/2, 29, 2, supports=true);
+// 240x525 case
+//front_cover_grill(240, 172, 24, 1.25, supports=true);
+//front_cover_grill(240, 172, 24, 1.25, supports=false);
+
+// 240x550 case
+//front_cover_grill(240, 420/2, 29, 4, supports=true);
+//front_cover_grill(240, 420/2, 29, 4, supports=false);
+//front_cover_grill(240, 420/3, 19, 4, supports=true);
+//front_cover_grill(240, 420/3, 19, 4, supports=false);
+
+//front_cover_grill(240, 175, 24, 3, supports=true);
+//front_cover_grill(240, 175, 24, 3, supports=false);
 
 //front_cover_snap_clip_left();
 //front_cover_snap_clip_right();
@@ -119,7 +169,7 @@ side_cover_split_clip();
 //top_cover_grill_end(240, 150, 15, 0, brim=true);
 
 //cover_button();
-//cover_lens_5mm_led();
+cover_lens_5mm_led();
 
 
 module debug_bottom() {
@@ -421,7 +471,7 @@ module bottom(width, depth, fan_hole=true) {
     }
 }
 
-module bottom_clip() {
+module bottom_mount_clip() {
     difference() {
         union() {
             rotate([90, 0, 0])
@@ -465,21 +515,20 @@ module bottom_clip() {
     }
 }
 
+// TODO
 module bottom_split_1(width, depth) {
     intersection() {
         bottom(width, depth);
-        
     }
-
 }
 
 module test_bottom_clip() {
     translate([0, 0, 15/2])
-    bottom_clip();
+    bottom_mount_clip();
 
     translate([50, 0, 8/2])
     intersection() {
-        bottom(200, 100);
+        bottom(200, 160, fan_hole=false);
 
         translate([-70, 0, 0])
         cube([20, 100, 20], center=true);
@@ -658,13 +707,13 @@ module _side_cover_template(
     }
 }
 
-module side_cover_front(depth, height) {
+module side_cover_right(depth, height) {
     _side_cover_template(
         depth, height, splits=false
     );
 }
 
-module side_cover_back(depth, height) {
+module side_cover_left(depth, height) {
     difference() {
         mirror([1, 0, 0])
         _side_cover_template(
@@ -727,11 +776,11 @@ module _side_cover_pin_holes(depth, height) {
     cylinder(d=1.8, h=8, center=true, $fn=20);
 }
 
-module _side_cover_p1(depth, height, back=false) {
+module _side_cover_p1(depth, height, left=false) {
     difference() {
         intersection() {
             union() {
-                mirror([back ? 1: 0, 0])
+                mirror([left ? 1: 0, 0])
                 _side_cover_template(
                     depth, height, splits=true
                 );
@@ -779,7 +828,7 @@ module _side_cover_p1(depth, height, back=false) {
             cylinder(d=2, h=height/2 - 48, $fn=20);
         }
 
-        if (back) {
+        if (left) {
             translate([depth/2 - 42.6, 5.5, 5])
             rotate([90, 0, -90])
             hull() {
@@ -799,7 +848,7 @@ module _side_cover_p1(depth, height, back=false) {
             }
         }
 
-        if (back) {
+        if (left) {
             translate([depth/2 - 158, 0, 30/2 + 5.01])
             cube([38, 2000, 30], center=true);
         }
@@ -808,19 +857,19 @@ module _side_cover_p1(depth, height, back=false) {
     }
 }
 
-module side_cover_front_p1(depth, height) {
-    _side_cover_p1(depth, height, back=false);
+module side_cover_right_p1(depth, height) {
+    _side_cover_p1(depth, height, left=false);
 }
 
-module side_cover_back_p1(depth, height) {
-    _side_cover_p1(depth, height, back=true);
+module side_cover_left_p1(depth, height) {
+    _side_cover_p1(depth, height, left=true);
 }
 
-module _side_cover_p2(depth, height, back=false) {
+module _side_cover_p2(depth, height, left=false) {
     difference() {
         intersection() {
             union() {
-                mirror([back ? 1: 0, 0])
+                mirror([left ? 1: 0, 0])
                 _side_cover_template(
                     depth, height, splits=true
                 );
@@ -869,7 +918,7 @@ module _side_cover_p2(depth, height, back=false) {
             cylinder(d=2, h=height/2 - 41, $fn=20);
         }
 
-        if (back) {
+        if (left) {
             translate([depth/2 - 42.6, -5.5, 5])
             rotate([90, 0, -90])
             hull() {
@@ -889,7 +938,7 @@ module _side_cover_p2(depth, height, back=false) {
             }
         }
 
-        if (back) {
+        if (left) {
             translate([depth/2 - 158, 0, 30/2 + 5.01])
             cube([38, 2000, 30], center=true);
         }
@@ -898,19 +947,19 @@ module _side_cover_p2(depth, height, back=false) {
     }
 }
 
-module side_cover_front_p2(depth, height) {
-    _side_cover_p2(depth, height, back=false);
+module side_cover_right_p2(depth, height) {
+    _side_cover_p2(depth, height, left=false);
 }
 
-module side_cover_back_p2(depth, height) {
-    _side_cover_p2(depth, height, back=true);
+module side_cover_left_p2(depth, height) {
+    _side_cover_p2(depth, height, left=true);
 }
 
-module _side_cover_p3(depth, height, back=false) {
+module _side_cover_p3(depth, height, left=false) {
     difference() {
         intersection() {
             union() {
-                mirror([back ? 1: 0, 0])
+                mirror([left ? 1: 0, 0])
                 _side_cover_template(
                     depth, height, splits=true
                 );
@@ -958,7 +1007,7 @@ module _side_cover_p3(depth, height, back=false) {
             cylinder(d=2, h=height/2 - 41, $fn=20);
         }
 
-        if (back) {
+        if (left) {
             translate([-depth/2 + 36, -5.5, 5])
             rotate([90, 0, 90])
             hull() {
@@ -982,19 +1031,19 @@ module _side_cover_p3(depth, height, back=false) {
     }
 }
 
-module side_cover_front_p3(depth, height) {
-    _side_cover_p3(depth, height, back=false);
+module side_cover_right_p3(depth, height) {
+    _side_cover_p3(depth, height, left=false);
 }
 
-module side_cover_back_p3(depth, height) {
-    _side_cover_p3(depth, height, back=true);
+module side_cover_left_p3(depth, height) {
+    _side_cover_p3(depth, height, left=true);
 }
 
-module _side_cover_p4(depth, height, back=false) {
+module _side_cover_p4(depth, height, left=false) {
     difference() {
         intersection() {
             union(){
-                mirror([back ? 1: 0, 0])
+                mirror([left ? 1: 0, 0])
                 _side_cover_template(
                     depth, height, splits=true
                 );
@@ -1044,7 +1093,7 @@ module _side_cover_p4(depth, height, back=false) {
             cylinder(d=2, h=height/2 - 48, $fn=20);
         }
 
-        if (back) {
+        if (left) {
             translate([-depth/2 + 36, 5.5, 5])
             rotate([90, 0, 90])
             hull() {
@@ -1068,12 +1117,12 @@ module _side_cover_p4(depth, height, back=false) {
     }
 }
 
-module side_cover_front_p4(depth, height) {
-    _side_cover_p4(depth, height, back=false);
+module side_cover_right_p4(depth, height) {
+    _side_cover_p4(depth, height, left=false);
 }
 
-module side_cover_back_p4(depth, height) {
-    _side_cover_p4(depth, height, back=true);
+module side_cover_left_p4(depth, height) {
+    _side_cover_p4(depth, height, left=true);
 }
 
 module side_cover_mount(_offset=0) {
@@ -1108,7 +1157,7 @@ module side_cover_mount(_offset=0) {
     }
 }
 
-module side_cover_mount_split_center_front(_offset=0) {
+module side_cover_mount_split_center_right(_offset=0) {
     difference() {
         side_cover_mount(12);
 
@@ -1123,14 +1172,14 @@ module side_cover_mount_split_center_front(_offset=0) {
                 );
             }
 
-            translate([15 + _offset, -18.33])
+            translate([14.5 + _offset, -18.33])
             rotate([0, 0, 15])
-            cube([4, 5, 20], center=true);
+            cube([5, 5.25, 20], center=true);
         }
     }
 }
 
-module side_cover_mount_split_ring_front() {
+module side_cover_mount_split_ring_right() {
     difference() {
         intersection() {
             side_cover_mount(12);
@@ -1142,11 +1191,14 @@ module side_cover_mount_split_ring_front() {
         union() {
             difference() {
                 translate([12, 0, 0])
-                cylinder(d=42.1, h=30, center=true, $fn=60);
+                cylinder(
+                    d=42.1, h=30, center=true, $fn=60
+                );
 
                 translate([12, 0, 5/2])
                 cube_donut(
-                    43, 1.9, angle=360, rotation=45, $fn=60
+                    43, 1.9, angle=360,
+                    rotation=45, $fn=60
                 );
             }
             translate([15, -18.33])
@@ -1156,14 +1208,14 @@ module side_cover_mount_split_ring_front() {
     }
 }
 
-module side_cover_mount_split_center_back(_offset=0) {
+module side_cover_mount_split_center_left(_offset=0) {
     mirror([1, 0, 0])
-    side_cover_mount_split_center_front(_offset);
+    side_cover_mount_split_center_right(_offset);
 }
 
-module side_cover_mount_split_ring_back() {
+module side_cover_mount_split_ring_left() {
     mirror([1, 0, 0])
-    side_cover_mount_split_ring_front();
+    side_cover_mount_split_ring_right();
 }
 
 module side_cover_split_clip() {
@@ -1190,10 +1242,10 @@ module test_side_cover_split_clip() {
     intersection() {
         union() {
             translate([2, -100, 0])
-            side_cover_p1(430, 480);
+            side_cover_left_p1(430, 480);
 
             translate([-2, -100, 0])
-            side_cover_p4(430, 480);
+            side_cover_left_p4(430, 480);
         }
         cube([22, 13, 30], center=true);
     }
@@ -1254,7 +1306,9 @@ module _front_cover(
     difference() {
         union() {
             if (!snap) {
-                translate([width/2 - 30/2, 0.1, height/2])
+                translate([
+                    width/2 - 30/2, 0.1, height/2
+                ])
                 rotate([-90, 0, 0])
                 long_tie_split(height);
 
@@ -1271,7 +1325,9 @@ module _front_cover(
 
             // side walls
             hull() {
-                translate([width/2 - 30/2 + 4, -wall/2, 0])
+                translate([
+                    width/2 - 30/2 + 4, -wall/2, 0
+                ])
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([width/2 - 30/2 - 1, -6, 0])
@@ -1287,7 +1343,9 @@ module _front_cover(
             }
 
             hull() {
-                translate([-width/2 + 30/2 - 4, -wall/2, 0])
+                translate([
+                    -width/2 + 30/2 - 4, -wall/2, 0
+                ])
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([-width/2 + 30/2 + 1, -6, 0])
@@ -1313,10 +1371,14 @@ module _front_cover(
 
             // side beams
             hull() {
-                translate([width/2 - 30/2 + 4, -wall/2, 0])
+                translate([
+                    width/2 - 30/2 + 4, -wall/2, 0
+                ])
                 cylinder(d=wall, h=height, $fn=40);
 
-                translate([width/2 - 30/2 -2.2, -wall/2, 0])
+                translate([
+                    width/2 - 30/2 -2.2, -wall/2, 0
+                ])
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([
@@ -1326,7 +1388,9 @@ module _front_cover(
             }
 
             hull() {
-                translate([-width/2 + 30/2 - 4, -wall/2, 0])
+                translate([
+                    -width/2 + 30/2 - 4, -wall/2, 0
+                ])
                 cylinder(d=wall, h=height, $fn=40);
 
                 translate([
@@ -1348,18 +1412,26 @@ module _front_cover(
                 cylinder(d=20, h=0.2);
 
                 hull() {
-                    translate([-width/2 + 30/2 + 20, -17, 0])
+                    translate([
+                        -width/2 + 30/2 + 20, -17, 0
+                    ])
                     cylinder(d=10, h=0.2, $fn=20);
 
-                    translate([width/2 - 30/2 - 20, -17, 0])
+                    translate([
+                        width/2 - 30/2 - 20, -17, 0
+                    ])
                     cylinder(d=10, h=0.2, $fn=20);
                 }
 
                 hull() {
-                    translate([width/2 - 30/2 + 4, -wall/2, 0])
+                    translate([
+                        width/2 - 30/2 + 4, -wall/2, 0
+                    ])
                     cylinder(d=10, h=0.2, $fn=20);
 
-                    translate([width/2 - 30/2 - 20, -17, 0])
+                    translate([
+                        width/2 - 30/2 - 20, -17, 0
+                    ])
                     cylinder(d=10, h=0.2, $fn=20);
                 }
 
@@ -1369,7 +1441,9 @@ module _front_cover(
                     ])
                     cylinder(d=10, h=0.2, $fn=20);
 
-                    translate([-width/2 + 30/2 + 20, -17, 0])
+                    translate([
+                        -width/2 + 30/2 + 20, -17, 0
+                    ])
                     cylinder(d=10, h=0.2, $fn=20);
                 }
             }
@@ -1414,7 +1488,7 @@ module _front_cover(
     }
 }
 
-module front_cover_bottom(
+module front_cover_end(
     width, height, brim=true, snap=false
 ) {
     wall = 1.6;
@@ -1686,6 +1760,8 @@ module front_cover_grill(
             translate([30, -17, height/2 - 23])
             cube([1.2, 20, height], center=true);
 
+            translate([0, 0, -21 - grill_z_pos])
+            cylinder(d=1000, h=1);
         }
     }
 
@@ -1727,7 +1803,7 @@ module front_cover_buttons(width, height, brim=true) {
 
     difference() {
         union() {
-            front_cover_bottom(
+            front_cover_end(
                 width, height, brim=brim
             );
 
@@ -2230,7 +2306,7 @@ module top_cover_grill_end(
         }
 
         translate([0, 0, height - 32.1])
-        front_cover_bottom(
+        front_cover_end(
             width, 32.1, brim=false, snap=true
         );
     }
@@ -2303,5 +2379,11 @@ module test_front_cover_snap_clip() {
     mirror([1, 0, 0])
     translate([80, 0, 0])
     _test_piece();
+
+    translate([-5, 7, 0])
+    front_cover_snap_clip_right();
+
+    translate([5, 7, 0])
+    front_cover_snap_clip_left();
     
 }

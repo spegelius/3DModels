@@ -14,7 +14,7 @@ include <variables.scad>;
 //hdd_mount_rails(230);
 //hdd_mount_rails(240);
 //hdd_mount_joiner();
-hdd_mount_cable_support();
+//hdd_mount_cable_support();
 
 
 module debug_hdd_mount() {
@@ -53,6 +53,8 @@ module debug_hdd_mount_rails() {
 //    cube([105.5, 2, 10], center=true);
 }
 
+
+// not to be used, screws are ackward
 module hdd_mount(width, supports=true) {
 
     h = 30;

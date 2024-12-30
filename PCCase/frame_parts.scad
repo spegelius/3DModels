@@ -1,3 +1,4 @@
+use <../Dollo/NEW_long_ties/corner.scad>;
 use <../Dollo/NEW_long_ties/extention.scad>;
 use <../Dollo/NEW_long_ties/long_tie.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
@@ -7,7 +8,10 @@ use <common.scad>;
 
 //_extention_t_case(440, 2);
 //_extention_t_case(540, 3);
-_extention_t_case(400, 2);
+//_extention_t_case(400, 2);
+
+//corner();
+corner(support=false);
 
 //extention_100();
 //extention_110();
@@ -20,11 +24,10 @@ _extention_t_case(400, 2);
 //extention_310();
 //extention_360();
 
-
-
-
 //extention_t_155();
+//extention_t_155(supports=false);
 //extention_t_140();
+//extention_t_140(supports=false);
 
 //long_tie_half_20();
 //long_tie_half_30();
@@ -164,4 +167,11 @@ module long_bow_tie_half_40(lower_z=0.0) {
 
 module long_bow_tie_50() {
     long_bow_tie(50);
+}
+
+module corner(support=true) {
+    full_corner(
+        support=support, extra_stiff=true,
+        side_support=support
+    );
 }

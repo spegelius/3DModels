@@ -19,31 +19,37 @@ e_count_w = 1;
 e_count_d = 3;
 e_count_h = 3;
 
+//debug_iec_c8_wire_cover();
+
+
 // case specific models to print
 //front_cover_grill_230_500_520_1();
 //front_cover_grill_230_500_520_2();
 //front_cover_grills_230_500_520();
+//front_cover_buttons_230_500_520();
 //front_cover_buttons_230_500_520_black();
 //front_cover_buttons_230_500_520_red();
-//front_cover_bottom_230_500_520_black();
-//front_cover_bottom_230_500_520_red();
+//front_cover_end_230_500_520();
+//front_cover_end_230_500_520_black();
+//front_cover_end_230_500_520_red();
 
 //top_cover_grill_230_500_520_1();
 //top_cover_grill_230_500_520_2();
 //top_cover_grills_230_500_520();
+//top_cover_end_front_230_500_520();
 //top_cover_end_front_230_500_520_black();
 //top_cover_end_front_230_500_520_red();
+top_cover_end_back_230_500_520();
 //top_cover_end_back_230_500_520_black();
 //top_cover_end_back_230_500_520_red();
 
-//debug_iec_c8_wire_cover();
 //motherboard_io_cover_230_28();
 //motherboard_card_cover_iec_c8_230_520_28();
 //motherboard_card_cover_iec_c8_wire_cover();
 //motherboard_card_cover_iec_c8_wire_cover_lid();
 
 // view only
-mockup();
+//mockup();
 
 // w x 4 : 110 DONE BLACK
 // d : 140t + 120 + 120 = 380 BLACK DONE
@@ -96,13 +102,13 @@ module mockup() {
 
     _bottom_cover(width, depth);
 
-    front_covers();
+//    front_covers();
 
-    _top_covers(width, depth, height);
-
-    _right_cover(width, depth, height);
-
-    _left_cover(width, depth, height);
+//    _top_covers(width, depth, height);
+//
+//    _right_cover(width, depth, height);
+//
+//    _left_cover(width, depth, height);
 
     _warercooling();
 }
@@ -129,7 +135,7 @@ module _top_covers(width, depth, height) {
 
     translate([width/2 - 15, 35, height - 15])
     rotate([90, 180, 0])
-    front_cover_bottom(width, 40, brim=false);
+    front_cover_end(width, 40, brim=false);
 
     translate([width/2 - 15, 35.1, height - 15])
     rotate([90, 180, 180])
@@ -145,7 +151,7 @@ module _top_covers(width, depth, height) {
 
     translate([width/2 - 15, 35.3 + 380, height - 15])
     rotate([90, 180, 180])
-    front_cover_bottom(width, 60, brim=false);
+    front_cover_end(width, 60, brim=false);
 }
 
 module _warercooling() {
@@ -205,7 +211,7 @@ module front_covers() {
         width/2 - 30/2, depth - 30/2, 80 - 5
     ])
     rotate([180, 0, 0])
-    front_cover_bottom(width, 80, brim=false);
+    front_cover_end(width, 80, brim=false);
 
     h = height - 80 - 80 - 20;
     echo("Front grills height:", h)
@@ -267,9 +273,13 @@ module front_cover_grills_230_500_520() {
     }
 }
 
+module front_cover_buttons_230_500_520() {
+    front_cover_buttons(width, 80);
+}
+
 module front_cover_buttons_230_500_520_black() {
     difference() {
-        front_cover_buttons(width, 80);
+        front_cover_buttons_230_500_520();
 
         translate([0, 0, -8])
         chamfered_cube(
@@ -280,7 +290,7 @@ module front_cover_buttons_230_500_520_black() {
 
 module front_cover_buttons_230_500_520_red() {
     intersection() {
-        front_cover_buttons(width, 80);
+        front_cover_buttons_230_500_520();
 
         translate([0, 0, -8])
         chamfered_cube(
@@ -289,9 +299,13 @@ module front_cover_buttons_230_500_520_red() {
     }
 }
 
-module front_cover_bottom_230_500_520_black() {
+module front_cover_end_230_500_520() {
+    front_cover_end(width, 80);
+}
+
+module front_cover_end_230_500_520_black() {
     difference() {
-        front_cover_bottom(width, 80);
+        front_cover_end_230_500_520();
 
         translate([0, 0, -8])
         chamfered_cube(
@@ -300,9 +314,9 @@ module front_cover_bottom_230_500_520_black() {
     }
 }
 
-module front_cover_bottom_230_500_520_red() {
+module front_cover_end_230_500_520_red() {
     intersection() {
-        front_cover_bottom(width, 80);
+        front_cover_end_230_500_520();
 
         translate([0, 0, -8])
         chamfered_cube(
@@ -352,9 +366,13 @@ module top_cover_grills_230_500_520() {
     }
 }
 
+module top_cover_end_front_230_500_520() {
+    front_cover_end(width, 60);
+}
+
 module top_cover_end_front_230_500_520_black() {
     difference() {
-        front_cover_bottom(width, 60);
+        top_cover_end_front_230_500_520();
 
         translate([0, 0, -13])
         chamfered_cube(
@@ -365,7 +383,7 @@ module top_cover_end_front_230_500_520_black() {
 
 module top_cover_end_front_230_500_520_red() {
     intersection() {
-        front_cover_bottom(width, 60);
+        top_cover_end_front_230_500_520();
 
         translate([0, 0, -13])
         chamfered_cube(
@@ -374,9 +392,13 @@ module top_cover_end_front_230_500_520_red() {
     }
 }
 
+module top_cover_end_back_230_500_520() {
+    front_cover_end(width, 40);
+}
+
 module top_cover_end_back_230_500_520_black() {
     difference() {
-        front_cover_bottom(width, 40);
+        top_cover_end_back_230_500_520();
 
         translate([0, 0, -33])
         chamfered_cube(
@@ -387,7 +409,7 @@ module top_cover_end_back_230_500_520_black() {
 
 module top_cover_end_back_230_500_520_red() {
     intersection() {
-        front_cover_bottom(width, 40);
+        top_cover_end_back_230_500_520();
 
         translate([0, 0, -33])
         chamfered_cube(

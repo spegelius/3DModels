@@ -17,24 +17,26 @@ function scaling(depth, height) =
 //_doom_helmet();
 
 
-//side_cover_back_p1_doom_black(500, 520);
-//side_cover_back_p1_doom_red(500, 520);
-//side_cover_back_p2_doom_black(500, 520);
-//side_cover_back_p2_doom_red(500, 520);
-//side_cover_back_p3_doom_black(500, 520);
-//side_cover_back_p3_doom_red(500, 520);
-//side_cover_back_p4_doom_black(500, 520);
-//side_cover_back_p4_doom_red(500, 520);
+//side_cover_left_doom_black(500, 520);
+side_cover_left_doom_red(500, 520);
 
+//side_cover_left_p1_doom_black(500, 520);
+//side_cover_left_p1_doom_red(500, 520);
+//side_cover_left_p2_doom_black(500, 520);
+//side_cover_left_p2_doom_red(500, 520);
+//side_cover_left_p3_doom_black(500, 520);
+//side_cover_left_p3_doom_red(500, 520);
+//side_cover_left_p4_doom_black(500, 520);
+//side_cover_left_p4_doom_red(500, 520);
 
-//side_cover_front_p1_doom_black(500, 520);
-//side_cover_front_p1_doom_red(500, 520);
-//side_cover_front_p2_doom_black(500, 520);
-//side_cover_front_p2_doom_red(500, 520);
-//side_cover_front_p3_doom_black(500, 520);
-//side_cover_front_p3_doom_red(500, 520);
-//side_cover_front_p4_doom_black(500, 520);
-side_cover_front_p4_doom_red(500, 520);
+//side_cover_right_p1_doom_black(500, 520);
+//side_cover_right_p1_doom_red(500, 520);
+//side_cover_right_p2_doom_black(500, 520);
+//side_cover_right_p2_doom_red(500, 520);
+//side_cover_right_p3_doom_black(500, 520);
+//side_cover_right_p3_doom_red(500, 520);
+//side_cover_right_p4_doom_black(500, 520);
+//side_cover_right_p4_doom_red(500, 520);
 
 
 module _orig_token() {
@@ -103,226 +105,255 @@ module _doom_helmet() {
     }
 }
 
-// back
-module side_cover_back_p1_doom_black(
+// left side
+module side_cover_left_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p1_doom_red(
+module side_cover_left_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p1(depth, height);
+        side_cover_left(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p2_doom_black(
+
+module side_cover_left_p1_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p2_doom_red(
+module side_cover_left_p1_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p2(depth, height);
+        side_cover_left_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p3_doom_black(
+module side_cover_left_p2_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p3_doom_red(
+module side_cover_left_p2_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p4_doom_black(
+module side_cover_left_p3_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p3(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_token_red();
     }
 }
 
-module side_cover_back_p4_doom_red(
+module side_cover_left_p3_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p3(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_token_red();
     }
 }
 
-// front
-module side_cover_front_p1_doom_black(
+module side_cover_left_p4_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p4(depth, height);
 
         scale([_scale, _scale, 1])
-        _doom_helmet();
+        _doom_token_red();
     }
 }
 
-module side_cover_front_p1_doom_red(
+module side_cover_left_p4_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p1(depth, height);
+        side_cover_left_p4(depth, height);
+
+        scale([scaling, scaling, 1])
+        _doom_token_red();
+    }
+}
+
+// right side
+module side_cover_right_p1_doom_black(
+    depth, height
+) {
+
+    _scale = scaling(depth, height);
+
+    difference() {
+        side_cover_right_p1(depth, height);
+
+        scale([_scale, _scale, 1])
+        _doom_helmet();
+    }
+}
+
+module side_cover_right_p1_doom_red(
+    depth, height
+) {
+
+    scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
+
+    intersection() {
+        side_cover_right_p1(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p2_doom_black(
+module side_cover_right_p2_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_front_p2(depth, height);
+        side_cover_right_p2(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p2_doom_red(
+module side_cover_right_p2_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p2(depth, height);
+        side_cover_right_p2(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p3_doom_black(
+module side_cover_right_p3_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p3(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p3_doom_red(
+module side_cover_right_p3_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p3(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p4_doom_black(
+module side_cover_right_p4_doom_black(
     depth, height
 ) {
 
     _scale = scaling(depth, height);
 
     difference() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p4(depth, height);
 
         scale([_scale, _scale, 1])
         _doom_helmet();
     }
 }
 
-module side_cover_front_p4_doom_red(
+module side_cover_right_p4_doom_red(
     depth, height
 ) {
 
     scaling = depth < height ? (depth - 45) / sf : (height - 45) / sf;
 
     intersection() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p4(depth, height);
 
         scale([scaling, scaling, 1])
         _doom_helmet();

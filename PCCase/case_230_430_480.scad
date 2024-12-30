@@ -42,7 +42,7 @@ module mockup() {
         e_count_d, e_count_h
     );
 
-    _hd_mocks(width, depth, height, count=10);
+//    _hd_mocks(width, depth, height, count=10);
 
     _PSU(width);
 
@@ -52,15 +52,15 @@ module mockup() {
 
     _fans_front(width, depth, 100);
 
-    _bottom_cover(width, depth);
+//    _bottom_cover(width, depth);
 
-    _right_cover(width, depth, height);
+//    _right_cover(width, depth, height);
+//
+//    _left_cover(width, depth, height);
 
-    _left_cover(width, depth, height);
-
-    _front_covers(width, depth, height);
-
-    _top_covers(width, depth, height);
+//    _front_covers(width, depth, height);
+//
+//    _top_covers(width, depth, height);
 }
 
 module _fans_front(width, depth, h_pos) {
@@ -81,7 +81,7 @@ module _top_covers(width, depth, height) {
     render()
     translate([width/2 - 15, 35, height - 15])
     rotate([90, 180, 0])
-    front_cover_bottom(width, 40, brim=false);
+    front_cover_end(width, 40, brim=false);
 
     render()
     translate([width/2 - 15, 35.1, height - 15])
@@ -100,5 +100,5 @@ module _top_covers(width, depth, height) {
     render()
     translate([width/2 - 15, 35.3 + 310, height - 15])
     rotate([90, 180, 180])
-    front_cover_bottom(width, 60, brim=false);
+    front_cover_end(width, 60, brim=false);
 }

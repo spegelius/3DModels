@@ -13,6 +13,7 @@ use <frame_parts.scad>;
 //debug_motherboard_io_cover();
 //debug_motherboard_io_cover_top_offset();
 //debug_motherboard_ee_atx_io_cover();
+//debug_motherboard_ee_atx_io_cover_top_offset();
 //debug_motherboard_card_cover();
 //debug_motherboard_card_cover_top_offset();
 //debug_motherboard_card_cover_ee_atx();
@@ -20,7 +21,8 @@ use <frame_parts.scad>;
 //motherboard_tray_atx(430);
 //motherboard_tray_atx(430, render_threads=false);
 //motherboard_tray_atx(500);
-motherboard_tray_atx(500, render_threads=false);
+//motherboard_tray_atx(500, render_threads=false);
+
 //motherboard_tray_ee_atx(540);
 //motherboard_tray_ee_atx(540, render_threads=false);
 //motherboard_tray_ee_atx_1_1(540);
@@ -40,24 +42,30 @@ motherboard_tray_atx(500, render_threads=false);
 //motherboard_tray_screw_reinforced();
 
 //motherboard_back_plate(230, 480);
-//motherboard_back_plate(230, 520);
-//motherboard_back_plate(230, 520, top_offset=28);
+
+// TODO
 //motherboard_back_plate_1(230, 480);
 //motherboard_back_plate_2(230, 480);
-//motherboard_back_plate_clip();
-//motherboard_back_plate_clip(scaling=1.02);
-//motherboard_io_cover(230);
 
-//motherboard_back_plate_long_tie_half();
+//motherboard_back_plate(230, 520);
+//motherboard_back_plate(230, 520, top_offset=28);
 
 //motherboard_back_plate_ee_atx(240, 525);
 //motherboard_back_plate_ee_atx(240, 550);
+
+//motherboard_back_plate_clip();
+//motherboard_back_plate_clip(scaling=1.02);
+//motherboard_back_plate_clip_long_tie_half();
+
+//motherboard_io_cover(230);
+//motherboard_io_cover(230, top_offset=28);
 //motherboard_io_cover_ee_atx(240);
 
 //motherboard_card_cover(230, 480);
 //motherboard_card_cover(230, 520);
-//motherboard_card_cover(240, 525);
-//motherboard_card_cover(240, 550, ee_atx=true);
+
+//motherboard_card_cover_ee_atx(240, 525);
+motherboard_card_cover_ee_atx(240, 550);
 
 
 module debug_motherboard_back_plates() {
@@ -128,10 +136,23 @@ module debug_motherboard_ee_atx_io_cover() {
 }
 
 module debug_motherboard_ee_atx_io_cover_top_offset() {
-    motherboard_back_plate_ee_atx(240, 550);
+    motherboard_back_plate_ee_atx(
+        240, 550, top_offset=20
+    );
 
-    translate([202.1/2 + 7.7, 117.5, 2])
-    motherboard_io_cover_ee_atx(240);
+    translate([202.1/2 + 7.7 + 20/2, 117.5, 2])
+    motherboard_io_cover_ee_atx(
+        240, top_offset=20
+    );
+}
+
+module debug_motherboard_io_cover() {
+    motherboard_back_plate(230, 520, top_offset=0);
+
+    translate([
+        (160)/2 + 7.7, 112.5, 2
+    ])
+    motherboard_io_cover(230, top_offset=0);
 }
 
 module debug_motherboard_io_cover_top_offset() {
@@ -1546,7 +1567,9 @@ module motherboard_back_plate_2(width, height) {
             rotate([90, 0, 0])
             _joiner_form(15, 7 - slop, 4 - slop);
 
-            translate([165 - 15/2 + 0.3, 8/2 + 53.2, 12/2])
+            translate([
+                165 - 15/2 + 0.3, 8/2 + 53.2, 12/2
+            ])
             rotate([90, 0, 0])
             _joiner_form(15, 7 - slop, 4 - slop);
 
@@ -1626,7 +1649,7 @@ module motherboard_back_plate_clip(scaling=1.0) {
     }
 }
 
-module motherboard_back_plate_long_tie_half() {
+module motherboard_back_plate_clip_long_tie_half() {
     long_tie_half_30();
 }
 
@@ -1678,7 +1701,9 @@ module _motherboard_io_cover(width, top_offset=0) {
             difference() {
                 translate([0, 0, 20/2 + 1.6])
                 //cube([w - 6, d - 6, 20], center=true);
-                chamfered_cube(w - 5, d - 5, 20, 2, center=true);
+                chamfered_cube(
+                    w - 5, d - 5, 20, 2, center=true
+                );
 
                 translate([-w/2 - 1, -0.5, 0])
                 rounded_cube_side(
@@ -1730,12 +1755,18 @@ module _motherboard_io_cover(width, top_offset=0) {
 }
 
 module motherboard_io_cover(width, top_offset=0) {
-    _motherboard_io_cover(width, top_offset=top_offset);
+    _motherboard_io_cover(
+        width, top_offset=top_offset
+    );
 }
 
-module motherboard_io_cover_ee_atx(width) {
+module motherboard_io_cover_ee_atx(
+    width, top_offset=0
+) {
     difference() {
-        _motherboard_io_cover(width, ee_atx=true);
+        _motherboard_io_cover(
+            width, top_offset=42 + top_offset
+        );
 
         // extra 92mm holes
         translate([202.1/2 - 100/2 - 15, 0, 0])
@@ -1792,11 +1823,17 @@ module motherboard_card_cover(
             chamfered_cube(21, 11, 25, 4, center=true);
         }
 
-        translate([-w/2 + 34.25, -d/2 + 4/2 - 0.15, 0.6 + 7.5/2])
+        translate([
+            -w/2 + 34.25, -d/2 + 4/2 - 0.15,
+            0.6 + 7.5/2
+        ])
         rotate([90, 90, 0])
         _joiner_form(7.5, 10.2, 4);
 
-        translate([w/2 - 33.25, -d/2 + 4/2 - 0.15, 0.6 + 7.5/2])
+        translate([
+            w/2 - 33.25, -d/2 + 4/2 - 0.15,
+            0.6 + 7.5/2
+        ])
         rotate([90, 90, 0])
         _joiner_form(7.5, 10.2, 4);
 

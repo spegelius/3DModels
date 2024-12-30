@@ -83,12 +83,12 @@ module _top_covers(width, depth, height) {
     render()
     translate([width/2 - 15, 185, height - 15])
     rotate([90, 180, 0])
-    front_cover_bottom(width, 190, brim=false);
+    front_cover_end(width, 190, brim=false);
 
     render()
     translate([width/2 - 15, 185.3, height - 15])
     rotate([90, 180, 180])
-    front_cover_bottom(width, 190);
+    front_cover_end(width, 190, brim=false);
 }
 
 

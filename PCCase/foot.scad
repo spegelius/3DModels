@@ -3,10 +3,10 @@ use <../Dollo/NEW_long_ties/include.scad>;
 
 //debug_foot();
 
-//foot();
+foot();
 //foot_dampener();
 
-foot2();
+//foot2();
 //foot2_dampener();
 
 

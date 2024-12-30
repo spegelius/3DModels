@@ -1,7 +1,6 @@
 
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/extention.scad>;
-use <../Dollo/NEW_long_ties/corner.scad>;
 use <../Dollo/NEW_long_ties/long_tie.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 use <../PCParts/Antec.scad>;
@@ -51,15 +50,34 @@ module _mobo(
 
         render()
         translate([15.2, 15.4, height - 45.2])
-        rotate([90, 90, 0])
-        motherboard_back_plate(
-            width, height, top_offset=top_offset
-        );
+        rotate([90, 90, 0]) {
+            motherboard_back_plate(
+                width, height, top_offset=top_offset
+            );
 
+            translate([
+                (160 + top_offset)/2 + 7.7, 112.5, 2
+            ])
+            motherboard_io_cover(
+                width, top_offset=top_offset
+            );
+
+            translate([
+                91.5 + (height - 172 - top_offset)/2
+                + top_offset,
+                139.7, 10 + 6.4
+            ])
+            rotate([0, 180, 0])
+            motherboard_card_cover(
+                width, height, top_offset=top_offset
+            );
+        }
 //        %render()
 //        translate([15, 0, 127.3])
 //        rotate([-90, 0, 0])
 //        motherboard_back_plate_clip();
+
+        
 
     } else if (type == "EE_ATX") {
         %render()
@@ -89,11 +107,25 @@ module _mobo(
 
         render()
         translate([15.2, 15.4, height - 45.2])
-        rotate([90, 90, 0])
-        motherboard_back_plate_ee_atx(
-            width, height, top_offset=top_offset
-        );
+        rotate([90, 90, 0]) {
+            motherboard_back_plate_ee_atx(
+                width, height, top_offset=top_offset
+            );
 
+            translate([202.1/2 + 7.7, 117.5, 2])
+            motherboard_io_cover_ee_atx(
+                width, top_offset=top_offset);
+
+            translate([
+                112.5 + (height - 172 - top_offset)/2
+                + top_offset,
+                144.7, 10 + 6.4
+            ])
+            rotate([0, 180, 0])
+            motherboard_card_cover_ee_atx(
+                width, height, top_offset=top_offset
+            );
+        }
     }
 
     render()
@@ -113,26 +145,22 @@ module _back_corners(width, height) {
     render() {
         rotate([-45, 0, 0])
         rotate([0, 35.2644, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([0, 0, height - 30])
         rotate([-135, 0, 0])
         rotate([0, 35.2644, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([width - 30, 0, height - 30])
         rotate([0, 0, 135])
         rotate([0, 35.2644 + 90, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([width - 30, 0, 0])
         rotate([0, 0, -45])
         rotate([0, 35.2644 - 90, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
     }
 }
 
@@ -142,26 +170,22 @@ module _front_corners(width, depth, height) {
         translate([0, depth  -30, 0])
         rotate([45, 0, 0])
         rotate([0, 35.2644, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([width - 30, depth - 30, 0])
         rotate([0, 0, 45])
         rotate([0, 35.2644 - 90, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([0, depth - 30, height - 30])
         rotate([135, 0, 0])
         rotate([0, 35.2644, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
 
         translate([width - 30, depth - 30, height - 30])
         rotate([0, 0, -135])
         rotate([0, 35.2644 + 90, 0])
-        render()
-        full_corner(support=false, extra_stiff=true);
+        corner(support=false);
     }
 }
 
@@ -483,7 +507,7 @@ module _right_cover(width, depth, height) {
     render()
     translate([width - 15 + 5, depth/2 - 15, height/2 - 15])
     rotate([90, 0, -90]) {
-        side_cover_front(depth, height);
+        side_cover_right(depth, height);
 
         translate([depth/2 + 2, height/5, 0])
         rotate([0, 0, 180])
@@ -502,32 +526,32 @@ module _right_cover(width, depth, height) {
         side_cover_mount();
 
         translate([-depth/2 - 2, height/5, 0])
-        side_cover_mount_split_center_front();
+        side_cover_mount_split_center_right();
 
         translate([-depth/2 - 2, -height/5, 0])
-        side_cover_mount_split_center_front();
+        side_cover_mount_split_center_right();
 
         translate([depth/5, height/2 + 2, 0])
         rotate([0, 0, -90])
-        side_cover_mount_split_center_front();
+        side_cover_mount_split_center_right();
 
         translate([-depth/5, height/2 + 2, 0])
         rotate([0, 0, -90])
-        side_cover_mount_split_center_front();
+        side_cover_mount_split_center_right();
 
         translate([-depth/2 - 2, height/5, 0])
-        side_cover_mount_split_ring_front();
+        side_cover_mount_split_ring_right();
 
         translate([-depth/2 - 2, -height/5, 0])
-        side_cover_mount_split_ring_front();
+        side_cover_mount_split_ring_right();
 
         translate([depth/5, height/2 + 2, 0])
         rotate([0, 0, -90])
-        side_cover_mount_split_ring_front();
+        side_cover_mount_split_ring_right();
 
         translate([-depth/5, height/2 + 2, 0])
         rotate([0, 0, -90])
-        side_cover_mount_split_ring_front();
+        side_cover_mount_split_ring_right();
     }
 }
 
@@ -538,7 +562,7 @@ module _left_cover(width, depth, height) {
     render()
     translate([-15 - 5, depth/2 - 15, height/2 - 15])
     rotate([90, 0, 90]) {
-        side_cover_back(depth, height);
+        side_cover_left(depth, height);
 
         translate([-depth/2 - 2, height/5, 0])
         side_cover_mount();
@@ -555,32 +579,32 @@ module _left_cover(width, depth, height) {
         side_cover_mount();
 
         translate([depth/2 + 2, height/5, 0])
-        side_cover_mount_split_center_back();
+        side_cover_mount_split_center_left();
 
         translate([depth/2 + 2, -height/5, 0])
-        side_cover_mount_split_center_back();
+        side_cover_mount_split_center_left();
 
         translate([depth/5, height/2 + 2, 0])
         rotate([0, 0, 90])
-        side_cover_mount_split_center_back();
+        side_cover_mount_split_center_left();
 
         translate([-depth/5, height/2 + 2, 0])
         rotate([0, 0, 90])
-        side_cover_mount_split_center_back();
+        side_cover_mount_split_center_left();
 
         translate([depth/2 + 2, height/5, 0])
-        side_cover_mount_split_ring_back();
+        side_cover_mount_split_ring_left();
 
         translate([depth/2 + 2, -height/5, 0])
-        side_cover_mount_split_ring_back();
+        side_cover_mount_split_ring_left();
 
         translate([depth/5, height/2 + 2, 0])
         rotate([0, 0, 90])
-        side_cover_mount_split_ring_back();
+        side_cover_mount_split_ring_left();
 
         translate([-depth/5, height/2 + 2, 0])
         rotate([0, 0, 90])
-        side_cover_mount_split_ring_back();
+        side_cover_mount_split_ring_left();
     }
 }
 
@@ -617,7 +641,7 @@ module _front_covers(
             height - top_h - 25
         ])
         rotate([0, 0, 180])
-        front_cover_bottom(width, top_h, brim=false);
+        front_cover_end(width, top_h, brim=false);
     }
 
     render()
@@ -625,7 +649,7 @@ module _front_covers(
         width/2 - 30/2, depth - 30/2, bottom_h - 5
     ])
     rotate([180, 0, 0])
-    front_cover_bottom(width, bottom_h, brim=false);
+    front_cover_end(width, bottom_h, brim=false);
 
     h = height - top_h - bottom_h - 20;
     echo("Front grills height:", h)

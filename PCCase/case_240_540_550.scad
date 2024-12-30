@@ -53,16 +53,16 @@ module mockup() {
     _fans_front(width, depth);
 
     _bottom_cover(width, depth);
-
-    _front_covers(
-        width, depth, height, 58, leds=4,
-        top_h=70, bottom_h=40
-    );
-
-    _top_covers(width, depth, height);
-
-    _right_cover(width, depth, height);
-    _left_cover(width, depth, height);
+//
+//    _front_covers(
+//        width, depth, height, 58, leds=4,
+//        top_h=70, bottom_h=40
+//    );
+//
+//    _top_covers(width, depth, height);
+//
+//    _right_cover(width, depth, height);
+//    _left_cover(width, depth, height);
 }
 
 module _fans_front(width, depth) {
@@ -92,7 +92,7 @@ module _top_covers(width, depth, height) {
     render()
     translate([width/2 - 15, 35, height - 15])
     rotate([90, 180, 0])
-    front_cover_bottom(width, 40, brim=false);
+    front_cover_end(width, 40, brim=false);
 
     render()
     translate([width/2 - 15, 35.1, height - 15])
@@ -111,5 +111,5 @@ module _top_covers(width, depth, height) {
     render()
     translate([width/2 - 15, 35.3 + 350, height - 15])
     rotate([90, 180, 180])
-    front_cover_bottom(width, 130, brim=false);
+    front_cover_end(width, 130, brim=false);
 }

@@ -6,23 +6,30 @@ use <cover.scad>;
 //qr_code_to_stl();
 
 
-//side_cover_back_p1_qr_black(430, 480);
-//side_cover_back_p1_qr_white(430, 480);
-//side_cover_back_p2_qr_black(430, 480);
-//side_cover_back_p2_qr_white(430, 480);
-//side_cover_back_p3_qr_black(430, 480);
-//side_cover_back_p3_qr_white(430, 480);
-//side_cover_back_p4_qr_black(430, 480);
-side_cover_back_p4_qr_white(430, 480);
+//side_cover_left_qr_black(430, 480);
+//side_cover_left_qr_white(430, 480);
 
-//side_cover_front_p1_qr_black(430, 480);
-//side_cover_front_p1_qr_white(430, 480);
-//side_cover_front_p2_qr_black(430, 480);
-//side_cover_front_p2_qr_white(430, 480);
-//side_cover_front_p3_qr_black(430, 480);
-//side_cover_front_p3_qr_white(430, 480);
-//side_cover_front_p4_qr_black(430, 480);
-//side_cover_front_p4_qr_white(430, 480);
+//side_cover_right_qr_black(430, 480);
+side_cover_right_qr_white(430, 480);
+
+
+//side_cover_left_p1_qr_black(430, 480);
+//side_cover_left_p1_qr_white(430, 480);
+//side_cover_left_p2_qr_black(430, 480);
+//side_cover_left_p2_qr_white(430, 480);
+//side_cover_left_p3_qr_black(430, 480);
+//side_cover_left_p3_qr_white(430, 480);
+//side_cover_left_p4_qr_black(430, 480);
+//side_cover_left_p4_qr_white(430, 480);
+
+//side_cover_right_p1_qr_black(430, 480);
+//side_cover_right_p1_qr_white(430, 480);
+//side_cover_right_p2_qr_black(430, 480);
+//side_cover_right_p2_qr_white(430, 480);
+//side_cover_right_p3_qr_black(430, 480);
+//side_cover_right_p3_qr_white(430, 480);
+//side_cover_right_p4_qr_black(430, 480);
+//side_cover_right_p4_qr_white(430, 480);
 
 
 module debug_qr_code() {
@@ -60,21 +67,21 @@ module _qr_code(depth, height, thickness=1) {
 
     scale([scaling, scaling, thickness])
     //qr_code_to_stl();
-    import("qr_code.stl", convexity=10);
+    import("temp/qr_code.stl", convexity=10);
 }
 
-module side_cover_front_p1_qr_black(depth, height) {
+module side_cover_right_qr_black(depth, height) {
     intersection() {
-        side_cover_front_p1(depth, height);
+        side_cover_right(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_front_p1_qr_white(depth, height) {
+module side_cover_right_qr_white(depth, height) {
     difference() {
-        side_cover_front_p1(depth, height);
+        side_cover_right(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -82,18 +89,18 @@ module side_cover_front_p1_qr_white(depth, height) {
     }
 }
 
-module side_cover_front_p2_qr_black(depth, height) {
+module side_cover_right_p1_qr_black(depth, height) {
     intersection() {
-        side_cover_front_p2(depth, height);
+        side_cover_right_p1(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_front_p2_qr_white(depth, height) {
+module side_cover_right_p1_qr_white(depth, height) {
     difference() {
-        side_cover_front_p2(depth, height);
+        side_cover_right_p1(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -101,18 +108,18 @@ module side_cover_front_p2_qr_white(depth, height) {
     }
 }
 
-module side_cover_front_p3_qr_black(depth, height) {
+module side_cover_right_p2_qr_black(depth, height) {
     intersection() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p2(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_front_p3_qr_white(depth, height) {
+module side_cover_right_p2_qr_white(depth, height) {
     difference() {
-        side_cover_front_p3(depth, height);
+        side_cover_right_p2(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -120,18 +127,18 @@ module side_cover_front_p3_qr_white(depth, height) {
     }
 }
 
-module side_cover_front_p4_qr_black(depth, height) {
+module side_cover_right_p3_qr_black(depth, height) {
     intersection() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p3(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_front_p4_qr_white(depth, height) {
+module side_cover_right_p3_qr_white(depth, height) {
     difference() {
-        side_cover_front_p4(depth, height);
+        side_cover_right_p3(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -139,18 +146,18 @@ module side_cover_front_p4_qr_white(depth, height) {
     }
 }
 
-module side_cover_back_p1_qr_black(depth, height) {
+module side_cover_right_p4_qr_black(depth, height) {
     intersection() {
-        side_cover_back_p1(depth, height);
+        side_cover_right_p4(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_back_p1_qr_white(depth, height) {
+module side_cover_right_p4_qr_white(depth, height) {
     difference() {
-        side_cover_back_p1(depth, height);
+        side_cover_right_p4(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -158,18 +165,18 @@ module side_cover_back_p1_qr_white(depth, height) {
     }
 }
 
-module side_cover_back_p2_qr_black(depth, height) {
+module side_cover_left_qr_black(depth, height) {
     intersection() {
-        side_cover_back_p2(depth, height);
+        side_cover_left(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_back_p2_qr_white(depth, height) {
+module side_cover_left_qr_white(depth, height) {
     difference() {
-        side_cover_back_p2(depth, height);
+        side_cover_left(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -177,18 +184,18 @@ module side_cover_back_p2_qr_white(depth, height) {
     }
 }
 
-module side_cover_back_p3_qr_black(depth, height) {
+module side_cover_left_p1_qr_black(depth, height) {
     intersection() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p1(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_back_p3_qr_white(depth, height) {
+module side_cover_left_p1_qr_white(depth, height) {
     difference() {
-        side_cover_back_p3(depth, height);
+        side_cover_left_p1(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
@@ -196,18 +203,56 @@ module side_cover_back_p3_qr_white(depth, height) {
     }
 }
 
-module side_cover_back_p4_qr_black(depth, height) {
+module side_cover_left_p2_qr_black(depth, height) {
     intersection() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p2(depth, height);
 
         mirror([1, 0, 0])
         _qr_code(depth, height, thickness=0.6);
     }
 }
 
-module side_cover_back_p4_qr_white(depth, height) {
+module side_cover_left_p2_qr_white(depth, height) {
     difference() {
-        side_cover_back_p4(depth, height);
+        side_cover_left_p2(depth, height);
+
+        translate([0, 0, -0.6])
+        mirror([1, 0, 0])
+        _qr_code(depth, height, thickness=1.2);
+    }
+}
+
+module side_cover_left_p3_qr_black(depth, height) {
+    intersection() {
+        side_cover_left_p3(depth, height);
+
+        mirror([1, 0, 0])
+        _qr_code(depth, height, thickness=0.6);
+    }
+}
+
+module side_cover_left_p3_qr_white(depth, height) {
+    difference() {
+        side_cover_left_p3(depth, height);
+
+        translate([0, 0, -0.6])
+        mirror([1, 0, 0])
+        _qr_code(depth, height, thickness=1.2);
+    }
+}
+
+module side_cover_left_p4_qr_black(depth, height) {
+    intersection() {
+        side_cover_left_p4(depth, height);
+
+        mirror([1, 0, 0])
+        _qr_code(depth, height, thickness=0.6);
+    }
+}
+
+module side_cover_left_p4_qr_white(depth, height) {
+    difference() {
+        side_cover_left_p4(depth, height);
 
         translate([0, 0, -0.6])
         mirror([1, 0, 0])
