@@ -1,9 +1,17 @@
+use <../Dollo/NEW_long_ties/extention.scad>;
 
 use <case_230_430_480.scad>;
+use <case_models.scad>;
+use <frame_parts.scad>;
 
 
 //dimensions();
-orientation();
+//orientation();
+//frame_corners();
+//frame_extention_t();
+//frame_d_beams();
+//frame_final();
+frame_reinforcements();
 
 
 module dimensions() {
@@ -46,4 +54,120 @@ module orientation() {
         text = "Right", size=40,
         font="Arial:style=Bold"
     );
+}
+
+module frame_corners() {
+
+    render()
+    _back_bottom_corners(230);
+
+    color("lightgrey")
+    render()
+    translate([110/2 + 45, 0, 0])
+    rotate([0, 90, 0])
+    extention(units=110/30, support=false);
+}
+
+module _ft() {
+    frame_corners();
+
+    color("lightgrey")
+    render()
+    translate([200, 115, -15])
+    rotate([0, 0, 180])
+    extention_t_140(supports=false);
+}
+
+module frame_extention_t() {
+    translate([0, 20, 0])
+    _ft();
+
+    mirror([0, 1, 0])
+    translate([0, 20, 0])
+    _ft();
+}
+
+module _frame_d_beams() {
+    translate([0, -200, 0])
+    _ft();
+
+    translate([200, 200, 0])
+    rotate([0, 0, 180])
+    frame_corners();
+
+    color("lightgrey")
+    render()
+    translate([200, 70, 0])
+    rotate([90, 0, 0])
+    extention(units=170/30, support=false);
+
+    color("lightgrey")
+    render()
+    rotate([90, 0, 0])
+    extention(units=310/30, support=false);
+}
+
+module frame_d_beams() {
+    translate([20, 0, 0])
+    _frame_d_beams();
+
+    mirror([1, 0, 0])
+    translate([20, 0, 0])
+    _frame_d_beams();
+}
+
+module frame_final() {
+
+    _frame_d_beams();
+
+    translate([0, 0, 450])
+    mirror([0, 0, 1])
+    _frame_d_beams();
+
+    color("lightgrey")
+    render()
+    translate([0, -200, 360/2 + 45])
+    extention(units=360/30, support=false);
+
+    color("lightgrey")
+    render()
+    translate([200, -200, 360/2 + 45])
+    extention(units=360/30, support=false);
+
+    color("lightgrey")
+    render()
+    translate([200, -60, 360/2 + 45])
+    extention(units=360/30, support=false);
+
+    color("lightgrey")
+    render()
+    translate([0, 200, 360/2 + 45])
+    extention(units=360/30, support=false);
+
+    color("lightgrey")
+    render()
+    translate([200, 200, 360/2 + 45])
+    extention(units=360/30, support=false);    
+}
+
+module frame_reinforcements() {
+    frame_final();
+
+    color("lightgrey")
+    translate([0, -200])
+    cylinder(d=8, h=442, $fn=30);
+
+    color("lightgrey")
+    translate([0, -200, 436])
+    cylinder(d=16, h=5, $fn=6);
+
+    color("lightgrey")
+    translate([0, 4, 450])
+    rotate([90, 0, 0])
+    cylinder(d=8, h=392, center=true, $fn=30);
+
+    color("lightgrey")
+    translate([0, -186, 450])
+    rotate([90, 0, 0])
+    cylinder(d=16, h=5, $fn=6);
 }

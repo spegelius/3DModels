@@ -139,14 +139,21 @@ module _mobo(
     motherboard_tray_mount_top_1(top_offset=top_offset);
 }
 
+module _back_bottom_corners(width) {
+    rotate([-45, 0, 0])
+    rotate([0, 35.2644, 0])
+    corner(support=false);
+
+    translate([width - 30, 0, 0])
+    rotate([0, 0, -45])
+    rotate([0, 35.2644 - 90, 0])
+    corner(support=false);
+}
+
 
 module _back_corners(width, height) {
     color("lightgrey")
     render() {
-        rotate([-45, 0, 0])
-        rotate([0, 35.2644, 0])
-        corner(support=false);
-
         translate([0, 0, height - 30])
         rotate([-135, 0, 0])
         rotate([0, 35.2644, 0])
@@ -157,10 +164,7 @@ module _back_corners(width, height) {
         rotate([0, 35.2644 + 90, 0])
         corner(support=false);
 
-        translate([width - 30, 0, 0])
-        rotate([0, 0, -45])
-        rotate([0, 35.2644 - 90, 0])
-        corner(support=false);
+        _back_bottom_corners(width);
     }
 }
 
