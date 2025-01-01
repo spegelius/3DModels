@@ -42,7 +42,7 @@ module mockup() {
         e_count_d, e_count_h
     );
 
-//    _hd_mocks(width, depth, height, count=10);
+    _hd_mocks(width, depth, height, count=10);
 
     _PSU(width);
 
@@ -59,7 +59,7 @@ module mockup() {
 //    _left_cover(width, depth, height);
 
 //    _front_covers(width, depth, height);
-//
+
 //    _top_covers(width, depth, height);
 }
 
