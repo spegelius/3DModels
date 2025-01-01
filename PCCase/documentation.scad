@@ -3,6 +3,7 @@ use <../Dollo/NEW_long_ties/extention.scad>;
 use <case_230_430_480.scad>;
 use <case_models.scad>;
 use <frame_parts.scad>;
+use <psu.scad>;
 
 
 //dimensions();
@@ -11,7 +12,11 @@ use <frame_parts.scad>;
 //frame_extention_t();
 //frame_d_beams();
 //frame_final();
-frame_reinforcements();
+//frame_reinforcements();
+
+//psu_plate_mounts();
+//psu_backplate();
+psu_bottom_support();
 
 
 module dimensions() {
@@ -170,4 +175,80 @@ module frame_reinforcements() {
     translate([0, -186, 450])
     rotate([90, 0, 0])
     cylinder(d=16, h=5, $fn=6);
+}
+
+module psu_plate_mounts() {
+    color("lightgrey")
+    frame_final();
+
+    color("RoyalBlue")
+    render()
+    translate([100, 200, 15])
+    rotate([0, -90, 90])
+    PSU_plate_long_tie_bottom();
+
+    color("RoyalBlue")
+    render()
+    translate([100, 200, 15])
+    rotate([0, -90, -90])
+    PSU_plate_long_tie_bottom();
+
+    render()
+    translate([185, 200, 61])
+    rotate([180, 0, 0])
+    PSU_plate_mount_2();
+
+    render()
+    translate([15, 200, 61])
+    rotate([180, 0, 0])
+    PSU_plate_mount_1();
+
+    color("Red")
+    render()
+    translate([15, 200, 27])
+    rotate([-90, 0, 0])
+    PSU_plate_long_tie();
+    
+    color("Red")
+    render()
+    translate([15, 200, 93])
+    rotate([-90, 0, 0])
+    PSU_plate_long_tie();
+
+    color("Red")
+    render()
+    translate([185, 200, 27])
+    rotate([90, 0, 180])
+    PSU_plate_long_tie();
+    
+    color("Red")
+    render()
+    translate([185, 200, 93])
+    rotate([90, 0, 180])
+    PSU_plate_long_tie();
+}
+
+module psu_backplate() {
+    psu_plate_mounts();
+
+    color("SlateGray")
+    translate([100, 193.5, 17.5])
+    rotate([90, 0, 180])
+    PSU_backplate(230);
+}
+
+module psu_bottom_support() {
+    psu_backplate();
+
+    color("SlateGray")
+    render()
+    translate([100, 63.5, 6])
+    rotate([-90, 0, 0])
+    PSU_bottom_support(230);
+
+    color("Red")
+    render()
+    translate([185, 68, 0])
+    rotate([180, 0, 180])
+    PSU_bottom_support_long_tie();
 }

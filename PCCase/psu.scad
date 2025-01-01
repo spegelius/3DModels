@@ -17,11 +17,13 @@ include <variables.scad>;
 
 //PSU_bottom_support(230);
 //PSU_bottom_support(240);
-//PSU_bottom_support_long_bow_tie();
+//PSU_bottom_support_long_tie();
 
-//PSU_plate_long_tie();
+PSU_plate_long_tie();
 //PSU_plate_long_tie(lower_z=0.1);
 
+//PSU_plate_long_tie_bottom();
+//PSU_plate_long_tie_bottom(lower_z=0.1);
 
 
 module debug_PSU_plate() {
@@ -181,9 +183,9 @@ module PSU_plate_mount_1() {
     }
 }
 
-module PSU_plate_mount_2(width) {
+module PSU_plate_mount_2() {
     mirror([1, 0, 0])
-    PSU_plate_mount_1(width);
+    PSU_plate_mount_1();
 }
 
 module PSU_bottom_support(width) {
@@ -266,11 +268,21 @@ module PSU_bottom_support(width) {
     }
 }
 
-module PSU_bottom_support_long_bow_tie() {
-    long_bow_tie_half(length=20);
+module PSU_bottom_support_long_tie() {
+    long_tie_half(length=20);
 }
 
 module PSU_plate_long_tie(lower_z=0.0) {
+    intersection() {
+        translate([0, 0, -lower_z])
+        long_tie_half(length=25);
+
+        translate([0, 0, 10/2])
+        cube([10, 50, 10], center=true);
+    }
+}
+
+module PSU_plate_long_tie_bottom(lower_z=0.0) {
     
     intersection() {
         union() {

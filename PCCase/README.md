@@ -119,3 +119,32 @@ You'll need to cut the threaded rods to proper length. Deducting ~40mm of the D 
 Do not overtighten since it can break the plastic and also affect the dimensions.
 You can also use M6 or M5 threaded rods, but you'll need to use adequate washers and print spacers to fill the extention hole properly.
 ![](doc/frame_reinforcements.png)
+
+### PSU mounts
+In this section we'll print and install the PSU mount parts. If you have the actual PSU meant for this case in hand, it helps when positioning the PSU support beam but that can be done when actually installing the PSU.
+
+Parts to print:
+- 1 x PSU_STL/PSU_plate_mount_1.stl
+- 1 x PSU_STL/PSU_plate_mount_2.stl
+- 2 x PSU_plate_long_tie_bottom.stl
+- 4 x PSU_plate_long_tie.stl
+- 1 x PSU_STL/PSU_backplate_x.stl. Use one that matches the case width
+- 1 x PSU_STL/PSU_bottom_support_x.stl. Use one that matches the case width
+- 2 x PSU_STL/PSU_bottom_support_long_tie.stl
+
+Print settings:
+- PETG or ABS recommended
+- 3 perimeters
+- 20+% infill
+
+Print all the parts. Assembly requires that the dove joints fit properly, not too tight or loose. The long_tie models are printed facing the print bed so first layer height palys a big part.
+However, if the parts are too tight, you can use file to slim them down.
+
+First step is to install the plate mounts with the long_ties. Blue: PSU_plate_long_tie_bottom, red: PSU_plate_long_tie. Note the plate mount orientation. Plate mount long ties can be inserted from top and bottom since the frame corner has a tie hole.
+![](doc/psu_plate_mounts.png)
+
+Next add the PSU_backplate by sliding it in from top:
+![](doc/psu_backplate.png)
+
+After this, insert the PSU_bottom_support part as shown. It can be rotated into place. Use the PSU_bottom_support_long_ties to lock it in place. The position of the support part can be adjusted when PSU is installed.
+![](doc/psu_bottom_support.png)

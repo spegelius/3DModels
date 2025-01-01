@@ -42,15 +42,15 @@ module mockup() {
         e_count_d, e_count_h
     );
 
-    _hd_mocks(width, depth, height, count=10);
+//    _hd_mocks(width, depth, height, count=10);
 
     _PSU(width);
 
-    _feet(width, depth);
-
-    _mobo("ATX", width, depth, height);
-
-    _fans_front(width, depth, 100);
+//    _feet(width, depth);
+//
+//    _mobo("ATX", width, depth, height);
+//
+//    _fans_front(width, depth, 100);
 
 //    _bottom_cover(width, depth);
 

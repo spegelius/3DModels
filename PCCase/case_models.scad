@@ -460,6 +460,13 @@ module _PSU(width) {
     translate([15, 0, (atx_psu_height + 6)/2 + 15])
     mirror([0, 0, 1])
     PSU_plate_mount_1();
+
+    render()
+    translate([
+        width - 45, 0, (atx_psu_height + 6)/2 + 15
+    ])
+    mirror([0, 0, 1])
+    PSU_plate_mount_2();
 }
 
 module _feet(width, depth) {
