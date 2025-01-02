@@ -55,7 +55,7 @@ use <frame_parts.scad>;
 
 //motherboard_back_plate_clip();
 //motherboard_back_plate_clip(scaling=1.02);
-//motherboard_back_plate_clip_long_tie_half();
+motherboard_back_plate_clip_long_tie_half();
 
 //motherboard_io_cover(230);
 //motherboard_io_cover(230, top_offset=28);
@@ -65,7 +65,7 @@ use <frame_parts.scad>;
 //motherboard_card_cover(230, 520);
 
 //motherboard_card_cover_ee_atx(240, 525);
-motherboard_card_cover_ee_atx(240, 550);
+//motherboard_card_cover_ee_atx(240, 550);
 
 
 module debug_motherboard_back_plates() {
@@ -439,6 +439,10 @@ module motherboard_tray_atx(
             ])
             _mount_thread(h, render_threads);
 
+            // frame middle beam cut
+            translate([0, depth - 153.5, 0])
+            rotate([-10, 0, 0])
+            cube([1000, 100, 100], center=true);
         }
     }
 
@@ -1630,8 +1634,8 @@ module motherboard_back_plate_clip(scaling=1.0) {
                 cube([10, 40, 2], center=true);
             }
 
-            translate([6/2, 0, 3.4/2])
-            cube([6, 30, 3.4], center=true);
+            translate([5/2, 0, 3.4/2])
+            cube([5, 30, 3.4], center=true);
 
             scale([1, scaling, 1])
             translate([0, 0, 11/2])
@@ -1639,12 +1643,12 @@ module motherboard_back_plate_clip(scaling=1.0) {
             long_tie(11);
         }
 
-        translate([7, -30/2, 0])
-        rotate([0, 0, -25])
+        translate([5, -30/2, 0])
+        rotate([0, 0, -28])
         cube([10, 30, 10], center=true);
 
-        translate([7, 30/2, 0])
-        rotate([0, 0, 25])
+        translate([5, 30/2, 0])
+        rotate([0, 0, 28])
         cube([10, 30, 10], center=true);
     }
 }

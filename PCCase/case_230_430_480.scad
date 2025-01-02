@@ -47,8 +47,8 @@ module mockup() {
     _PSU(width);
 
 //    _feet(width, depth);
-//
-//    _mobo("ATX", width, depth, height);
+
+    _mobo("ATX", width, depth, height);
 //
 //    _fans_front(width, depth, 100);
 

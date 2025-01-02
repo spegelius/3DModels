@@ -1,6 +1,8 @@
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 include <../PCParts/common.scad>;
 
+use <frame_parts.scad>;
+
 
 //debug_fan_mount_m3_adapter();
 
@@ -21,7 +23,8 @@ include <../PCParts/common.scad>;
 
 //fan_end_mount_120mm(218);
 
-fan_mount_m3_adapter();
+//fan_mount_m3_adapter();
+fan_mount_long_tie_half();
 
 
 module debug_fan_mount_m3_adapter() {
@@ -83,8 +86,8 @@ module _fan_end_mount_body(w, fan_size) {
 module fan_mount_120mm(width) {
     w = width - 60;
 
-    %translate([0, 120/2 + 4.3, 25/2 + 2])
-    mock_fan_120mm();
+//    %translate([0, 120/2 + 4.3, 25/2 + 2])
+//    mock_fan_120mm();
 
     difference() {
         _fan_mount_body(w, 120);
@@ -104,8 +107,8 @@ module fan_mount_140mm(width) {
 
     w = width - 60;
 
-    %translate([0, 140/2 + 4.3, 25/2 + 2])
-    mock_fan_140mm();
+//    %translate([0, 140/2 + 4.3, 25/2 + 2])
+//    mock_fan_140mm();
 
     difference() {
         _fan_mount_body(w, 140);
@@ -210,4 +213,8 @@ module fan_mount_m3_adapter() {
         translate([0, 0, 5])
         cylinder(d1=2.8, d2=5, h=4, center=true, $fn=20);
     }
+}
+
+module fan_mount_long_tie_half() {
+    long_tie_half_20();
 }

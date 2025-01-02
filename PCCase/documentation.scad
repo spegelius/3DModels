@@ -4,6 +4,8 @@ use <case_230_430_480.scad>;
 use <case_models.scad>;
 use <frame_parts.scad>;
 use <psu.scad>;
+use <motherboard.scad>;
+use <fans.scad>;
 
 
 //dimensions();
@@ -16,7 +18,14 @@ use <psu.scad>;
 
 //psu_plate_mounts();
 //psu_backplate();
-psu_bottom_support();
+//psu_bottom_support();
+
+//motherboard_mounts();
+//motherboard_tray();
+//motherboard_plate_clips();
+//motherboard_plate();
+fans();
+
 
 
 module dimensions() {
@@ -251,4 +260,305 @@ module psu_bottom_support() {
     translate([185, 68, 0])
     rotate([180, 0, 180])
     PSU_bottom_support_long_tie();
+}
+
+module motherboard_mounts() {
+    psu_bottom_support();
+
+    render()
+    translate([200, 185, 480 - 304])
+    rotate([0, -90, 90])
+    motherboard_tray_mount_2();
+
+    render()
+    translate([
+        200, -45, 480 - 304
+    ])
+    rotate([0, 90, 90])
+    motherboard_tray_mount_1();
+
+    render()
+    translate([200, 185, 480 - 89])
+    rotate([0, -90, 90])
+    motherboard_tray_mount_top_2();
+
+    render()
+    translate([200, -45, 480 - 89])
+    rotate([0, 90, 90])
+    motherboard_tray_mount_top_1();
+
+    color("Red")
+    render()
+    translate([200, 185, 386])
+    rotate([90, 0, 90])
+    motherboard_tray_long_bow_tie_half();
+
+    color("Red")
+    render()
+    translate([200, 185, 386])
+    rotate([90, 0, -90])
+    motherboard_tray_long_bow_tie_half();
+
+    color("Red")
+    render()
+    translate([200, 160, 435])
+    rotate([0, 90, 0])
+    motherboard_tray_long_bow_tie_half();
+
+    color("Red")
+    render()
+    translate([200, 160, 435])
+    rotate([0, -90, 0])
+    motherboard_tray_long_bow_tie_half();
+}
+
+module motherboard_tray() {
+    motherboard_mounts();
+
+    color("SlateGray")
+    render()
+    translate([188, 182, 420])
+    rotate([0, 90, 180])
+    motherboard_tray_atx(430, render_threads=false);
+
+    color("Red")
+    render()
+    translate([213.7, 173, 376])
+    rotate([0, -90, 0])
+    motherboard_tray_screw(render_threads=false);
+
+    color("Red")
+    render()
+    translate([213.7, -33, 376])
+    rotate([0, -90, 0])
+    motherboard_tray_screw(render_threads=false);
+
+    color("Red")
+    render()
+    translate([213.7, 173, 161])
+    rotate([0, -90, 0])
+    motherboard_tray_screw(render_threads=false);
+
+    color("Red")
+    render()
+    translate([213.7, -33, 161])
+    rotate([0, -90, 0])
+    motherboard_tray_screw(render_threads=false);
+}
+
+module motherboard_plate_clips() {
+    motherboard_mounts();
+
+    render()
+    translate([100, 200, 435])
+    rotate([90, 90, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([100, 200, 435])
+    rotate([90, 90, 180])
+    motherboard_back_plate_clip_long_tie_half();
+
+    render()
+    translate([15, 200, 385])
+    rotate([90, 0, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([15, 200, 385])
+    rotate([90, 180, 180])
+    motherboard_back_plate_clip_long_tie_half();    
+
+    render()
+    translate([15, 200, 304])
+    rotate([90, 0, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([15, 200, 304])
+    rotate([90, 180, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([15, 200, 220])
+    rotate([90, 0, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([15, 200, 220])
+    rotate([90, 180, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([15, 200, 130])
+    rotate([90, 0, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([15, 200, 130])
+    rotate([90, 180, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([185, 200, 385])
+    rotate([90, 180, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([185, 200, 385])
+    rotate([90, 0, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([185, 200, 304])
+    rotate([90, 180, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([185, 200, 304])
+    rotate([90, 0, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([185, 200, 220])
+    rotate([90, 180, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([185, 200, 220])
+    rotate([90, 0, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+
+    render()
+    translate([185, 200, 130])
+    rotate([90, 180, 0])
+    motherboard_back_plate_clip();
+
+    color("Red")
+    render()
+    translate([185, 200, 130])
+    rotate([90, 0, 180])
+    motherboard_back_plate_clip_long_tie_half(); 
+}
+
+module motherboard_plate() {
+    motherboard_plate_clips();
+
+    color("SlateGray")
+    render()
+    translate([185, 185, 435])
+    rotate([-90, 90, 0])
+    motherboard_back_plate(230, 480);
+}
+
+module fans() {
+    motherboard_plate();
+
+    render()
+    translate([100, -200, 50])
+    rotate([90, 0, 0])
+    fan_mount_140mm(230);
+
+    render()
+    translate([100, -200, 196.5])
+    rotate([90, 0, 0])
+    fan_mount_dual_140mm(230);
+
+    render()
+    translate([100, -200, 343])
+    rotate([90, 180, 0])
+    fan_mount_140mm(230);
+
+    render()
+    translate([100, -150, 450])
+    fan_mount_140mm(230);
+    
+    render()
+    translate([100, -3.5, 450])
+    fan_mount_dual_140mm(230);
+
+    render()
+    translate([100, 143, 450])
+    rotate([0, 0, 180])
+    fan_mount_140mm(230);
+
+    color("Red")
+    render()
+    translate([15, -200, 60])
+    rotate([-90, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([15, -200, 196.5])
+    rotate([-90, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([15, -200, 333])
+    rotate([-90, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, -200, 60])
+    rotate([-90, 180, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, -200, 196.5])
+    rotate([-90, 180, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, -200, 333])
+    rotate([-90, 180, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([15, -140, 450])
+    rotate([180, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([15, -3.5, 450])
+    rotate([180, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([15, 133, 450])
+    rotate([180, 0, 0])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, -140, 450])
+    rotate([180, 0, 180])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, -3.5, 450])
+    rotate([180, 0, 180])
+    fan_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([185, 133, 450])
+    rotate([180, 0, 180])
+    fan_mount_long_tie_half();
 }

@@ -7,6 +7,7 @@ This is a mostly 3D printed PC case, modeled in OpenSCAD. The frame is built usi
 ![](doc/case2.png)
 
 The project is quite big one so it takes time and material to build. Currently made for ATX and EE-ATX form factor (and one custom Raspberry Pi NAS/Chia mining case which is a separate project using this as base).
+Currently some of the parts require quite large printer, ~300x300mm. Some of the parts are split to multiple parts to be able to print with smaller printers but for example motherboard trays are mostly big.
 
 ## Dimensions
 Dimensions and orientation is shown in following picture. Parts specific for certain case size use WxDxH-notation and when certain dimension doesn't matter (for example motherboard back plate doesn't care about depth), the dimension is omitted (WxH motherboard back plate example).
@@ -39,7 +40,7 @@ Use following files to check and generate needed files:
 
 ## Printing the parts
 Since Dollo3D parts use dovetail joints to attach parts together, accurate printer is practically a must. I've printed most of the parts with my Prusa MK2.5S and default PrusaSlicer profiles and all parts fit together without too much hassle.
-Printing and assembling the frame should be a good test about the quality. More about this in frame build section.
+Printing and assembling the frame should be a good test about the quality. General rule of thumb for proper fit is that you can't install the ties by hand but also doesn't require excessive force. Lightly tapping with a mallet or other tool should be enough.
 
 ### Materials to use
 I have printed 5 cases and used:
@@ -63,7 +64,7 @@ Parts are joined with bow ties and you'll need to print quite a lot of those. Th
 ### Frame: corners and W beams
 Parts to print:
 - 8 x frame_STL/corner.stl or frame_STL/corner_no_supports.stl
-- 4 x frame_STL/extention_x.stl. The extention lenght depends of the case width; for example 230mm - 120 mm = extention_110.stl
+- 4 x frame_STL/extention_X.stl. The extention lenght depends of the case width; for example 230mm - 120 mm = extention_110.stl
 - 32 x frame_STL/bow_tie.stl or one of it's available options
 
 Print settings:
@@ -71,7 +72,7 @@ Print settings:
 - ~20% infill
 - 0.2-0.25mm layer height. For corners variable layer height is a good option.
 
-I suggest to print one corner, one extention and 4 bow_ties and trying how well the parts fit together. The bow_ties should take moderate amount of force to insert to the corer and extention dovetail holes.
+I suggest to print one corner, one extention and 4 bow_ties and trying how well the parts fit together. The bow_ties should take moderate amount of force to insert to the corer and extention dovetail holes. A good fit is when you can't quite push the bow tie in by hand but lightly tapping with small mallet or other tool does the trick. This guideline works with most of the tie-joints.
 
 Assemble 4 units as shown:
 ![](doc/frame_corners.png)
@@ -83,7 +84,7 @@ For the remaining 2 beams, when depth is 430mm, the D-beam length is 310mm - 140
 
 Parts to print:
 - 2 x frame_STL/extention_t_140.stl, with or without supports.
-- x amount of frame_STL/extention_x.stl. 
+- x amount of frame_STL/extention_X.stl. 
 - 40+ x frame_STL/bow_tie.stl or one of it's available options. Depends on how many extentions are printed. Print lots, you'll need these in later steps in any case...
 
 Print settings:
@@ -102,7 +103,7 @@ Like in previous step, the length of the H beams is calculated by deducting 120m
 For height of 480mm, the beam length is 360mm. 3x120mm extentions is a good choice.
 
 Parts to print:
-- x amount of frame_STL/extention_x.stl. If printing the 120mm extentions, that is 15 x.
+- x amount of frame_STL/extention_X.stl. If printing the 120mm extentions, that is 15 x.
 - 40 or more x frame_STL/bow_tie.stl or one of it's available options. With 15 x 120mm extentions, total is 80 bow_ties.
 
 Print settings:
@@ -121,15 +122,16 @@ You can also use M6 or M5 threaded rods, but you'll need to use adequate washers
 ![](doc/frame_reinforcements.png)
 
 ### PSU mounts
-In this section we'll print and install the PSU mount parts. If you have the actual PSU meant for this case in hand, it helps when positioning the PSU support beam but that can be done when actually installing the PSU.
+In this section we'll print and install the ATX PSU mount parts. If you have the actual PSU meant for this case in hand, it helps when positioning the PSU support beam but that can be done when actually installing the PSU.
+The PSU shouldn't be installed yet since we need to build the rest of the case first.
 
 Parts to print:
 - 1 x PSU_STL/PSU_plate_mount_1.stl
 - 1 x PSU_STL/PSU_plate_mount_2.stl
 - 2 x PSU_plate_long_tie_bottom.stl
 - 4 x PSU_plate_long_tie.stl
-- 1 x PSU_STL/PSU_backplate_x.stl. Use one that matches the case width
-- 1 x PSU_STL/PSU_bottom_support_x.stl. Use one that matches the case width
+- 1 x PSU_STL/PSU_backplate_W.stl. Use one that matches the case width
+- 1 x PSU_STL/PSU_bottom_support_W.stl. Use one that matches the case width
 - 2 x PSU_STL/PSU_bottom_support_long_tie.stl
 
 Print settings:
@@ -137,10 +139,10 @@ Print settings:
 - 3 perimeters
 - 20+% infill
 
-Print all the parts. Assembly requires that the dove joints fit properly, not too tight or loose. The long_tie models are printed facing the print bed so first layer height palys a big part.
+Print all the parts. Assembly requires that the dove joints fit properly, not too tight or loose. The long_tie models are printed facing the print bed so first layer calibration plays a big part.
 However, if the parts are too tight, you can use file to slim them down.
 
-First step is to install the plate mounts with the long_ties. Blue: PSU_plate_long_tie_bottom, red: PSU_plate_long_tie. Note the plate mount orientation. Plate mount long ties can be inserted from top and bottom since the frame corner has a tie hole.
+First step is to install the plate mounts with the long_ties. Blue: PSU_plate_long_tie_bottom, red: PSU_plate_long_tie. Note the plate mount orientation. Plate mount long ties can be inserted from top and bottom since the frame corner has a tie hole. Use a falthead screwdriver or similar thing to help tapping the tie in place.
 ![](doc/psu_plate_mounts.png)
 
 Next add the PSU_backplate by sliding it in from top:
@@ -148,3 +150,94 @@ Next add the PSU_backplate by sliding it in from top:
 
 After this, insert the PSU_bottom_support part as shown. It can be rotated into place. Use the PSU_bottom_support_long_ties to lock it in place. The position of the support part can be adjusted when PSU is installed.
 ![](doc/psu_bottom_support.png)
+
+### Motherboard tray
+In this section we will print and install motherboard tray and it's mounts.
+Note about parts that end with _28: these parts are only used with the 230x500x520 case. The number 28 means 28mm extra offset for the motherboard from top of the case. The extra offset is needed so that weatercooling radiator fits the case.
+Note about the reinforced tray screw: since the tray screws aren't taking the full weight of the motherboard and other components, the regular screw should be enough. But I'll leave that decision (and responsibility) up to whoever builds this... :)
+
+Tray to print (ATX):
+- 1 x motherboard_STL/motherboard_tray_atx_D.stl. Use one that matches the case depth. Currently requires 300x300mm print bed.
+
+Tray to print (EE-ATX):
+- 1 x motherboard_STL/motherboard_tray_ee_atx_D.stl. Only 540mm case depth available. Requires 350x350mm print bed or use the split files (motherboard_tray_ee_atx_x_x_540)
+
+Rest of the parts to print:
+- 1 x motherboard_STL/motherboard_tray_mount_1.stl
+- 1 x motherboard_STL/motherboard_tray_mount_2.stl
+- 1 x motherboard_STL/motherboard_tray_mount_top_1.stl (or motherboard_tray_mount_top_1_28.stl)
+- 1 x motherboard_STL/motherboard_tray_mount_top_2.stl (or motherboard_tray_mount_top_2_28.stl)
+- 4 x motherboard_STL/motherboard_tray_screw.stl or reinforced version. The reinforced version has a hole for M3 screw and nut so it is stronger.
+- 16 x motherboard_STL/motherboard_tray_long_bow_tie_half.stl
+
+Hardware:
+- M3 nuts for each motherboard mount stud
+
+Print settings:
+- PETG or ABS recommended (PLA ok for the bow ties)
+- 3 perimeters or more. The parts are holding the motherboard so suggest making them tough.
+- 30% infill or more
+- variable layer height should help getting the threads printed properly.
+
+After printing the tray, use 3mm drill bit to clean the motherboard mount holes. Then use M3 screw to pull M3 nuts in from the bottom of the tray.
+Print the tray screws and check that the threads work properly. If you printed the reinforced screws, pull a M3 nut in with a m3 screw. You might need to cut the screw to proper length.
+
+Tray mounts are attached to the frame with the motherboard_tray_long_bow_tie_half-parts. Two halves makes one bow tie. Like previously mentioned, the ties shouldn't be too tight or too loose. In case of too tight, file the parts so that the fit is good and the parts have enough friction to stay in place.
+The top tray_mount_top parts obviously go to top and should be installed first. Lower tray_mounts need to be positioned with the help of the tray so install them to approximate position and then mount the tray top top mounts with the tray screws. Do not tighten the tray screws too much. After the tray is mounted, move the lower mounts to position.
+![](doc/motherboard_mounts.png)
+![](doc/motherboard_tray.png)
+
+Remove the tray after installing the mounts and checking that all tray screws fit properly.
+
+### Motherboard back plate
+This section details motherboard back plate installation.
+
+Plate to print (ATX):
+- 1 x motherboard_STL/motherboard_back_plate_W_H.stl (motherboard_back_plate_230_520_28.stl for case with watercooling). Requires 330mm print area, no split model available at the moment.
+- 1 x motherboard_STL/motherboard_io_cover_W.stl (motherboard_io_cover_W_28.stl for case with watercooling).
+- 1 x motherboard_STL/motherboard_card_cover_W_H.stl
+
+Plate to print (EE-ATX):
+- 1 x motherboard_STL/motherboard_back_plate_ee_atx_W_H.stl. Requires ~400mm print area, no split model available at the moment.
+- 1 x motherboard_STL/motherboard_io_cover_ee_atx_W.stl
+- 1 x motherboard_STL/motherboard_card_cover_ee_atx_W_H.stl
+
+Rest of the parts to print:
+- 9 x motherboard_STL/motherboard_back_plate_clip.stl
+- 9 x motherboard_STL/motherboard_back_plate_clip_long_tie_half.stl
+
+Print settings:
+- ABS or other material that can handle high temperatures for the plate. GreenTec Pro claims 160 C and doesn't warp like ABS. I've printed mine with that, so far so good.
+- PETG should work fine for the clips
+- 2 or 3 perimeters
+- 20+% infill
+- 0.2 - 0.25mm layers
+
+First print the plate and covers. Install the covers to see if they fit properly. The io-cover can be installed multiple ways so pick one that works for you.
+Then print couple the plate clips and see if they fit on the plate dove holes. The fit should be quite tight so the plate stays in place. If the clip is too loose, there's 1.02x.stl variant.
+After printing rest of the clips, install them to the frame with the long ties as shown. Start at the top middle clip and use the plate for clip positioning.
+![](doc/motherboard_plate_clips.png)
+
+Next push the back plate in from inside of the case. Make sure that the plate pushed as far as it can go on each clip position.
+![](doc/motherboard_back_plate.png)
+
+### Fan mounts
+For front and top fans there are 120mm and 140mm adapters available. The positioning and number of fans is for you to decide. Depending of the case size you can mount 2 or 3 fans.
+
+Parts to print:
+- fans_STL/fan_mount_120mm_W.stl or fan_mount_140mm_W.stl. Select mount for correct case width. You'll need two mounts per fan.
+- fans_STL/fan_mount_dual_120mm_W.stl or fan_mount_dual_140mm_W.stl. Optional mount connecting to two fans.
+- fans_STL/fan_mount_dual_120_140mm_240.stl. Optional dual mount for 120mm and 140mm fans.
+- fans_STL/fan_mount_m3_adapter.stl. Adapter to allows to use M3 screw to mount the fan, one needed per fan screw.
+- fans_STL/fan_mount_long_tie_half.stl. 2x per fan mount needed.
+
+Print settings:
+- PLA, PETG etc. should work fine
+- 2 perimeters
+- 10+% infill
+- 0.2mm layers
+
+Install the mounts between front H beams and top D beams with the long ties. Use fans for positioning the mounts.
+Fans can be installed now. The top fans can be installed with regular fan screws. The fans on the front however are best installed with M3 screws because HDD trays will block access to them. With M3 screws replacing the fans is way easier since one doesn't need to remove the HDD trays or fan mounts.
+The M3 adapters snap in to the mounts from below.
+![](doc/fans.png)
