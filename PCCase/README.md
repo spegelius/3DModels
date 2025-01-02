@@ -75,6 +75,7 @@ Print settings:
 I suggest to print one corner, one extention and 4 bow_ties and trying how well the parts fit together. The bow_ties should take moderate amount of force to insert to the corer and extention dovetail holes. A good fit is when you can't quite push the bow tie in by hand but lightly tapping with small mallet or other tool does the trick. This guideline works with most of the tie-joints.
 
 Assemble 4 units as shown:
+
 ![](doc/frame_corners.png)
 
 ### Frame: D beams
@@ -93,9 +94,11 @@ Print settings:
 - 0.2-0.25mm layer height. For extention_t, variable layer height is a good option.
  
 After printing, first assemble the extention_t parts to corners as shown:
+
 ![](doc/frame_et.png)
 
 Next, assemble the rest of the extention-parts as shown:
+
 ![](doc/frame_d_beams.png)
 
 ### Frame: H beams
@@ -111,6 +114,7 @@ Print settings:
 - ~20% infill
 
 The assembly should be strainghtforward at this point. I suggest assembling the beams first, then connecting them to either of the parts assembled in previous steps and then topping the frame with last part.
+
 ![](doc/frame_final.png)
 
 ### Frame: optional reinforcement
@@ -119,6 +123,7 @@ Anyways the trick is to use 8mm threaded rods and M8 nuts to reinforce D- and H-
 You'll need to cut the threaded rods to proper length. Deducting ~40mm of the D and H lengths should be ok.
 Do not overtighten since it can break the plastic and also affect the dimensions.
 You can also use M6 or M5 threaded rods, but you'll need to use adequate washers and print spacers to fill the extention hole properly.
+
 ![](doc/frame_reinforcements.png)
 
 ### PSU mounts
@@ -143,12 +148,15 @@ Print all the parts. Assembly requires that the dove joints fit properly, not to
 However, if the parts are too tight, you can use file to slim them down.
 
 First step is to install the plate mounts with the long_ties. Blue: PSU_plate_long_tie_bottom, red: PSU_plate_long_tie. Note the plate mount orientation. Plate mount long ties can be inserted from top and bottom since the frame corner has a tie hole. Use a falthead screwdriver or similar thing to help tapping the tie in place.
+
 ![](doc/psu_plate_mounts.png)
 
 Next add the PSU_backplate by sliding it in from top:
+
 ![](doc/psu_backplate.png)
 
 After this, insert the PSU_bottom_support part as shown. It can be rotated into place. Use the PSU_bottom_support_long_ties to lock it in place. The position of the support part can be adjusted when PSU is installed.
+
 ![](doc/psu_bottom_support.png)
 
 ### Motherboard tray
@@ -184,6 +192,7 @@ Print the tray screws and check that the threads work properly. If you printed t
 
 Tray mounts are attached to the frame with the motherboard_tray_long_bow_tie_half-parts. Two halves makes one bow tie. Like previously mentioned, the ties shouldn't be too tight or too loose. In case of too tight, file the parts so that the fit is good and the parts have enough friction to stay in place.
 The top tray_mount_top parts obviously go to top and should be installed first. Lower tray_mounts need to be positioned with the help of the tray so install them to approximate position and then mount the tray top top mounts with the tray screws. Do not tighten the tray screws too much. After the tray is mounted, move the lower mounts to position.
+
 ![](doc/motherboard_mounts.png)
 ![](doc/motherboard_tray.png)
 
@@ -216,9 +225,11 @@ Print settings:
 First print the plate and covers. Install the covers to see if they fit properly. The io-cover can be installed multiple ways so pick one that works for you.
 Then print couple the plate clips and see if they fit on the plate dove holes. The fit should be quite tight so the plate stays in place. If the clip is too loose, there's 1.02x.stl variant.
 After printing rest of the clips, install them to the frame with the long ties as shown. Start at the top middle clip and use the plate for clip positioning.
+
 ![](doc/motherboard_plate_clips.png)
 
 Next push the back plate in from inside of the case. Make sure that the plate pushed as far as it can go on each clip position.
+
 ![](doc/motherboard_back_plate.png)
 
 ### Fan mounts
@@ -240,4 +251,95 @@ Print settings:
 Install the mounts between front H beams and top D beams with the long ties. Use fans for positioning the mounts.
 Fans can be installed now. The top fans can be installed with regular fan screws. The fans on the front however are best installed with M3 screws because HDD trays will block access to them. With M3 screws replacing the fans is way easier since one doesn't need to remove the HDD trays or fan mounts.
 The M3 adapters snap in to the mounts from below.
+
 ![](doc/fans.png)
+
+### Hard disk mounts
+Let's set up the hdd mounts. The case was originally designed to hold lot of disks but since HD mounts are single units, you can decide how many to print.
+
+Parts to print:
+- hdd_STL/hdd_mount_rails_W.stl. As many as you need and the case can take. Select mount for correct case width.
+- hdd_STL/hdd_mount_long_tie_half.stl. Need 3 per one hdd_mount.
+- https://www.printables.com/model/744892-antec-elevenhundred-hdd-and-ssd-rails. 2 per hdd needed.
+- hdd_STL/hdd_mount_joiner.stl. Optional
+- hdd_STL/hdd_mount_cable_support.stl. Optional, provides support to cables.
+
+Print settings:
+- PETG or ABS recommended due to heat
+- 2 or 3 perimeters.
+- 20% infill (doesn't matter much since parts are mostly wall)
+- 02-03mm layers
+
+The mounts have built-in supports and they need to be removed before use. The mounts are mounted to the frame from three points as shown, bit of bending needed. The mount height of the mounts is up to you. Use the ties to secure the mounts.
+
+![](doc/hdds.png)
+
+The joiner parts are optional but might add some stability of the stack. Yuo can install them after the hdd mounts are installed, just bend the mounts to create enough of a gap to get the joiner in place. Push the mounts together to lock the joiner.
+
+![](doc/hdd_joiners.png)
+
+The cable supports clip onto the holes on the mount walls. 
+
+![](doc/hdd_cable_support.png)
+
+### Bottom cover
+Bottom cover installation.
+
+Parts to print:
+- 1 x bottom_cover_STL/bottom_W_D.stl. Pick file matching the width and depth of your case. No pre-split model available at the moment.
+- 8-10 x bottom_cover_STL/bottom_mount_clip.stl. Larger cases use more clips
+- 8-10 x bottom_cover_STL/bottom_mount_clip_long_tie_half.stl. Enough for all clips
+
+The mount clips are to be installed to the frame as shown. After this, the bottom cover can be snapped in from below.
+Protip: it is possible to install two clips with the PSU bottom support part, just replace the PSU tie with the clip. However this depends on the PSU bottom support part position, the bottom clip position might not be optimal.
+
+![](doc/bottom_clips.png)
+![](doc/bottom_cover.png)
+
+### Front and top covers
+Front and top covers use mostly the same models. The whole cover consists of two end-parts and grill-parts on the middle. At front the upper end part contains the buttons and leds.
+End parts are installed either with dovetail joints or snapfit clips. The grill parts use snapfit clips so they are easy to install and take off.
+
+Parts to print (front):
+- 1 x front_top_cover_STL/front_cover_end_W_80.stl or snapfit version. Pick one that maches the width of your case.
+- 1 x front_top_cover_STL/front_cover_buttons_W_80.stl or 4_leds version. Pick one that maches the width of your case. The 4 leds version is made for Supermicro motherboard but you need those leds, use them.
+- 1 x front_top_cover_STL/front_cover_buttons_mount.stl or the 4_leds version.
+- 2 x front_top_cover_STL/cover_lens_5mm_led.stl. Should be printed with clear material.
+- 2 x front_top_cover_STL/cover_button.stl. I printed in red and yellow PLA (power and reset).
+- front_top_cover_STL/front_cover_grill_W_x.stl. With or without supports. Enough of these to fill the gap between end parts. The gap is: H - 180 so for 480mm case = 300mm -> 2x150mm parts.
+- front_top_cover_STL/front_cover_snap_clip_left.stl. The amount depends on the end and grill parts snap slots, print enough.
+- front_top_cover_STL/front_cover_snap_clip_right.stl. Same as left.stl
+
+Parts to print (top):
+- 2 x front_top_cover_STL/front_cover_end_W_80.stl or snapfit version. Pick one that maches the width of your case.
+- front_top_cover_STL/front_cover_grill_W_x.stl. With or without supports. Enough of these to fill the gap between end parts. The gap is: H - 180 so for 480mm case = 300mm -> 2x150mm parts.
+- front_top_cover_STL/front_cover_snap_clip_left.stl. The amount depends on the end and grill parts snap slots, print enough.
+- front_top_cover_STL/front_cover_snap_clip_right.stl. Same as left.stl
+
+Print settings:
+- PLA should be fine here unless you are pumping excessive amounts of heat out through the top of the case :). PETG works for the clips.
+- 2 perimeters
+- 10+% infill
+- 0.2-0.3mm layers. Variable layers 
+
+Hardware for buttoons and leds:
+- 2 or 4 x 5mm leds. Colors up to you, I used red and green (HDD and power)
+- 2 x generic endstops.
+- 2 x M3 square nuts.
+- 2 x M3 screws (10mm).
+- wiring and connectors
+
+First install the clips to the frame (front and top) as shown. The position of the clips will be adjusted when installing the cover parts.
+
+![](doc/cover_snap_clips.png)
+
+Assemble the buttons and leds end part to see that everything works. This is a DIY version so you'll need to solder and crimp the connectors yourself.
+- push the leds to the lens-parts.
+- 
+
+
+Install the end parts. If you printed the dove joint versions, slide them in from frame ends. For snap clips, clip them on. The position of the end parts is ~10mm from the case edge.
+
+![](doc/cover_end.png)
+
+Assemble the button end part. 

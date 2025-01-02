@@ -3,7 +3,9 @@ use <../Dollo/NEW_long_ties/long_tie.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 use <../PCParts/Antec.scad>;
 include <../PCParts/common.scad>;
+
 include <variables.scad>;
+use <frame_parts.scad>;
 
 
 //debug_hdd_mount();
@@ -13,8 +15,10 @@ include <variables.scad>;
 //hdd_mount(240);
 //hdd_mount_rails(230);
 //hdd_mount_rails(240);
-//hdd_mount_joiner();
+hdd_mount_joiner();
 //hdd_mount_cable_support();
+//hdd_mount_long_tie_half();
+
 
 
 module debug_hdd_mount() {
@@ -587,4 +591,8 @@ module hdd_mount_cable_support() {
             cylinder(d=3, h=60, center=true, $fn=20);
         }
     }
+}
+
+module hdd_mount_long_tie_half() {
+    long_tie_half_30();
 }

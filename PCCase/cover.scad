@@ -3,8 +3,10 @@ use <../Dollo/NEW_long_ties/extention.scad>;
 use <../Dollo/NEW_long_ties/long_tie.scad>;
 use <../Dollo/NEW_long_ties/long_bow_tie.scad>;
 use <../Dollo/NEW_long_ties/mockups.scad>;
+
 include <../PCParts/common.scad>;
 include <variables.scad>;
+use <frame_parts.scad>;
 
 
 //debug_bottom();
@@ -26,6 +28,7 @@ include <variables.scad>;
 //bottom(230, 500);
 //bottom(240, 540);
 //bottom_mount_clip();
+//bottom_mount_clip_long_tie_half();
 
 //test_bottom_clip();
 
@@ -169,7 +172,7 @@ include <variables.scad>;
 //top_cover_grill_end(240, 150, 15, 0, brim=true);
 
 //cover_button();
-cover_lens_5mm_led();
+//cover_lens_5mm_led();
 
 
 module debug_bottom() {
@@ -513,6 +516,10 @@ module bottom_mount_clip() {
             }
         }
     }
+}
+
+module bottom_mount_clip_long_tie_half() {
+    long_tie_half_20();
 }
 
 // TODO

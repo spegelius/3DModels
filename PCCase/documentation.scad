@@ -6,6 +6,8 @@ use <frame_parts.scad>;
 use <psu.scad>;
 use <motherboard.scad>;
 use <fans.scad>;
+use <cover.scad>;
+use <hdd.scad>;
 
 
 //dimensions();
@@ -24,8 +26,18 @@ use <fans.scad>;
 //motherboard_tray();
 //motherboard_plate_clips();
 //motherboard_plate();
-fans();
 
+//fans();
+
+//hdds();
+//hdd_joiners();
+hdd_cable_support();
+
+//bottom_clips();
+//bottom_cover();
+//cover_clips();
+
+//cover_ends();
 
 
 module dimensions() {
@@ -251,13 +263,13 @@ module psu_bottom_support() {
 
     color("SlateGray")
     render()
-    translate([100, 63.5, 6])
+    translate([100, 53.5, 6])
     rotate([-90, 0, 0])
     PSU_bottom_support(230);
 
     color("Red")
     render()
-    translate([185, 68, 0])
+    translate([185, 58, 0])
     rotate([180, 0, 180])
     PSU_bottom_support_long_tie();
 }
@@ -561,4 +573,243 @@ module fans() {
     translate([185, 133, 450])
     rotate([180, 0, 180])
     fan_mount_long_tie_half();
+}
+
+module hdds() {
+    motherboard_plate();
+
+    render()
+    translate([77, -125.5, 100])
+    rotate([0, 0, -90])
+    hdd_mount_rails(230);
+
+    color("Red")
+    render()
+    translate([0, -185, 100])
+    rotate([-90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -185, 100])
+    rotate([90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -75, 100])
+    rotate([-90, 0, -90])
+    hdd_mount_long_tie_half();
+
+    render()
+    translate([77, -125.5, 130])
+    rotate([0, 0, -90])
+    hdd_mount_rails(230);
+
+    color("Red")
+    render()
+    translate([0, -185, 130])
+    rotate([-90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -185, 130])
+    rotate([90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -75, 130])
+    rotate([-90, 0, -90])
+    hdd_mount_long_tie_half();
+
+    render()
+    translate([77, -125.5, 160])
+    rotate([0, 0, -90])
+    hdd_mount_rails(230);
+
+    color("Red")
+    render()
+    translate([0, -185, 160])
+    rotate([-90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -185, 160])
+    rotate([90, 0, 90])
+    hdd_mount_long_tie_half();
+
+    color("Red")
+    render()
+    translate([200, -75, 160])
+    rotate([-90, 0, -90])
+    hdd_mount_long_tie_half();
+}
+
+module hdd_joiners() {
+    hdds();
+
+    color("lightgrey")
+    render()
+    translate([7, -66, 100])
+    hdd_mount_joiner();
+
+    color("lightgrey")
+    render()
+    translate([7, -66, 130.1])
+    hdd_mount_joiner();
+}
+
+module hdd_cable_support() {
+    hdd_joiners();
+
+    color("SlateGray")
+    render()
+    translate([187.5, -130, 160])
+    rotate([0, 0, -90])
+    hdd_mount_cable_support();
+}
+
+module bottom_clips() {
+    fans();
+
+    render()
+    translate([100, 185, 0])
+    rotate([90, 0, -90])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([100, 185, 0])
+    rotate([0, 0, -90])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([100, -185, 0])
+    rotate([90, 0, 90])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([100, -185, 0])
+    rotate([0, 0, 90])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([185, 0, 0])
+    rotate([90, 0, 180])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([185, 0, 0])
+    rotate([0, 0, 180])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([185, 110, 0])
+    rotate([90, 0, 180])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([185, 110, 0])
+    rotate([0, 0, 180])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([185, -110, 0])
+    rotate([90, 0, 180])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([185, -110, 0])
+    rotate([0, 0, 180])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([15, 0, 0])
+    rotate([90, 0, 0])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([15, 0, 0])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([15, 110, 0])
+    rotate([90, 0, 0])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([15, 110, 0])
+    bottom_mount_clip_long_tie_half();
+
+    render()
+    translate([15, -110, 0])
+    rotate([90, 0, 0])
+    bottom_mount_clip();
+
+    color("Red")
+    render()
+    translate([15, -110, 0])
+    bottom_mount_clip_long_tie_half();
+
+}
+
+module bottom_cover() {
+    bottom_clips();
+
+    color("SlateGray")
+    render()
+    translate([100, 0, -15])
+    rotate([0, 0, 180])
+    bottom(230, 430);
+}
+
+module cover_clips() {
+    bottom_cover();
+
+    render()
+    translate([0, -215, 50])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_left();
+
+    render()
+    translate([200, -215, 50])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_right();
+
+    render()
+    translate([0, -215, 200])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_left();
+
+    render()
+    translate([200, -215, 200])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_right();
+
+    render()
+    translate([0, -215, 300])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_left();
+
+    render()
+    translate([200, -215, 300])
+    rotate([0, 0, 180])
+    front_cover_snap_clip_right();
+}
+
+module cover_ends() {
+    cover_clips();
+
+    translate([100, -215, 75])
+    rotate([0, 180, 0])
+    front_cover_end(230, 80, brim=false);
 }
