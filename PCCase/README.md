@@ -38,9 +38,13 @@ Use following files to check and generate needed files:
 - motherboard.scad
 - psu.scad
 
-## Printing the parts
+## Printing and assembling the parts
 Since Dollo3D parts use dovetail joints to attach parts together, accurate printer is practically a must. I've printed most of the parts with my Prusa MK2.5S and default PrusaSlicer profiles and all parts fit together without too much hassle.
-Printing and assembling the frame should be a good test about the quality. General rule of thumb for proper fit is that you can't install the ties by hand but also doesn't require excessive force. Lightly tapping with a mallet or other tool should be enough.
+Printing and assembling the frame should be a good test about the quality. General rule of thumb for proper fit is that you shouldn't be able install the ties by hand but also shouldn't require excessive force. Lightly tapping with a mallet or other tool should be enough.
+Tools I use working with the ties:
+- rubber mallet or other tool to hit/tap with
+- flathead screwdriver or other flat tool like a file, usefull when you need tap ties inside the dove grooves.
+- metal rod (100+mm) that fits inside the dove groove, usefull when tapping ties through the corners' tie holes. A circular file for example.
 
 ### Materials to use
 I have printed 5 cases and used:
@@ -50,8 +54,8 @@ I have printed 5 cases and used:
 - GreenTec Pro for motherboard back plate
 - PLA for covers
 - PLA and FlexFill 98 for feet
+- PLA and PETG for the ties
 But these are just what I've used. AFAIK PLA does deform more than other materials so it might be better to use PETG or other stronger material for structural parts.
-
 
 ## Build instructions
 
@@ -301,6 +305,8 @@ Front and top covers use mostly the same models. The whole cover consists of two
 At the front the upper end part contains the buttons and leds.
 End parts are available either with dovetail joints or snapfit clips. The grill parts use snapfit clips so they are easy to install and take off. I recommend using snapfit.
 
+Note: by default the cover end parts are 80mm tall. If your case requires more ventilation (grills), you can replace the end parts with smaller end-parts (60mm, 40mm). Of course you'll need to print proper grill parts adjusted to this.
+
 Parts to print (front):
 - 1 x front_top_cover_STL/front_cover_end_W_80.stl or snapfit version. Pick one that maches the width of your case.
 - 1 x front_top_cover_STL/front_cover_buttons_W_80.stl or 4_leds version. Pick one that maches the width of your case. The 4 leds version is made for Supermicro motherboard but you need those leds, use them.
@@ -358,3 +364,79 @@ Install the end parts. If you printed the dove joint versions, slide them in fro
 Lastly, install the grill parts as shown. Adjust snap clips as needed and after all parts are in, adjust them so that the cover doesn't have any gaps.
 
 ![](doc/cover_grills.png)
+
+### Side covers
+In this section we'll be installing the side covers. The cover mount method is bit experimental and not perfect, but this is what we will be working with.
+Due to the size of the side covers they are split to 4 parts. The split parts are numbered from 1 to 4 and they are to be assembled clockwise.
+
+Parts to print:
+- 1 x side_cover_STL/side_cover_D_H_left.stl or one of the side_cover_D_H_left_px.stl parts. Select correct D and H values for your case.
+- 1 x side_cover_STL/side_cover_D_H_right.stl or one of the side_cover_D_H_right_px.stl parts. Select correct D and H values for your case.
+- 80 x side_cover_STL/side_cover_split_clip.stl if you printed the split covers.
+- 8 x side_cover_STL/side_cover_mount.stl
+- 4 x side_cover_STL/side_cover_mount_split_center_left.stl
+- 4 x side_cover_STL/side_cover_mount_split_center_right.stl
+- 4 x side_cover_STL/side_cover_mount_split_ring_left.stl
+- 4 x side_cover_STL/side_cover_mount_split_ring_right.stl
+
+For the side_cover_mount_split_center parts the is 0.4.stl and 0.8.stl version available. These are offset so that the cover locking is tighter. Try these if the final fit is too loose.
+
+Print settings:
+- PLA should work fine here
+- 2 or 3 perimeters
+- 10+% infill
+- 0.2 - 0.3 layers
+
+If you printed the split covers, they need to be assembled. Each piece has a small holes on the edges and these used with ~10mm pieces of filament to align the parts. Check the holes with piece of filament, if you can't stick the filament in use a 1.8mm drill bit to clean the holes.
+Use the split clips to lock the pieces together.
+
+![](doc/side_cover.png)
+
+Next we'll install the cover mounts. Slide them in as shown to the bottom D-beams and back H-beams. It helps if the mounts can be moved by hand because they need to be in proper position for the covers to fit and we'll need to adjust them with the covers later.
+Do this for left and ride side of the case. The sides should mirror each other.
+
+![](doc/side_cover_mounts.png)
+
+Next install the split center left and right parts. Left parts go to the left side of the case and right to the right side. Similarly the regular mounts, they should be easily moved.
+
+![](doc/side_cover_splits.png)
+
+Lastly, we install the covers and slide the mounts to accommodate it. Each cover has a arrow marking inside on the upper front corner to help orienting it. To lock the covers in place, use the split ring parts, left and right accordingly. The rings are to be rotated/slided in as shown:
+
+![](doc/side_cover_split_rings.png)
+
+### Feet
+Installing these is optional. There are two variants and optional dampener parts which should be printed with flexible filemant, I used Flexfill 98.
+Remove side covers for easier handling.
+
+Parts to print:
+- 4 x foot_STL/foot.stl or foot2.stl. Or more if you want.
+- 4 x foot_STL/foot_dampener.stl or foot2_dampener.stl. One for each foot.
+- 4 x frame_STL/long_bow_tie_50.stl, one for each foot
+
+Print settings:
+- PLA or PETG should do well for the feet. Flex material for the dampeners.
+- 3+ perimetes
+- 30+% infill
+- 0.2 layers
+
+### Multicolor parts
+Some multicolor parts that need MMU or other multicolor capable printer are available for side covers and fromt covers. See subdirs under front_top_cover_STL/ and side_cover_STL/ directories.
+
+Since the case built rather modularly, you have quite alot of control about the colors. I kind of like printing the frame corners with one color and beams with another. Same goes with the front and top covers, print the cover ens and grill parts with different colors.
+
+### Watercooling
+TBD if there is interest for this.
+
+Installation is quite straightforward. The feet work best if the bow tie is tight so if it slides quite feely, either print it again after scaling it up or use a bit of packaging tape to make it bigger.
+First slide the long bow tie in the foot part and then in to the frame from each bottom D beam ends.
+
+![](doc/feet.png)
+
+
+
+## Hardware installation
+After the case is assembled, you can start installing hardware. Remove side covers and front/top covers if you need to install fans.
+Remove the motherboard tray and install motherboard with M3 screws, I think 12mm screws are good to go.
+Cable management is nonexistent so good luck :).
+

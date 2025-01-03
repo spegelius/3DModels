@@ -10,7 +10,7 @@ use <frame_parts.scad>;
 
 //debug_motherboard_back_plates();
 //debug_motherboard_ee_atx_parts();
-//debug_motherboard_tray();
+debug_motherboard_tray();
 //debug_motherboard_io_cover();
 //debug_motherboard_io_cover_top_offset();
 //debug_motherboard_ee_atx_io_cover();

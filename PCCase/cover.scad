@@ -105,7 +105,7 @@ use <frame_parts.scad>;
 //side_cover_mount_split_center_right();
 //side_cover_mount_split_center_right(_offset=0.4);
 //side_cover_mount_split_center_right(_offset=0.8);
-//side_cover_mount_split_ring_right();
+side_cover_mount_split_ring_right();
 
 //test_side_cover_split_clip();
 
@@ -163,7 +163,7 @@ use <frame_parts.scad>;
 
 // 240x550 case
 //front_cover_grill(240, 185, 26, 0, supports=true);
-front_cover_grill(240, 185, 25, 2, supports=false);
+//front_cover_grill(240, 185, 25, 2, supports=false);
 //front_cover_grill(240, 420/2, 29, 4, supports=true);
 //front_cover_grill(240, 420/2, 29, 4, supports=false);
 //front_cover_grill(240, 420/3, 19, 4, supports=true);
@@ -1188,7 +1188,7 @@ module side_cover_mount(_offset=0) {
     }
 }
 
-module side_cover_mount_split_center_right(_offset=0) {
+module _side_cover_mount_split_center(_offset=0) {
     difference() {
         side_cover_mount(12);
 
@@ -1210,7 +1210,17 @@ module side_cover_mount_split_center_right(_offset=0) {
     }
 }
 
-module side_cover_mount_split_ring_right() {
+module side_cover_mount_split_center_right(_offset=0) {
+    difference() {
+        _side_cover_mount_split_center(_offset=_offset);
+
+        translate([21, -3, 4.6])
+        linear_extrude(1)
+        text(text="R");
+    }
+}
+
+module _side_cover_mount_split_ring() {
     difference() {
         intersection() {
             side_cover_mount(12);
@@ -1239,14 +1249,36 @@ module side_cover_mount_split_ring_right() {
     }
 }
 
+module side_cover_mount_split_ring_right() {
+    difference() {
+        _side_cover_mount_split_ring();
+
+        #translate([33.2, -2, 4.6])
+        linear_extrude(1)
+        text(text="R", size=5);
+    }
+}
+
 module side_cover_mount_split_center_left(_offset=0) {
-    mirror([1, 0, 0])
-    side_cover_mount_split_center_right(_offset);
+    difference() {
+        mirror([1, 0, 0])
+        _side_cover_mount_split_center(_offset=_offset);
+
+        translate([-29, -3, 4.6])
+        linear_extrude(1)
+        text(text="L");
+    }
 }
 
 module side_cover_mount_split_ring_left() {
-    mirror([1, 0, 0])
-    side_cover_mount_split_ring_right();
+    difference() {
+        mirror([1, 0, 0])
+        _side_cover_mount_split_ring();
+
+        translate([-37.5, -2, 4.6])
+        linear_extrude(1)
+        text(text="L", size=5);
+    }
 }
 
 module side_cover_split_clip() {

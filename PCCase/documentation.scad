@@ -9,6 +9,7 @@ use <motherboard.scad>;
 use <fans.scad>;
 use <cover.scad>;
 use <hdd.scad>;
+use <foot.scad>;
 
 
 //dimensions();
@@ -41,7 +42,14 @@ use <hdd.scad>;
 //cover_buttons();
 //cover_buttons_mount();
 //cover_ends();
-cover_grills();
+//cover_grills();
+
+//side_cover();
+//side_cover_mounts();
+//side_cover_splits();
+//side_cover_split_rings();
+
+feet();
 
 
 module dimensions() {
@@ -893,5 +901,232 @@ module cover_grills() {
     translate([100, 125, 465])
     rotate([90, 180, 0])
     front_cover_grill(230, 125, 17, 2.5, brim=false, supports=false);
+
+}
+
+module side_cover() {
+    translate([2, 2, 0])
+    side_cover_left_p1(430, 480);
+
+    translate([2, -2, 0])
+    side_cover_left_p2(430, 480);
+
+    translate([-2, -2, 0])
+    side_cover_left_p3(430, 480);
+
+    translate([-2, 2, 0])
+    side_cover_left_p4(430, 480);
+
+    color("Red")
+    translate([0, 22, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([0, 122, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([0, 222, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([0, -22, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([0, -122, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([0, -222, 2.5])
+    rotate([0, 90, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([22, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([109.5, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([197, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([-22, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([-109.5, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+
+    color("Red")
+    translate([-197, 0, 2.5])
+    rotate([90, 0, 0])
+    cylinder(d=1.8, h=10, center=true, $fn=20);
+}
+
+module side_cover_mounts() {
+
+    color("lightgrey")
+    cover_grills();
+
+    render()
+    translate([-20, 217, 129])
+    rotate([-90, 0, -90])
+    side_cover_mount();
+
+    render()
+    translate([-20, 217, 321])
+    rotate([-90, 0, -90])
+    side_cover_mount();
+
+    render()
+    translate([-20, 86, -17])
+    rotate([0, -90, 180])
+    side_cover_mount();
+
+    render()
+    translate([-20, -86, -17])
+    rotate([0, -90, 180])
+    side_cover_mount();
+
+}
+
+module side_cover_splits() {
+    color("lightgrey")
+    side_cover_mounts();
+
+    render()
+    translate([-20, -217, 129])
+    rotate([90, 0, 90])
+    side_cover_mount_split_center_right();
+
+    render()
+    translate([-20, -217, 321])
+    rotate([90, 0, 90])
+    side_cover_mount_split_center_right();
+
+    render()
+    translate([-20, -86, 467])
+    rotate([0, 90, 0])
+    side_cover_mount_split_center_right();
+
+    render()
+    translate([-20, 86, 467])
+    rotate([0, 90, 0])
+    side_cover_mount_split_center_right();
+}
+
+module _right_side_cover() {
+    side_cover_right_p1(430, 480);
+    side_cover_right_p2(430, 480);
+    side_cover_right_p3(430, 480);
+    side_cover_right_p4(430, 480);
+}
+
+module side_cover_split_rings() {
+    color("lightgrey")
+    side_cover_splits();
+
+    color("slategrey")
+    render()
+    translate([-20, 0, 225])
+    rotate([90, 0, 90])
+    _right_side_cover();
+
+    
+    render()
+    translate([-20, -214.1, 121.2])
+    rotate([90, -40, 90])
+    side_cover_mount_split_ring_right();
+
+    render()
+    translate([-20, -214.1, 313.2])
+    rotate([90, -40, 90])
+    side_cover_mount_split_ring_right();
+
+    render()
+    translate([-20, -93.8, 464.1])
+    rotate([0, 90, 0])
+    rotate([0, 0, 40])
+    side_cover_mount_split_ring_right();
+
+    render()
+    translate([-20, 78.2, 464.1])
+    rotate([0, 90, 0])
+    rotate([0, 0, 40])
+    side_cover_mount_split_ring_right();
+}
+
+module feet() {
+    color("lightgrey")
+    hdds();
+
+    translate([-6, 150, -25])
+    foot();
+
+    color("white")
+    render()
+    translate([-6, 150, -25])
+    foot_dampener();
+
+    translate([-6, -150, -25])
+    foot();
+
+    color("white")
+    render()
+    translate([-6, -150, -25])
+    foot_dampener();
+
+    translate([206, 150, -25])
+    rotate([0, 0, 180])
+    foot();
+
+    color("white")
+    render()
+    translate([206, 150, -25])
+    foot_dampener();
+
+    translate([206, -150, -25])
+    rotate([0, 0, 180])
+    foot();
+
+    color("white")
+    render()
+    translate([206, -150, -25])
+    foot_dampener();
+
+    color("Red")
+    render()
+    translate([0, 150, -20])
+    long_bow_tie_50();
+
+    color("Red")
+    render()
+    translate([0, -150, -20])
+    long_bow_tie_50();
+
+    color("Red")
+    render()
+    translate([200, 150, -20])
+    long_bow_tie_50();
+
+    color("Red")
+    render()
+    translate([200, -150, -20])
+    long_bow_tie_50();
 
 }
