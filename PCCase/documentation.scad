@@ -1,4 +1,5 @@
 use <../Dollo/NEW_long_ties/extention.scad>;
+use <../Dollo/NEW_long_ties/mockups.scad>;
 
 use <case_230_430_480.scad>;
 use <case_models.scad>;
@@ -31,13 +32,16 @@ use <hdd.scad>;
 
 //hdds();
 //hdd_joiners();
-hdd_cable_support();
+//hdd_cable_support();
 
 //bottom_clips();
 //bottom_cover();
 //cover_clips();
 
+//cover_buttons();
+//cover_buttons_mount();
 //cover_ends();
+cover_grills();
 
 
 module dimensions() {
@@ -806,10 +810,88 @@ module cover_clips() {
     front_cover_snap_clip_right();
 }
 
+module cover_buttons() {
+    //cover_clips();
+
+    front_cover_buttons(230, 80, snap=true, brim=false);
+
+    color("Red")
+    translate([-35, -10, 40])
+    rotate([90, 0, 0])
+    cover_button();
+
+    color("Yellow")
+    translate([-10, -10, 40])
+    rotate([90, 0, 0])
+    cover_button();
+
+    color("lightgrey")
+    translate([20, -10, 40])
+    rotate([90, 0, 0])
+    cover_lens_5mm_led();
+
+    color("lightgrey")
+    translate([40, -10, 40])
+    rotate([90, 0, 0])
+    cover_lens_5mm_led();
+}
+
+module cover_buttons_mount() {
+   front_cover_buttons_mount();
+
+   translate([-38, -15.5, -3.8])
+   rotate([90, 0, 90])
+   mechanical_endstop();
+
+   translate([-13, -15.5, -3.8])
+   rotate([90, 0, 90])
+   mechanical_endstop();
+
+   color("red")
+   translate([-22, -10.5, -0.8])
+   rotate([0, 90, 0])
+   cylinder(d=2, h=50, center=true, $fn=20);
+}
+
 module cover_ends() {
+    color("lightgrey")
     cover_clips();
 
     translate([100, -215, 75])
     rotate([0, 180, 0])
-    front_cover_end(230, 80, brim=false);
+    front_cover_end(230, 80, snap=true, brim=false);
+
+    translate([100, -215, 375])
+    front_cover_buttons(230, 80, snap=true, brim=false);
+
+    translate([100, 125, 465])
+    rotate([-90, 0, 0])
+    front_cover_end(230, 80, snap=true, brim=false);
+
+    translate([100, -125, 465])
+    rotate([-90, 0, 180])
+    front_cover_end(230, 80, snap=true, brim=false);
+}
+
+module cover_grills() {
+    cover_ends();
+
+    render()
+    translate([100, -215, 75])
+    front_cover_grill(230, 150, 21, 1.5, brim=false, supports=false);
+
+    render()
+    translate([100, -215, 225])
+    front_cover_grill(230, 150, 21, 1.5, brim=false, supports=false);
+
+    render()
+    translate([100, 0, 465])
+    rotate([90, 180, 0])
+    front_cover_grill(230, 125, 17, 2.5, brim=false, supports=false);
+
+    render()
+    translate([100, 125, 465])
+    rotate([90, 180, 0])
+    front_cover_grill(230, 125, 17, 2.5, brim=false, supports=false);
+
 }

@@ -127,30 +127,43 @@ use <frame_parts.scad>;
 
 //front_cover_buttons(230, 70);
 //front_cover_buttons(230, 80);
+//front_cover_buttons(230, 80, snap=true);
 //front_cover_buttons(240, 70);
 //front_cover_buttons(240, 80);
 
 //front_cover_buttons_4_leds(240, 70);
 //front_cover_buttons_4_leds(240, 80);
+//front_cover_buttons_4_leds(240, 80, snap=true);
 
 //front_cover_buttons_mount();
 //front_cover_buttons_mount_4_leds();
 
 // 230x480 case
+//front_cover_grill(230, 250, 35, 2, supports=true);
+//front_cover_grill(230, 250, 35, 2, supports=false);
+//front_cover_grill(230, 300, 40, 4, supports=false);
 //front_cover_grill(230, 300, 40, 4, supports=true);
 //front_cover_grill(230, 300, 40, 4, supports=false);
+//front_cover_grill(230, 125, 17, 2.5, supports=true);
+//front_cover_grill(230, 125, 17, 2.5, supports=false);
 //front_cover_grill(230, 150, 21, 1.5, supports=true);
 //front_cover_grill(230, 150, 21, 1.5, supports=false);
 
 // 230x520 case
+//front_cover_grill(230, 160, 22, 3, supports=true);
+//front_cover_grill(230, 160, 22, 3, supports=false);
 //front_cover_grill(230, 170, 24, 0, supports=true);
 //front_cover_grill(230, 170, 24, 0, supports=false);
 
 // 240x525 case
+//front_cover_grill(240, 180, 25, 2, supports=true);
+//front_cover_grill(240, 180, 25, 2, supports=false);
 //front_cover_grill(240, 172, 24, 1.25, supports=true);
 //front_cover_grill(240, 172, 24, 1.25, supports=false);
 
 // 240x550 case
+//front_cover_grill(240, 185, 26, 0, supports=true);
+front_cover_grill(240, 185, 25, 2, supports=false);
 //front_cover_grill(240, 420/2, 29, 4, supports=true);
 //front_cover_grill(240, 420/2, 29, 4, supports=false);
 //front_cover_grill(240, 420/3, 19, 4, supports=true);
@@ -295,7 +308,7 @@ module debug_front_cover() {
 
 module debug_cover_buttons() {
 
-    translate([-35, -17 + 5, 30])
+    translate([-35, -17 + 5.2, 30])
     rotate([90, 0, 0])
     cover_button();
 
@@ -316,6 +329,17 @@ module debug_cover_buttons() {
     translate([0, 0.2, 30])
     rotate([90, 0, 0])
     front_cover_buttons_mount();
+
+    %translate([-38, 4, 14.5])
+    rotate([0, -90, 180]) {
+        mechanical_endstop();
+
+        translate([5, 3, 0])
+        cylinder(d=2, h=25, center=true, $fn=20);
+
+        translate([15, 3, 0])
+        cylinder(d=2, h=25, center=true, $fn=20);
+    }
 }
 
 module debug_cover_buttons_4_leds() {
@@ -1804,14 +1828,14 @@ module front_cover_grill(
     }
 }
 
-module front_cover_buttons(width, height, brim=true) {
+module front_cover_buttons(width, height, snap=true, brim=true) {
 
     b_pos = height - 40;
 
     difference() {
         union() {
             front_cover_end(
-                width, height, brim=brim
+                width, height, snap=snap, brim=brim
             );
 
             // front lip
@@ -1976,21 +2000,10 @@ module front_cover_buttons(width, height, brim=true) {
         cube([6, 2, 10], center=true);
 
     }
-
-    %translate([-38, 5, b_pos - 15.5])
-    rotate([0, -90, 180]) {
-        mechanical_endstop();
-
-        translate([5, 3, 0])
-        cylinder(d=2, h=25, center=true, $fn=20);
-
-        translate([15, 3, 0])
-        cylinder(d=2, h=25, center=true, $fn=20);
-    }
 }
 
 module front_cover_buttons_4_leds(
-    width, height, brim=true
+    width, height, snap=false, brim=true
 ) {
 
     b_pos = height - 53;
@@ -1998,7 +2011,7 @@ module front_cover_buttons_4_leds(
     difference() {
         union() {
             front_cover_buttons(
-                width, height, brim=brim
+                width, height, snap=snap, brim=brim
             );
 
             // second led row lip
@@ -2105,28 +2118,46 @@ module front_cover_buttons_mount() {
         }
 
         // switch holes
-        translate([-35, -5.4, 5.4])
+        translate([-35, -5.4, 6.4])
         cube([7.1, 20.4, 20], center=true);
 
         translate([-35, -6, 0])
-        cube([7.1, 19.4, 20], center=true);
+        cube([3.5, 19.4, 20], center=true);
 
-        translate([-10, -5.4, 5.4])
+        translate([-35, 2.5, 0])
+        cube([7.1, 5, 20], center=true);
+
+        translate([-35, -4.8, 0])
+        cube([7.1, 5, 20], center=true);
+        
+        translate([-35, -13.5, 0])
+        cube([7.1, 5, 20], center=true);
+        
+        translate([-10, -5.4, 6.4])
         cube([7.1, 20.4, 20], center=true);
 
         translate([-10, -6, 0])
-        cube([7.1, 19.4, 20], center=true);
+        cube([3.5, 19.4, 20], center=true);
+
+        translate([-10, 2.5, 0])
+        cube([7.1, 5, 20], center=true);
+
+        translate([-10, -4.8, 0])
+        cube([7.1, 5, 20], center=true);
+        
+        translate([-10, -13.5, 0])
+        cube([7.1, 5, 20], center=true);
 
         // switch mount holes
-        translate([-47, -10.5, -1.8])
+        translate([-47, -10.5, -0.8])
         rotate([0, 90, 0])
         cylinder(d=2.2, h=10, $fn=20);
 
-        translate([-10, -10.5, -1.8])
+        translate([-10, -10.5, -0.8])
         rotate([0, 90, 0])
         cylinder(d=2.2, h=10, $fn=20);
 
-        translate([-22.5, -10.5, -1.8])
+        translate([-22.5, -10.5, -0.8])
         rotate([0, 90, 0])
         cylinder(d=1.9, h=20, center=true, $fn=20);
 
@@ -2200,15 +2231,16 @@ module front_cover_buttons_mount_4_leds() {
 module cover_button() {
     union() {
         intersection() {
+            translate([0, 0, 1])
             sphere(d=21, $fn=60);
 
-            translate([0, 0, 3])
+            translate([0, 0, 4])
             cylinder(d=9.7, h=8, $fn=40);
         }
         cylinder(d=9.7, h=8, $fn=40);
 
-        translate([0, 0, 5/2])
-        cube([2.8, 13.8, 5], center=true);
+        translate([0, 0, 5.2/2])
+        cube([2.8, 13.8, 5.2], center=true);
     }
 }
 

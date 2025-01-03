@@ -297,8 +297,9 @@ Protip: it is possible to install two clips with the PSU bottom support part, ju
 ![](doc/bottom_cover.png)
 
 ### Front and top covers
-Front and top covers use mostly the same models. The whole cover consists of two end-parts and grill-parts on the middle. At front the upper end part contains the buttons and leds.
-End parts are installed either with dovetail joints or snapfit clips. The grill parts use snapfit clips so they are easy to install and take off.
+Front and top covers use mostly the same models. The whole cover consists of two end-parts and grill-parts on the middle. Since the grill-portion most likely too big to print as one part, there's smaller pieces available to print.
+At the front the upper end part contains the buttons and leds.
+End parts are available either with dovetail joints or snapfit clips. The grill parts use snapfit clips so they are easy to install and take off. I recommend using snapfit.
 
 Parts to print (front):
 - 1 x front_top_cover_STL/front_cover_end_W_80.stl or snapfit version. Pick one that maches the width of your case.
@@ -322,24 +323,38 @@ Print settings:
 - 10+% infill
 - 0.2-0.3mm layers. Variable layers 
 
-Hardware for buttoons and leds:
+Hardware for buttons and leds:
 - 2 or 4 x 5mm leds. Colors up to you, I used red and green (HDD and power)
 - 2 x generic endstops.
-- 2 x M3 square nuts.
-- 2 x M3 screws (10mm).
+- 3 x M3 square nuts.
+- 3 x M3 screws (10mm).
 - wiring and connectors
 
-First install the clips to the frame (front and top) as shown. The position of the clips will be adjusted when installing the cover parts.
+Wiring will not be detailed in these instructions so you'll have to figure this out yourself. But since there is only 2 wires for each led and endstop it's not the most complicated thing. The wires need to have a proper connectors of course.
+Future dev: buy [something like this](https://www.ebay.co.uk/itm/135437857987) and adapt the button cover for it.
+
+First let's prepare the buttons cover part. Take the buttons and check that they fit. They  should move freely on the end cover button holes. If not, use a file etc. to clean the button holes.
+Next, check that the lens-parts fit the cover part lens holes. These don't need to move freely but optimally they should be able to install and remove without tools.
+Next, check that the leds fit the lens-parts. If not, you can try to file the leds. The fit should be such that the leds stay in. In case of too loose fit, bit of superglue should help.
+Also insert the M3 square nuts in the 3 slots.
+
+![](doc/cover_buttons.png)
+
+Take the buttons_mount part and drill the 3 screw holes open with a 3mm drillbit, there's a 1 layer sacrificial bridge to remove. Next, install the endstops to the 2 slots. Check the orientation from the picture below.
+The endstops are locked in with a piece of filament that you slide through the mount. Bend the ends of the filament so it stays in place.
+
+![](doc/cover_buttons_mount.png)
+
+After the endstops are installed, assemble the whole button cover part by inserting the buttons and led-lenses in and screwing the mount part on with the M3 screws. Check that the buttons work by pressing them, they should click and return. You might have to experiment with bending the endstop metal lips for optimal function.
+
+Now that the button part is ready, set it aside for a while and install the clips to the frame (front and top) as shown. The position of the clips will be adjusted when installing the cover parts.
 
 ![](doc/cover_snap_clips.png)
 
-Assemble the buttons and leds end part to see that everything works. This is a DIY version so you'll need to solder and crimp the connectors yourself.
-- push the leds to the lens-parts.
-- 
-
-
-Install the end parts. If you printed the dove joint versions, slide them in from frame ends. For snap clips, clip them on. The position of the end parts is ~10mm from the case edge.
+Install the end parts. If you printed the dove joint versions, slide them in from frame ends. For snap clips, clip them on after adjusting the snap clip positions. The position of the end parts is ~10mm from the case edge. Don't worry about exact positioning, final adjustment is done after installing the grill parts.
 
 ![](doc/cover_end.png)
 
-Assemble the button end part. 
+Lastly, install the grill parts as shown. Adjust snap clips as needed and after all parts are in, adjust them so that the cover doesn't have any gaps.
+
+![](doc/cover_grills.png)
