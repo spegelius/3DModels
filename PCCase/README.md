@@ -7,10 +7,10 @@ This is a mostly 3D printed PC case, modeled in OpenSCAD. The frame is built usi
 ![](doc/case2.png)
 
 The project is quite big one so it takes time and material to build. Currently made for ATX and EE-ATX form factor (and one custom Raspberry Pi NAS/Chia mining case which is a separate project using this as base).
-Currently some of the parts require quite large printer, ~300x300mm. Some of the parts are split to multiple parts to be able to print with smaller printers but for example motherboard trays are mostly big.
+Currently some of the parts require quite large printer, ~300x300mm or more. Some of the parts are split to multiple parts to be able to print with smaller printers but for example motherboard trays are mostly big.
 
 ## Dimensions
-Dimensions and orientation is shown in following picture. Parts specific for certain case size use WxDxH-notation and when certain dimension doesn't matter (for example motherboard back plate doesn't care about depth), the dimension is omitted (WxH motherboard back plate example).
+Dimensions and orientation is shown in following picture. Parts specific for certain case size use WxDxH-notation and when certain dimension doesn't matter (for example motherboard back plate doesn't care about depth), the dimension is omitted (WxH motherboard back plate for example).
 ![](doc/dimensions.png)
 
 ## Sizes
@@ -24,7 +24,7 @@ Currently following sizes are implemented:
 
 Other sizes:
 - 315x520x520: WIP ATX case, intended to house 2x360 radiators. No ETA if this will become reality ever...
-- 218x400x400: special case made for Raspberry Pi NAS/Chia mining. Full Implemented in spearate project.
+- 218x400x400: special case made for Raspberry Pi NAS/Chia mining. Full Implemented in separate project.
 
 ### Size customization
 To create a case with size not listed above, the easiest way is to contact me. However, creating the size specific parts is quite straightforward, but does require some OpenSCAD experience.
@@ -38,6 +38,8 @@ Use following files to check and generate needed files:
 - motherboard.scad
 - psu.scad
 
+Ask instructions when needed.
+
 ## Printing and assembling the parts
 Since Dollo3D parts use dovetail joints to attach parts together, accurate printer is practically a must. I've printed most of the parts with my Prusa MK2.5S and default PrusaSlicer profiles and all parts fit together without too much hassle.
 Printing and assembling the frame should be a good test about the quality. General rule of thumb for proper fit is that you shouldn't be able install the ties by hand but also shouldn't require excessive force. Lightly tapping with a mallet or other tool should be enough.
@@ -48,7 +50,7 @@ Tools I use working with the ties:
 
 ### Materials to use
 I have printed 5 cases and used:
-- PLA for the frame
+- PLA for the frame. I use threaded rods to reinforce the frame with the larger cases.
 - PETG for motherboard tray and tray mounts
 - PETG for the hdd mounts
 - GreenTec Pro for motherboard back plate
@@ -59,10 +61,10 @@ But these are just what I've used. AFAIK PLA does deform more than other materia
 
 ## Build instructions
 
-At this point you'll need to know what size you want to build.
+At this point you'll need to know what size you want to build. Also enough materials of course.
 
 ### Frame
-Frame consists of corners and W-, D- and H-beams. Each corner part is 60mm in each dimension, so when calculating the beam lenghts and what extentions to print, deduct 120mm from the total length.
+Frame consists of corner-parts and W-, D- and H-beams. Each corner part is 60mm in each dimension, so when calculating the beam lenghts and what extentions to print, deduct 120mm from the total length.
 Parts are joined with bow ties and you'll need to print quite a lot of those. There's a bow_tie plate model with 20 pieces available.
 
 ### Frame: corners and W beams
@@ -74,7 +76,7 @@ Parts to print:
 Print settings:
 - 2 or 3 perimeters
 - ~20% infill
-- 0.2-0.25mm layer height. For corners variable layer height is a good option.
+- 0.2-0.25mm layer height. For corners variable layer height is a good option due to somewhat steep angles.
 
 I suggest to print one corner, one extention and 4 bow_ties and trying how well the parts fit together. The bow_ties should take moderate amount of force to insert to the corer and extention dovetail holes. A good fit is when you can't quite push the bow tie in by hand but lightly tapping with small mallet or other tool does the trick. This guideline works with most of the tie-joints.
 
@@ -83,9 +85,9 @@ Assemble 4 units as shown:
 ![](doc/frame_corners.png)
 
 ### Frame: D beams
-The target is to create total of 4 x D-beams (lenth is total Depth - 120mm). 2 of those beams use the extention_t models so reduce 140mm.
+The target is to create total of 4 D-beams (lenth is total Depth - 120mm). 2 of those beams use the extention_t models so reduce 140mm from those.
 So for example when depth is 430mm, the D-beam length is 310mm for 2 beams. This can be printed in one piece (extention_310.stl) or in any combination of the available extentions.
-For the remaining 2 beams, when depth is 430mm, the D-beam length is 310mm - 140mm = 170mm. There's extention_t_155.stll availbale too, just adjust the calcutations accordingly.
+For the remaining 2 beams, when depth is 430mm, the D-beam length is 310mm - 140mm = 170mm. Protip: there's extention_t_155.stl available too, just adjust the calcutations accordingly.
 
 Parts to print:
 - 2 x frame_STL/extention_t_140.stl, with or without supports.
@@ -125,7 +127,7 @@ The assembly should be strainghtforward at this point. I suggest assembling the 
 This step is optional but might be required with the larger cases. It can also be done later without needing to tear down the case. Personally I noticed bit of sagging on the larger cases after half a year or so. Might be due to PLA, but plastic is plastic. And the server hw + 10+ HDDs do weight some...
 Anyways the trick is to use 8mm threaded rods and M8 nuts to reinforce D- and H-beams. As you may have noticed, the extention and corner parts have 8mm hole for this.
 You'll need to cut the threaded rods to proper length. Deducting ~40mm of the D and H lengths should be ok.
-Do not overtighten since it can break the plastic and also affect the dimensions.
+Do not overtighten since it can break the plastic and also affect the dimensions. Nylock nut on other end helps.
 You can also use M6 or M5 threaded rods, but you'll need to use adequate washers and print spacers to fill the extention hole properly.
 
 ![](doc/frame_reinforcements.png)
@@ -428,12 +430,10 @@ Since the case built rather modularly, you have quite alot of control about the 
 ### Watercooling
 TBD if there is interest for this.
 
-Installation is quite straightforward. The feet work best if the bow tie is tight so if it slides quite feely, either print it again after scaling it up or use a bit of packaging tape to make it bigger.
+Installation is quite straightforward. The feet work best if the bow tie is tight so if it slides quite feely, either print it again after scaling it up or use a bit of packaging tape to make it tighter.
 First slide the long bow tie in the foot part and then in to the frame from each bottom D beam ends.
 
 ![](doc/feet.png)
-
-
 
 ## Hardware installation
 After the case is assembled, you can start installing hardware. Remove side covers and front/top covers if you need to install fans.
