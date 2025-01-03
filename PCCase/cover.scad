@@ -105,7 +105,7 @@ use <frame_parts.scad>;
 //side_cover_mount_split_center_right();
 //side_cover_mount_split_center_right(_offset=0.4);
 //side_cover_mount_split_center_right(_offset=0.8);
-side_cover_mount_split_ring_right();
+//side_cover_mount_split_ring_right();
 
 //test_side_cover_split_clip();
 
@@ -184,7 +184,7 @@ side_cover_mount_split_ring_right();
 
 //top_cover_grill_end(240, 150, 15, 0, brim=true);
 
-//cover_button();
+cover_button();
 //cover_lens_5mm_led();
 
 
