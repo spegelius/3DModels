@@ -1,7 +1,7 @@
-use <../Dollo/NEW_long_ties/include.scad>;
+use <../../../Dollo/NEW_long_ties/include.scad>;
 
 
-stl_base_path = "../_downloaded/";
+stl_base_path = "../../../_downloaded/";
 dc_stl_path = str(
     stl_base_path,
     "CR-10 S5/Y-Axis Drag-Cable/"
