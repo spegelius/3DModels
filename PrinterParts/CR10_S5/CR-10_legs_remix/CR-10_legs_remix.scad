@@ -14,13 +14,14 @@ t_pitch = 3;
 //_orig_cr10_leg_corner_1();
 //_orig_cr10_leg_corner_2();
 //_orig_cr10_leg_middle();
-//debug_legs_remix();
+debug_legs_remix();
 
 //new_leg_corner_1();
 //new_leg_corner_2();
 //new_leg_middle();
-foot();
+//foot();
 //foot(t_slop=0.8);
+//foot_dampener_cr10();
 
 
 module _orig_cr10_leg_corner_1() {
@@ -57,16 +58,18 @@ module debug_legs_remix() {
     translate([0, 0, 131])
     rotate([0, 180, 0])
     intersection() {
+        rotate([0, 0, 45])
         foot();
 
         translate([0, 100/2, 0])
         cube([100, 100, 200], center=true);
     }
 
-    translate([0, 0, 131])
+    translate([0, 0, 131.1])
     rotate([0, 180, 0])
     intersection() {
-        foot_dampener();
+        rotate([0, 0, 45])
+        foot_dampener_cr10();
 
         translate([0, 100/2, 0])
         cube([100, 100, 200], center=true);
@@ -191,4 +194,11 @@ module foot(h=30, t_slop=t_slop) {
     }
 }
 
+module foot_dampener_cr10() {
+    union() {
+        foot_dampener();
 
+        translate([0, 0, -1])
+        tube(55, 1, 15, $fn=40);
+    }
+}
