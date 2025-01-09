@@ -14,12 +14,13 @@ t_pitch = 3;
 //_orig_cr10_leg_corner_1();
 //_orig_cr10_leg_corner_2();
 //_orig_cr10_leg_middle();
-debug_legs_remix();
+//debug_legs_remix();
 
 //new_leg_corner_1();
 //new_leg_corner_2();
 //new_leg_middle();
-//foot();
+foot();
+//foot(t_slop=0.8);
 
 
 module _orig_cr10_leg_corner_1() {
@@ -74,7 +75,7 @@ module debug_legs_remix() {
 
 module _leg_thread(h=61, slop=0) {
     v_screw(
-        h=61,
+        h=h,
         screw_d=t_dia - slop,
         pitch=t_pitch,
         direction=0,
@@ -161,16 +162,19 @@ module new_leg_middle() {
     }
 }
 
-module foot() {
+module foot(h=30, t_slop=t_slop) {
 
     difference() {
         union() {
-            _leg_thread(h=60, slop=t_slop);
+            _leg_thread(h=h, slop=t_slop);
 
             difference() {
                 intersection() {
                     _foot_form(20);
-                    chamfered_cylinder(63, 20, 4, $fn=80);
+
+                    chamfered_cylinder(
+                        63, 20, 4, $fn=80
+                    );
                 }
 
                 translate([0, 0, 10])
