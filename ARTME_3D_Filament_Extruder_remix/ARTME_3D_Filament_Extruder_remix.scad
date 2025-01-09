@@ -30,7 +30,8 @@ spath = str(
 //MK3_cheapass_filament_gauge_small_arm();
 //MK3_cheapass_filament_gauge_test_sticks();
 
-MK3_el_h_40mm_fan_addition();
+//MK3_el_h_40mm_fan_addition();
+MK3_en_a_250micron_mesh();
 
 
 module _orig_MK3_ed_c() {
@@ -47,6 +48,18 @@ module _orig_MK3_ed_c() {
 //    rotate([90, 0, 0])
 //    cylinder(d=30.8, h=80, center=true, $fn=50);
     
+}
+
+module _orig_MK3_en_a() {
+    translate([0, 0, 22.71])
+    import(
+        str(
+            spath,
+            "EN (Extruder Nozzle)/",
+            "en-a.stl"
+        ),
+        convexity=10
+    );  
 }
 
 module _orig_MK3_el_h() {
@@ -627,4 +640,33 @@ module MK3_el_h_40mm_fan_addition() {
         translate([50 + 20.43, 30.57, 0])
         cylinder(d=2.7, h=20, center=true, $fn=20);
     }
+}
+
+module MK3_en_a_250micron_mesh() {
+
+    // original mesh thickness = 0.35mm, new 0.25mm
+
+    // approximate scaling
+    scaling = 8.75/8.6;
+
+    union() {
+        difference() {
+            _orig_MK3_en_a();
+            cylinder(d=8.7, h=20, $fn=50);
+
+            rotate([0, 0, -90])
+            translate([-11, 7, 3.6])
+            linear_extrude(1)
+            text(text="0.25", size=8);
+        }
+
+        scale([scaling, scaling, 1])
+        intersection() {
+            _orig_MK3_en_a();
+            cylinder(d=8.6, h=20, $fn=80);
+        }
+    }
+
+    
+    
 }
