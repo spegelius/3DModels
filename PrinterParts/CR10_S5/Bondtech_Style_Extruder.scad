@@ -44,8 +44,8 @@ dc_stl_path = str(
 
 //drag_chain_arm();
 //drag_chain_mount();
-drag_chain_support();
-//drag_chain_support_level();
+//drag_chain_support();
+drag_chain_support_level();
 
 
 module _orig_lid_M10() {
@@ -1206,33 +1206,58 @@ module drag_chain_support_level() {
 
             // mount bodies
             translate([460/2 - 25/2, 8/2, 27/2])
-            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
+            chamfered_cube_side(
+                10, 8, 27, 1.4 + 3/4, center=true
+            );
 
             translate([460/2 - 25/2 - 133, 8/2, 27/2])
-            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
+            chamfered_cube_side(
+                10, 8, 27, 1.4 + 3/4, center=true
+            );
 
-            translate([460/2 - 25/2 - 2*133, 8/2, 27/2])
-            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
+            translate([
+                460/2 - 25/2 - 2*133, 8/2, 27/2
+            ])
+            chamfered_cube_side(
+                10, 8, 27, 1.4 + 3/4, center=true
+            );
 
-            translate([460/2 - 25/2 - 3*133, 8/2, 27/2])
-            chamfered_cube_side(10, 8, 27, 1.4 + 3/4, center=true);
+            translate([
+                460/2 - 25/2 - 3*133, 8/2, 27/2
+            ])
+            chamfered_cube_side(
+                10, 8, 27, 1.4 + 3/4, center=true
+            );
         }
 
         // mount holes
         translate([460/2 - 25/2, 8/2, 27/2 + 1.5])
-        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
+        chamfered_cube_side(
+            7.2, 5.2, 27, 1.42, center=true
+        );
 
-        translate([460/2 - 25/2 - 133, 8/2, 27/2 + 1.5])
-        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
+        translate([
+            460/2 - 25/2 - 133, 8/2, 27/2 + 1.5
+        ])
+        chamfered_cube_side(
+            7.2, 5.2, 27, 1.42, center=true
+        );
 
-        translate([460/2 - 25/2 - 2*133, 8/2, 27/2 + 1.5])
-        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
+        translate([
+            460/2 - 25/2 - 2*133, 8/2, 27/2 + 1.5
+        ])
+        chamfered_cube_side(
+            7.2, 5.2, 27, 1.42, center=true
+        );
 
-        translate([460/2 - 25/2 - 3*133, 8/2, 27/2 + 1.5])
-        chamfered_cube_side(7.2, 5.2, 27, 1.42, center=true);
+        translate([
+            460/2 - 25/2 - 3*133, 8/2, 27/2 + 1.5
+        ])
+        chamfered_cube_side(
+           7.2, 5.2, 27, 1.42, center=true
+        );
 
         // chamfers
-
         translate([0, 0, 27 + 5])
         rotate([-30, 0, 0])
         cube([480, 25, 6.7], center=true);

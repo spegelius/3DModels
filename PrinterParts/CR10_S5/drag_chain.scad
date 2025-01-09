@@ -12,8 +12,8 @@ dc_stl_path = str(
 //drag_chain_bottom_orig();
 //drag_chain_top_orig();
 
-drag_chain_bottom_new();
-//drag_chain_top_new();
+//drag_chain_bottom_new();
+drag_chain_top_new();
 
 
 module drag_chain_bottom_orig() {
