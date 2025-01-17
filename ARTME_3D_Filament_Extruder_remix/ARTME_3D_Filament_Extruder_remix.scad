@@ -27,11 +27,13 @@ spath = str(
 //MK3_cheapass_filament_gauge();
 //MK3_cheapass_filament_gauge_tnut();
 //MK3_cheapass_filament_gauge_arm();
+//MK3_cheapass_filament_gauge_arm(bearings=false);
 //MK3_cheapass_filament_gauge_small_arm();
-//MK3_cheapass_filament_gauge_test_sticks();
+//MK3_cheapass_filament_gauge_small_arm(bearings=false);
+MK3_cheapass_filament_gauge_test_sticks();
 
 //MK3_el_h_40mm_fan_addition();
-MK3_en_a_250micron_mesh();
+//MK3_en_a_250micron_mesh();
 
 
 module _orig_MK3_ed_c() {
@@ -118,6 +120,8 @@ module _orig_MK3_pu_e() {
 }
 
 module _MK3_assembly() {
+    color("darkslategrey")
+    render()
     translate([-75, -27, 40])
     rotate([0, 90, 0])
     import(
@@ -162,11 +166,14 @@ module _MK3_assembly() {
 }
 
 module debug_MK3_cheapass_filament_gauge() {
-    //gap = 0;
-    gap = 1.35;
+    gap = 0;
+    //gap = 1.35;
     //gap = 1.5;
     //gap = 1.75;
     //gap = 2;
+
+    //bearings = false;
+    bearings = true;
 
     angle1 = gap/(2*PI*15.5)*360;
 
@@ -190,13 +197,16 @@ module debug_MK3_cheapass_filament_gauge() {
 //    tube(57*2 + 2, 10, 1, $fn=100);
 
     color("darkgrey")
+    render()
     translate([6.5 + 13/2 + gap/2, -49, 55.5])
     cube([gap, 2, 10], center=true);
 
+    render()
     translate([55, -15, -8])
     rotate([90, 0, 0])
     MK3_cheapass_filament_gauge();
 
+    render()
     translate([42, -6, 15])
     rotate([90, 0, 0])
     MK3_cheapass_filament_gauge_tnut();
@@ -205,47 +215,72 @@ module debug_MK3_cheapass_filament_gauge() {
         color("darkgrey")
         translate([55, -21.4, 83])
         rotate([90, 3.15, 0])
-        MK3_cheapass_filament_gauge_arm();
+        MK3_cheapass_filament_gauge_arm(
+            bearings=bearings
+        );
 
+        color("darkgrey")
         translate([32.365, -26.8, 96.4])
         rotate([90, 7.85, 0])
-        MK3_cheapass_filament_gauge_small_arm();
+        MK3_cheapass_filament_gauge_small_arm(
+            bearings=bearings
+        );
     } else if (gap == 2) {
         color("darkgrey")
         translate([55, -21.4, 83])
         rotate([90, 8.45, 0])
-        MK3_cheapass_filament_gauge_arm();
+        MK3_cheapass_filament_gauge_arm(
+            bearings=bearings
+        );
 
+        color("darkgrey")
         translate([33.28, -26.8, 96.22])
         rotate([90, 8.2, 0])
-        MK3_cheapass_filament_gauge_small_arm();
+        MK3_cheapass_filament_gauge_small_arm(
+            bearings=bearings
+        );
     } else if (gap == 1.5) {
         color("darkgrey")
         translate([55, -21.4, 83])
         rotate([90, -2, 0])
-        MK3_cheapass_filament_gauge_arm();
+        MK3_cheapass_filament_gauge_arm(
+            bearings=bearings
+        );
 
+        color("darkgrey")
         translate([31.45, -26.8, 96.55])
         rotate([90, 7.65, 0])
-        MK3_cheapass_filament_gauge_small_arm();
+        MK3_cheapass_filament_gauge_small_arm(
+            bearings=bearings
+        );
     } else if (gap == 1.35) {
         color("darkgrey")
         translate([55, -21.4, 83])
         rotate([90, -5.05, 0])
-        MK3_cheapass_filament_gauge_arm();
+        MK3_cheapass_filament_gauge_arm(
+            bearings=bearings
+        );
 
+        color("darkgrey")
         translate([30.91, -26.8, 96.645])
         rotate([90, 7.65, 0])
-        MK3_cheapass_filament_gauge_small_arm();
+        MK3_cheapass_filament_gauge_small_arm(
+            bearings=bearings
+        );
     } else if (gap == 0) {
         color("darkgrey")
         translate([55, -21.4, 83])
         rotate([90, -33.9, 0])
-        MK3_cheapass_filament_gauge_arm();
+        MK3_cheapass_filament_gauge_arm(
+            bearings=bearings
+        );
 
+        color("darkgrey")
         translate([25.95, -26.8, 97.2])
         rotate([90, 9.9, 0])
-        MK3_cheapass_filament_gauge_small_arm();
+        MK3_cheapass_filament_gauge_small_arm(
+            bearings=bearings
+        );
     }
 }
 
@@ -316,29 +351,41 @@ module MK3_pu_b_gauge() {
             translate([-12.75, 0, 28.25])
             _orig_MK3_pu_b();
 
-            translate([57, 3.8, -9.49])
-            cube([8, 13.6, 4], center=true);
+            translate([41, -11, -8])
+            cube([40, 2, 2.4], center=true);
+
+            translate([41, -3, -8])
+            cube([40, 2, 2.4], center=true);
+
+            translate([59, -1, -8])
+            cube([4, 22, 6], center=true);
 
             hull() {
-                translate([51, -2.5, -9.49])
-                cube([20, 1, 4], center=true);
+                translate([50, -2.5, -9.49])
+                cube([22, 1, 4], center=true);
 
-                translate([57, 9, -9.49])
-                cube([8, 1, 4], center=true);
+                translate([56, 9.1, -9.49])
+                cube([10, 3, 4], center=true);
             }
 
 //            translate([57, 6.6, -5.75])
 //            rotate([90, 0, 0])
 //            cylinder(d=5.3, h=10.6, center=true, $fn=40);
 
-            translate([57, 5.8, -5.75])
+            translate([57, 6.3, -5.75])
             rotate([90, 0, 0])
-            cylinder(d=10, h=9.6, center=true, $fn=40);
+            cylinder(d=10, h=8.6, center=true, $fn=40);
+
+            translate([57, 6.8 - 9.6/2, -5.75])
+            rotate([90, 0, 0])
+            cylinder(
+                d1=10, d2=1, h=3.7, $fn=40
+            );
         }
 
         translate([57, 8, -5.75])
         rotate([90, 0, 0])
-        cylinder(d=2.8, h=20, center=true, $fn=40);
+        cylinder(d=2.8, h=17, center=true, $fn=40);
     }
 }
 
@@ -498,15 +545,24 @@ module MK3_cheapass_filament_gauge_tnut() {
     }
 }
 
-module MK3_cheapass_filament_gauge_arm() {
+module MK3_cheapass_filament_gauge_arm(
+    bearings=true
+) {
     h = 3;
 
     difference() {
         union() {
-            cylinder(d=13, h=5, $fn=60);
+            if (bearings) {
+                cylinder(d=13, h=5, $fn=60);
 
-            translate([2.57, 10, 0])
-            cylinder(d=13, h=5, $fn=60);
+                translate([2.57, 10, 0])
+                cylinder(d=13, h=5, $fn=60);
+            } else {
+                cylinder(d=10, h=5, $fn=60);
+
+                translate([2.57, 10, 0])
+                cylinder(d=10, h=5, $fn=60);
+            }
 
             hull() {
                 cylinder(d=8, h=h, $fn=60);
@@ -526,34 +582,49 @@ module MK3_cheapass_filament_gauge_arm() {
             }
         }
 
-        translate([0, 0, 1])
-        rotate([0, 0, 39])
-        _623zz_bearing_hole();
-
-        translate([2.57, 10, 1])
-        rotate([0, 0, 3])
-        _623zz_bearing_hole();
-
-        hull() {
+        if (bearings) {
             translate([0, 0, 1])
-            cylinder(d=3, h=5, $fn=30);
+            rotate([0, 0, 39])
+            _623zz_bearing_hole();
 
             translate([2.57, 10, 1])
-            cylinder(d=3, h=5, $fn=30);
+            rotate([0, 0, 3])
+            _623zz_bearing_hole();
+
+            hull() {
+                translate([0, 0, 1])
+                cylinder(d=3, h=5, $fn=30);
+
+                translate([2.57, 10, 1])
+                cylinder(d=3, h=5, $fn=30);
+            }
+
+            translate([0, 0, -1])
+            cylinder(d=6.3, h=5, $fn=30);
+
+            translate([2.57, 10, -1])
+            cylinder(d=6.3, h=5, $fn=30);
+        } else {
+
+            translate([0, 0, -1])
+            cylinder(d=3, h=15, $fn=30);
+
+            translate([2.57, 10, -1])
+            cylinder(d=3, h=15, $fn=30);
         }
-
-        translate([0, 0, -1])
-        cylinder(d=6.3, h=5, $fn=30);
-
-        translate([2.57, 10, -1])
-        cylinder(d=6.3, h=5, $fn=30);
     }
 }
 
-module MK3_cheapass_filament_gauge_small_arm() {
+module MK3_cheapass_filament_gauge_small_arm(
+    bearings=true
+) {
     difference() {
         union() {
-            cylinder(d=13, h=5, $fn=60);
+            if (bearings) {
+                cylinder(d=13, h=5, $fn=60);
+            } else {
+                cylinder(d=10, h=5, $fn=60);
+            }
 
             translate([26, 0, 0])
             cylinder(d=10, h=6, $fn=60);
@@ -566,11 +637,16 @@ module MK3_cheapass_filament_gauge_small_arm() {
             }
         }
 
-        translate([0, 0, 1])
-        _623zz_bearing_hole();
+        if (bearings) {
+            translate([0, 0, 1])
+            _623zz_bearing_hole();
 
-        translate([0, 0, -1])
-        cylinder(d=6.3, h=5, $fn=30);
+            translate([0, 0, -1])
+            cylinder(d=6.3, h=5, $fn=30);
+        } else {
+            translate([0, 0, -1])
+            cylinder(d=3, h=15, $fn=30);
+        }
 
         translate([26, 0, -1])
         cylinder(d=2.8, h=25, $fn=30);
