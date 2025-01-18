@@ -24,13 +24,13 @@ spath = str(
 
 //MK3_pu_b_gauge();
 
-//MK3_cheapass_filament_gauge();
+MK3_cheapass_filament_gauge();
 //MK3_cheapass_filament_gauge_tnut();
 //MK3_cheapass_filament_gauge_arm();
 //MK3_cheapass_filament_gauge_arm(bearings=false);
 //MK3_cheapass_filament_gauge_small_arm();
 //MK3_cheapass_filament_gauge_small_arm(bearings=false);
-MK3_cheapass_filament_gauge_test_sticks();
+//MK3_cheapass_filament_gauge_test_sticks();
 
 //MK3_el_h_40mm_fan_addition();
 //MK3_en_a_250micron_mesh();
@@ -519,10 +519,10 @@ module MK3_cheapass_filament_gauge() {
         cylinder(d=2.8, h=15, $fn=60);
 
         translate([10, 23, 1.4])
-        cylinder(d=7, h=20, $fn=40);
+        cylinder(d=7.6, h=20, $fn=40);
         
         translate([-13, 23, 1.4])
-        cylinder(d=7, h=20, $fn=40);
+        cylinder(d=7.6, h=20, $fn=40);
 
     }
 }
