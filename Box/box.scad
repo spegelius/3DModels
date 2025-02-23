@@ -89,10 +89,16 @@ module _bottom_pattern(h) {
             );
 
             translate([-width/2, 0, 0])
-            cube([22, fastener_hole_l + 4, h*2], center=true);
+            cube(
+                [22, fastener_hole_l + 4, h*2],
+                center=true
+            );
 
             translate([width/2, 0, 0])
-            cube([22, fastener_hole_l + 4, h*2], center=true);
+            cube(
+                [22, fastener_hole_l + 4, h*2],
+                center=true
+            );
         }
     }
 }
@@ -311,9 +317,9 @@ module _side_pattern() {
     step = 22;
     echo(step);
 
-    translate([-step*10, -110, 0])
+    translate([-step*10, -220, 0])
     for(i = [0:count - 1]) {
-        for(j = [0:count - 1]) {
+        for(j = [0:2*count - 1]) {
             translate([
                 i * step + j%2 * step/2,
                 j*11,
