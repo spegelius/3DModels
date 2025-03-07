@@ -14,7 +14,9 @@ spath = str(
 //debug();
 
 //new_spoold();
-new_spoolg();
+//new_spoolg();
+
+spool_tape_roll_center();
 
 
 module _orig_SPOOLD() {
@@ -160,7 +162,7 @@ module _plate() {
     }
 }
 
-module _plate_new() {
+module _plate_new(fd=90) {
     module _plate_main() {
         difference() {
             chamfered_cylinder(201, 2.5, 0.6, $fn=120);
@@ -196,7 +198,7 @@ module _plate_new() {
         union() {
             _plate_main();
             _hole_bases();
-            tube(90, 1, 17.5, $fn=80);
+            tube(fd, 1, 17.5, $fn=80);
             tube(70, 2.5, 7.5, $fn=80);
 
             translate([0, -53, 1/2])
@@ -315,6 +317,57 @@ module new_spoolg() {
 
         translate([0, 0, 63 - 5])
         chamfered_cylinder(71, 20, 7, $fn=80);
+
+        cylinder(d=55.2, h=200, center=true, $fn=80);
+
+        translate([0, 0, -19.2])
+        chamfered_cylinder(56.8, 20, 0.8, $fn=80);
+    }
+}
+
+module spool_tape_roll_center() {
+
+    difference() {
+        union() {
+            _plate_new(fd=82);
+            cylinder(d=82, h=2.6 + 5, $fn=80);
+
+            cylinder(
+                d=55.2 + 2.4,
+                h=2.6 + 5 + 49.4/2, $fn=80
+            );
+
+            chamfered_cylinder(
+                75.2, 2.6 + 5 + 15, 1, $fn=80
+            );
+
+            for(i = [0:27]) {
+                rotate([0, 0, 360/28 * i])
+                translate([75.2/2 - 0.3, 0, 0])
+                hull() {
+                    cylinder(
+                        d=2.5, h=2.6 + 5 + 9.4, $fn=20
+                    );
+
+                    cylinder(
+                        d=0.5, h=2.6 + 5 + 12.4, $fn=20
+                    );
+                };
+            }
+        }
+
+        difference() {
+            translate([0, 0, 2.6])
+            cylinder(d=71.8, h=50, $fn=80);
+
+            cylinder(
+                d=55.2 + 2.4,
+                h=2.6 + 5 + 49.4/2, $fn=80
+            );
+
+            cube([1, 100, 100], center=true);
+            cube([100, 1, 100], center=true);
+        }
 
         cylinder(d=55.2, h=200, center=true, $fn=80);
 
