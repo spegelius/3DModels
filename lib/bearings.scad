@@ -1,3 +1,14 @@
+use <../Dollo/NEW_long_ties/include.scad>;
+
+
+//U604zz();
+//608zz();
+//623zz();
+//MR105zz();
+//625zz();
+//trapezoid_bearing();
+R4AZZ();
+
 
 module U604zz() {
     difference() {
@@ -85,4 +96,16 @@ module trapezoid_bearing() {
     }
 }
 
-//trapezoid_bearing();
+module R4AZZ() {
+    difference() {
+        hull() {
+            cylinder(d=18.405, h=7.14, $fn=40);
+
+            translate([0, 0, 0.3])
+            cylinder(d=19.05, h=6.54, $fn=40);
+        }
+
+        cylinder(d=6.35, h=15, $fn=30, center=true);
+    }
+}
+
