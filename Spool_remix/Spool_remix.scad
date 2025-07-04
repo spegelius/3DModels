@@ -5,6 +5,20 @@ spath = str(
     stl_base_path, "SPOOL refill 1kg/"
 );
 
+// PrusaMent spool dimensions
+// od = 200mm
+// center d = ~51mm
+// attachment d bottom = ~93.5mm
+// attachment d top = ~92.3mm
+// attachment nubs = 2.4mm
+// roll d = 99.3mm
+// roll id = 93.7mm
+// roll h = 59.8;
+
+// Tape roll dimensions
+// - 82mm OD
+// - ~76.4mm ID
+// - 49.3mm tall
 
 //_orig_SPOOLD();
 //_orig_SPOOLG_v3();
@@ -12,11 +26,14 @@ spath = str(
 //_plate_new();
 
 //debug();
+//debug_tape_roll_center();
+//debug_prusa_roll_center();
 
 //new_spoold();
-//new_spoolg();
+new_spoolg();
 
-spool_tape_roll_center();
+//spool_tape_roll_center();
+//spool_prusa_roll_center();
 
 
 module _orig_SPOOLD() {
@@ -40,13 +57,23 @@ module _orig_SPOOLG_v3() {
 
 
 module debug() {
-    translate([220, 0, 0])
-    intersection() {
-        new_spoold1();
+//    translate([220, 0, 0])
+//    intersection() {
+//        new_spoold1();
+//
+//        translate([0, 300/2])
+//        cube([300, 300, 200], center=true);
+//    }
 
-        translate([0, 300/2])
-        cube([300, 300, 200], center=true);
-    }
+//    translate([220, 0, 0])
+//    intersection() {
+//        translate([0, 0, 66])
+//        rotate([0, 180, 900])
+//        new_spoolg1();
+//
+//        translate([0, 300/2])
+//        cube([300, 300, 200], center=true);
+//    }
 
     intersection() {
         new_spoold();
@@ -55,24 +82,38 @@ module debug() {
         cube([300, 300, 200], center=true);
     }
 
-    translate([220, 0, 0])
     intersection() {
-        translate([0, 0, 66])
-        rotate([0, 180, 900])
-        new_spoolg1();
-
-        translate([0, 300/2])
-        cube([300, 300, 200], center=true);
-    }
-
-    intersection() {
-        translate([0, 0, 65.1])
-        rotate([0, 180, 130])
+        translate([0, 0, 66.1])
+        rotate([0, 180, 180])
         new_spoolg();
 
         translate([0, 300/2])
         cube([300, 300, 200], center=true);
     }
+}
+
+module debug_tape_roll_center() {
+    intersection() {
+        spool_tape_roll_center();
+
+        translate([0, 300/2])
+        cube([300, 300, 200], center=true);
+    }
+
+    %translate([0, 0, 7.6])
+    tube(82, 49.3, (82 - 76.4)/2, $fn=60);
+}
+
+module debug_prusa_roll_center() {
+    intersection() {
+        spool_prusa_roll_center();
+
+        translate([0, 300/2])
+        cube([300, 300, 200], center=true);
+    }
+
+    %translate([0, 0, 3])
+    tube(99.3, 59.8, (99.3 - 93.7)/2, $fn=60);
 }
 
 module _chamfered_form() {
@@ -283,23 +324,23 @@ module new_spoolg() {
     difference() {
         union() {
             _plate_new();
-            cylinder(d=59, h=62.5, $fn=80);
+            cylinder(d=59, h=63.5, $fn=80);
 
             hull() {
                 translate([0, 0, 37])
                 cylinder(d=59, h=25.5, $fn=80);
 
                 translate([0, 0, 46])
-                cylinder(d=75, h=16.5, $fn=80);
+                cylinder(d=75, h=17.5, $fn=80);
 
             }
 
-            tube(90, 62.5, 1.2, $fn=80);
+            tube(90, 63.5, 1.2, $fn=80);
 
             for (i = [0:4]) {
                 rotate([0, 0, i*360/5])
-                translate([90/2 - 8, 0, 62.5/2])
-                cube([15, 1.2, 62.5], center=true);
+                translate([90/2 - 8, 0, 63.5/2])
+                cube([15, 1.2, 63.5], center=true);
             }
         }
 
@@ -325,53 +366,70 @@ module new_spoolg() {
     }
 }
 
-module spool_tape_roll_center() {
+module _spool_cardboard_roll_center(od, id, h, bh) {
+    _id = id - 0.4;
 
     difference() {
         union() {
-            _plate_new(fd=82);
-            cylinder(d=82, h=2.6 + 5, $fn=80);
+            _plate_new(fd=od);
 
+            // bottom raiser
+            cylinder(d=od, h=bh, $fn=80);
+
+            // center tube
             cylinder(
                 d=55.2 + 2.4,
-                h=2.6 + 5 + 49.4/2, $fn=80
+                h=bh + h/2, $fn=80
             );
 
+            // attachment
             chamfered_cylinder(
-                75.2, 2.6 + 5 + 15, 1, $fn=80
+                _id, bh + 15, 1, $fn=80
             );
 
+            // ridges
             for(i = [0:27]) {
                 rotate([0, 0, 360/28 * i])
-                translate([75.2/2 - 0.3, 0, 0])
+                translate([_id/2 - 0.3, 0, 0])
                 hull() {
                     cylinder(
-                        d=2.5, h=2.6 + 5 + 9.4, $fn=20
+                        d=2.5, h=bh + 9.4, $fn=20
                     );
 
                     cylinder(
-                        d=0.5, h=2.6 + 5 + 12.4, $fn=20
+                        d=0.5, h=bh + 12.4, $fn=20
                     );
                 };
             }
         }
 
+        // attachment inner cut
         difference() {
             translate([0, 0, 2.6])
-            cylinder(d=71.8, h=50, $fn=80);
+            cylinder(d=_id - 4.4, h=50, $fn=80);
 
             cylinder(
                 d=55.2 + 2.4,
-                h=2.6 + 5 + 49.4/2, $fn=80
+                h=bh + h/2, $fn=80
             );
 
             cube([1, 100, 100], center=true);
             cube([100, 1, 100], center=true);
         }
 
+        // center cut
         cylinder(d=55.2, h=200, center=true, $fn=80);
 
+        // bottom chamfer
         translate([0, 0, -19.2])
         chamfered_cylinder(56.8, 20, 0.8, $fn=80);
     }
+}
+
+module spool_tape_roll_center() {
+    _spool_cardboard_roll_center(82, 76.4, 49.4, 7.6);
+}
+
+module spool_prusa_roll_center() {
+    _spool_cardboard_roll_center(99.3, 93.7, 59.8, 3);
 }
