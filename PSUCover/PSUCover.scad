@@ -19,7 +19,7 @@ $fn=30;
 //cover2_360W_with_2020_ear();
 
 //cover_240W();
-cover_240W_2();
+//cover_240W_2();
 //cover_240W_with_2020_ear();
 //cover_240W_AC_14_F1();
 //cover_240W_ATX();
@@ -28,11 +28,11 @@ cover_240W_2();
 //bottom_bracket2();
 //bottom_bracket3();
 
-//translate([0, -25, 0])
-//cord_holder();
+translate([0, -25, 0])
+cord_holder();
 
-//translate([20, -25, 0])
-//cord_holder(false);
+translate([20, -25, 0])
+cord_holder(false);
 
 
 module _grill(l) {
@@ -675,14 +675,14 @@ module cord_holder(nut_holes=true) {
 
     module arm() {
         difference() {
-            cube([5, 9, 6]);
+            cube([5, 9, 7]);
 
-            translate([0, 4.5, 3])
+            translate([-1, 4.5, 7/2])
             rotate([0, 90, 0])
-            cylinder(d=bolt_hole_dia, h=6);
+            cylinder(d=bolt_hole_dia, h=7);
 
             if (nut_holes) { 
-                translate([2, 4.5, 3])
+                translate([2, 4.5, 7/2])
                 rotate([0, 90, 180]) M3_nut();
             }
         }
@@ -692,10 +692,10 @@ module cord_holder(nut_holes=true) {
 
         difference() {
             union() {
-                cube([14, 13, 6]);
+                cube([14, 13, 7]);
             }
 
-            translate([6, 6.5, 3.6])
+            translate([6, 6.5, 4.5])
             elongated_nut(2.5);
 
             translate([6, 6.5, 0])
