@@ -6,12 +6,12 @@ include <common.scad>;
 //tube_bend1();
 //tube_bend1_flat();
 //tube_flat(tube1_outer_dia, 5, 1);
-tube1_flat();
+//tube1_flat();
 
 //adapter_11_12();
 
 //hose_bend_support_1();
-//hose_bend_support_2();
+hose_bend_support_2();
 
 
 module tube_flat(d1, d2, wall, length=30) {
@@ -64,7 +64,7 @@ module tube_bend(d, wall, bend, l=20) {
             tube(d, l, wall);
         }
 
-        #translate([bend/2, -l, 0])
+        translate([bend/2, -l, 0])
         cube([d - 1, 0.2, 20], center=true);
 
         translate([bend/2 + d/2, -l])
@@ -158,13 +158,17 @@ module _hose_bend_support(od=12) {
 
         translate([-2.7, 0, 0])
         rotate([0, 0, 45])
-        cube(
-            [39, 39, od + 4.4], center=true
+        chamfered_cube(
+            39, 39, od + 4.4, 0.9, center=true
         );
 
         // chamfers
         translate([30, 0, 0])
         cube([20, 40, 50], center=true);
+
+        translate([30, 0, -11.5])
+        rotate([0, 45, 0])
+        cube([20, 20, 20], center=true);
 
         translate([-26.7, 0, 0])
         rotate([0, 0, 45])
@@ -172,12 +176,16 @@ module _hose_bend_support(od=12) {
             40, 40, 50, 11, center=true
         );
 
+        //translate()
+
+        // tube
         translate([-8, 0, 0])
         rotate([90, 0, 0])
         tube_bend(
             od + 0.2, od, 30, 30, $fn=80
         );
 
+        // screw holes
         translate([-2, 0, 0])
         cylinder(
             d=3.2, h=4*od,

@@ -207,12 +207,12 @@ module g1_2_thread(h, slop=0) {
     );
 }
 
-module m12_thread(h, slop=0) {
+module m12_thread_wire_passthrough(h, slop=0) {
     // wire passthrough thread
     v_screw(
         h=h,
         screw_d=12 + slop,
-        pitch=1.5,
+        pitch=1.4,
         direction=0,
         steps=70,
         depth=0.1,
@@ -220,7 +220,14 @@ module m12_thread(h, slop=0) {
     );
 }
 
-module mock_radiator_360() {
+module mock_radiator_360(fans=true) {
+    module _fan() {
+        if (fans) {
+            %translate([0, 0,  39/2 + 25/2])
+            mock_fan_120mm();
+        }
+    }
+
     difference() {
         rounded_cube_side(
             131, 400, 39, 5, center=true, $fn=30
@@ -239,23 +246,17 @@ module mock_radiator_360() {
         cylinder(d=12, h=10, $fn=30);
 
         translate([0, -400/2 + 75, 0]) {
-            %translate([0, 0,  39/2 + 25/2])
-            mock_fan_120mm();
-
+            _fan();
             fan_mount_holes(120);
         }
 
         translate([0, -400/2 + 196, 0]) {
-            %translate([0, 0,  39/2 + 25/2])
-            mock_fan_120mm();
-
+            _fan();
             fan_mount_holes(120);
         }
 
         translate([0, -400/2 + 317, 0]) {
-            %translate([0, 0,  39/2 + 25/2])
-            mock_fan_120mm();
-
+            _fan();
             fan_mount_holes(120);
         }
     }

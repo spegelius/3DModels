@@ -110,12 +110,16 @@ inner_l = length - 2*wall;
 //ring_gasket_passthrough_g1_2();
 //gasket_passthrough_g1_2();
 //ring_gasket_wire();
-cork_gasket();
+//cork_gasket();
 //reservoir_wire_passthrough_adapter();
+//reservoir_wire_passthrough_nut();
+reservoir_wire_passthrough_nut(brim=true);
 //bottomvoir();
 
 //washer_passthrough($fn=40);
 //washer_wire_pass($fn=40);
+
+//washer_gasket_passthrough();
 
 // Oldies
 //old_gasket();
@@ -632,7 +636,7 @@ module lid() {
         translate([width/2, length/2, 0]) {
             if(render_thread) {
                 v_screw(
-                    h=lid_height+2,
+                    h=lid_height + 2,
                     screw_d=cork_thread_female_dia,
                     pitch=4,
                     direction=0,
@@ -884,8 +888,44 @@ module ring_gasket_wire() {
     }
 }
 
+module ring_gasket_passthrough_old() {
+    translate([0, 0, 1])
+    intersection() {
+        translate([0, 0, 0.45/2])
+        cube([
+            passthrough_thread_dia + 10,
+            passthrough_thread_dia + 10, 0.45
+        ], center=true);
+
+        translate([0, 0, -0.55])
+        donut(passthrough_thread_dia + 5, 2, $fn=50);
+    }
+    difference() {
+        cylinder(d=passthrough_thread_dia + 8, h=1, $fn=50);
+        cylinder(d=passthrough_thread_dia-0.5, h=2, $fn=50);
+    }
+}
+
+module ring_gasket_wire_old() {
+    translate([0, 0, 1])
+    intersection() {
+        translate([0, 0, 0.45/2])
+        cube([
+            wire_pass_thread_dia + 10,
+            passthrough_thread_dia + 10, 0.45
+        ], center=true);
+
+        translate([0, 0, -0.55])
+        donut(wire_pass_thread_dia + 5, 2, $fn=50);
+    }
+    difference() {
+        cylinder(d=wire_pass_thread_dia + 8, h=1, $fn=50);
+        cylinder(d=wire_pass_thread_dia - 0.5, h=1, $fn=50);
+    }
+}
+
 module cork_gasket() {
-    translate([0, 0, 1.6])
+    translate([0, 0, 2])
     intersection() {
         translate([0, 0, 0.95/2])
         cube([
@@ -911,25 +951,48 @@ module cork_gasket() {
     difference() {
         cylinder(
             d=cork_thread_dia + 10,
-            h=1.6, $fn=150
+            h=2, $fn=150
         );
 
-        cylinder(
-            d=cork_thread_dia,
-            h=8, center=true, $fn=150
+        translate([0, 0, -1])
+        v_screw(
+            h=5,
+            screw_d=cork_thread_female_dia,
+            pitch=4,
+            direction=0,
+            steps=100
         );
     }
 }
 
-module washer_passthrough(){
+module washer_passthrough() {
     difference() {
         cylinder(
             d=passthrough_thread_dia + 8,
-            h=1.8
+            h=1.8, $fn=50
         );
         cylinder(
             d=passthrough_thread_dia + 0.2,
-            h=1.8
+            h=10, center=true, $fn=50
+        );
+    }
+}
+
+module washer_gasket_passthrough() {
+    difference() {
+        union() {
+            cylinder(
+                d=passthrough_thread_dia + 8,
+                h=3, $fn=50
+            );
+
+            translate([0, 0, 3])
+            donut(passthrough_thread_dia + 5, 2, $fn=50);
+        }
+
+        cylinder(
+            d=passthrough_thread_dia + 0.2,
+            h=10, center=true, $fn=50
         );
     }
 }
@@ -938,11 +1001,11 @@ module washer_wire_pass(){
     difference() {
         cylinder(
             d=wire_pass_thread_dia + 8,
-            h=1.8
+            h=1.8, $fn=50
         );
         cylinder(
             d=wire_pass_thread_dia + 0.2,
-            h=1.8
+            h=10, center=true, $fn=50
         );
     }
 }
@@ -963,8 +1026,37 @@ module reservoir_wire_passthrough_adapter() {
         }
 
         translate([0, 0, -0.1])
-        m12_thread(
-            8, slop=0.4
+        m12_thread_wire_passthrough(
+            8, slop=0.3
+        );
+    }
+}
+
+module reservoir_wire_passthrough_nut(brim=false) {
+    difference() {
+        union() {
+            cylinder(d=19.4, h=6, $fn=6);
+
+            hull() {
+                translate([0, 0, 4])
+                cylinder(d=19.4, h=2, $fn=6);
+
+                translate([0, 0, 6])
+                cylinder(d=20.5, h=1, $fn=40);
+            }
+
+            translate([0, 0, 7])
+            donut(wire_pass_thread_dia + 5, 2, $fn=50);
+
+            if (brim) {
+                translate([-0.25, -0.2, 0])
+                cylinder(d=22, h=0.2, $fn=40);
+            }
+        }
+
+        translate([0, 0, -0.1])
+        m12_thread_wire_passthrough(
+            9, slop=0.3
         );
     }
 }
