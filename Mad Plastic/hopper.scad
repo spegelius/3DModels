@@ -178,6 +178,7 @@ module hopper_mount() {
             1, center=true, $fn=30
         );
 
+        // hopper groove
         translate([0, 0, 22/2 + 2])
         difference() {
             rounded_cube_side(
@@ -190,23 +191,24 @@ module hopper_mount() {
             );
         }
 
+        // inner chamfer
         hull() {
-            translate([137.4/2 - 1.5, 91/2 - 1.5, 12.2])
+            translate([137.4/2 - 1.5, 91/2 - 1.5, 14.2])
             chamfered_cylinder(
                 5, 10, 2, $fn=40
             );
 
-            translate([-137.4/2 + 1.5, 91/2 - 1.5, 12.2])
+            translate([-137.4/2 + 1.5, 91/2 - 1.5, 14.2])
             chamfered_cylinder(
                 5, 10, 2, $fn=40
             );
 
-            translate([137.4/2 - 1.5, -91/2 + 1.5, 12.2])
+            translate([137.4/2 - 1.5, -91/2 + 1.5, 14.2])
             chamfered_cylinder(
                 5, 10, 2, $fn=40
             );
 
-            translate([-137.4/2 + 1.5, -91/2 + 1.5, 12.2])
+            translate([-137.4/2 + 1.5, -91/2 + 1.5, 14.2])
             chamfered_cylinder(
                 5, 10, 2, $fn=40
             );
