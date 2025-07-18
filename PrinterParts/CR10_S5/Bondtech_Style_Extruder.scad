@@ -16,10 +16,13 @@ dc_stl_path = str(
 //original_extruder_assembly();
 //_lid_form();
 //_orig_lid_M10();
+//_orig_base();
+//_orig_latch();
+
 //debug();
 //debug_volcano();
 //debug_pcb_mount();
-//debug_extruder();
+debug_extruder();
 
 //new_lid_M10(bridging=true);
 //new_lid_M10(bridging=false);
@@ -45,7 +48,7 @@ dc_stl_path = str(
 //drag_chain_arm();
 //drag_chain_mount();
 //drag_chain_support();
-drag_chain_support_level();
+//drag_chain_support_level();
 
 
 module _orig_lid_M10() {
