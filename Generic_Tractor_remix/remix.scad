@@ -4,6 +4,15 @@ $fn=30;
 
 axle_d = 3;
 
+
+chasis_new();
+//Rueda_Der_Delantera_new();
+//Rueda_Izq_Delantera_new();
+//Rueda_Der_Trasera_new();
+//Rueda_Izq_Trasera_new();
+//axle();
+
+
 module chasis_new() {
     
     axle_hole = axle_d + 0.2;
@@ -71,9 +80,3 @@ module axle() {
 }
 
 
-chasis_new();
-//Rueda_Der_Delantera_new();
-//Rueda_Izq_Delantera_new();
-//Rueda_Der_Trasera_new();
-//Rueda_Izq_Trasera_new();
-//axle();
