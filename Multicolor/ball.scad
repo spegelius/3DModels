@@ -4,8 +4,8 @@
 
 
 //ball();
-//supports();
-soluble_supports();
+supports();
+//soluble_supports();
 
 
 module debug() {
@@ -29,10 +29,11 @@ module ball() {
     sphere(d=40, $fn=100);
 }
 
-module supports() {
+module supports(splits=true) {
     difference() {
-        cylinder(d1=40, d2=41, h=12, $fn=50);
+        cylinder(d1=32, d2=41, h=12, $fn=50);
 
+        // contours
         translate([0, 0, 10])
         cylinder(d=38, h=12, $fn=50);
 
@@ -54,14 +55,19 @@ module supports() {
         translate([0, 0, -0.5])
         cylinder(d=14, h=12, $fn=50);
 
+        if (splits) {
+            // splits
+            cube([0.2, 50, 60], center=true);
+            cube([50, 0.2, 60], center=true);
+        }
     }
 }
 
 module soluble_supports() {
     difference() {
-        cylinder(d=39.5, h=12);
+        cylinder(d1=31.5, d2=40, h=12);
 
-        supports();
+        supports(splits=false);
 
         ball();
     }
