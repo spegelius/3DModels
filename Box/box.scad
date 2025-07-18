@@ -7,9 +7,19 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //height = 80;
 //wall = 1.7;
 
+//width = 130;
+//length = 130;
+//height = 100;
+//wall = 1.7;
+
+width = 150;
+length = 150;
+height = 100;
+wall = 1.8;
+
 //width = 150;
 //length = 150;
-//height = 100;
+//height = 130;
 //wall = 1.8;
 
 //width = 180;
@@ -22,10 +32,15 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //height = 150;
 //wall = 1.9;
 
-width = 200;
-length = 200;
-height = 150;
-wall = 2;
+//width = 200;
+//length = 200;
+//height = 150;
+//wall = 2;
+
+//width = 200;
+//length = 200;
+//height = 120;
+//wall = 2;
 
 slop = 0.3;
 
@@ -39,6 +54,7 @@ lid_outer_w = width + 2*wall + slop;
 lid_outer_l = length + 2*wall + slop;
 lid_inner_w = inner_w - 2*wall - slop - 0.5;
 lid_inner_l = inner_l - 2*wall - slop - 0.5;
+echo(lid_outer_w);
 
 fastener_hole_x = width/2 - 5.7;
 fastener_hole_l = length*0.7;
@@ -59,8 +75,8 @@ plate_l = 34;
 //view_proper();
 //debug_box();
 
-//box();
-lid();
+box();
+//lid();
 //fastener();
 //fasteners();
 //plate("Crap");
@@ -304,9 +320,9 @@ module fastener_slot() {
 
 module _pattern_cube(chamfer) {
     hull() {
-        cube([11, 11, 11 - 2*chamfer], center=true);
+        cube([11.3, 11.3, 11.3 - 2*chamfer], center=true);
         cube(
-            [11 - 2*chamfer, 11 - 2*chamfer, 11],
+            [11.3 - 2*chamfer, 11.3 - 2*chamfer, 11.3],
             center=true
         );
     }
@@ -323,14 +339,14 @@ module _side_pattern() {
             translate([
                 i * step + j%2 * step/2,
                 j*11,
-                -11/2 + wall/2 - 1
+                -11.3/2 + wall/2 - 1
             ])
             _pattern_cube(wall - 1);
 
             translate([
                 i * step - step/2 + j%2 * step/2,
                 j*11,
-                11/2 - wall/2 + 1
+                11.3/2 - wall/2 + 1
             ])
             _pattern_cube(wall - 1);
         }
@@ -386,20 +402,48 @@ module box() {
                     _side_pattern_cut();
                 }
 
+//                translate([
+//                    0, -fastener_hole_l/2 + 3,
+//                    height - 15.5
+//                ])
+//                chamfered_cube(
+//                    width, 18, 27, 3, center=true
+//                );
+
                 translate([
-                    0, -fastener_hole_l/2 + 3,
+                    width/2 - wall/2,
+                    -fastener_hole_l/2 + 3,
                     height - 15.5
                 ])
                 chamfered_cube(
-                    width, 18, 27, 3, center=true
+                    wall, 18, 27, wall/2.01, center=true
                 );
 
                 translate([
-                    0, fastener_hole_l/2 - 3,
+                    width/2 - wall/2,
+                    fastener_hole_l/2 - 3,
                     height - 15.5
                 ])
                 chamfered_cube(
-                    width, 18, 27, 3, center=true
+                    wall, 18, 27, wall/2.01, center=true
+                );
+
+                translate([
+                    -width/2 + wall/2,
+                    -fastener_hole_l/2 + 3,
+                    height - 15.5
+                ])
+                chamfered_cube(
+                    wall, 18, 27, wall/2.01, center=true
+                );
+
+                translate([
+                    -width/2 + wall/2,
+                    fastener_hole_l/2 - 3,
+                    height - 15.5
+                ])
+                chamfered_cube(
+                    wall, 18, 27, wall/2.01, center=true
                 );
  
                 chamfered_cube(
@@ -418,17 +462,19 @@ module box() {
                 }
 
                 translate([
-                    -46.5, -5, slot_pos + 43/2 - 2.5
+                    -46.5, -length/2 + wall/2,
+                    slot_pos + 43/2 - 2.5
                 ])
                 chamfered_cube(
-                    13, length - 10, 43, 3, center=true
+                    13, wall, 43, wall/2.01, center=true
                 );
 
                 translate([
-                    46.5, -5, slot_pos + 43/2 - 2.5
+                    46.5, -length/2 + wall/2,
+                    slot_pos + 43/2 - 2.5
                 ])
                 chamfered_cube(
-                    13, length - 10, 43, 3, center=true
+                    13, wall, 43, wall/2.01, center=true
                 );
             }
         }
@@ -706,23 +752,33 @@ module fastener(){
 }
 
 module fasteners(brim=true) {
+    module _fasteners() {
+        union() {
+            translate([7, 0, 0])
+            fastener();
+
+            translate([-7, 14, 0])
+            rotate([0, 0, 180])
+            fastener();
+
+            if (fastener_l > 100) {
+                translate([4, -1.4, fastener_l/2])
+                cube([4, 1, 1], center=true);
+            }
+        }
+    }
+
     if (brim) {
         union() {
-            translate([-5, 0, 0])
-            fastener();
-
-            translate([10, 0, 0])
-            fastener();
+            _fasteners();
 
             translate([-16, -7, 0])
-            cube([30, 30, 0.2]);
+            rounded_cube_side(
+                30, 30, 0.2, 10, $fn=30
+            );
         }
     } else {
-        translate([-5, 0, 0])
-        fastener();
-
-        translate([10, 0, 0])
-        fastener();
+        _fasteners();
     }
 }
 
@@ -773,17 +829,20 @@ module debug_box() {
     intersection() {
         box();
 
-        translate([0, 0, 0])
-        cube([100, 100, 1000]);
+//        translate([0, 0, 0])
+//        cube([500, 500, 1000]);
+
+        translate([0, 0, 100/2 - 60])
+        cube([500, 500, 100]);
     }
 
-    intersection() {
-        translate([0, 0, height + 2])
-        rotate([0, 180, 0])
-        lid();
-
-//        cube([100, 100, 200]);
-    }
+//    intersection() {
+//        translate([0, 0, height + 2])
+//        rotate([0, 180, 0])
+//        lid();
+//
+//        cube([500, 500, 200]);
+//    }
 
     translate([
         width/2 + 5/2, (fastener_l)/2, height - 10.8
