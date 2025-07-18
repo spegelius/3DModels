@@ -15,8 +15,8 @@ use <frame_parts.scad>;
 //hdd_mount(240);
 //hdd_mount_rails(230);
 //hdd_mount_rails(240);
-hdd_mount_joiner();
-//hdd_mount_cable_support();
+//hdd_mount_joiner();
+hdd_mount_cable_support();
 //hdd_mount_long_tie_half();
 
 
@@ -557,7 +557,7 @@ module hdd_mount_cable_support() {
             intersection() {
                 scale([1, 1, 1.2])
                 rotate([45, 0, 0])
-                cube([109.4, 7.8, 7.8], center=true);
+                cube([113, 7.8, 7.8], center=true);
 
                 cube([200, 200, 10], center=true);
             }
@@ -577,7 +577,7 @@ module hdd_mount_cable_support() {
         intersection() {
             translate([0, -400/2 + 13, 0])
             cylinder(
-                d=394, h=20,
+                d=393, h=20,
                 center=true, $fn=100
             );
 
