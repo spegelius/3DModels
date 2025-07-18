@@ -1,6 +1,7 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <../Dollo/NEW_long_ties/mockups.scad>;
 use <../PCParts/common.scad>;
+use <../lib/bearings.scad>;
 
 use <../M4_slide_t-nut_3030_remix/M4_slide_t-nut_3030_remix.scad>;
 
@@ -8,12 +9,14 @@ use <../M4_slide_t-nut_3030_remix/M4_slide_t-nut_3030_remix.scad>;
 stl_base_path = "../_downloaded/";
 spath = str(
     stl_base_path,
-    "Original Desktop Filament Extruder MK3 by ARTME 3D/"
+    "ARTME 3D MK3/"
 );
 
 
 //_orig_MK3_ed_c();
 //_orig_MK3_el_h();
+//_orig_MK3_so_a();
+
 //_MK3_ed_c_supports();
 //_623zz_bearing_hole();
 
@@ -24,7 +27,7 @@ spath = str(
 
 //MK3_pu_b_gauge();
 
-MK3_cheapass_filament_gauge();
+//MK3_cheapass_filament_gauge();
 //MK3_cheapass_filament_gauge_tnut();
 //MK3_cheapass_filament_gauge_arm();
 //MK3_cheapass_filament_gauge_arm(bearings=false);
@@ -34,6 +37,8 @@ MK3_cheapass_filament_gauge();
 
 //MK3_el_h_40mm_fan_addition();
 //MK3_en_a_250micron_mesh();
+
+MK3_fixed_filament_hook();
 
 
 module _orig_MK3_ed_c() {
@@ -117,6 +122,17 @@ module _orig_MK3_pu_e() {
         ),
         convexity=10
     );  
+}
+
+module _orig_MK3_so_a() {
+    import(
+        str(
+            spath,
+            "SO (Sensor Optical)/",
+            "so-a.stl"
+        ),
+        convexity=10
+    );
 }
 
 module _MK3_assembly() {
@@ -742,7 +758,25 @@ module MK3_en_a_250micron_mesh() {
             cylinder(d=8.6, h=20, $fn=80);
         }
     }
+}
 
-    
-    
+module MK3_fixed_filament_hook() {
+
+    %translate([0, 1.52, 64])
+    _orig_MK3_so_a();
+
+    difference() {
+        union() {
+            translate([0, 0, 3/2])
+            chamfered_cube(
+                100, 24, 3, 0.5, center=true
+            );
+
+            translate([100/2 - 7, 0, 0])
+            cylinder(d=6.5, h=4, $fn=30);
+        }
+
+        translate([100/2 - 7, 0, 0])
+        cylinder(d=4.2, h=10, center=true, $fn=30);
+    }
 }
