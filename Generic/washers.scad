@@ -10,6 +10,9 @@
 //washer_29_19_1_2();
 //washer_19_12_1_4();
 //washer_19_12_1();
+washer_19_11_07();
+//washer_20_12_07();
+
 
 //washer_plate(4, 8.5, 3.2, 0.8);
 //washer_plate(4, 10, 4.2, 4);
@@ -19,7 +22,7 @@
 //washer_plate(3, 7.6, 5.3, 3.6);
 //washer_plate(3, 7.6, 5.3, 4);
 //washer_plate(4, 7, 2.2, 1);
-washer_plate(4, 7.2, 3.5, 3);
+//washer_plate(4, 7.2, 3.5, 3);
 
 
 module _washer(outer_d,
@@ -71,7 +74,15 @@ module washer_19_12_1_4() {
 }
 
 module washer_19_12_1() {
-    _washer(20, 12, 1);
+    _washer(19, 12, 1);
+}
+
+module washer_19_11_07() {
+    _washer(19, 11, 0.7);
+}
+
+module washer_20_12_07() {
+    _washer(20, 12, 0.7);
 }
 
 module washer_20_5_20() {

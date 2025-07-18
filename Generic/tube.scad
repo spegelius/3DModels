@@ -1,3 +1,8 @@
+//longtube();
+//tube_13_11_20();
+elongated_tube();
+
+
 module longtube() {
     l = sqrt(250*250 + 210*210) -8;
     echo (l);
@@ -19,5 +24,22 @@ module tube_13_11_20() {
     }
 }
 
-//longtube();
-tube_13_11_20();
+module elongated_tube() {
+    difference() {
+        hull() {
+            translate([33/2 - 9/2, 0, 0])
+            cylinder(d=11, h=8, $fn=30);
+
+            translate([-33/2 + 9/2, 0, 0])
+            cylinder(d=11, h=8, $fn=30);
+        }
+
+        hull() {
+            translate([33/2 - 9/2, 0, 0])
+            cylinder(d=9, h=20, center=true, $fn=30);
+
+            translate([-33/2 + 9/2, 0, 0])
+            cylinder(d=9, h=20, center=true, $fn=30);
+        }
+    }
+}
