@@ -125,25 +125,27 @@ module _chamfered_form() {
 
 module _hole_bases() {
     for (i = [0:2]) {
-        rotate([0, 0, i*360/3])
+        rotate([0, 0, i*360/3 - 0.5])
         translate([96.2, 0, 0])
-        chamfered_cylinder(8.2, 2.5, 0.5, $fn=20);
+        scale([1, 1.4, 1])
+        chamfered_cylinder(8.4, 2.5, 0.5, $fn=20);
 
-        rotate([0, 0, 17 + i*360/3])
+        rotate([0, 0, 17.5 + i*360/3])
         translate([96.2, 0, 0])
-        chamfered_cylinder(8.2, 2.5, 0.5, $fn=20);
+        scale([1, 1.4, 1])
+        chamfered_cylinder(8.4, 2.5, 0.5, $fn=20);
     }
 }
 
 module _holes() {
     for (i = [0:2]) {
-        rotate([0, 0, i*360/3])
+        rotate([40, 0, i*360/3])
         translate([96.2, 0, 0])
-        cylinder(d=3.5, h=10, center=true, $fn=20);
+        cylinder(d=3.8, h=10, center=true, $fn=20);
 
-        rotate([0, 0, 17 + i*360/3])
+        rotate([-40, 0, 17 + i*360/3])
         translate([96.2, 0, 0])
-        cylinder(d=3.5, h=10, center=true, $fn=20);
+        cylinder(d=3.8, h=10, center=true, $fn=20);
     }
 }
 
