@@ -165,7 +165,7 @@ echo(cover_d);
 //cable_clip();
 
 //connector_clip_medium();
-connector_clip_small();
+//connector_clip_small();
 
 //fan_connector_pcb_clip();
 
@@ -177,6 +177,9 @@ connector_clip_small();
 
 //ac_cover();
 //ac_cover_2();
+
+//psu_100w_clip_1();
+psu_100w_clip_2();
 
 
 module _transformer_form(h=20) {
@@ -4140,5 +4143,142 @@ module ac_cover_2() {
         ac_cover();
 
         cube([15, 60, 100], center=true);
+    }
+}
+
+module psu_100w_clip_1() {
+    %translate([-35, 12, 30])
+    rotate([-90, 0, 0])
+    mock_PSU_100W();
+
+    difference() {
+        union() {
+            translate([11.75, 0, 0])
+            rotate([0, 0, 180])
+            scale([1, 1, 1.1])
+            _frame_clip_v2();
+
+            hull() {
+                translate([0, 0, 15/2])
+                cube([23.5, 4, 15], center=true);
+
+                translate([4, 10, 15/2])
+                cube([4, 4, 15], center=true);
+
+                translate([28, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+
+            hull() {
+                translate([4, 10, 15/2])
+                cube([4, 4, 15], center=true);
+
+                translate([65, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+
+            hull() {
+                translate([65, 36, 0])
+                cylinder(d=4, h=15, $fn=40);
+
+                translate([65, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+        }
+
+        translate([30, 10, 6])
+        rotate([90, 0, 0])
+        cylinder(d=3.3, h=20, center=true, $fn=30);
+
+        translate([30, 7, 6])
+        rotate([90, 0, 0])
+        chamfered_cylinder(7, 7, 2, center=true, $fn=30);
+
+        translate([65, 32, 8])
+        rotate([0, 90, 0])
+        cylinder(d=3.3, h=20, center=true, $fn=30);
+
+        translate([67, 32, 8])
+        rotate([0, 90, 0])
+        chamfered_cylinder(7, 5, 2, center=true, $fn=30);
+
+        translate([2, 4])
+        cylinder(d=8, h=50, center=true);
+
+        translate([12.5, 6.5])
+        cylinder(d=8, h=50, center=true);
+    }
+}
+
+module psu_100w_clip_2() {
+    %translate([-35, 12, 147])
+    rotate([-90, 0, 0])
+    mock_PSU_100W();
+
+    difference() {
+        union() {
+            translate([11.75, 0, 0])
+            rotate([0, 0, 180])
+            scale([1, 1, 1.1])
+            _frame_clip_v2();
+
+            hull() {
+                translate([0, 0, 15/2])
+                cube([23.5, 4, 15], center=true);
+
+                translate([4, 10, 15/2])
+                cube([4, 4, 15], center=true);
+
+                translate([28, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+
+            hull() {
+                translate([4, 10, 15/2])
+                cube([4, 4, 15], center=true);
+
+                translate([65, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+
+            hull() {
+                translate([65, 27, 0])
+                cylinder(d=4, h=15, $fn=40);
+
+                translate([65, 10, 0])
+                cylinder(d=4, h=15, $fn=40);
+            }
+
+            hull() {
+                translate([30, 10, 1/2])
+                cube([15, 4, 1], center=true);
+
+                translate([30, 10, 45])
+                rotate([90, 0, 0])
+                cylinder(d=15, h=4, center=true, $fn=40);
+            }
+        }
+
+        translate([30, 10, 45])
+        rotate([90, 0, 0])
+        cylinder(d=3.3, h=20, center=true, $fn=30);
+
+        translate([30, 7, 45])
+        rotate([90, 0, 0])
+        chamfered_cylinder(7, 7, 2, center=true, $fn=30);
+
+        translate([65, 23, 8])
+        rotate([0, 90, 0])
+        cylinder(d=3.3, h=20, center=true, $fn=30);
+
+        translate([67, 23, 8])
+        rotate([0, 90, 0])
+        chamfered_cylinder(7, 5, 2, center=true, $fn=30);
+
+        translate([2, 4])
+        cylinder(d=8, h=50, center=true);
+
+        translate([12.5, 6.5])
+        cylinder(d=8, h=50, center=true);
     }
 }
