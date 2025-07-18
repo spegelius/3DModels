@@ -83,7 +83,7 @@ sph_stl_path = str(
 //bearing_bolt();
 //bearing_bolt_small();
 //bearing_spacer();
-bearing_spacer_small();
+//bearing_spacer_small();
 //new_bearing_mount();
 
 //new_core_750g_50mm();
@@ -256,18 +256,18 @@ module debug() {
             rotate([-22.5, 0, 0])
             new_base();
         }
-        translate([30, -250/2, 0])
-        cube([100, 250, 250]);
+//        translate([30, -250/2, 0])
+//        cube([100, 250, 250]);
 
 //        translate([0, -250/2, 0])
 //        cube([140, 250, 70]);
     }
-//    %translate([13, 0, 202/2 + 20])
-//    rotate([0, 90, 0])
-//    difference() {
-//        cylinder(d=202, h=90, $fn=100);
-//        cylinder(d=50, h=190, $fn=100, center=true);
-//    }
+    %translate([13, 0, 202/2 + 20])
+    rotate([0, 90, 0])
+    difference() {
+        cylinder(d=202, h=90, $fn=100);
+        cylinder(d=50, h=190, $fn=100, center=true);
+    }
 
     translate([8 + 100.7/2, 100, 80.7])
     rotate([-7, 0, 0])
