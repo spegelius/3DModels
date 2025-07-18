@@ -112,6 +112,7 @@ io_z_pos = 44.45/2 - 0.088 * 25.4;
 //mock_buck_converter();
 //mock_liitinrima_small();
 //mock_liitinrima_big();
+//mock_liitinrima_medium(4);
 //fan_mount_holes(80);
 //mock_am4_cpu();
 
@@ -1315,10 +1316,14 @@ module mock_USB_hub_Dlink() {
     difference() {
         translate([0, 0, 23/2 + 2.6])
         union() {
-            rounded_cube_side(98.5, 57, 23, 20, center=true);
+            rounded_cube_side(
+                98.5, 57, 23, 20, center=true
+            );
 
             translate([0, 0, -2.6])
-            rounded_cube_side(94, 52.5, 23, 20 - 4.5, center=true);
+            rounded_cube_side(
+                94, 52.5, 23, 20 - 4.5, center=true
+            );
         }
 
         translate([-98.5/2 + 19, -57/2, 23 + 2.6 - 11.2])
@@ -1928,6 +1933,14 @@ module mock_liitinrima_small(count=2) {
         w=6, l=16.3, h=7.5, d=5.5, dh=12.8,
         dspacing=1, count=count,
         spacing=2.167, sd=2.8
+    );
+}
+
+module mock_liitinrima_medium(count=2) {
+    _liitinrima(
+        w=6.3, l=20.2, h=8.2, d=5.7, dh=15,
+        dspacing=1.8, count=count,
+        spacing=3.6, sd=3
     );
 }
 

@@ -1,6 +1,8 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 use <common.scad>;
 
+use <SAS_connector_keeper.scad>;
+
 
 stl_base_path = "../_downloaded/";
 adapter_stl_path = str(
@@ -8,11 +10,13 @@ adapter_stl_path = str(
     "HDD Adapter 3.2/"
 );
 
+//mock_elevenhundred_hdd_rack();
 
 //debug_elevenhundred_hdd_rail();
 //debug_elevenhundred_hdd_rail_ssd_adapter();
 //debug_elevenhundred_ssd_rail();
 //debug_elevenhundred_hdd_rail_specials();
+//debug_elevenhundred_ssd_hdd_adapter();
 
 //elevenhundred_hdd_rail();
 //elevenhundred_ssd_rail_right();
@@ -21,18 +25,68 @@ adapter_stl_path = str(
 //elevenhundred_hdd_rail_special_1();
 //elevenhundred_hdd_rail_special_2();
 
-elevenhundred_525_grill();
+//elevenhundred_525_grill();
 
+elevenhundred_ssd_hdd_adapter();
+
+
+module mock_elevenhundred_hdd_rack() {
+    // 7nth hdd is a hack
+
+//    %for(i = [0:6]) {
+//        translate([0, 0, 5 + i*41])
+//        debug_elevenhundred_hdd_rail();
+//    }
+
+    difference() {
+        translate([0, 0, 280/2])
+        cube([130, 150, 280], center=true);
+
+        difference() {
+            translate([0, 0, 270/2 + 4])
+            cube([115.2, 200, 270], center=true);
+
+            for(i = [0:6]) {
+                hull() {
+                    translate([-115/2, 50, -22.5 + 27/2 + i*41])
+                    rotate([0, 90, 0])
+                    cylinder(d=28, h=10, center=true, $fn=30);
+
+                    translate([-115/2, -50, -22.5 + 27/2 + i*41])
+                    rotate([0, 90, 0])
+                    cylinder(d=27, h=10, center=true, $fn=30);
+                }
+            }
+
+            for(i = [0:6]) {
+                hull() {
+                    translate([117/2, 50, -22.5 + 27/2 + i*41])
+                    rotate([0, 90, 0])
+                    cylinder(d=28, h=10, center=true, $fn=30);
+
+                    translate([117/2, -50, -22.5 + 27/2 + i*41])
+                    rotate([0, 90, 0])
+                    cylinder(d=27, h=10, center=true, $fn=30);
+                }
+            }
+        }
+
+        for(i = [0:6]) {
+            translate([0, -69, 11.5 + i*41])
+            cube([200, 5, 7], center=true);
+        }
+    }
+}
 
 module debug_elevenhundred_hdd_rail() {
     %translate([102/2, 146/2, 0])
     rotate([0, 0, 180])
     mock_hd();
 
-    translate([102/2 + 6.4/2 + 1, -11, 12.5/2 + 0.1])
+    translate([102/2 + 6.4/2, -11, 12.5/2 + 0.1])
     elevenhundred_hdd_rail();
 
-    translate([-102/2 - 6.4/2 - 1, -11, 12.5/2 + 0.1])
+    translate([-102/2 - 6.4/2, -11, 12.5/2 + 0.1])
     rotate([0, 180, 0])
     elevenhundred_hdd_rail();
 }
@@ -99,6 +153,38 @@ module debug_elevenhundred_hdd_rail_specials() {
 
     translate([-112, -52, -5])
     cube([1, 20, 5], center=true);
+}
+
+module debug_elevenhundred_ssd_hdd_adapter() {
+    mock_elevenhundred_hdd_rack();
+
+    for(i = [0:3])
+    translate([0, -5, 5.78 + i*41])
+    rotate([0, 0, -90]) {
+    
+        elevenhundred_ssd_hdd_adapter();
+
+        translate([-57, 70/2, 0])
+        rotate([0, 0, -90])
+        mock_ssd_enterprise(connector=true);
+
+        translate([-57, 70/2, 20])
+        rotate([0, 0, -90])
+        mock_ssd_enterprise(connector=true);
+
+        %translate([6, 102/2 + 6.4/2, 12.5/2 - 1/2 + 0.1])
+        rotate([0, 0, 90])
+        elevenhundred_hdd_rail();
+
+        %mirror([0, 1, 0])
+        translate([6, 102/2 + 6.4/2, 12.5/2 - 1/2 + 0.1])
+        rotate([0, 0, 90])
+        elevenhundred_hdd_rail();
+
+        translate([-72, 0, 4.5])
+        rotate([-90, 0, -90])
+        SAS_end_clip();
+    }
 }
 
 module _rail(w, l, h) {
@@ -384,5 +470,139 @@ module elevenhundred_525_grill() {
                 146.2, 125.1, 30, 8, center=true
             );
         }
+    }
+}
+
+module _elevenhundred_ssd_hdd_adapter_side() {
+//    translate([-78, 102 + 16, -1/2])
+//    rotate([0, 0, -90])
+//    mock_hd();
+
+//    %translate([-57, 86, 0])
+//    rotate([0, 0, -90])
+//    debug_sas_connector_keeper();
+//
+//    %translate([-57, 86, 20])
+//    rotate([0, 0, -90])
+//    debug_sas_connector_keeper();
+
+    module _ssd_mount_hole() {
+        cylinder(d=3.2, h=60, center=true, $fn=30);
+
+        translate([0, 0, 2])
+        chamfered_cylinder(8, 20, 2.5, $fn=30);
+    }
+    
+    difference() {
+        union() {
+            translate([1/2, 15.9/2, 30/2])
+            rotate([90, 0, 0])
+            chamfered_cube_side(112, 30, 15.9, 4, center=true);
+
+            translate([-64.7, 15, 30/2])
+            cube([10, 12, 30], center=true);
+
+            hull() {
+                translate([-53, 12, 30/2])
+                cube([5, 8, 30], center=true);
+
+                translate([-69.2, 12.5, 30/2])
+                cube([1, 7, 30], center=true);
+            }
+        }
+
+        // hdd mount holes
+        translate([-49.7, 0, 5.9])
+        rotate([90, 0, 0])
+        cylinder(d=3, h=60, center=true, $fn=30);
+
+        translate([-8.2, 0, 5.9])
+        rotate([90, 0, 0])
+        cylinder(d=3, h=60, center=true, $fn=30);
+
+        translate([51.8, 0, 5.9])
+        rotate([90, 0, 0])
+        cylinder(d=3, h=60, center=true, $fn=30);
+
+        // ssd mount holes
+        translate([-43, 16, 3])
+        rotate([90, 0, 0])
+        _ssd_mount_hole();
+
+        translate([-43, 16, 23])
+        rotate([90, 0, 0])
+        _ssd_mount_hole();
+
+        translate([33.65, 16, 3])
+        rotate([90, 0, 0])
+        _ssd_mount_hole();
+
+        translate([33.65, 16, 23])
+        rotate([90, 0, 0])
+        _ssd_mount_hole();
+
+        // SAS
+        translate([-71.7, 15, 4.5])
+        chamfered_cube(5, 20, 8, 1, center=true);
+
+        translate([-71.7, 15, 24.5])
+        chamfered_cube(5, 20, 8, 1, center=true);
+
+        translate([-70, 15, 4.5])
+        rotate([0, 90, 0])
+        cylinder(d=2.8, h=25, center=true, $fn=30);
+
+        translate([-70, 15, 24.5])
+        rotate([0, 90, 0])
+        cylinder(d=2.8, h=25, center=true, $fn=30);
+
+        // cuts and chamfers
+        translate([57, 0, 26])
+        chamfered_cube(30, 60, 30, 4, center=true);
+
+        translate([-5, 0, 26])
+        chamfered_cube(60, 60, 30, 4, center=true);
+
+        translate([-5, -21, 26])
+        chamfered_cube(160, 60, 30, 4, center=true);
+
+        translate([-29, -5, 0])
+        chamfered_cube(36, 20, 40, 6, center=true);
+
+        translate([22, -5, 0])
+        chamfered_cube(54, 20, 40, 6, center=true);
+
+        translate([58.5, 0, 12])
+        rotate([0, 45, 0])
+        cube([10, 60, 10], center=true);
+
+        translate([43, 0, 31])
+        rotate([0, 45, 0])
+        cube([10, 60, 10], center=true);
+
+        translate([24, 0, 31])
+        rotate([0, 45, 0])
+        cube([10, 60, 10], center=true);
+
+        translate([-34, 0, 31])
+        rotate([0, 45, 0])
+        cube([10, 60, 10], center=true);
+    }
+}
+
+module elevenhundred_ssd_hdd_adapter() {
+    union() {
+        translate([0, -102/2, 0])
+        _elevenhundred_ssd_hdd_adapter_side();
+
+        mirror([0, 1, 0])
+        translate([0, -102/2, 0])
+        _elevenhundred_ssd_hdd_adapter_side();
+
+        translate([49, 0, 2/2])
+        cube([7, 90, 2], center=true);
+
+        translate([49, 0, 8/2])
+        cube([2, 90, 8], center=true);
     }
 }
