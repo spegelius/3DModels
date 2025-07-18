@@ -2,7 +2,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 use <common.scad>;
 
 
-//debug();
+//debug_sas_connector_keeper();
 
 //SAS_disk_mount_1();
 //SAS_disk_mount_2();
@@ -11,7 +11,7 @@ use <common.scad>;
 SAS_end_clip();
 
 
-module debug() {
+module debug_sas_connector_keeper() {
     color("grey")
     mock_ssd_enterprise(connector=true);
 
@@ -24,10 +24,10 @@ module debug() {
 //        cube([34, 13, 5.5], center=true);
 //    }
 
-    translate([-1, 41.4, 9/2])
+    translate([-1, 41.3, 9/2])
     SAS_disk_mount_1();
 
-    translate([71, 41.4, 9/2])
+    translate([71, 41.3, 9/2])
     SAS_disk_mount_2();
 
 //    %translate([3.25, -15, 9/2])
