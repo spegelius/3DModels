@@ -115,34 +115,62 @@ module center_block() {
     }
 }
 
-module roll(height, diameter, wall=1.8, edges=true, dent=false) {
+module roll(
+    height, diameter, wall=1.8, edges=true, dent=false
+) {
     intersection() {
         union() {
             difference() {
                 //beweled_cylinder(d=width, h=roll_height, b=bewel, $fn=100);
                 union() {
                     cylinder(d=diameter, h=height);
+
                     if (edges) {
                         hull() {
-                            cylinder(d=diameter+4, h=.1);
-                            translate([0,0,2]) cylinder(d=diameter, h=.1);
+                            cylinder(d=diameter + 4, h=.1);
+                            translate([0, 0, 2])
+                            cylinder(d=diameter, h=.1);
                         }
                         hull() {
-                            translate([0,0,height-.1])cylinder(d=diameter+4, h=.1);
-                            translate([0,0,height-2.1]) cylinder(d=diameter, h=.1);
+                            translate([
+                                0, 0, height - .1
+                            ])
+                            cylinder(
+                                d=diameter + 4, h=.1
+                            );
+
+                            translate([
+                                0, 0, height - 2.1
+                            ])
+                            cylinder(
+                                d=diameter, h=.1
+                            );
                         }
                     }
                 }
                 //translate([0,0,center_height+1]) cylinder(d=diameter-2*wall, h=height-2*center_height-2);
                 cylinder(d=ball_position*2, h=height);
-                
+
                 // bewels
-                translate([0,0,-2+bewel]) beweled_cylinder(d=ball_position*2+3, h=2, b=bewel);
-                translate([0,0,height-bewel]) beweled_cylinder(d=ball_position*2+3, h=2, b=bewel);
+                translate([0, 0, -2 + bewel])
+                beweled_cylinder(
+                     d=ball_position*2 + 3, h=2, b=bewel
+                );
+
+                translate([0, 0, height - bewel])
+                beweled_cylinder(
+                    d=ball_position*2 + 3, h=2, b=bewel
+                );
                 
-                big_bewel = (diameter-2*wall - (ball_position*2 + 1))/2;
+                big_bewel = 
+                    (diameter - 2*wall - (ball_position*2 + 1))/2;
                 
-                translate([0,0,center_height]) beweled_cylinder(d=diameter-2*wall, h=height-2*center_height, b=big_bewel);
+                translate([0, 0, center_height])
+                beweled_cylinder(
+                    d=diameter - 2*wall,
+                    h=height - 2*center_height,
+                    b=big_bewel
+                );
                 //translate([0,0,height-center_height-4+bewel]) beweled_cylinder(d=width-8, h=4, b=bewel*3);
 
                 // ball paths
@@ -159,24 +187,32 @@ module bearing5(height, diameter, dent=false) {
     difference() {
         cylinder(d=diameter, h=height);
         cylinder(d=ball_position*2, h=height+1);
-        translate([0,0,height/2]) ball_path(ball_size);
+
+        translate([0, 0, height/2])
+        ball_path(ball_size);
+
         if (dent) {
-            translate([ball_position-0.8,0,0]) cylinder(d=ball_size+1, h=height/2); 
+            translate([ball_position - 0.8, 0, 0])
+            cylinder(d=ball_size + 1, h=height/2); 
         }
     }
     degree = 360/ball_count;
-    for (i = [0:ball_count-1]) {
-        rotate([0,0,degree*i]) %translate([ball_position,0,center_height/2]) sphere(d=ball_size);
+    for (i = [0:ball_count - 1]) {
+        rotate([0, 0, degree*i])
+        %translate([ball_position, 0, center_height/2])
+        sphere(d=ball_size);
     }
-   
 }
 
 module test() {
-    center();
-    translate([0,25,0]) center_block();
+    _center();
+
+    translate([0, 25, 0])
+    center_block();
+
     intersection() {
         outer();
-        cube([40,40,14],center=true);
+        cube([40, 40, 14], center=true);
     }
 }
 
