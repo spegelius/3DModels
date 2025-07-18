@@ -10,6 +10,20 @@ bearing_d = 22;
 bearing_inner_d = 8;
 bearing_h = 7;
 
+//body2();
+
+//center1_2();
+//center2_2();
+
+//translate([50,0,0]) cube_donut(25,5);
+//translate([50,0,sqrt(2*5*5)/2]) donut(25,5);
+//test_nut();
+//test_center();
+
+//body3_inner();
+//body3();
+center3();
+
 module donut(d, h) {
     rotate_extrude(convexity=10, $fn=100) translate([d/2-h/2,0,0]) circle(d=h);
 }
@@ -204,16 +218,4 @@ module plate1() {
     translate([-32,8,0]) nub();
 }
 
-//body2();
 
-//center1_2();
-//center2_2();
-
-//translate([50,0,0]) cube_donut(25,5);
-//translate([50,0,sqrt(2*5*5)/2]) donut(25,5);
-//test_nut();
-//test_center();
-
-//body3_inner();
-body3();
-//center3();
