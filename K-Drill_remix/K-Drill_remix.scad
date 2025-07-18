@@ -7,8 +7,12 @@ spath = str(
 );
 
 
+//k_drill_3_mm();
 //k_drill_4_5_mm();
 //k_drill_4_mm();
+//k_drill_5_mm();
+//k_drill_6_mm();
+//k_drill_7_mm();
 k_drill_8_mm();
 
 
@@ -106,6 +110,28 @@ module k_drill_4_5_mm() {
     }
 }
 
+module k_drill_3_mm() {
+    difference() {
+        _k_drill_body();
+
+        translate([0, 0, 1])
+        cylinder(d=3.15, h=40, $fn=40);
+
+        rotate([0, 0, 13])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="3", size=10);
+
+        rotate([0, 0, 13 + 180])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="3", size=10);
+
+    }
+}
+
 module k_drill_4_mm() {
     difference() {
         _k_drill_body();
@@ -125,6 +151,70 @@ module k_drill_4_mm() {
         linear_extrude(1)
         text(text="4", size=10);
 
+    }
+}
+
+module k_drill_5_mm() {
+    difference() {
+        _k_drill_body();
+
+        translate([0, 0, 1])
+        cylinder(d=5.15, h=40, $fn=40);
+
+        rotate([0, 0, 13])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="5", size=10);
+
+        rotate([0, 0, 13 + 180])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="5", size=10);
+
+    }
+}
+
+module k_drill_6_mm() {
+    difference() {
+        _k_drill_body();
+
+        translate([0, 0, 1])
+        cylinder(d=6.15, h=40, $fn=40);
+
+        rotate([0, 0, 13])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="6", size=10);
+
+        rotate([0, 0, 13 + 180])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="6", size=10);
+    }
+}
+
+module k_drill_7_mm() {
+    difference() {
+        _k_drill_body();
+
+        translate([0, 0, 1])
+        cylinder(d=7.15, h=40, $fn=40);
+
+        rotate([0, 0, 13])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="7", size=10);
+
+        rotate([0, 0, 13 + 180])
+        translate([3, -8.6, 5])
+        rotate([90, 0, 0])
+        linear_extrude(1)
+        text(text="7", size=10);
     }
 }
 
