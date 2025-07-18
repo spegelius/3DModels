@@ -3,7 +3,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 
 //////// DEBUG ////////
 
-//debug();
+debug();
 //debug_leg_portion();
 //debug_small_leg_portion();
 //debug_foot();
@@ -25,7 +25,7 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //small_leg_2();
 //small_leg_3();
 
-foot();
+//foot();
 //small_foot();
 
 //holk();
@@ -67,7 +67,9 @@ module debug() {
             translate([-1480/2 + 26, 0, 48 - 12])
             cylinder(d=4.5, h=15, $fn=20);
 
-            translate([-1480/2 + 26, -550/2 + 115, 48 - 17.5])
+            translate([
+                -1480/2 + 26, -550/2 + 115, 48 - 17.5
+            ])
             cylinder(d=7.8, h=18, $fn=20);
 
             translate([-1480/2 + 26, -550/2 + 51, 48 - 12])
@@ -133,8 +135,7 @@ module debug_leg_portion() {
             _leg_portion(200, rotation=-20);
         }
 
-        translate([])
-        cube([100,100,1000]);
+        cube([100, 100, 1000]);
     }
 }
 
