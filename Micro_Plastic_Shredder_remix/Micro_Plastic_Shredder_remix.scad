@@ -1,5 +1,7 @@
 use <../Dollo/NEW_long_ties/include.scad>;
 
+use <common.scad>;
+
 
 stl_base_path = "../_downloaded/";
 spath = str(
@@ -13,11 +15,14 @@ spath = str(
 //_orig_plunger();
 
 //debug();
+//debug_table();
 //debug_reinforcement();
 //debug_hopper_big();
 //debug_jar_adapter();
 //debug_plunger();
 //debug_filament_pelletizer();
+
+
 //_supports();
 
 
@@ -39,11 +44,12 @@ spath = str(
 //ChopSueySlim_Plunger_v3(15);
 //ChopSueySlim_Plunger_v3(28);
 
-ChopSueySlim_Plunger_v3_pelletizer();
+//ChopSueySlim_Plunger_v3_pelletizer();
 
 //ChopSueySlim_output_extension();
 
 //ChopSueySlim_jar_adapter();
+ChopSueySlim_jar_adapter_spacer_3mm();
 
 //test_holes_special();
 
@@ -82,24 +88,6 @@ module _orig_plunger() {
 }
 
 
-module _router_bit() {
-    union() {
-        cylinder(d=6.35, h=93.5, $fn=40);
-
-        translate([0, 0, 39.3])
-        cylinder(d=12.7, h=5, $fn=60);
-
-        translate([0, 0, 93.5 - 8.8])
-        cylinder(d=12.7, h=5, $fn=60);
-
-        translate([0, 0, 41])
-        cylinder(d=10.4, h=44, $fn=30);
-
-        translate([0, 0, 63])
-        cube([0.1, 12.68, 44], center=true);
-    }
-}
-
 module debug() {
     intersection() {
         union() {
@@ -110,31 +98,49 @@ module debug() {
             //_supports();
         }
 
-        translate([0, 200/2 - 22, 0])
-        cube([300, 200, 300], center=true);
+//        translate([0, 200/2 - 22, 0])
+//        cube([300, 200, 300], center=true);
     }
 
-    translate([56.62, 19, 32.25])
-    rotate([-90, 0, 0])
-    //_orig_hopper();
-    ChopSueySlim_HopperV2();
+//    translate([56.62, 19, 32.25])
+//    rotate([-90, 0, 0])
+//    //_orig_hopper();
+//    ChopSueySlim_HopperV2();
 
-//    color("grey")
-//    translate([56.62 - 12.7/2 - 1/2 - 0.02, -19.875, 60/2 + 9])
-//    cube([1, 17, 60], center=true);
+    color("grey")
+    translate([56.62 - 12.7/2 - 1/2 - 0.02, -19.875, 60/2 + 9])
+    cube([1, 17, 60], center=true);
 
 //    ChopSueySlim_BodyV2_1_supports();
+//
+//    color("lightgrey")
+//    ChopSueySlim_BodyV2_1_supports_soluble();
 
-    //color("lightgrey")
-    //ChopSueySlim_BodyV2_1_supports_soluble();
+    color("grey")
+    translate([56.62, -22, -31])
+    _router_bit();
 
-//    color("grey")
-//    translate([56.62, -22, -31])
-//    _router_bit();
+//    #translate([65.65, -60, 54])
+//    rotate([90, 0, 0])
+//    cylinder(d=4, h=20, center=true, $fn=30);
+//
+//    translate([56.7, -63, 32.5])
+//    rotate([90, 0, 0])
+//    ChopSueySlim_output_extension();
+//
+//    translate([56.7, -114, 32.5])
+//    rotate([90, 0, 0])
+//    ChopSueySlim_jar_adapter();
+}
 
-    #translate([65.65, -60, 54])
-    rotate([90, 0, 0])
-    cylinder(d=4, h=20, center=true, $fn=30);
+module debug_table() {
+    %translate([-200/2 + 40, 0, 50/2])
+    cube([200, 500, 50], center=true);
+
+    translate([0, 0, 63 + 50])
+    rotate([90, 0, 0]) {
+        debug();
+    }
 }
 
 module debug_reinforcement() {
@@ -237,14 +243,19 @@ module ChopSueySlim_BodyV2_1() {
 
         // chamfers
         translate([56.62, -22, 0])
-        cylinder(d1=21.3, d2=18.9, h=1.2, center=true, $fn=50);
+        cylinder(
+            d1=21.3, d2=18.9, h=1.2,
+            center=true, $fn=50
+        );
 
 //        translate([56.62, -22, 8])
 //        cylinder(d1=15, d2=12.6, h=1.2, center=true, $fn=50);
 
         translate([56.62, -22, 60])
-        cylinder(d1=12.6, d2=15, h=1.2, center=true, $fn=50);
-
+        cylinder(
+            d1=12.6, d2=15, h=1.2,
+            center=true, $fn=50
+        );
     }
 }
 
@@ -627,7 +638,8 @@ module ChopSueySlim_Hopper_big() {
         union() {
             intersection() {
                 _form(
-                    bottom_w, bottom_d, top_w, top_d, h, 5.2, 10
+                    bottom_w, bottom_d,
+                    top_w, top_d, h, 5.2, 10
                 );
 
                 cylinder(d=1000, h=h - 2);
@@ -901,6 +913,29 @@ module ChopSueySlim_jar_adapter() {
 
         translate([-9, -21.5, 0])
         cylinder(d=3.4, h=16, center=true, $fn=30);
+    }
+}
+
+module ChopSueySlim_jar_adapter_spacer_3mm() {
+    difference() {
+        translate([0, 0, 3/2])
+        rounded_cube_side(
+            33, 55, 3, 3, center=true, $fn=30
+        );
+
+        translate([9, 21.5, 0])
+        cylinder(d=3.4, h=16, center=true, $fn=30);
+
+        translate([9, -21.5, 0])
+        cylinder(d=3.4, h=16, center=true, $fn=30);
+
+        translate([-9, 21.5, 0])
+        cylinder(d=3.4, h=16, center=true, $fn=30);
+
+        translate([-9, -21.5, 0])
+        cylinder(d=3.4, h=16, center=true, $fn=30);
+
+        cube([26.2, 38, 10], center=true);
     }
 }
 
