@@ -7,19 +7,40 @@ use <../M4_slide_t-nut_3030_remix/M4_slide_t-nut_3030_remix.scad>;
 
 
 stl_base_path = "../_downloaded/";
+
 spath = str(
     stl_base_path,
-    "ARTME 3D MK3/"
+    "ARTME_3D_MK3/"
 );
 
-
+//_orig_MK3_ed_a() ;
 //_orig_MK3_ed_c();
+
 //_orig_MK3_el_h();
+
+//_orig_MK3_en_a();
+
+//_orig_MK3_ge_a();
+//_orig_MK3_ge_b();
+//_orig_MK3_ge_c();
+//_orig_MK3_ge_f();
+//_orig_MK3_ge_g();
+
+//_orig_MK3_pu_a();
+//_orig_MK3_pu_b();
+//_orig_MK3_pu_c();
+//_orig_MK3_pu_e();
+
 //_orig_MK3_so_a();
+
+//mock_gearbox_plate();
+//mock_thrust_bearing();
 
 //_MK3_ed_c_supports();
 //_623zz_bearing_hole();
 
+//debug_extruder_drive();
+//debug_gearbox();
 //debug_MK3_cheapass_filament_gauge();
 
 //MK3_ed_c_supports();
@@ -38,8 +59,27 @@ spath = str(
 //MK3_el_h_40mm_fan_addition();
 //MK3_en_a_250micron_mesh();
 
-MK3_fixed_filament_hook();
+//MK3_fixed_filament_hook();
 
+//MK3_ed_a_powder_guard_plate();
+MK3_ed_a_powder_guard();
+//MK3_ed_a_powder_guard_drill_jig();
+
+
+module _orig_MK3_ed_a() {
+    import(
+        str(
+            spath,
+            "ED (Extruder Drive)/",
+            "ed-a-option-121.stl"
+        ),
+        convexity=10
+    );
+
+//    %translate([0, 0, 20.25])
+//    rotate([90, 0, 0])
+//    cylinder(d=30.8, h=80, center=true, $fn=50);
+}
 
 module _orig_MK3_ed_c() {
     import(
@@ -54,7 +94,17 @@ module _orig_MK3_ed_c() {
 //    %translate([0, 0, 20.25])
 //    rotate([90, 0, 0])
 //    cylinder(d=30.8, h=80, center=true, $fn=50);
-    
+}
+
+module _orig_MK3_el_h() {
+    import(
+        str(
+            spath,
+            "EL (Electronics)/",
+            "el-h.stl"
+        ),
+        convexity=10
+    );  
 }
 
 module _orig_MK3_en_a() {
@@ -69,12 +119,61 @@ module _orig_MK3_en_a() {
     );  
 }
 
-module _orig_MK3_el_h() {
+module _orig_MK3_ge_a() {
+    translate([75, 0, -17])
     import(
         str(
             spath,
-            "EL (Electronics)/",
-            "el-h.stl"
+            "GE_(Gearbox)//",
+            "ge-a.stl"
+        ),
+        convexity=10
+    );  
+}
+
+module _orig_MK3_ge_b() {
+    translate([0, 0, 0])
+    import(
+        str(
+            spath,
+            "GE_(Gearbox)/",
+            "ge-b.stl"
+        ),
+        convexity=10
+    );  
+}
+
+module _orig_MK3_ge_c() {
+    translate([0, 0, 0])
+    import(
+        str(
+            spath,
+            "GE_(Gearbox)/",
+            "ge-c-option-1205mm.stl"
+        ),
+        convexity=10
+    );  
+}
+
+module _orig_MK3_ge_f() {
+    translate([0, 0, 0])
+    import(
+        str(
+            spath,
+            "GE_(Gearbox)/",
+            "ge-f-option-1205mm.stl"
+        ),
+        convexity=10
+    );  
+}
+
+module _orig_MK3_ge_g() {
+    translate([0, 0, 0])
+    import(
+        str(
+            spath,
+            "GE_(Gearbox)/",
+            "ge-g-option-1205mm.stl"
         ),
         convexity=10
     );  
@@ -135,6 +234,35 @@ module _orig_MK3_so_a() {
     );
 }
 
+module mock_gearbox_plate() {
+    difference() {
+        cube([60, 95, 10], center=true);
+
+        translate([0, -95/2 + 32/2 + 14, 0])
+        cylinder(d=32, h=40, center=true, $fn=40);
+
+        translate([11 + 8/2, 95/2 - 8/2 - 11, 0])
+        cylinder(d=8, h=40, center=true, $fn=30);
+
+        translate([-11 - 8/2, 95/2 - 8/2 - 11, 0])
+        cylinder(d=8, h=40, center=true, $fn=30);
+
+        translate([0, -95/2 + 32/2 + 14, 0])
+        for(i = [0:3])  {
+            rotate([0, 0, i*90])
+            translate([31.5/2, 31.5/2, 0])
+            cylinder(d=5, h=60, center=true, $fn=30);
+        }
+    }
+}
+
+module mock_thrust_bearing() {
+    difference() {
+        rounded_cylinder(47, 11, 1, $fn=40);
+        cylinder(d=30, h=40, center=true, $fn=40);
+    }
+}
+
 module _MK3_assembly() {
     color("darkslategrey")
     render()
@@ -179,6 +307,55 @@ module _MK3_assembly() {
     translate([6.5, -45, 55.5])
     rotate([90, 0, 0])
     tube(13, 10, 4, $fn=60);
+}
+
+module debug_extruder_drive() {
+    intersection() {
+        _orig_MK3_ed_a();
+
+//        translate([0, 100/2, 0])
+//        cube([100, 100, 100], center=true);
+    }
+
+    color("grey")
+    render()
+    intersection() {
+        translate([0, 0, 16])
+        mock_thrust_bearing();
+
+        translate([0, 100/2, 0])
+        cube([100, 100, 100], center=true);
+    }
+
+    translate([0, 95/2 - 32/2 - 14, 32])
+    mock_gearbox_plate();
+
+    color("grey")
+    render()
+    translate([0, 0, 27])
+    rotate([180, 0, 0])
+    MK3_ed_a_powder_guard_plate();
+}
+
+module debug_gearbox() {
+    intersection() {
+        _orig_MK3_ge_a();
+
+//        translate([-200/2, 0, 0])
+//        cube([200, 400, 200], center=true);
+    }
+
+    %translate([17, 0, 0])
+    rotate([0, 90, 0])
+    cylinder(d=12, h=95, center=true);
+
+    %translate([-7, 40.8, 0])
+    rotate([0, 90, 0])
+    cylinder(d=12, h=79, center=true);
+
+    translate([-21, 0, 0])
+    rotate([0, 90, 0])
+    _orig_MK3_ge_g();
 }
 
 module debug_MK3_cheapass_filament_gauge() {
@@ -779,4 +956,102 @@ module MK3_fixed_filament_hook() {
         translate([100/2 - 7, 0, 0])
         cylinder(d=4.2, h=10, center=true, $fn=30);
     }
+}
+
+module MK3_ed_a_powder_guard_plate() {
+    difference() {
+        hull() {
+            translate([0, 0, 6/2])
+            cube([60, 60, 6], center=true);
+
+            translate([0, 4.9, 6/2])
+            cube([60, 60, 6], center=true);
+
+            cylinder(d=65, h=6, $fn=60);
+        }
+
+        for(i = [0:3])  {
+            rotate([0, 0, i*90])
+            translate([24, 24, 0])
+            cylinder(d=3.3, h=40, center=true, $fn=30);
+
+            rotate([0, 0, i*90])
+            translate([24, 24, 4])
+            cylinder(d1=3.3, d2=7, h=2.1, $fn=30);
+        }
+
+        translate([0, 0, -1])
+        v_screw(
+            h=8, screw_d=57.2, pitch=1.8, direction=0,
+            steps=100, depth=0.3, chamfer=false
+        );
+
+        translate([0, 95/2 + 17.5 - 30 - 4.2/2, 10/2 + 4.4])
+        cube([70, 4.2, 10], center=true);
+        
+        translate([0, 0, 3.8])
+        chamfered_cylinder(59, 20, 3, $fn=60);
+
+    }
+    %translate([0, 17.5, -5])    
+    mock_gearbox_plate();
+
+    %translate([0, 95/2 - 30/2 + 17.5, 20/2])
+    cube([100, 30, 20], center=true);
+    
+}
+
+module MK3_ed_a_powder_guard() {
+    intersection() {
+        difference() {
+            union() {
+                chamfered_cylinder(57.5, 20, 1, $fn=60);
+
+                translate([0, 0, 17.7])
+                cylinder(d1=57, d2=60, h=2, $fn=60);
+
+                translate([0, 0, 19.7])
+                v_screw(
+                    h=6, screw_d=56.8, pitch=1.8, direction=0,
+                    steps=100, depth=0.3, chamfer=false
+                );
+            }
+            cylinder(d=52.5, h=100, center=true, $fn=60);
+
+            // grip enhancement
+            for(i = [0:65]) {
+                rotate([0, 0, 360/66*i])
+                translate([57/2 + 0.7, 0, 0])
+                cylinder(d=1.8, h=18, $fn=20);
+            }
+        }
+        translate([0, 0, -10])
+        chamfered_cylinder(61, 36, 3.6, $fn=60);
+    }
+}
+
+module MK3_ed_a_powder_guard_drill_jig() {
+    difference() {
+        translate([0, 0, 20/2])
+        cube([60, 60, 20], center=true);
+
+        for(i = [0:3])  {
+            rotate([0, 0, i*90])
+            translate([24, 24, 0])
+            cylinder(d=2, h=80, center=true, $fn=30);
+        }
+
+        for(i = [0:3])  {
+            rotate([0, 0, i*90])
+            translate([31.5/2, 31.5/2, 0])
+            cylinder(d=4.5, h=60, center=true, $fn=30);
+        }
+
+        cylinder(d=32, h=80, center=true, $fn=40);
+
+        translate([0, 0, 30/2 + 6])
+        cube([42, 42, 30], center=true);
+    }
+    %translate([0, 17.5, -5])    
+    mock_gearbox_plate();
 }
