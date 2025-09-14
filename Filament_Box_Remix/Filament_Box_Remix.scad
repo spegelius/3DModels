@@ -3,7 +3,6 @@ use <../Dollo/NEW_long_ties/mockups.scad>;
 use <../lib/bearings.scad>;
 use <../Spannerhands_Spool_System_remix/remix.scad>;
 
-
 stl_base_path = "../_downloaded/";
 fb_stl_path = str(
     stl_base_path,
@@ -13,7 +12,8 @@ fb_stl_path = str(
 wall = 2;
 d = 30;  // corners
 cd = 14;  //small corners
-w = 129;
+//w = 129; // 90mm spool
+w = 111; // 72mm spool
 h = 224;
 l = 250;
 di = d - 2*wall;
@@ -24,21 +24,24 @@ cdi = 12 - 2*wall;
 //_orig_base();
 //_orig_filament_wheel();
 
-//_mock_spool_with_core();
+//_mock_spool_with_core(width=90);
+//_mock_spool_with_core(width=72);
 
 //debug_orig();
-debug_base();
+//debug_base();
 //debug_lid();
+//debug_lid_old();
 //debug_core_universal();
 
 //filament_box_base();
 //filament_box_lid();
+//filament_box_lid(window="old");
 //filament_box_seal();
 
 //filament_box_clip();
 
 //filament_wheel();
-//filament_wheel_bolt();
+filament_wheel_bolt();
 
 //window_frame();
 //window_frame_seal();
@@ -47,10 +50,14 @@ debug_base();
 //window_drill_jig_1();
 //window_drill_jig_2();
 
-//core_bearing_bolt();
+//core_bearing_bolt(h=89);  // 90mm spool
+//core_bearing_bolt(h=71);  // 72mm spool
 //core_bearing_mount();
-//core_universal();
-//core_universal(wings=6);
+//core_universal(h=89);  // 90mm spool
+//core_universal(h=71);  // 72mm spool
+//core_universal(h=89, wings=6);  // 90mm spool
+//core_universal(h=71, wings=6);  // 72mm spool
+//core_universal(55.1, wings=6);
 
 //ptfe_connector_mount_m10();
 //ptfe_connector_mount_m10_seal();
@@ -78,37 +85,39 @@ module _orig_filament_wheel() {
     );
 }
 
-module _mock_spool() {
+module _mock_spool(width=90) {
     rotate([0, 90, 0])
     difference() {
-        cylinder(d=202, h=90, center=true, $fn=100);
+        cylinder(d=202, h=width, center=true, $fn=100);
         cylinder(d=50, h=190, $fn=100, center=true);
     }
 }
 
-module _mock_spool_with_core() {
-    _mock_spool();
+module _mock_spool_with_core(width=90) {
+    _mock_spool(width=width);
 
-    translate([-89/2, 0, 0])
+    cw = width - 1;
+
+    translate([-cw/2, 0, 0])
     rotate([0, 90, 0])
     union() {
-        core_universal();
+        core_universal(h=cw);
 
         %608zz();
 
-        translate([0, 0, 82])
+        translate([0, 0, width - 8])
         %608zz();
 
         translate([0, 0, -5.6])
         core_bearing_mount();
 
-        translate([0, 0, 89 + 5.6])
+        translate([0, 0, cw + 5.6])
         rotate([180, 0, 0])
         core_bearing_mount();
 
-        translate([0, 0, 99/2 - 5])
+        translate([0, -8/2, cw/2 + 5/2])
         rotate([0, 90, 100])
-        core_bearing_bolt();
+        core_bearing_bolt(h=cw);
     }
     
 }
@@ -127,14 +136,17 @@ module debug_orig() {
 }
 
 module debug_base() {
-    %translate([-w/2 + 57.5, 0, 224/2])
-    //_mock_spool();
-    _mock_spool_with_core();
+    sw = w - 39;
+    %translate([-w/2 + sw/2 + 12.5, 0, 224/2])
+    _mock_spool_with_core(width=sw);
 
     intersection() {
         filament_box_base();
 
-//        translate([1000/2 + 0, 0, 0])
+        translate([1000/2 + 0, 0, 0])
+        cube([1000, 1000, 1000], center=true);
+
+//        translate([1000/2 + 46, 0, 0])
 //        cube([1000, 1000, 1000], center=true);
 
 //        translate([1000/2 + 0, 0, -1000/2 + 65])
@@ -144,9 +156,9 @@ module debug_base() {
 //        cube([1000, 1000, h + 4], center=true);
     }
 
-//    translate([w/2 - 7.4, -25, 65.3])
-//    rotate([0, -90, 0])
-//    filament_wheel();
+    translate([w/2 - 7.4, -25, 65.3])
+    rotate([0, -90, 0])
+    filament_wheel();
 
     translate([w/2 - 24.8, -25, 65.3])
     rotate([90, 0, 90])
@@ -166,6 +178,36 @@ module debug_lid() {
     intersection() {
         filament_box_lid();
 
+//        translate([1000/2 + 0, 0, 0])
+//        cube([1000, 1000, 1000], center=true);
+    }
+
+    translate([0, 0, (h + 18)/2 + 1])
+    color("lightgrey")
+    filament_box_seal();
+
+    translate([-7, 0, h + 3.4])
+    rotate([0, 180, 0])
+    window_frame();
+
+    translate([0, -98, h - 40])
+    rotate([66.4, 0, 0])
+    translate([0, 0, 9])
+    rotate([0, 180, 0])
+    window_frame();
+
+    translate([0, -98, h - 40])
+    rotate([66.4, 0, 0])
+    translate([0, 0, 3])
+    rotate([180, 0, 0])
+    humidity_window_back_frame();
+}
+
+module debug_lid_old() {
+    render()
+    intersection() {
+        filament_box_lid(window="old");
+
         translate([1000/2 + 0, 0, 0])
         cube([1000, 1000, 1000], center=true);
     }
@@ -174,9 +216,9 @@ module debug_lid() {
     color("lightgrey")
     filament_box_seal();
 
-    translate([-10, 0, h + 3.4])
+    translate([-7, 0, h + 3.4])
     rotate([0, 180, 0])
-    window_frame();
+    _window_frame();
 
     translate([0, -98, h - 40])
     rotate([66.4, 0, 0])
@@ -261,7 +303,7 @@ module _filament_box_form(yd=d, cd=cd, w=w, hh=h) {
     }
 }
 
-module _filament_box_inner_form() {
+module _filament_box_inner_form(window="new") {
 
     difference() {
         _filament_box_form(yd=di, cd=cdi, w=wi, hh=hi);
@@ -421,8 +463,13 @@ module _filament_box_inner_form() {
         }
 
         // window reinforcement
-        translate([-10, 0, h])
-        rounded_cube_side(61, 61, 10, 6, center=true, $fn=30);
+        if (window == "new") {
+            translate([-7, 0, h])
+            rounded_cube_side(64, 64, 10, 13, center=true, $fn=30);
+        } else {
+            translate([-7, 0, h])
+            rounded_cube_side(60, 60, 10, 11, center=true, $fn=30);
+        }
 
         // ptfe out
         hull() {
@@ -432,7 +479,6 @@ module _filament_box_inner_form() {
             translate([w/2 - 20/2, -l/2, h/2 + 18/2 - 18])
             cube([20, 2, 1], center=true);
         }
-        
     }
 }
 
@@ -514,12 +560,12 @@ module filament_box_base() {
         translate([w/2 - 31, -45, 42])
         rotate([0, 70, -5])
         rotate([0, 0, -22])
-        donut(80, 4.5, angle=60, $fn=60);
+        donut(80, 4.55, angle=60, $fn=60);
 
         translate([w/2 - 31, -45, 42])
         rotate([0, 70, -5])
         rotate([0, 0, -19])
-        donut(80, 2.7, angle=60, $fn=60);
+        donut(80, 3.8, angle=60, $fn=60);
 
         // wheel stuff
         translate([w/2 - 22, -25, 65.3])
@@ -593,7 +639,7 @@ module filament_box_base() {
         union() {
             donut(200, 10.3, angle=3.5, $fn=80);
             donut(200, 4.4, angle=10.2, $fn=80);
-            donut(200, 3, angle=15, $fn=80);
+            donut(200, 3.5, angle=15, $fn=80);
         }
 
         translate([w/2 - 4, -l/2, h/2 + 1])
@@ -617,10 +663,9 @@ module filament_box_base() {
 
     translate([0, l/2 - 0.5, (h/2 + 18/2) - 8 + 0.8/2])
     cube([55, 1, 0.8], center=true);
-
 }
 
-module filament_box_lid() {
+module filament_box_lid(window="new") {
     difference() {
         difference() {
             _filament_box_form();
@@ -633,7 +678,7 @@ module filament_box_lid() {
             }
         }
 
-        _filament_box_inner_form();
+        _filament_box_inner_form(window=window);
 
         translate([0, 0, h/2 + 22/2 - 1/2])
         _filament_box_seal_groove();
@@ -672,28 +717,62 @@ module filament_box_lid() {
         cube([56, 5, 4], center=true);
 
         // window holes
-        translate([-10, 0, h])
-        rounded_cube_side(
-            49, 49, 10, 4, center=true, $fn=30
-        );
-
-        hull() {
-            translate([-10, 0, h - 1])
+        if (window == "new") {
+            translate([-7, 0, h])
             rounded_cube_side(
-                49, 49, 1, 4, center=true, $fn=30
+                49, 49, 10, 4, center=true, $fn=30
             );
 
-            translate([-10, 0, h - 5])
-            rounded_cube_side(
-                51, 51, 1, 5, center=true, $fn=30
-            );
-        }
+            hull() {
+                translate([-7, 0, h - 1])
+                rounded_cube_side(
+                    49, 49, 1, 4, center=true, $fn=30
+                );
 
-        translate([-10, 0, h])
-        for (i = [0:3]) {
-            rotate([0, 0, i*90])
-            translate([27, 27, 0])
-            cylinder(d=2.8, h=12, center=true, $fn=20);
+                translate([-7, 0, h - 5])
+                rounded_cube_side(
+                    51, 51, 1, 5, center=true, $fn=30
+                );
+            }
+
+            translate([-7, 0, h])
+            for (i = [0:3]) {
+                rotate([0, 0, i*90])
+                translate([27, 27, 0])
+                cylinder(d=2.8, h=12, center=true, $fn=20);
+
+                rotate([0, 0, i*90])
+                translate([29, 0, 0])
+                cylinder(d=2.8, h=12, center=true, $fn=20);
+            }
+        } else {
+            translate([-7, 0, h])
+            rounded_cube_side(
+                42, 42, 10, 4, center=true, $fn=30
+            );
+
+            hull() {
+                translate([-7, 0, h - 1])
+                rounded_cube_side(
+                    42, 42, 1, 4, center=true, $fn=30
+                );
+
+                translate([-7, 0, h - 5])
+                rounded_cube_side(
+                    44, 44, 1, 5, center=true, $fn=30
+                );
+            }
+
+            translate([-7, 0, h])
+            for (i = [0:3]) {
+                rotate([0, 0, i*90])
+                translate([25, 25, 0])
+                cylinder(d=2.8, h=12, center=true, $fn=20);
+
+                rotate([0, 0, i*90])
+                translate([26, 0, 0])
+                cylinder(d=2.8, h=12, center=true, $fn=20);
+            }
         }
 
         // humidity meter hole
@@ -704,6 +783,10 @@ module filament_box_lid() {
             for (i = [0:3]) {
                 rotate([0, 0, i*90])
                 translate([27, 27, 0])
+                cylinder(d=3.3, h=12, center=true, $fn=20);
+
+                rotate([0, 0, i*90])
+                translate([29, 0, 0])
                 cylinder(d=3.3, h=12, center=true, $fn=20);
             }
         }
@@ -729,7 +812,7 @@ module filament_box_clip() {
             translate([-3, -8, 0])
             cylinder(d=5, h=54, center=true, $fn=30);
 
-            translate([-3, 10, 0])
+            translate([-3, 9.5, 0])
             cylinder(d=5, h=54, center=true, $fn=30);
 
             translate([0, -10, 0])
@@ -763,7 +846,7 @@ module filament_box_clip() {
         translate([-3, -8, 0])
         cylinder(d=2, h=100, center=true, $fn=30);
 
-        translate([-3, 10, 0])
+        translate([-3, 9.5, 0])
         cylinder(d=2, h=100, center=true, $fn=30);
 
     }
@@ -928,7 +1011,8 @@ module filament_wheel_bolt() {
                 h=6,
                 pitch=1.8,
                 steps=40,
-                direction=0
+                direction=0,
+                chamfer=true
             );
 
             translate([0, 0, 1])
@@ -954,12 +1038,12 @@ module window_frame() {
             hull() {
                 translate([0, 0, 1/2])
                 rounded_cube_side(
-                    64, 64, 1, 10, center=true, $fn=30
+                    66, 66, 1, 12, center=true, $fn=30
                 );
 
                 translate([0, 0, 4 - 0.4/2])
                 rounded_cube_side(
-                    66.5, 66.5, 0.4, 10.6, center=true, $fn=30
+                    68.5, 68.5, 0.4, 14, center=true, $fn=30
                 );
             }
 
@@ -971,6 +1055,15 @@ module window_frame() {
                 rotate([0, 0, i*90])
                 translate([27, 27, -0.2])
                 cylinder(d1=6.8, d2=3.3, h=2.2, $fn=30);
+
+                rotate([0, 0, i*90])
+                translate([29, 0, 2])
+                cylinder(d=3.3, h=5, center=true, $fn=20);
+
+                rotate([0, 0, i*90])
+                translate([29, 0, -0.2])
+                cylinder(d1=6.8, d2=3.3, h=2.2, $fn=30);
+                
             }
 
             // window hole
@@ -986,7 +1079,7 @@ module window_frame_seal() {
         union() {
             translate([0, 0, 1.2/2])
             rounded_cube_side(
-                66.5, 66.5, 1.2, 9.4, center=true, $fn=30
+                68.5, 68.5, 1.2, 14, center=true, $fn=30
             );
 
             for (i = [0:3]) {
@@ -1041,6 +1134,10 @@ module window_frame_seal() {
             rotate([0, 0, i*90])
             translate([27, 27, 0])
             cylinder(d=2.8, h=40, center=true, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([29, 0, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=20);
         }
     }
 }
@@ -1049,21 +1146,25 @@ module humidity_window_back_frame() {
     difference() {
         translate([0, 0, 5/2])
         rounded_cube_side(
-            63, 63, 5, 9, center=true, $fn=30
+            65, 65, 5, 9, center=true, $fn=30
         );
 
         for (i = [0:3]) {
             rotate([0, 0, i*90])
             translate([27, 27, 0])
             cylinder(d=2.8, h=40, center=true, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([29, 0, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=20);
         }
 
         //meter hole
-        cube([44, 26.1, 20], center=true);
+        cube([44.2, 26.3, 20], center=true);
 
-        translate([0, 0, 20/2 + 2])
+        translate([0, 0, 20/2 + 1.5])
         hull() {
-            cube([50, 26, 20], center=true);
+            cube([50, 26.3, 20], center=true);
 
             translate([0, 0, 5])
             cube([52, 30, 20], center=true);
@@ -1073,27 +1174,31 @@ module humidity_window_back_frame() {
         rounded_cube_side(49, 49, 10, 2, center=true, $fn=30);
     }
 
-    %translate([0, 0, 13.6])
-    rotate([180, 0, 0])
-    color("darkgrey")
-    mock_humidity_meter();
+//    %translate([0, 0, 13.6])
+//    rotate([180, 0, 0])
+//    color("darkgrey")
+//    mock_humidity_meter();
 }
 
 module window_drill_jig_1() {
     difference() {
         translate([0, 0, 5/2])
         rounded_cube_side(
-            70, 70, 5, 14.4, center=true, $fn=30
+            71, 71, 5, 16.5, center=true, $fn=30
         );
 
         translate([0, 0, 5/2 + 2])
         rounded_cube_side(
-            65.5, 65.5, 5, 9.4, center=true, $fn=30
+            68.5, 68.5, 5, 14, center=true, $fn=30
         );
 
         for (i = [0:3]) {
             rotate([0, 0, i*90])
             translate([27, 27, 0])
+            cylinder(d=3, h=40, center=true, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([29, 0, 0])
             cylinder(d=3, h=40, center=true, $fn=20);
         }
     }
@@ -1103,12 +1208,16 @@ module window_drill_jig_2() {
     difference() {
         translate([0, 0, 5/2])
         rounded_cube_side(
-            65.2, 65.2, 5, 9.2, center=true, $fn=30
+            68.2, 68.2, 5, 13.7, center=true, $fn=30
         );
 
         for (i = [0:3]) {
             rotate([0, 0, i*90])
             translate([27, 27, 0])
+            cylinder(d=3, h=40, center=true, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([29, 0, 0])
             cylinder(d=3, h=40, center=true, $fn=20);
         }
     }
