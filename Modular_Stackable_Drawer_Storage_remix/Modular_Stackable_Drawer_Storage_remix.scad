@@ -44,8 +44,8 @@ wall = 1.4;
 //drawer_cap_v2();
 //drawer_cap_topper_v2();
 
-//frame_bottom_nut_block();
-frame_top_nut();
+frame_bottom_nut_block();
+//frame_top_nut();
 
 
 module _orig_drawer_frame_1U() {
@@ -780,15 +780,17 @@ module drawer_cap_topper_v2() {
 
 module frame_bottom_nut_block() {
     difference() {
-        translate([0, 0, 6/2])
-        rounded_cube_side(8, 14, 6, 2, center=true, $fn=20);
+        intersection() {
+            translate([0, 0, 6/2])
+            rounded_cube_side(7.8, 14, 6, 2, center=true, $fn=20);
 
-        translate([0.1, 0, 0])
-        cylinder(d=3.3, h=20, center=true, $fn=30);
+            chamfered_cube(
+                7.8, 20, 12, 1.1, center=true
+            );
+        }
 
-        translate([0.1, 0, 6.1])
-        rotate([180, 0, 30])
-        M3_nut_tapering(h=4.3, cone=false, bridging=false);
+        translate([0.1, 0, 0.8])
+        cylinder(d=2.8, h=20, $fn=30);
     }
 }
 
@@ -803,6 +805,9 @@ module frame_top_nut() {
         }
 
         cylinder(d=2.8, h=30, center=true, $fn=10);
+
+        translate([0, 0, 4])
+        cylinder(d=3, h=10, $fn=20);
 
         translate([0, 0, 10/2 + 8])
         cube([1.2, 20, 10], center=true);
