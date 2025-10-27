@@ -39,13 +39,15 @@ cdi = 12 - 2*wall;
 //filament_box_seal();
 
 //filament_box_clip();
+//filament_box_clip(gap=18.5);
 
 //filament_wheel();
-filament_wheel_bolt();
+//filament_wheel_bolt();
 
 //window_frame();
 //window_frame_seal();
 //humidity_window_back_frame();
+//humidity_window_back_frame_round();
 
 //window_drill_jig_1();
 //window_drill_jig_2();
@@ -53,11 +55,9 @@ filament_wheel_bolt();
 //core_bearing_bolt(h=89);  // 90mm spool
 //core_bearing_bolt(h=71);  // 72mm spool
 //core_bearing_mount();
-//core_universal(h=89);  // 90mm spool
+core_universal(h=89, wall=1.4);  // 90mm spool
 //core_universal(h=71);  // 72mm spool
-//core_universal(h=89, wings=6);  // 90mm spool
-//core_universal(h=71, wings=6);  // 72mm spool
-//core_universal(55.1, wings=6);
+
 
 //ptfe_connector_mount_m10();
 //ptfe_connector_mount_m10_seal();
@@ -257,6 +257,8 @@ module debug_core_universal() {
 //    translate([0, 0, 89 + 5.6])
 //    rotate([180, 0, 0])
 //    core_bearing_mount();
+
+    %tube(52, 20, 1, $fn=50);
 
     %tube(57, 20, 1, $fn=50);
 }
@@ -806,16 +808,17 @@ module filament_box_lid(window="new") {
     cube([55, 1, 0.8], center=true);
 }
 
-module filament_box_clip() {
+module filament_box_clip(gap=17.5) {
+
     difference() {
         union() {
-            translate([-3, -8, 0])
+            translate([-3, -gap/2, 0])
             cylinder(d=5, h=54, center=true, $fn=30);
 
-            translate([-3, 9.5, 0])
+            translate([-3, gap/2, 0])
             cylinder(d=5, h=54, center=true, $fn=30);
 
-            translate([0, -10, 0])
+            translate([0, -10.75, 0])
             intersection() {
                 tube(8, 54, 2, center=true, $fn=30);
 
@@ -823,7 +826,7 @@ module filament_box_clip() {
                 cube([10, 10, 100], center=true);
             }
 
-            translate([101.64, -2.1, 0])
+            translate([101.64, -2.85, 0])
             intersection() {
                 tube(200, 54, 2, center=true, $fn=90);
 
@@ -832,21 +835,21 @@ module filament_box_clip() {
             }
 
             hull() {
-                translate([-3, 10, 0])
+                translate([-3, 9.25, 0])
                 cylinder(d=2, h=54, center=true, $fn=30);
 
-                translate([4, 15, 0])
+                translate([4, 14.25, 0])
                 cylinder(d=2, h=54, center=true, $fn=30);
             }
 
-            translate([8.4, 30, 0])
+            translate([8.4, 29.25, 0])
             cylinder(d=4, h=54, center=true, $fn=30);
         }
 
-        translate([-3, -8, 0])
+        translate([-3, -gap/2, 0])
         cylinder(d=2, h=100, center=true, $fn=30);
 
-        translate([-3, 9.5, 0])
+        translate([-3, gap/2, 0])
         cylinder(d=2, h=100, center=true, $fn=30);
 
     }
@@ -1160,9 +1163,9 @@ module humidity_window_back_frame() {
         }
 
         //meter hole
-        cube([44.2, 26.3, 20], center=true);
+        cube([45.2, 26.3, 20], center=true);
 
-        translate([0, 0, 20/2 + 1.5])
+        translate([0, 0, 20/2 + 1.4])
         hull() {
             cube([50, 26.3, 20], center=true);
 
@@ -1178,6 +1181,43 @@ module humidity_window_back_frame() {
 //    rotate([180, 0, 0])
 //    color("darkgrey")
 //    mock_humidity_meter();
+}
+
+module humidity_window_back_frame_round() {
+    difference() {
+        translate([0, 0, 5/2])
+        rounded_cube_side(
+            65, 65, 5, 9, center=true, $fn=30
+        );
+
+        for (i = [0:3]) {
+            rotate([0, 0, i*90])
+            translate([27, 27, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([29, 0, 0])
+            cylinder(d=2.8, h=40, center=true, $fn=20);
+        }
+
+        //meter hole
+        cylinder(d=42, h=20, center=true, $fn=50);
+
+        translate([0, 0, 1.4])
+        hull() {
+            cylinder(d=46, h=20, $fn=50);
+
+            translate([0, 0, 5])
+            cylinder(d=48, h=20, $fn=50);
+        }
+
+        translate([0, 0, 10/2 + 3])
+        rounded_cube_side(49, 49, 10, 2, center=true, $fn=30);
+    }
+
+    %translate([0, 0, -13 + 1.4])
+    color("darkgrey")
+    mock_humidity_meter_round();
 }
 
 module window_drill_jig_1() {
@@ -1347,44 +1387,93 @@ module core_bearing_bolt(h=89) {
     }
 }
 
-module _core_universal(h=89, wings=5) {
+module _core_universal(h=89, wall=1.6) {
+    wings = 4;
 
     module _wing() {
-        d = 51;
-        wall = 1.3;
+        d = 40;
 
-        intersection() {
-            union() {
-                difference() {
+        union() {
+            // lower wing
+            difference() {
+                union() {
                     intersection() {
-                        cylinder(d=d, h=h, $fn=80);
+                        union() {
+                            cylinder(d=d, h=h, $fn=80);
 
-                        scale([1, 1.5, 1/0.7])
-                        chamfered_cylinder(
-                            d, h * 0.7, 3.5, $fn=80
-                        );
+                            translate([0, d/2 - wall, 0])
+                            cylinder(d=2*wall, h=h, $fn=20);
+                        }
+
+                        translate([-wall, 8.5, 0])
+                        hull() {
+                            rounded_cube_side(
+                                d/2 + wall*2 - 0.6, d/2 - 8.5,
+                                h, 2*wall, $fn=80
+                            );
+
+                            translate([-0.8, d/2 - 12, 0])
+                            cube([1, 1, h]);
+                        }
                     }
-
+                    translate([d/2 - 2.15, 8.9, 0])
                     intersection() {
-                        cylinder(
-                            d=d - wall*2, h=h*3,
-                            center=true, $fn=80
-                        );
+                        cylinder(d=2*wall, h=h, $fn=40);
 
-                        translate([0, 0, -0.01])
-                        scale([1, 1.5, 1/0.699])
-                        chamfered_cylinder(
-                            d - wall*2, h * 0.7, 3.8, $fn=80
-                        );
+                        translate([0, -wall/2, h/2])
+                        cube([2*wall, wall, h], center=true);
                     }
                 }
-                translate([d/2 - 2/2, 2/2, 5])
-                cylinder(d=2, h=h - 10, $fn=20);
+
+                difference() {
+                    cylinder(d=d - 2*wall, h=3*h, center=true, $fn=80);
+
+                    translate([-wall, d/2 - 3/2, 0])
+                    cube([2*wall, 3, 3*h], center=true);
+                }
             }
 
-            rounded_cube_side(
-                d/2, d/2 + 1, h, 2, $fn=20
-            );
+            // upper wing
+            difference() {
+                union() {
+                    intersection() {
+                        translate([-6.3/2 + wall, 9, 0])
+                        cylinder(d=d + 2, h=h, $fn=80);
+
+                        translate([1.3, 8.9, 0])
+                        cube([d/2 + wall*2 - 0.6, d/2 + 6, h]);
+
+                        rotate([0, 0, -7])
+                        cube([d, d, h]);
+                    }
+
+                    rotate([0, 0, -7])
+                    translate([0, (d + 2 - 2*wall)/2 + 9 + 3/3, 0])
+                    union() {
+                        intersection() {
+                            cylinder(d=3, h=h, $fn=30);
+
+                            translate([-1.5/2, 10/2 - 1.5, h/2])
+                            cube([1.5, 10, h], center=true);
+                        }
+
+                        hull() {
+                            rotate([0, 0, -4])
+                            translate([-1.5/2, 1/2, h/2])
+                            cube([1.5, 1, h], center=true);
+
+                            rotate([0, 0, -4])
+                            translate([-1.5/2, 5 - wall/2, 0])
+                            cylinder(d=1.5, h=h, $fn=20);
+                        }
+                    }
+
+                }
+                translate([-6.3/2 + wall, 9, 0])
+                cylinder(
+                    d=d + 2 - 2*wall, h=3*h, center=true, $fn=80
+                );
+            }
         }
     }
     //!_wing();
@@ -1423,16 +1512,17 @@ module _core_universal(h=89, wings=5) {
             _core();
             for(i = [0 : wings - 1]) {
                 rotate([0, 0, 360/wings*i])
-                translate([1.4, -12.8, 0])
+                translate([1.5/2, -5.5, 0])
                 _wing();
             }
         }
-        //chamfered_cylinder(58, h, 4, $fn=60);
+        scale([1, 1, 1/0.7])
+        chamfered_cylinder(59, 0.7 * h, 5, $fn=80);
     }
 }
 
-module core_universal(h=89, wings=5) {
-    _core_universal(h=h, wings=wings);
+module core_universal(h=89, wall=1.6) {
+    _core_universal(h=h, wall=wall);
 }
 
 module ptfe_connector_mount_m10() {
