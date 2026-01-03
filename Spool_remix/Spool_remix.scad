@@ -20,6 +20,11 @@ spath = str(
 // - ~76.4mm ID
 // - 49.3mm tall
 
+// Anycubic roll dimensions
+// - 89mm OD
+// - 82mm ID
+// - 59mm tall
+
 //_orig_SPOOLD();
 //_orig_SPOOLG_v3();
 //_plate();
@@ -30,10 +35,11 @@ spath = str(
 //debug_prusa_roll_center();
 
 //new_spoold();
-new_spoolg();
+//new_spoolg();
 
 //spool_tape_roll_center();
 //spool_prusa_roll_center();
+spool_anycubic_roll_center();
 
 
 module _orig_SPOOLD() {
@@ -125,15 +131,15 @@ module _chamfered_form() {
 
 module _hole_bases() {
     for (i = [0:2]) {
-        rotate([0, 0, i*360/3 - 0.5])
+        rotate([0, 0, i*360/3 - 0.6])
         translate([96.2, 0, 0])
         scale([1, 1.4, 1])
-        chamfered_cylinder(8.4, 2.5, 0.5, $fn=20);
+        chamfered_cylinder(8.4, 3, 0.5, $fn=20);
 
-        rotate([0, 0, 17.5 + i*360/3])
+        rotate([0, 0, 18.6 + i*360/3])
         translate([96.2, 0, 0])
         scale([1, 1.4, 1])
-        chamfered_cylinder(8.4, 2.5, 0.5, $fn=20);
+        chamfered_cylinder(8.4, 3, 0.5, $fn=20);
     }
 }
 
@@ -141,11 +147,11 @@ module _holes() {
     for (i = [0:2]) {
         rotate([40, 0, i*360/3])
         translate([96.2, 0, 0])
-        cylinder(d=3.8, h=10, center=true, $fn=20);
+        cylinder(d=3.8, h=20, center=true, $fn=20);
 
-        rotate([-40, 0, 17 + i*360/3])
+        rotate([-40, 0, 18 + i*360/3])
         translate([96.2, 0, 0])
-        cylinder(d=3.8, h=10, center=true, $fn=20);
+        cylinder(d=3.8, h=20, center=true, $fn=20);
     }
 }
 
@@ -208,7 +214,7 @@ module _plate() {
 module _plate_new(fd=90) {
     module _plate_main() {
         difference() {
-            chamfered_cylinder(201, 2.5, 0.6, $fn=120);
+            chamfered_cylinder(201, 3, 0.6, $fn=120);
 
             cylinder(d=55.2, h=10, center=true, $fn=60);
 
@@ -234,6 +240,11 @@ module _plate_new(fd=90) {
                     }
                 }
             }
+
+            //translate([0, 0, 2.5])
+            //chamfered_cylinder(
+            //    196, 5, 0.5, $fn=120
+            //);
         }
     }
 
@@ -242,7 +253,7 @@ module _plate_new(fd=90) {
             _plate_main();
             _hole_bases();
             tube(fd, 1, 17.5, $fn=80);
-            tube(70, 2.5, 7.5, $fn=80);
+            tube(70, 3, 7.5, $fn=80);
 
             translate([0, -53, 1/2])
             cube([54, 40, 1], center=true);
@@ -323,26 +334,27 @@ module new_spoolg1() {
 }
 
 module new_spoolg() {
+    h = 63;
+
     difference() {
         union() {
             _plate_new();
-            cylinder(d=59, h=63.5, $fn=80);
+            cylinder(d=59, h=h, $fn=80);
 
             hull() {
                 translate([0, 0, 37])
                 cylinder(d=59, h=25.5, $fn=80);
 
                 translate([0, 0, 46])
-                cylinder(d=75, h=17.5, $fn=80);
-
+                cylinder(d=75, h=h - 46, $fn=80);
             }
 
-            tube(90, 63.5, 1.2, $fn=80);
+            tube(90, h, 1.2, $fn=80);
 
             for (i = [0:4]) {
                 rotate([0, 0, i*360/5])
-                translate([90/2 - 8, 0, 63.5/2])
-                cube([15, 1.2, 63.5], center=true);
+                translate([90/2 - 8, 0, h/2])
+                cube([15, 1.2, h], center=true);
             }
         }
 
@@ -358,7 +370,7 @@ module new_spoolg() {
             chamfer=true
         );
 
-        translate([0, 0, 63 - 5])
+        translate([0, 0, h - 5.5])
         chamfered_cylinder(71, 20, 7, $fn=80);
 
         cylinder(d=55.2, h=200, center=true, $fn=80);
@@ -434,4 +446,8 @@ module spool_tape_roll_center() {
 
 module spool_prusa_roll_center() {
     _spool_cardboard_roll_center(99.3, 93.7, 59.8, 3);
+}
+
+module spool_anycubic_roll_center() {
+    _spool_cardboard_roll_center(89, 82, 59, 3);
 }
