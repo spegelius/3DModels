@@ -4,6 +4,11 @@ use <../Dollo/NEW_long_ties/include.scad>;
 ////// VARIABLES //////
 //width = 120;
 //length = 120;
+//height = 50;
+//wall = 1.7;
+
+//width = 120;
+//length = 120;
 //height = 80;
 //wall = 1.7;
 
@@ -12,15 +17,30 @@ use <../Dollo/NEW_long_ties/include.scad>;
 //height = 100;
 //wall = 1.7;
 
-width = 150;
-length = 150;
-height = 100;
-wall = 1.8;
+//width = 150;
+//length = 150;
+//height = 90;
+//wall = 1.8;
+
+//width = 150;
+//length = 150;
+//height = 100;
+//wall = 1.8;
 
 //width = 150;
 //length = 150;
 //height = 130;
 //wall = 1.8;
+
+//width = 180;
+//length = 180;
+//height = 90;
+//wall = 1.9;
+
+width = 180;
+length = 180;
+height = 100;
+wall = 1.9;
 
 //width = 180;
 //length = 180;
@@ -67,22 +87,84 @@ fastener_dia = 7;
 
 slot_w = 100;
 
-plate_w = slot_w - 3;
+plate_w = slot_w - 4;
 plate_l = 34;
 
 
 ////// VIEW //////
 //view_proper();
 //debug_box();
+//debug_slot_insert();
 
-box();
+//box();
 //lid();
 //fastener();
 //fasteners();
+
+// Special
+//fasteners(adjust=-0.7);
+
 //plate("Crap");
+//plate("Anycubic");
+//plate("Qidi");
+//plate("ARTME3D", size=13);
+//plate("XT-CF20");
+//plate("PCTG");
+//plate("PETG Grey", size=11);
+//plate("PETG Red", size=11);
+//plate("PETG Black", size=11);
+//plate("PETG White", size=11);
+//plate("PETG Blue", size=11);
+//plate("PLA Green", size=12);
+//plate("PLA Orange", size=11);
+//plate("PLA Red", size=11);
+//plate("PETG Yellow", size=10);
+//plate("PLA Clear", size=11);
+//plate("PA6", size=12);
+//plate("PETG Clear", size=11);
+//plate("Nylon 645", size=11);
+//plate("PLA Brown", size=11);
+//plate("PC-ABS", size=12);
+//plate("HDPE", size=12);
+//plate("ASA", size=12);
+//plate("PLA White", size=11);
+//plate("PLA Black", size=11);
+//plate("Filaflex", size=12);
+//plate("PETG Pink", size=11);
+//plate("PLA Yellow", size=11);
+//plate("PA12 Alu", size=12);
+//plate("PLA Blue", size=12);
+//plate("PLA Grey", size=12);
+//plate("PA12", size=12);
+//plate("Bearings", size=13);
+//plate("Nozzles", size=13);
+//plate(["PET2G", "Brown"], size=12);
+//plate(["PET2G", "Yellow"], size=12);
+//plate(["PETG", "Green"], size=12);
+//plate("PLA CF", size=13);
+plate(["PET2G", "RED"], size=13);
+
+//slot_insert();
+//slot_insert_bottom();
 
 
 ////// MODULES //////
+module debug_slot_insert() {
+    render()
+    intersection() {
+        box();
+
+        translate([200/2, 200/2, 400/2 + 3])
+        cube([200, 200, 400], center=true);
+    }
+
+    translate([0, 0, 1.6])
+    slot_insert_bottom();
+
+    translate([0, 0, 1.6 + height/2 - 3])
+    slot_insert();
+}
+
 module _bottom_pattern(h) {
     step = h*2 + 1;
     size = sqrt(h*h*2);
@@ -119,41 +201,41 @@ module _bottom_pattern(h) {
     }
 }
 
-module main_body() {
+module _fastener_form(w, d, l) {
     
-    module form(w, d, l, h) {
-        
-        module subform() {
-            rotate([90, 0, 0]) {
-                hull() {
-                    translate([1, 0, 0])
-                    cylinder(
-                        d=d, h=l, center=true, $fn=40
-                    );
+    module subform() {
+        rotate([90, 0, 0]) {
+            hull() {
+                translate([1, 0, 0])
+                cylinder(
+                    d=d, h=l, center=true, $fn=40
+                );
 
-                    translate([-d, d/2 - 0.5, 0])
-                    cube([1, 2*d, l], center=true);
+                translate([-d, d/2 - 0.5, 0])
+                cube([1, 2*d, l], center=true);
 
-                    translate([0, -d/2 - 0.5, 0])
-                    cube([d, 1, l], center=true);
-                }
-                hull() {
-                    translate([1, 0, 4])
-                    sphere(d=d + 3, $f=50);
+                translate([0, -d/2 - 0.5, 0])
+                cube([d, 1, l], center=true);
+            }
+            hull() {
+                translate([1, 0, 4])
+                sphere(d=d + 3, $f=50);
 
-                    translate([1, 0, -4])
-                    sphere(d=d + 3, $f=50);
-                }
+                translate([1, 0, -4])
+                sphere(d=d + 3, $f=50);
             }
         }
-        
-        translate([-w/2, 0, 0])
-        subform();
-
-        translate([w/2, 0, 0])
-        mirror([1, 0, 0])
-        subform();
     }
+    
+    translate([-w/2, 0, 0])
+    subform();
+
+    translate([w/2, 0, 0])
+    mirror([1, 0, 0])
+    subform();
+}
+
+module main_body() {
     
     difference() {
         // outer
@@ -182,7 +264,7 @@ module main_body() {
             }
 
             // fastener cuts
-            form(width, 12, fastener_l + 2);
+            _fastener_form(width, 12, fastener_l + 2);
         }
 
         // inner cut
@@ -193,7 +275,7 @@ module main_body() {
                 inner_corner, center=true, $fn=60
             );
 
-            form(
+            _fastener_form(
                 inner_w, 12 + 2*wall,
                 fastener_l + 2 + 2*wall
             );
@@ -666,7 +748,7 @@ module lid() {
     }
 }
 
-module fastener(){
+module fastener(adjust=0){
     difference() {
         union() {
             cylinder(
@@ -684,8 +766,8 @@ module fastener(){
 //            cube([fastener_wall, 6.8, fastener_l]);
 
             hull() {
-                translate([0, fastener_dia/2 + 4.8, 0])
-                cube([fastener_wall, 3, fastener_l]);
+                translate([0, fastener_dia/2 + 4.8 + adjust, 0])
+                cube([fastener_wall, 3 + adjust, fastener_l]);
 
                 translate([0, fastener_dia/2 + 1.6, 10/2])
                 cube([fastener_wall, 1, fastener_l - 10]);
@@ -693,22 +775,22 @@ module fastener(){
 
 
             difference() {
-                translate([-3.5, 12.5, 0])
+                translate([-3.5, 12.5 + adjust, 0])
                 cylinder(d=11, h=fastener_l, $fn=40);
 
                 translate([
                     -10, (fastener_dia - 1)/2, -1
                 ])
-                cube([10, 9.4, fastener_l + 2]);
+                cube([10, 9.4 + adjust, fastener_l + 2]);
 
                 translate([-10, (fastener_dia - 1)/2, 0])
-                cube([7, 9,fastener_l + 1]);
+                cube([7, 9 + adjust, fastener_l + 1]);
             }
 
-            translate([-8, 12.7, 0])
+            translate([-8, 12.7 + adjust, 0])
             cylinder(d=2.1, h=fastener_l, $fn=20);
 
-            translate([-8.9, 4.5, fastener_l/2])
+            translate([-8.9, 4.5 + adjust, fastener_l/2])
             difference() {
                 rotate([-90, 0, 60])
                 cylinder(d=20, h=6, $fn=50);
@@ -739,11 +821,11 @@ module fastener(){
         translate([0, 0, -1])
         cylinder(d=0.5, h=fastener_l + 2, $fn=30);
 
-        translate([-7, 4, fastener_l/2])
+        translate([-7, 4 + adjust, fastener_l/2])
         rotate([-90, 0, 60])
         cylinder(d=20 - 2*fastener_wall, h=10, $fn=50);
 
-        translate([-3.5, 12.5, -1])
+        translate([-3.5, 12.5 + adjust, -1])
         cylinder(
             d=11 - 2*fastener_wall,
             h=fastener_l + 2, $fn=40
@@ -751,15 +833,15 @@ module fastener(){
     }
 }
 
-module fasteners(brim=true) {
+module fasteners(brim=true, adjust=0) {
     module _fasteners() {
         union() {
             translate([7, 0, 0])
-            fastener();
+            fastener(adjust=adjust);
 
             translate([-7, 14, 0])
             rotate([0, 0, 180])
-            fastener();
+            fastener(adjust=adjust);
 
             if (fastener_l > 100) {
                 translate([4, -1.4, fastener_l/2])
@@ -782,19 +864,31 @@ module fasteners(brim=true) {
     }
 }
 
-module plate(text) {
+module plate(text, size=14) {
     union() {
-        translate([0, 0, 1.5/2])
+        translate([0, 0, 1.4/2])
         rounded_cube_side(
-            plate_w, plate_l, 1.5, 5,center=true
+            plate_w, plate_l, 1.4, 5,center=true, $fn=40
         );
-
-        translate([0, 0, 1.5])
-        linear_extrude(1)
-        text(
-            size=14, text=text, halign="center",
-            valign="center"
-        );
+        if(is_list(text)) {
+            y_offset = 0.5*size*(len(text) - 1);
+            for(i = [0:len(text) - 1]) {
+                translate([0, y_offset - i*size, 1.4])
+                linear_extrude(1)
+                text(
+                    size=size, text=text[i], halign="center",
+                    valign="center"
+                );
+                echo(i);
+            }
+        } else {
+            translate([0, 0, 1.4])
+            linear_extrude(1)
+            text(
+                size=size, text=text, halign="center",
+                valign="center"
+            );
+        }
     }
 }
 
@@ -849,4 +943,64 @@ module debug_box() {
     ])
     rotate([90, 0, 0])
     fastener();
+}
+
+module slot_insert_bottom() {
+    _slot_insert(bottom=true);
+}
+
+module slot_insert() {
+    _slot_insert(bottom=false);
+}
+
+module _slot_insert(bottom=false) {
+    w = inner_w - 1.2;
+    l = inner_l - 1.2;
+    c = inner_corner - 1.2;
+    h = height/2 - 3;
+    
+    difference() {
+        intersection() {
+            translate([0, 0, (h + 10)/2])
+            rounded_cube(
+                w, l, h + 10, c, center=true, $fn=30
+            );
+
+            translate([0, 0, h/2])
+            cube([1000, 1000, h], center=true);
+        }
+
+        if (bottom) {
+            _fastener_form(
+                inner_w, 12 + 2*wall + 0.6,
+                fastener_l + 2 + 2*wall + 1.2
+            );
+        }
+
+        difference() {
+            translate([0, 0, h/2 + 1])
+            rounded_cube(
+                w - 2, l - 2, h, c - 2, center=true, $fn=30
+            );
+
+            translate([-w/2 + w/3, 0, 0])
+            cube([1, 200, 200], center=true);
+
+            translate([w/2 - w/3, 0, 0])
+            cube([1, 200, 200], center=true);
+
+            translate([0, l/2 - l/3, 0])
+            cube([200, 1, 200], center=true);
+
+            translate([0, -l/2 + l/3, 0])
+            cube([200, 1, 200], center=true);
+
+            if (bottom) {
+                _fastener_form(
+                    inner_w - 2, 12 + 2*wall + 2,
+                    fastener_l + 2 + 2*wall + 3
+                );
+            }
+        }
+    }
 }
