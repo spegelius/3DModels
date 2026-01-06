@@ -74,6 +74,7 @@ sph_stl_path = str(
 
 //window_frame();
 //window_frame_seal();
+//window_frame_drill_jig();
 
 //new_base_bracket();
 //new_lid_bracket();
@@ -1213,7 +1214,7 @@ module new_thin_lid2_window() {
     }
 }
 
-module window_frame() {
+module _window_frame() {
     union() {
         difference() {
             hull() {
@@ -1228,29 +1229,24 @@ module window_frame() {
                 );
             }
 
-            translate([-25, -25, 2])
-            cylinder(d=3.3, h=4, $fn=20);
+            for(i = [0:3]) {
+                rotate([0, 0, i*90])
+                translate([-25, -25, 2])
+                cylinder(d=3.3, h=4, $fn=20);
 
-            translate([25, -25, 2])
-            cylinder(d=3.3, h=4, $fn=20);
+                rotate([0, 0, i*90])
+                translate([-25, -25, -0.2])
+                M3_nut(2, cone=false);
 
-            translate([25, 25, 2])
-            cylinder(d=3.3, h=4, $fn=20);
+                rotate([0, 0, i*90])
+                translate([-26, 0, 2])
+                cylinder(d=3.3, h=4, $fn=20);
 
-            translate([-25, 25, 2])
-            cylinder(d=3.3, h=4, $fn=20);
-
-            translate([-25, -25, -0.2])
-            M3_nut(2, cone=false);
-
-            translate([25, -25, -0.2])
-            M3_nut(2, cone=false);
-
-            translate([25, 25, -0.2])
-            M3_nut(2, cone=false);
-
-            translate([-25, 25,-0.2])
-            M3_nut(2, cone=false);
+                rotate([0, 0, i*90])
+                translate([-26, 0, -0.2])
+                rotate([0, 0, 30])
+                M3_nut(2, cone=false);
+            }
 
             // window hole
             rounded_cube_side(
@@ -1266,66 +1262,94 @@ module window_frame() {
     }
 }
 
+module window_frame() {
+    _window_frame();
+}
+
 module window_frame_seal() {
     difference() {
         union() {
             translate([0, 0, 0.8/2])
             rounded_cube_side(
-                63, 63, 0.8, 4.4, center=true, $fn=30
+                63, 63, 1, 4.4, center=true, $fn=30
             );
 
-            translate([0, 0, 1.2/2])
-            rounded_cube_side(
-                46, 46, 1.2, 6, center=true, $fn=40
-            );
+            difference() {
+                translate([0, 0, 1.4/2])
+                rounded_cube_side(
+                    46, 46, 1.4, 6, center=true, $fn=40
+                );
 
-            translate([-25, -25, 0])
-            tube(8, 1.2, 1, $fn=30);
+                rounded_cube_side(
+                    44, 44, 10, 4, center=true, $fn=40
+                );
+            }
 
-            translate([25, -25, 0])
-            tube(8, 1.2, 1, $fn=30);
+            difference() {
+                translate([0, 0, 1.4/2])
+                rounded_cube_side(
+                    60, 60, 1.4, 6, center=true, $fn=40
+                );
 
-            translate([25, 25, 0])
-            tube(8, 1.2, 1, $fn=30);
+                rounded_cube_side(
+                    58, 58, 10, 4, center=true, $fn=40
+                );
+            }
 
-            translate([-25, 25, 0])
-            tube(8, 1.2, 1, $fn=30);
+            for(i = [0:3]) {
+                rotate([0, 0, i*90])
+                translate([-25, -25, 0])
+                tube(5.6, 1.4, 1, $fn=30);
 
-            translate([26, 0, 1.2/2])
-            cube([1, 44, 1.2], center=true);
+                rotate([0, 0, i*90])
+                translate([-26, 0, 0])
+                tube(5.6, 1.4, 1, $fn=30);
 
-            translate([-26, 0, 1.2/2])
-            cube([1, 44, 1.2], center=true);
+                rotate([0, 0, i*90])
+                translate([26, 12.5, 1.4/2])
+                cube([1, 20.6, 1.4], center=true);
 
-            translate([0, 26, 1.2/2])
-            cube([44, 1, 1.2], center=true);
+                rotate([0, 0, i*90])
+                translate([26, -12.5, 1.4/2])
+                cube([1, 20.6, 1.4], center=true);
+            }
 
-            translate([0, -26, 1.2/2])
-            cube([44, 1, 1.2], center=true);
         }
         rounded_cube_side(
             42, 42, 10, 2, center=true, $fn=30
         );
 
-        translate([0, 0, 0.8 + 10/2])
+        for(i = [0:3]) {
+            rotate([0, 0, i*90])
+            translate([-25, -25, -1])
+            cylinder(d=2.8, h=4, $fn=20);
+
+            rotate([0, 0, i*90])
+            translate([-26, 0, -1])
+            cylinder(d=2.8, h=4, $fn=20);
+        }
+    }
+}
+
+module window_frame_drill_jig() {
+    difference() {
+        translate([0, 0, 6/2])
         rounded_cube_side(
-            44, 44, 10, 4, center=true, $fn=40
+            61, 61, 6, 11, center=true, $fn=30
         );
 
-        translate([-25, -25, -1])
-        cylinder(d=3.3, h=4, $fn=20);
+        for(i = [0:3]) {
+            rotate([0, 0, i*90])
+            translate([-25, -25, -1])
+            cylinder(d=2.8, h=40, $fn=20);
 
-        translate([25, -25, -1])
-        cylinder(d=3.3, h=4, $fn=20);
+            rotate([0, 0, i*90])
+            translate([-26, 0, -1])
+            cylinder(d=3.2, h=40, $fn=20);
+        }
 
-        translate([25, 25, -1])
-        cylinder(d=3.3, h=4, $fn=20);
-
-        translate([-25, 25, -1])
-        cylinder(d=3.3, h=4, $fn=20);
+        cube([44, 44, 40], center=true);
     }
-
-    
 }
 
 module nut_cylinder(d1=11, d2=9, h=2.6) {
