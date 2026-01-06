@@ -13,6 +13,7 @@ spath = str(
 //debug();
 
 Anycubic_ACEPro_FilamentAlignment_PC4_M6();
+//Anycubic_ACEPro_FilamentAlignment_PC4_M6(thread_slop=0.2);
 
 
 module _orig_FilamentAlignement_ECAS() {
@@ -46,24 +47,29 @@ module debug() {
 }
 
 
-module Anycubic_ACEPro_FilamentAlignment_PC4_M6(threads=true) {
+module Anycubic_ACEPro_FilamentAlignment_PC4_M6(
+    threads=true, thread_slop=0
+) {
     module _pc4m6_hole() {
         union() {
-            #translate([0, 0, -1])
+            translate([0, 0, -1])
             cylinder(d=2.7, h=40, $fn=30);
 
             intersection() {
                 if (threads) {
-                    fitting_thread_M6(fitting_h=8.1);
+                    fitting_thread_M6(fitting_h=8.1, slop=thread_slop);
                 }
 
                 translate([0, 0, -2])
-                chamfered_cylinder(6, 10.1, 3.5/2, $fn=30);
+                chamfered_cylinder(
+                    6.1 + thread_slop, 10.1,
+                    (3.5 + thread_slop)/2, $fn=30
+                );
             }
 
             translate([0, 0, -3.5])
             chamfered_cylinder(
-                7.4, 6, 1.2, $fn=30
+                7.5, 6, 1.2, $fn=30
             );
         }
     }
