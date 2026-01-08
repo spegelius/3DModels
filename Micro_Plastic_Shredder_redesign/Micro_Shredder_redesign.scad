@@ -5,8 +5,11 @@ use <../Micro_Plastic_Shredder_remix/common.scad>;
 
 
 //debug_table();
+
 //debug_large();
 //debug_medium();
+//debug_small();
+
 //debug_jar_adapter();
 
 
@@ -16,6 +19,7 @@ use <../Micro_Plastic_Shredder_remix/common.scad>;
 
 //_shredder_body_large();
 //_shredder_body_medium();
+//_shredder_body_small();
 
 
 //micro_shredder_large_body_1();
@@ -29,23 +33,37 @@ use <../Micro_Plastic_Shredder_remix/common.scad>;
 //micro_shredder_medium_body_1_1();
 //micro_shredder_medium_body_1_2();
 //micro_shredder_medium_body_2();
+//micro_shredder_medium_body_2_1();
+//micro_shredder_medium_body_2_2();
 
 //micro_shredder_medium_spacer();
 
+//micro_shredder_small_body_1();
+//micro_shredder_small_body_1_1();
+//micro_shredder_small_body_1_2();
+//micro_shredder_small_body_2();
+//micro_shredder_small_body_2_1();
+//micro_shredder_small_body_2_2();
+
 //attachment_nut_holder_large();
 //attachment_nut_holder_medium();
+//attachment_nut_holder_small();
 
 //neck_large();
 //neck_medium();
+//neck_small();
 
 //neck_nut_holder_large();
 //neck_nut_holder_medium();
+//neck_nut_holder_small();
 
 //hopper_large();
 //hopper_medium();
+//hopper_small();
 
 //jar_adapter_large();
 //jar_adapter_medium();
+//jar_adapter_small();
 
 //jar_extender();
 
@@ -55,17 +73,25 @@ use <../Micro_Plastic_Shredder_remix/common.scad>;
 
 //plunger_medium();
 //plunger_medium_thin();
+pelletizer_medium();
+
+//plunger_medium();
+//plunger_medium_thin();
 //pelletizer_medium();
 
+//plunger_small();
+//plunger_small_thin();
+//pelletizer_small();
 
 //table_mount_large();
 //table_mount_medium();
+//table_mount_small();
 
 //table_mount_flex_spacer();
 //table_reinforcement_top();
 //table_reinforcement_bottom();
 
-table_reinforcement_jig();
+//table_reinforcement_jig();
 
 
 module debug_table() {
@@ -273,6 +299,97 @@ module debug_medium() {
 //    }
 }
 
+
+module debug_small() {
+
+    //debug_table();
+
+    rotate([-12, 0, 0]) {
+
+//        %translate([0, -3/2 + 19/2, 151.2])
+//        rotate([90, 0, 0])
+//        mock_steel_plate();
+
+        render()
+        translate([0, 2.5, 90/2 + 55])
+        rotate([90, 0, 0])
+        intersection() {
+            union() {
+                micro_shredder_small_body_1();
+                micro_shredder_small_body_1_1();
+                micro_shredder_small_body_1_2();
+
+                translate([22.5, -36, 0])
+                rotate([90, 0, 25])
+                translate([0, 0, 2])
+                attachment_nut_holder_small();
+            }
+
+//            translate([-15, 0, 0])
+//            cube([20, 200, 200], center=true);
+        }
+
+//        render()
+//        translate([0, 2.5, 90/2 + 55])
+//        rotate([90, 0, 180])
+//        micro_shredder_small_body_2();
+
+        intersection() {
+            translate([0, 2.5, 90 + 55])
+            neck_small();
+
+            translate([100/2, 0, 0])
+            cube([100, 200, 500], center=true);
+        }
+
+        %translate([23, -17.5, 85])
+        rotate([-90, 0, 0])
+        _M5_bolt();
+
+        render()
+        translate([0, 2.5, 55])
+        rotate([180, 0, 0])
+        jar_adapter_small();
+
+        render()
+        translate([0, 6.5, -29])
+        rotate([12, 0, 0])
+        jar_extender();
+
+        intersection() {
+            translate([0, 20, 100])
+            rotate([-90, 0, 0])
+            table_mount_small();
+
+            translate([-200/2, 0, 0])
+            cube([200, 200, 400], center=true);
+        }
+
+//        translate([14.5, -0.5, 212.8])
+//        rotate([12, 0, 0])
+//        rotate([90, 0, -90])
+//        plunger_small();
+//
+//        translate([14.5, -0.5, 212.8])
+//        rotate([12, 0, 0])
+//        rotate([90, 0, -90])
+//        plunger_small_thin();
+//
+        translate([0, 2.17, 153])
+        rotate([90, 0, 180])
+        pelletizer_small();
+
+    }
+
+    translate([0, 43, 185.25])
+    intersection() {
+        hopper_small();
+
+        translate([200/2, 0, 0])
+        cube([200, 200, 200], center=true);
+    }
+}
+
 module debug_jar_adapter() {
     intersection() {
         translate([0, 11.12, 83.2])
@@ -319,7 +436,9 @@ module _M5_bolt_head_hole() {
 module _M3_screw_hole(l=16) {
     union() {
         cylinder(d=3.3, h=l, $fn=30);
-        cylinder(d=5.9, h=0.2, $fn=30);
+
+        translate([0, 0, -5])
+        cylinder(d=5.9, h=5.2, $fn=30);
 
         translate([0, 0, 0.2])
         cylinder(d1=5.9, d2=3, h=1.6, $fn=30);
@@ -593,6 +712,125 @@ module _shredder_body_medium() {
     _router_bit();
 }
 
+module _shredder_body_small() {
+    difference() {
+        cube([62, 90, 35], center=true);
+
+        // schute
+        cube([28, 120, 9.45], center=true);
+
+        translate([0, -100/2, 0])
+        cube([28.3, 100, 9.5], center=true);
+
+        translate([0, -15, 0])
+        hull() {
+            cube([28.3, 1, 9.5], center=true);
+
+            translate([0, -90/2 + 15, 0])
+            cube([36, 1, 23], center=true);
+        }
+
+        // router bit cuts
+        rotate([0, 90, 0])
+        cylinder(d=9.7, h=100, center=true, $fn=60);
+
+        translate([-19, 0, 0])
+        rotate([0, 90, 0])
+        cylinder(d=12.8, h=5.5, center=true, $fn=60);
+
+        translate([20.8, 0, 0])
+        rotate([0, -90, 0])
+        cylinder(d=19.1, h=7.5, center=true, $fn=60);
+
+        translate([26, 0, 0])
+        rotate([0, 90, 0])
+        cylinder(d1=16, d2=45, h=20, $fn=60);
+
+        // screw holes
+        translate([-23, 15, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([-23, -15, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([23, 15, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([23, -15, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([-23, 32, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([-23, -32, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([23, 32, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        translate([23, -32, 0])
+        cylinder(d=5.3, h=100, center=true, $fn=40);
+
+        // attachment mount holes
+        #translate([22.5, -36, -10])
+        rotate([90, 0, 25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([22.5, 36, -10])
+        rotate([-90, 0, -25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([-22.5, 36, -10])
+        rotate([-90, 0, 25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([-22.5, -36, -10])
+        rotate([90, 0, -25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([22.5, -36, 10])
+        rotate([90, 0, 25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([22.5, 36, 10])
+        rotate([-90, 0, -25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([-22.5, 36, 10])
+        rotate([-90, 0, 25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        translate([-22.5, -36, 10])
+        rotate([90, 0, -25])
+        cylinder(d=3.2, h=30, $fn=30);
+
+        // attachment nut holder holes
+        translate([22.5, -36, 0])
+        rotate([0, 0, 25])
+        translate([0, -4, 0])
+        cube([9.2, 4.4, 30], center=true);
+
+        translate([-22.5, -36, 0])
+        rotate([0, 0, -25])
+        translate([0, -4, 0])
+        cube([9.2, 4.4, 30], center=true);
+
+        translate([22.5, 36, 0])
+        rotate([0, 0, -25])
+        translate([0, 4, 0])
+        cube([9.2, 4.4, 30], center=true);
+
+        translate([-22.5, 36, 0])
+        rotate([0, 0, 25])
+        translate([0, 4, 0])
+        cube([9.2, 4.4, 30], center=true);
+    }
+
+    %translate([51.5, 0, 0])
+    rotate([0, 90, 180])
+    _router_bit_small();
+}
+
 module micro_shredder_large_spacer() {
     translate([12, 0, 0])
     intersection() {
@@ -655,16 +893,16 @@ module micro_shredder_large_body_1() {
         cube([60, 10, 10], center=true);
 
         // side part screw holes
-        translate([-24, 21, 0])
+        translate([-24, 21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([-24, -21, 0])
+        translate([-24, -21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([24, 21, 0])
+        translate([24, 21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([24, -21, 0])
+        translate([24, -21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 //
 //        // M5 nut holes
@@ -769,34 +1007,34 @@ module micro_shredder_large_body_1_1() {
             }
         }
 
-        translate([-24, 21, 0])
+        translate([-24, 21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([-24, -21, 0])
+        translate([-24, -21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([-24, 21, 6])
+        translate([-24, 21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
 
-        translate([-24, -21, 6])
+        translate([-24, -21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
@@ -839,34 +1077,34 @@ module micro_shredder_large_body_1_2() {
             }
         }
 
-        translate([24, 21, 0])
+        translate([24, 21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([24, -21, 0])
+        translate([24, -21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([24, 21, 6])
+        translate([24, 21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
 
-        translate([24, -21, 6])
+        translate([24, -21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
@@ -958,27 +1196,19 @@ module micro_shredder_medium_body_1() {
 
         // metal plate cut
         translate([0, 0, -12.7/2 - 1.2/2])
-        difference() {
-            cube([39, 25.7, 1.21], center=true);
-
-//            translate([40/2, 0, 0])
-//            cube([8, 18, 5], center=true);
-//
-//            translate([-40/2, 0, 0])
-//            cube([4, 18, 5], center=true);
-        }
+        cube([39, 25.7, 1.21], center=true);
 
         // side part screw holes
-        translate([-26, 21, 0])
+        translate([-26, 21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([-26, -21, 0])
+        translate([-26, -21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([26, 21, 0])
+        translate([26, 21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
-        translate([26, -21, 0])
+        translate([26, -21.5, 0])
         cylinder(d=2.8, h=48, center=true, $fn=20);
 
 //        // M5 nut holes
@@ -1083,34 +1313,34 @@ module micro_shredder_medium_body_1_1() {
             }
         }
 
-        translate([-26, 21, 0])
+        translate([-26, 21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([-26, -21, 0])
+        translate([-26, -21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([-26, 21, 6])
+        translate([-26, 21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
 
-        translate([-26, -21, 6])
+        translate([-26, -21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
@@ -1153,34 +1383,34 @@ module micro_shredder_medium_body_1_2() {
             }
         }
 
-        translate([26, 21, 0])
+        translate([26, 21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([26, -21, 0])
+        translate([26, -21.5, 0])
         cylinder(d=3.2, h=100, center=true, $fn=20);
 
-        translate([26, 21, 6])
+        translate([26, 21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
 
-        translate([26, -21, 6])
+        translate([26, -21.5, 6.5])
         hull() {
             cylinder(
-                d=3.3, h=20,
+                d=3.2, h=20,
                 center=true, $fn=20
             );
 
             cylinder(
-                d=8.2, h=20 - 5,
+                d=7.2, h=20 - 4.5,
                 center=true, $fn=20
             );
         }
@@ -1198,6 +1428,40 @@ module micro_shredder_medium_body_2() {
             translate([0, 0, -100/2 - 0.1])
             cube([200, 200, 100], center=true);
         }
+
+        // side cuts
+        difference() {
+            cube([65, 59, 12.7], center=true);
+
+            translate([-23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([-23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+        }
+
+        // metal plate cut
+        translate([0, 0, -12.7/2 - 1.3/2])
+        cube([39, 25.7, 1.3], center=true);
+
+        // side part screw holes
+        translate([-26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([-26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
 
         translate([-23, 15, bh_z])
         _M5_bolt_head_hole();
@@ -1225,6 +1489,348 @@ module micro_shredder_medium_body_2() {
     }
 }
 
+module micro_shredder_medium_body_2_1() {
+    mirror([1, 0, 0])
+    micro_shredder_medium_body_1_1();
+}
+
+module micro_shredder_medium_body_2_2() {
+    mirror([1, 0, 0])
+    micro_shredder_medium_body_1_2();
+}
+
+module micro_shredder_small_body_1() {
+
+    render()
+    difference() {
+        intersection() {
+            _shredder_body_small();
+
+            translate([0, 0, -100/2])
+            cube([200, 200, 100], center=true);
+        }
+
+        // side cuts
+        difference() {
+            cube([65, 59, 9.4], center=true);
+
+            translate([-23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([-23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+        }
+
+        // metal plate cut
+        translate([0, 0, -9.4/2 - 1.3/2])
+        cube([32, 25.7, 1.3], center=true);
+
+        // side part screw holes
+        translate([-26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([-26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+//        // M5 nut holes
+//        translate([-23, 15, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([-23, -15, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([-23, 32, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([-23, -32, -18.5])
+//        M5_nut(6, cone=false, bridging=true); 
+//
+//        translate([23, 15, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([23, -15, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([23, 32, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+//
+//        translate([23, -32, -18.5])
+//        M5_nut(6, cone=false, bridging=true);
+
+        // metal plate adjustment screw holes
+        translate([11, 0, 0])
+        cylinder(d=4.3, h=100, center=true, $fn=30);
+
+        translate([0, 0, 0])
+        cylinder(d=4.3, h=100, center=true, $fn=30);
+
+        translate([-11, 0, 0])
+        cylinder(d=4.3, h=100, center=true, $fn=30);
+
+        translate([11, 0, -12.7/2 - 4.4])
+        rotate([0, 0, 30])
+        M4_nut(5);
+
+        translate([0, 0, -12.7/2 - 4.4])
+        rotate([0, 0, 30])
+        M4_nut(5);
+
+        translate([-11, 0, -12.7/2 - 4.4])
+        rotate([0, 0, 30])
+        M4_nut(5);
+
+        // adjustment holes
+        hull() {
+            translate([-6, 16, 0])
+            cylinder(d=4.3, h=100, center=true, $fn=30);
+
+            translate([-6, 17, 0])
+            cylinder(d=4.3, h=100, center=true, $fn=30);
+        }
+
+        hull() {
+            translate([6, 16, 0])
+            cylinder(d=4.3, h=100, center=true, $fn=30);
+
+            translate([6, 17, 0])
+            cylinder(d=4.3, h=100, center=true, $fn=30);
+        }
+
+    }
+}
+
+module micro_shredder_small_body_1_1() {
+    rotate([0, 0, 0])
+    difference() {
+        intersection() {
+            _shredder_body_small();
+
+            translate([0, 0, -100/2])
+            cube([200, 200, 100], center=true);
+
+            difference() {
+                translate([-64/2, 0, 0])
+                cube([64, 58.8, 9.4], center=true);
+
+                translate([-23, 32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([-23, -32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([23, 32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([23, -32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+            }
+        }
+
+        translate([-26, 21.5, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=20);
+
+        translate([-26, -21.5, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=20);
+
+        translate([-26, 21.5, 6.5])
+        hull() {
+            cylinder(
+                d=3.2, h=20,
+                center=true, $fn=20
+            );
+
+            cylinder(
+                d=7.2, h=20 - 4.5,
+                center=true, $fn=20
+            );
+        }
+
+        translate([-26, -21.5, 6.5])
+        hull() {
+            cylinder(
+                d=3.2, h=20,
+                center=true, $fn=20
+            );
+
+            cylinder(
+                d=7.2, h=20 - 4.5,
+                center=true, $fn=20
+            );
+        }
+
+    }
+}
+
+module micro_shredder_small_body_1_2() {
+    rotate([0, 0, 0])
+    difference() {
+        intersection() {
+            _shredder_body_small();
+
+            translate([0, 0, -100/2])
+            cube([200, 200, 100], center=true);
+
+            difference() {
+                translate([64/2, 0, 0])
+                cube([64, 58.8, 9.4], center=true);
+
+                translate([-23, 32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([-23, -32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([23, 32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+
+                translate([23, -32, 0])
+                cylinder(
+                    d=11.2, h=100, center=true, $fn=40
+                );
+            }
+        }
+
+        translate([26, 21.5, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=20);
+
+        translate([26, -21.5, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=20);
+
+        translate([26, 21.5, 6.5])
+        hull() {
+            cylinder(
+                d=3.2, h=20,
+                center=true, $fn=20
+            );
+
+            cylinder(
+                d=7.2, h=20 - 4.5,
+                center=true, $fn=20
+            );
+        }
+
+        translate([26, -21.5, 6.5])
+        hull() {
+            cylinder(
+                d=3.2, h=20,
+                center=true, $fn=20
+            );
+
+            cylinder(
+                d=7.2, h=20 - 4.5,
+                center=true, $fn=20
+            );
+        }
+    }
+}
+
+module micro_shredder_small_body_2() {
+    bh_z = -35/2 - 6;
+
+    difference() {
+        intersection() {
+            rotate([0, 180, 0])
+            _shredder_body_small();
+
+            translate([0, 0, -100/2])
+            cube([200, 200, 100], center=true);
+        }
+
+        // side cuts
+        difference() {
+            cube([65, 59, 9.4], center=true);
+
+            translate([-23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([-23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, 32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+
+            translate([23, -32, 0])
+            cylinder(d=11, h=100, center=true, $fn=40);
+        }
+
+        // metal plate cut
+        translate([0, 0, -9.4/2 - 1.3/2])
+        cube([32, 25.7, 1.3], center=true);
+
+        // side part screw holes
+        translate([-26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([-26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, 21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([26, -21.5, 0])
+        cylinder(d=2.8, h=48, center=true, $fn=20);
+
+        translate([-23, 15, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([-23, -15, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([-23, 32, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([-23, -32, bh_z])
+        _M5_bolt_head_hole(); 
+
+        translate([23, 15, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([23, -15, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([23, 32, bh_z])
+        _M5_bolt_head_hole();
+
+        translate([23, -32, bh_z])
+        _M5_bolt_head_hole();
+    }
+}
+
+module micro_shredder_small_body_2_1() {
+    mirror([1, 0, 0])
+    micro_shredder_small_body_1_1();
+}
+
+module micro_shredder_small_body_2_2() {
+    mirror([1, 0, 0])
+    micro_shredder_small_body_1_2();
+}
 
 module attachment_nut_holder_large() {
     difference() {
@@ -1291,6 +1897,9 @@ module attachment_nut_holder_medium() {
     }
 }
 
+module attachment_nut_holder_small() {
+    attachment_nut_holder_medium();
+}
 
 module neck_nut_holder_large() {
     difference() {
@@ -1332,6 +1941,10 @@ module neck_nut_holder_medium() {
         translate([0, -7.5, 4/2 + 1])
         cube([6.2, 6, 4], center=true);
     }
+}
+
+module neck_nut_holder_small() {
+    neck_nut_holder_medium();
 }
 
 module neck_large() {
@@ -1471,7 +2084,7 @@ module neck_medium() {
 
             translate([0, 0, 56/2])
             chamfered_cube_side(
-                52, 30, 56, 3, center=true
+                55, 30, 56, 3, center=true
             );
 
             translate([22.5, 10, -9])
@@ -1493,12 +2106,6 @@ module neck_medium() {
             rotate([0, -25, 0])
             translate([0, 0, 11.8])
             cylinder(d=8, h=5.6, $fn=30);
-
-            translate([0, 0, 50 -10/2 + 9/2 + 1.6])
-            rotate([0, 90, 0])
-            chamfered_cylinder(
-                10, 54, 1, center=true, $fn=30
-            );
         }
 
         // top cut
@@ -1508,6 +2115,125 @@ module neck_medium() {
 
         // chute
         cube([30, 12.7, 200], center=true);
+
+        #translate([22.5, 10, -9])
+        rotate([0, 25, 0])
+        translate([0, 0, 17.5])
+        rotate([180, 0, 0])
+        _M3_screw_hole(l=16);
+
+        translate([22.5, -10, -9])
+        rotate([0, 25, 0])
+        translate([0, 0, 17.5])
+        rotate([180, 0, 0])
+        _M3_screw_hole(l=16);
+
+        translate([-22.5, 10, -9])
+        rotate([0, -25, 0])
+        translate([0, 0, 17.5])
+        rotate([180, 0, 0])
+        _M3_screw_hole(l=16);
+
+        translate([-22.5, -10, -9])
+        rotate([0, -25, 0])
+        translate([0, 0, 17.5])
+        rotate([180, 0, 0])
+        _M3_screw_hole(l=16);
+
+        // metal plate mount hole
+        hull() {
+            translate([0, 50, 33])
+            rotate([90, 0, 0])
+            cylinder(d=4.2, h=100, center=true, $fn=30);
+
+            translate([0, 50, 34])
+            rotate([90, 0, 0])
+            cylinder(d=4.2, h=100, center=true, $fn=30);
+        }
+
+        // attachment mount hole
+        translate([0, 0, 50])
+        rotate([12, 0, 0])
+        union() {
+            translate([0, 0, 1/2])
+            rounded_cube_side(
+                47.3, 24.2, 11.2,
+                2, center=true, $fn=30
+            );
+
+            translate([0, 0, -10/2 + 9/2 + 1.6])
+            rotate([0, 90, 0])
+            cylinder(d=3.2, h=200, center=true, $fn=30);
+        }
+
+        translate([37, 0, 26])
+        chamfered_cube(
+            26, 24, 32, 4, center=true
+        );
+
+        translate([-37, 0, 26])
+        chamfered_cube(
+            26, 24, 32, 4, center=true
+        );
+
+        translate([0, -22, 26])
+        chamfered_cube(
+            42, 20, 32, 4, center=true
+        );
+
+        translate([0, 22, 28])
+        chamfered_cube(
+            42, 20, 36, 4, center=true
+        );
+    }
+}
+
+module neck_small() {
+    difference() {
+        union() {
+            hull() {
+                translate([0, 0, 2/2])
+                cube([62, 35, 2], center=true);
+
+                translate([0, 0, 10])
+                chamfered_cube_side(
+                    47, 25, 1, 3, center=true
+                );
+            }
+
+            translate([0, 0, 56/2])
+            chamfered_cube_side(
+                55, 30, 56, 3, center=true
+            );
+
+            translate([22.5, 10, -9])
+            rotate([0, 25, 0])
+            translate([0, 0, 11.8])
+            cylinder(d=8, h=5.6, $fn=30);
+
+            translate([22.5, -10, -9])
+            rotate([0, 25, 0])
+            translate([0, 0, 11.8])
+            cylinder(d=8, h=5.6, $fn=30);
+
+            translate([-22.5, 10, -9])
+            rotate([0, -25, 0])
+            translate([0, 0, 11.8])
+            cylinder(d=8, h=5.6, $fn=30);
+
+            translate([-22.5, -10, -9])
+            rotate([0, -25, 0])
+            translate([0, 0, 11.8])
+            cylinder(d=8, h=5.6, $fn=30);
+        }
+
+        // top cut
+        translate([0, 0, 66])
+        rotate([12, 0, 0])
+        cube([100, 100, 20], center=true);
+
+        // chute
+        cube([28, 9.5, 200], center=true);
 
         #translate([22.5, 10, -9])
         rotate([0, 25, 0])
@@ -1783,6 +2509,113 @@ module hopper_medium() {
     }
 }
 
+module hopper_small() {
+    bottom_w = 26;
+    bottom_d = 16;
+
+    top_w = bottom_w * 4;
+    top_d = bottom_d * 6;
+
+    h = 65;
+
+    module _form(
+        b_w, b_d, t_w, t_d, h, d_b, d_t
+    ) {
+        hull() {
+            translate([-b_w/2, -b_d/2, 0])
+            sphere(d=d_b, $fn=30);
+
+            translate([b_w/2, -b_d/2, 0])
+            sphere(d=d_b, $fn=30);
+
+            translate([-b_w/2, b_d/2, 0])
+            sphere(d=d_b, $fn=30);
+
+            translate([b_w/2, b_d/2, 0])
+            sphere(d=d_b, $fn=30);
+
+            translate([-t_w/2, -t_d/2, h])
+            sphere(d=d_t, $fn=30);
+
+            translate([t_w/2, -t_d/2, h])
+            sphere(d=d_t, $fn=30);
+
+            translate([-t_w/2, t_d/2, h])
+            sphere(d=d_t, $fn=30);
+
+            translate([t_w/2, t_d/2, h])
+            sphere(d=d_t, $fn=30);
+        }
+    
+    }
+
+    difference() {
+        union() {
+            translate([0, 0.8, 9])
+            intersection() {
+                _form(
+                    bottom_w, bottom_d,
+                    top_w, top_d, h, 5.2, 10
+                );
+
+                cylinder(d=1000, h=h - 2);
+            }
+
+            translate([0, 0, 32/2])
+            rounded_cube_side(
+                47, 23.9, 32, 2, center=true, $fn=30
+            );
+        }
+
+        translate([0, 0.8, 9 - 0.1])
+        _form(
+            bottom_w, bottom_d,
+            top_w, top_d, h + 0.2, 1, 6
+        );
+
+        // chute opening
+        translate([0, -1.05, 0])
+        rotate([-12, 0, 0])
+        cube([28, 9.5, 200], center=true);
+
+        hull() {
+            translate([0, -1.05, 0])
+            rotate([-12, 0, 0])
+            translate([0, 0.1, 1.5])
+            cube([28, 9, 1], center=true);
+
+            translate([0, -1, 0])
+            rotate([-12, 0, 0])
+            translate([0, -2.4, 19.2])
+            cube([30, 24, 10], center=true);
+        }
+        
+        translate([-19, 0, 9/2 + 1.6])
+        hull() {
+            cube([4, 50, 9], center=true);
+
+            translate([0, 0, 1.2])
+            cube([0.1, 50, 9], center=true);
+        }
+
+        translate([19, 0, 9/2 + 1.6])
+        hull() {
+            cube([4, 50, 9], center=true);
+
+            translate([0, 0, 1.2])
+            cube([0.1, 50, 9], center=true);
+        }
+
+        #translate([15.5, 0, 9/2 + 1.6])
+        rotate([0, 90, 0])
+        cylinder(d=3.2, h=15, $fn=30);
+
+        #translate([-15.5, 0, 9/2 + 1.6])
+        rotate([0, -90, 0])
+        cylinder(d=3.2, h=15, $fn=30);
+    }
+}
+
 module jar_adapter_large() {
     module _screw_hole() {
         translate([0, 0, 17.5])
@@ -1925,6 +2758,10 @@ module jar_adapter_medium() {
     }
 }
 
+module jar_adapter_small() {
+    jar_adapter_medium();
+}
+
 module jar_extender() {
     difference() {
         union() {
@@ -1976,7 +2813,7 @@ module jar_extender() {
     }
 }
 
-module plunger_large(h=22, end=true) {
+module plunger_large(h=21, end=true) {
 
     union() {
         // handle
@@ -2058,7 +2895,7 @@ module plunger_large_thin() {
     plunger_large(h=13, end=false);
 }
 
-module plunger_medium(h=29, end=true) {
+module plunger_medium(h=28, end=true) {
 
     union() {
         // handle
@@ -2123,7 +2960,7 @@ module plunger_medium(h=29, end=true) {
                 hull() {
                     translate([0, 0, 93 - 5/2])
                     chamfered_cube_side(
-                        12, h, 5, 1, center=true
+                        11.5, h, 5, 1, center=true
                     );
 
                     translate([0, 0, 93 - 10])
@@ -2139,6 +2976,88 @@ module plunger_medium(h=29, end=true) {
 
 module plunger_medium_thin() {
     plunger_medium(h=14, end=false);
+}
+
+module plunger_small(h=26, end=true) {
+
+    union() {
+        // handle
+        difference() {
+            intersection() {
+                translate([0, 0, h/2])
+                chamfered_cube(
+                    7, 50, h, 1, center=true
+                );
+
+                union() {
+                    translate([0, 7, h/2])
+                    rotate([0, 90, 0])
+                    rounded_cylinder(
+                        36, 5, 3.4, center=true, $fn=70
+                    );
+
+                    translate([0, -3, 0])
+                    cube([5, 20, 80], center=true);
+                }
+            }
+            intersection() {
+                translate([-5.5, 11, h/2])
+                scale([0.4, 1, 1])
+                sphere(d=26, $fn=50);
+
+                translate([-10/2 - 1.5, 11, 0])
+                cube([10, 50, 100], center=true);
+            }
+
+            intersection() {
+                translate([5.5, 11, h/2])
+                scale([0.4, 1, 1])
+                sphere(d=26, $fn=50);
+
+                translate([10/2 + 1.5, 11, 0])
+                cube([10, 50, 100], center=true);
+            }
+        }
+
+        // stopper
+        translate([0, 1, h/2])
+        cube([30, 3, h], center=true);
+
+        translate([0, 0, 0])
+        intersection() {
+            tube(30, h, 3.5, $fn=40);
+
+            translate([0, -40/2, 0])
+            cube([40, 40, 100], center=true);
+        }
+
+        // arm
+        translate([-0.4, -12, h/2])
+        rotate([90, 0, 12]) {
+            translate([0, 0, 96/2])
+            chamfered_cube_side(
+                8, h, 96, 3, center=true
+            );
+
+            if (end) {
+                hull() {
+                    translate([0, 0, 96 - 5/2])
+                    chamfered_cube_side(
+                        8, h, 5, 1, center=true
+                    );
+
+                    translate([0, 0, 96 - 10])
+                    chamfered_cube_side(
+                        8, h, 1, 3, center=true
+                    );
+                }
+            }
+        }
+    }
+}
+
+module plunger_small_thin() {
+    plunger_small(h=14, end=false);
 }
 
 module pelletizer_large() {
@@ -2307,6 +3226,107 @@ module pelletizer_medium() {
         cylinder(d=2.8, h=20, center=true, $fn=30);
 
         translate([0, l/2 + 2, -h/2 + 12/2])
+        sphere(
+            d=12, $fn=50
+        );
+    }
+}
+
+module pelletizer_small() {
+    l = 95.2;
+    h = 7;
+
+    difference() {
+        union() {
+            rotate([90, 0, 0])
+            chamfered_cube_side(
+                14, h, l, 3, center=true
+            );
+
+            rotate([90, 0, 0])
+            hull() {
+                translate([0, 0, -l/2 + 10/2])
+                chamfered_cube_side(
+                    27, h, 10, 2, center=true
+                );
+
+                translate([0, 0, -l/2 + 17])
+                chamfered_cube_side(
+                    14, h, 1, 3, center=true
+                );
+            }
+
+            rotate([90, 0, 0])
+            hull() {
+                translate([0, 0, l/2 - 6/2])
+                chamfered_cube_side(
+                    27, h, 6, 2, center=true
+                );
+
+                translate([0, 0, l/2 - 11])
+                chamfered_cube_side(
+                    14, h, 1, 3, center=true
+                );
+            }
+
+            hull() {
+                translate([
+                    0, l/2 - 9/2, -h/2 + 9/2
+                ])
+                rotate([0, 90, 0])
+                cylinder(d=9, h=46.9, center=true, $fn=50);
+
+                translate([
+                    0, l/2 - 9/2 - 1.9, -h/2 + 9/2
+                ])
+                rotate([0, 90, 0])
+                cylinder(d=9, h=46.9, center=true, $fn=50);
+
+                translate([
+                    0, l/2 - 8/2, 0
+                ])
+                cube([42, 8, h], center=true);
+            }
+
+        }
+
+        translate([0, 0, 0])
+        rotate([90, 0, 0])
+        scale([1, 1.05, 1])
+        cylinder(d=2.9, h=300, center=true, $fn=30);
+
+        translate([0, -l/2 + 2.4, 0])
+        rotate([90, 0, 0])
+        cylinder(d=4.2, h=5.4, center=true, $fn=30);
+
+        translate([20, l/2 - 9/2, -h/2 + 9/2 - 0.9])
+        rotate([0, 90, 0])
+        cylinder(d=2.8, h=20, center=true, $fn=30);
+
+        translate([-20, l/2 - 9/2, -h/2 + 9/2 - 0.9])
+        rotate([0, 90, 0])
+        cylinder(d=2.8, h=20, center=true, $fn=30);
+
+        translate([6, -l/2 + 4, 0])
+        cylinder(d=2.8, h=20, center=true, $fn=30);
+
+        translate([6, -l/2 + 4, h/2 + 3.5])
+        chamfered_cylinder(7, 10, 2.1, center=true, $fn=30);
+
+        translate([6, -l/2 + 4, -h/2 - 3.5])
+        chamfered_cylinder(7, 10, 2.1, center=true, $fn=30);
+
+        translate([-6, -l/2 + 4, 0])
+        cylinder(d=2.8, h=20, center=true, $fn=30);
+
+        translate([-6, -l/2 + 4, h/2 + 3.5])
+        chamfered_cylinder(7, 10, 2.1, center=true, $fn=30);
+
+        translate([-6, -l/2 + 4, -h/2 - 3.5])
+        chamfered_cylinder(7, 10, 2.1, center=true, $fn=30);
+
+
+        translate([0, l/2 + 2, 0])
         sphere(
             d=12, $fn=50
         );
@@ -2617,6 +3637,9 @@ module table_mount_medium() {
     }
 }
 
+module table_mount_small() {
+    table_mount_medium();
+}
 
 module metal_plate_mount_plug() {
     difference() {
