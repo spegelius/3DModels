@@ -15,9 +15,12 @@ thread_slop = 0.2;
 //%_orig_qidi_box_ams_snap_base_v21();
 //debug();
 //_pc4m6_hole();
+//_pc4m10_hole();
 
 
-filament_saver_ptfe_pc4_m6();
+//filament_saver_ptfe_pc4_m6();
+filament_saver_ptfe_pc4_m10();
+
 
 
 module _orig_qidi_box_ams_snap_base_v21() {
@@ -37,17 +40,19 @@ module _orig_qidi_box_ams_snap_base_v21() {
 
 module debug() {
     intersection() {
-        filament_saver_ptfe_pc4_m6();
+        //filament_saver_ptfe_pc4_m6();
+        filament_saver_ptfe_pc4_m10();
 
         translate([0, 0, -200/2 + 15])
         cube([200, 200, 200], center=true);
     }
 
-    %translate([35 + 45.5/2 - 21 + 200/2 - 0.5, 14, 30/2])
-    rotate([0, 0, -8])
+    %translate([35 + 45.5/2 - 22 + 200/2 - 0.5, 14, 30/2])
+    rotate([0, 0, -7.1])
     translate([-200/2, 0, 0])
     rotate([-90, 0, 0])
-    mock_ptfe_pc4m6();
+    //mock_ptfe_pc4m6();
+    mock_ptfe_pc4m10();
 }
 
 module _pc4m6_hole() {
@@ -75,7 +80,32 @@ module _pc4m6_hole() {
     }
 }
 
-module filament_saver_ptfe_pc4_m6() {
+module _pc4m10_hole() {
+    union() {
+        
+        if (threads) {
+            fitting_thread_M10(fitting_h=8.1, slop=thread_slop);
+        } else {
+            cylinder(d=10, h=8.1, $fn=30);
+        }
+
+        translate([0, 0, 5])
+        cylinder(d=7.5, h=10, $fn=30);
+
+        translate([0, 0, 6.5])
+        cylinder(d=100, h=10, $fn=6);
+
+        hull() {
+            translate([0, -5.1, 8/2])
+            cube([2.3, 0.1, 8], center=true);
+
+            translate([0, -3.5, 8/2])
+            cube([4.8, 0.1, 8], center=true);
+        }
+    }
+}
+
+module _filament_saver_ptfe_pc4(m=6) {
     difference() {
         intersection() {
             union() {
@@ -119,35 +149,39 @@ module filament_saver_ptfe_pc4_m6() {
         chamfered_cylinder(10, 50, 1, center=true, $fn=40);
 
         #translate([35 + 45.5/2 - 22 + 200/2 - 0.5, 14, 30/2])
-        donut(200, 3.2, $fn=200);
+        donut(200, 4.3, $fn=200);
 
         translate([35 + 45.5/2 - 22 + 200/2 - 0.5, 14, 30/2])
         rotate([0, 0, -7.1])
         translate([-200/2, 0, 0])
         rotate([-90, 0, 0])
-        _pc4m6_hole();
+        if (m==6) {
+            _pc4m6_hole();
+        } else {
+            _pc4m10_hole();
+        }
 
         // led hole
-        hull() {
-            translate([35 + 45.5/2 - 29.7, 24, 30/2])
+        #hull() {
+            translate([35 + 45.5/2 - 30, 24, 30/2])
             rotate([-90, 0, 0])
-            cylinder(d=5, h=20, $fn=30);
+            cylinder(d=5, h=1, $fn=30);
 
-            translate([35 + 45.5/2 - 32.7, 24, 30/2])
+            translate([35 + 45.5/2 - 33, 24, 30/2])
             rotate([-90, 0, 0])
-            cylinder(d=5, h=20, $fn=30);
+            cylinder(d=5, h=1, $fn=30);
         }
 
         hull() {
-            translate([35 + 45.5/2 - 29.7, 24.7, 30/2])
+            translate([35 + 45.5/2 - 30, 24.7, 30/2])
             rotate([-90, 0, 0])
-            cylinder(d=5, h=20, $fn=30);
+            cylinder(d=5, h=0.1, $fn=30);
 
-            translate([35 + 45.5/2 - 32.7, 24.7, 30/2])
+            translate([35 + 45.5/2 - 33, 24.7, 30/2])
             rotate([-90, 0, 0])
-            cylinder(d=5, h=20, $fn=30);
+            cylinder(d=5, h=0.1, $fn=30);
 
-            translate([35 + 45.5/2 - 27.2 - 40/2, 43, 30/2])
+            translate([35 + 45.5/2 - 29.2 - 40/2, 43, 30/2])
             rotate([-90, 0, 0])
             rounded_cube_side(
                 40, 29, 10, 5, center=true, $fn=30
@@ -158,8 +192,16 @@ module filament_saver_ptfe_pc4_m6() {
         translate([51, 18, 0])
         cube([10, 10, 100], center=true);
 
-        #translate([52.73, 18.2, 0])
+        translate([52.73, 18.2, 0])
         rotate([0, 0, 6])
         cube([10, 4, 100], center=true);
     }
+}
+
+module filament_saver_ptfe_pc4_m6() {
+    _filament_saver_ptfe_pc4(m=6);
+}
+
+module filament_saver_ptfe_pc4_m10() {
+    _filament_saver_ptfe_pc4(m=10);
 }
