@@ -9,8 +9,6 @@ spath = str(
 );
 
 threads = true;
-thread_slop = 0.2;
-
 
 //%_orig_qidi_box_ams_snap_base_v21();
 //debug();
@@ -19,7 +17,10 @@ thread_slop = 0.2;
 
 
 //filament_saver_ptfe_pc4_m6();
-filament_saver_ptfe_pc4_m10();
+//filament_saver_ptfe_pc4_m10();
+
+//test_m6();
+test_m10();
 
 
 
@@ -55,7 +56,7 @@ module debug() {
     mock_ptfe_pc4m10();
 }
 
-module _pc4m6_hole() {
+module _pc4m6_hole(thread_slop=0) {
     union() {
         
         if (threads) {
@@ -80,7 +81,7 @@ module _pc4m6_hole() {
     }
 }
 
-module _pc4m10_hole() {
+module _pc4m10_hole(thread_slop=0) {
     union() {
         
         if (threads) {
@@ -156,9 +157,9 @@ module _filament_saver_ptfe_pc4(m=6) {
         translate([-200/2, 0, 0])
         rotate([-90, 0, 0])
         if (m==6) {
-            _pc4m6_hole();
+            _pc4m6_hole(0.2);
         } else {
-            _pc4m10_hole();
+            _pc4m10_hole(0.1);
         }
 
         // led hole
@@ -204,4 +205,27 @@ module filament_saver_ptfe_pc4_m6() {
 
 module filament_saver_ptfe_pc4_m10() {
     _filament_saver_ptfe_pc4(m=10);
+}
+
+
+module test_m6() {
+    intersection() {
+        translate([0, 0, -8])
+        filament_saver_ptfe_pc4_m6();
+
+        
+        translate([35.5, 0, 15/2])
+        cube([15, 70, 15], center=true);
+    }
+}
+
+module test_m10() {
+    intersection() {
+        translate([0, 0, -8])
+        filament_saver_ptfe_pc4_m10();
+
+        
+        translate([35.5, 0, 15/2])
+        cube([15, 70, 15], center=true);
+    }
 }
