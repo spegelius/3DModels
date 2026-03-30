@@ -21,13 +21,23 @@ w = 206;
 //shoe_rack_side_v3_dc_2();
 
 //voronoi_board();
+//voronoi_board_M8();
+
 //voronoi_board_250_1();
 //voronoi_board_250_2();
 //voronoi_board_250_3();
 //voronoi_board_250_4();
+
+//voronoi_board_250_1_M8();
+//voronoi_board_250_2_M8();
+//voronoi_board_250_3_M8();
+//voronoi_board_250_4_M8();
+
 //board_end();
 //board_spacer();
-board_middle();
+//board_spacer_M8();
+//board_middle();
+board_middle(first_level=false);
 
 
 module _orig_shoe_rack_side_v3() {
@@ -50,34 +60,38 @@ module debug() {
         cube([400, 300, 400], center=true);
     }
 
+    render()
+    translate([0, -1000/2 + 20, 205])
+    _orig_shoe_rack_side_v3();
+    
 //    render()
 //    voronoi_board();
 
-    render()
-    intersection() {
-        translate([0, -5/2, 0])
-        voronoi_board_250_1();
-
-        translate([0, 0, -100/2])
-        cube([2000, 2000, 100], center=true);
-    }
-
-    render()
-    intersection() {
-        translate([0, -5/2, 0])
-        voronoi_board_250_2();
-
-        translate([0, 0, -100/2])
-        cube([2000, 2000, 100], center=true);
-    }
-
-    render()
-    translate([0, 5/2, 0])
-    voronoi_board_250_3();
-
-    render()
-    translate([0, 5/2, 0])
-    voronoi_board_250_4();
+//    render()
+//    intersection() {
+//        translate([0, -5/2, 0])
+//        voronoi_board_250_1();
+//
+//        translate([0, 0, -100/2])
+//        cube([2000, 2000, 100], center=true);
+//    }
+//
+//    render()
+//    intersection() {
+//        translate([0, -5/2, 0])
+//        voronoi_board_250_2();
+//
+//        translate([0, 0, -100/2])
+//        cube([2000, 2000, 100], center=true);
+//    }
+//
+//    render()
+//    translate([0, 5/2, 0])
+//    voronoi_board_250_3();
+//
+//    render()
+//    translate([0, 5/2, 0])
+//    voronoi_board_250_4();
 
     render()
     translate([0, -1000/2 - 9.2 - 5/2, 0])
@@ -89,9 +103,14 @@ module debug() {
         rotate([90, 0, 0])
         board_middle();
 
-        translate([0, 0, -300/2])
-        cube([2000, 2000, 300], center=true);
+//        translate([0, 0, -300/2])
+//        cube([2000, 2000, 300], center=true);
     }
+
+    render()
+    translate([0, 0, 205])
+    rotate([90, 0, 0])
+    board_middle(first_level=false);
 
     render()
     translate([-w/2 + 15, -1/2, 0])
@@ -225,7 +244,7 @@ module shoe_rack_side_v3_dc_2() {
     }
 }
 
-module voronoi_board() {
+module _voronoi_board(rod_d=6) {
     difference() {
         rotate([90, 0, 0])
         chamfered_cube_side(
@@ -266,18 +285,18 @@ module voronoi_board() {
         hull() {
             translate([-w/2 + 15, 0, 0])
             rotate([90, 0, 0])
-            cylinder(d=6.5, h=2000, center=true, $fn=40);
+            cylinder(d=rod_d + 0.5, h=2000, center=true, $fn=40);
 
-            translate([-w/2 + 15, 0, 4])
+            translate([-w/2 + 15, 0, rod_d/2 + rod_d/8])
             cube([0.1, 2000, 1], center=true);
         }
 
         hull() {
             translate([w/2 - 15, 0, 0])
             rotate([90, 0, 0])
-            cylinder(d=6.5, h=2000, center=true, $fn=40);
+            cylinder(d=rod_d + 0.5, h=2000, center=true, $fn=40);
 
-            translate([w/2 - 15, 0, 4])
+            translate([w/2 - 15, 0, rod_d/2 + rod_d/8])
             cube([0.1, 2000, 1], center=true);
         }
 
@@ -331,10 +350,19 @@ module voronoi_board() {
     }
 }
 
-module voronoi_board_250_1() {
+module voronoi_board() {
+    _voronoi_board();
+}
+
+module voronoi_board_M8() {
+    _voronoi_board(8);
+}
+
+
+module voronoi_board_250_1(rod_d=6) {
     intersection() {
         union() {
-            voronoi_board();
+            _voronoi_board(rod_d=rod_d);
 
             translate([0, -250, 0])
             chamfered_cube(w - 40, 8, 18, 2, center=true);
@@ -355,10 +383,14 @@ module voronoi_board_250_1() {
     }
 }
 
-module voronoi_board_250_2() {
+module voronoi_board_250_1_M8() {
+    voronoi_board_250_1(rod_d=8);
+}
+
+module voronoi_board_250_2(rod_d=6) {
     intersection() {
         union() {
-            voronoi_board();
+            _voronoi_board(rod_d=rod_d);
 
             translate([0, -250, 0])
             chamfered_cube(w - 40, 8, 18, 2, center=true);
@@ -390,10 +422,14 @@ module voronoi_board_250_2() {
     }
 }
 
-module voronoi_board_250_3() {
+module voronoi_board_250_2_M8() {
+    voronoi_board_250_2(rod_d=8);
+}
+
+module voronoi_board_250_3(rod_d=6) {
     intersection() {
         union() {
-            voronoi_board();
+            _voronoi_board(rod_d=rod_d);
 
             translate([0, 250, 0])
             chamfered_cube(w - 40, 8, 18, 2, center=true);
@@ -424,10 +460,14 @@ module voronoi_board_250_3() {
     }
 }
 
-module voronoi_board_250_4() {
+module voronoi_board_250_3_M8() {
+    voronoi_board_250_3(rod_d=8);
+}
+
+module voronoi_board_250_4(rod_d=6) {
     intersection() {
         union() {
-            voronoi_board();
+            _voronoi_board(rod_d=rod_d);
 
             translate([0, 250, 0])
             chamfered_cube(w - 40, 8, 18, 2, center=true);
@@ -437,15 +477,19 @@ module voronoi_board_250_4() {
         difference() {
             cube([300, 250, 50], center=true);
 
-            translate([-w/2 + 15, 250/2, 0])
+            translate([-w/2 + 15, -250/2, 0])
             rotate([90, 0, 0])
             chamfered_cylinder(14, 4, 1.7, center=true, $fn=30);
 
-            translate([w/2 - 15, 250/2, 0])
+            translate([w/2 - 15, -250/2, 0])
             rotate([90, 0, 0])
             chamfered_cylinder(14, 4, 1.7, center=true, $fn=30);
         }
     }
+}
+
+module voronoi_board_250_4_M8() {
+    voronoi_board_250_4(rod_d=8);
 }
 
 module board_end() {
@@ -485,30 +529,66 @@ module board_end() {
     }
 }
 
-module board_spacer() {
+module board_spacer(rod_d=6) {
     difference() {
         chamfered_cylinder(13.8, 4, 1.75, $fn=30);
-        cylinder(d=6.3, h=20, center=true, $fn=30);
+        cylinder(d=rod_d + 0.3, h=20, center=true, $fn=30);
     }
 }
 
-module board_middle() {
+module board_spacer_M8() {
+    board_spacer(rod_d=8);
+}
+
+module board_middle(first_level=true) {
     //%shoe_rack_side_v3_honeycomb();
 
     module _form() {
-        union() {
-            chamfered_cube_side(
-                w, 18, 5, 4, center=true
-            );
-
-            hull() {
-                translate([-w/2 + 60/2, 0, 0])
+        difference() {
+            union() {
                 chamfered_cube_side(
-                    60, 18, 5, 4, center=true
+                    w, 18, 5, 4, center=true
                 );
 
-                translate([-108 + 25/2, -178.5, 0])
-                chamfered_cube_side(25, 20, 5, 5, center=true);
+                if (first_level) {
+                    hull() {
+                        translate([-w/2 + 60/2, 0, 0])
+                        chamfered_cube_side(
+                            60, 18, 5, 4, center=true
+                        );
+
+                        translate([-108 + 25/2, -178.5, 0])
+                        chamfered_cube_side(25, 20, 5, 5, center=true);
+                    }
+                } else {
+                    union() {
+                        hull() {
+                            translate([-w/2 + 60/2, 0, 0])
+                            chamfered_cube_side(
+                                60, 18, 5, 4, center=true
+                            );
+
+                            translate([-108 + 34/2 + 4, -186, 0])
+                            chamfered_cube_side(34, 20, 5, 5, center=true);
+                        }
+
+                        hull() {
+                            translate([-w/2 + 25, -198, 0])
+                            cube([2.8, 1, 5], center=true);
+
+                            translate([-w/2 + 25, -195.5, 0])
+                            cube([3.8, 1, 5], center=true);
+                        }
+                    }
+                }
+            }
+
+            hull() {
+                translate([-w/2 + 25, 18/2 - 2, 0])
+                cube([3, 1, 10], center=true);
+
+                translate([-w/2 + 25, 18/2 + 1/2, 0])
+                cube([4, 1, 10], center=true);
             }
         }
     }
