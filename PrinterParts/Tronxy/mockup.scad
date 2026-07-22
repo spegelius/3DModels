@@ -1,5 +1,5 @@
-include<../../lib/bearings.scad>;
-include<../../Dollo/NEW_long_ties/mockups.scad>;
+include <../../lib/bearings.scad>;
+include <../../Dollo/NEW_long_ties/mockups.scad>;
 include <common.scad>;
 use<../../Dollo/NEW_long_ties/extention.scad>;
 use<../../Dollo/NEW_long_ties/corner.scad>;
@@ -35,9 +35,9 @@ X5S_bed_mockup();
 //debug_corner_bearing_mounts();
 //debug_motor_mount_remix();
 //debug_top_frame();
-debug_purge_bucket();
-//debug_tronxy_cable_pcb_mount();
-//debug_E3D_mount();
+//debug_purge_bucket();
+debug_tronxy_cable_pcb_mount();
+debug_E3D_mount();
 //debug_duet_case();
 //debug_legs();
 //debug_bed_carriage();
@@ -50,7 +50,7 @@ module X5S_frame_mockup() {
     module _frame_beam_x() {
         difference() {
             rotate([0, 90, 0])
-            2020_vslot(frame_x);
+            vslot_2020(frame_x);
 
             translate([frame_x/2 - 20/2, 0, 0])
             cylinder(d=5, h=40, center=true, $fn=30);
@@ -65,7 +65,7 @@ module X5S_frame_mockup() {
 
         difference() {
             rotate([90, 0, 0])
-            2020_vslot(l);
+            vslot_2020(l);
 
             // frame mount holes
             translate([0, l/2 - 20/2, 0])
@@ -85,7 +85,7 @@ module X5S_frame_mockup() {
 
     module _frame_beam_z() {
         rotate([0, 0, 90])
-        2040_vslot(530);
+        vslot_2040(530);
     }
 
     color("darkgrey")
@@ -147,7 +147,7 @@ module X5S_frame_mockup() {
     render()
     translate([0, x_pos, frame_z - 20/2 + 4])
     rotate([0, 90, 0])
-    2020_vslot(450);
+    vslot_2020(450);
 
     // z rods
     color("silver")
@@ -674,10 +674,9 @@ module debug_purge_bucket() {
     intersection() {
         import(
             str(stl_path, "purge_bucket-top.stl"),
-            covenxity=10
+            convexity=10
         );
 
-        translate([])
         cube([150, 100, 100], center=true);
     }
 
@@ -702,20 +701,19 @@ module debug_purge_bucket() {
 }
 
 module debug_tronxy_cable_pcb_mount() {
-    translate([-11.2, -14.1, 654.2])
+    translate([-11.2, x_pos - 16.1, 656.4])
     rotate([180, 0, 90])
     intersection() {
         tronxy_cable_pcb_mount();
 
-        translate([100/2 + 1, 0, 0])
-        cube([100, 100, 200], center=true);
+//        translate([100/2 + 1, 0, 0])
+//        cube([100, 100, 200], center=true);
     }
 }
 
 module debug_E3D_mount() {
-    translate([-33.5, -14.25, 575.5])
-    rotate([90, 0, 0])
-    tronxy_E3D_mount();
+    translate([-33.5, x_pos - 14.25, 575.5])
+    debug_bondtech_style_extruder_mount();
 }
 
 module debug_duet_case_old() {

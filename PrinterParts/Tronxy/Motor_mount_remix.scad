@@ -1,6 +1,6 @@
-include <../../Dollo/New_long_ties/globals.scad>;
-use <../../Dollo/New_long_ties/include.scad>;
-use <../../Dollo/New_long_ties/mockups.scad>;
+include <../../Dollo/NEW_long_ties/globals.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
+use <../../Dollo/NEW_long_ties/mockups.scad>;
 
 
 //new_mount_Y();

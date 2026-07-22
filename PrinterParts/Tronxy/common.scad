@@ -1,4 +1,4 @@
-use <../../Dollo/New_long_ties/include.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
 
 frame_x = 530;
 frame_y = 500;
@@ -8,11 +8,12 @@ bed_y = 330.1;
 
 z_plate_len = 330.8;
 
+
 //mock_idler();
 //mock_idler_24();
 //roller();
-//2020_vslot();
-//2040_vslot();
+//vslot_2020();
+//vslot_2040();
 
 
 module mock_idler() {
@@ -62,7 +63,7 @@ module roller() {
     }
 }
 
-module 2020_vslot(h=100, slots=4) {
+module vslot_2020(h=100, slots=4) {
     iw = 20 - 2*(4.3 + 1.8);
     iw2 = iw - sqrt((1.5 * 1.5)/2) * 2;
 
@@ -102,15 +103,15 @@ module 2020_vslot(h=100, slots=4) {
     }
 }
 
-module 2040_vslot(h=100) {
+module vslot_2040(h=100) {
     union() {
         translate([-10, 0, 0])
         rotate([0, 0, -90])
-        2020_vslot(h=h, slots=3);
+        vslot_2020(h=h, slots=3);
 
         translate([10, 0, 0])
         rotate([0, 0, 90])
-        2020_vslot(h=h, slots=3);
+        vslot_2020(h=h, slots=3);
 
         cube([3, 20, h], center=true);
     }

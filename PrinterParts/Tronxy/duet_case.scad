@@ -1,4 +1,4 @@
-use <../../Dollo/New_long_ties/include.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
 
 h = 45;
 wall = 2;
