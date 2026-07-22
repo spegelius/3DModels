@@ -1,8 +1,8 @@
 
 use <../../PCParts/common.scad>;
-include <../../Dollo/New_long_ties/globals.scad>;
-use <../../Dollo/New_long_ties/include.scad>;
-use <../../Dollo/New_long_ties/mockups.scad>;
+include <../../Dollo/NEW_long_ties/globals.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
+use <../../Dollo/NEW_long_ties/mockups.scad>;
 use <../../lib/bearings.scad>;
 
 
@@ -23,7 +23,7 @@ use <../../lib/bearings.scad>;
 //tronxy_motor_mount_spacer();
 //rotate([90, 0, 0]) tronxy_z_endstop_mount();
 //tronxy_z_position_nut();
-//tronxy_wire_chain_support();
+tronxy_wire_chain_support();
 //tronxy_corner_bearing_mount_right();
 //tronxy_corner_bearing_mount_left();
 //tronxy_corner_bearing_mount_spacers();
@@ -634,7 +634,7 @@ module tronxy_wire_chain_support() {
     l = 91;
     h = 30;
 
-    difference() {
+    module _chain_support_body() {
         intersection() {
             union() {
                 translate([-1.99, 0, 0])
@@ -665,6 +665,15 @@ module tronxy_wire_chain_support() {
                 30, l + 13.5, h, 3
             );
         }
+    }
+
+    difference() {
+        union() {
+            _chain_support_body();
+
+            translate([12.5, 107, 18/2])
+            chamfered_cube(9, 13, 18, 1, center=true);
+        }
 
         // chamfers
         translate([5.01, 0, h/2 - 16/2])
@@ -686,7 +695,8 @@ module tronxy_wire_chain_support() {
         cylinder(
             d=4.4, h=20, center=true, $fn=40
         );
-        
+
+        // cable chain holes
         translate([0, l, h/2])
         rotate([-tilt, 0, 0]) {
             translate([9, 0, -8/2]) {
@@ -710,6 +720,31 @@ module tronxy_wire_chain_support() {
                 }
             }
         }
+
+        // cable management
+        translate([0, 50, 6])
+        rotate([0, 90, 0])
+        cylinder(d=4, h=100, center=true);
+
+        // PTFE groove
+        hull() {
+            translate([12.5, 104, 0])
+            rotate([-tilt, 0, 0])
+            cylinder(d=4.1, h=100, center=true, $fn=30);
+
+            translate([12.5, 113.5, 0])
+            rotate([-tilt, 0, 0])
+            cylinder(d=4.1, h=100, center=true, $fn=30);
+        }
+
+        translate([12.5, 110, 9])
+        rotate([0, 90, 0])
+        cylinder(d=3.2, h=10, $fn=30);
+
+        translate([12.5, 110, 9])
+        rotate([0, -90, 0])
+        cylinder(d=2.5, h=10, $fn=30);
+
     }
 }
 
