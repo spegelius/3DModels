@@ -1,16 +1,44 @@
 use <../../PCParts/common.scad>;
-include <../../Dollo/New_long_ties/globals.scad>;
-use <../../Dollo/New_long_ties/include.scad>;
-use <../../Dollo/New_long_ties/mockups.scad>;
+include <../../Dollo/NEW_long_ties/globals.scad>;
+use <../../Dollo/NEW_long_ties/include.scad>;
+use <../../Dollo/NEW_long_ties/mockups.scad>;
 
 use <../Copperhead/cooling_shroud.scad>;
+use <../Copperhead/common.scad>;
 
-stl_path = 
-    "../../_downloaded/Tronxy X5s e3d v6 Mount With Belt Aligner/";
+use <../CR10_S5/Bondtech_Style_Extruder.scad>;
+use <../CubePrometheus/Cube_X_Carriage.scad>;
 
+
+stl_base_path = "../../_downloaded/";
+stl_path = str(
+    stl_base_path,
+    "Tronxy/Tronxy X5s e3d v6 Mount With Belt Aligner/"
+);
+
+bd_stl_path = str(
+    stl_base_path,
+    "Bondtech Style Extruder/"
+);
+
+bambu_stl_path = str(
+    stl_base_path,
+    "Bambu Lab X1C - P1P - P1S Original Hotend 3D model/"
+);
+
+bambuv6_stl_path = str(
+    stl_base_path,
+    "Bambu Lab Clone V6 Adapter with M3 Nut Inserts/"
+);
+
+
+//_orig_bambu_v6_adapter();
 
 //debug_copperhead_cooling_shroud();
 //debug_tronxy_E3D_mount_M4();
+//debug_bondtech_style_extruder_mount();
+//debug_bondtech_style_extruder();
+
 
 //tronxy_belt_clip_left_top();
 //tronxy_belt_clip_right_top();
@@ -19,8 +47,157 @@ stl_path =
 //tronxy_E3D_mount();
 //tronxy_E3D_mount_M4();
 //tronxy_E3D_mount_cap();
-tronxy_E3D_M4_mount_cap();
+//tronxy_E3D_M4_mount_cap();
+//tronxy_E3D_mount_bondtech_style_extruder();
 
+//new_bambu_v6_adapter();
+
+//tronxy_bondtech_style_extruder_base();
+//tronxy_bondtech_style_extruder_lid_M10();
+
+tronxy_delta_p_fan_mount();
+
+
+module _orig_bambulab_hotend() {
+    fname = "Bambulab-Hotend.stl";
+
+    import(
+        str(bambu_stl_path, fname), convexity=10
+    );
+}
+
+module _orig_bambu_v6_adapter() {
+    fname = "Bambulab V6 Adaptor.stl";
+
+    translate([-31, -0.1, -9.35])
+    import(
+        str(bambuv6_stl_path, fname), convexity=10
+    );
+
+//    %cylinder(d=4.6, h=20, $fn=30);
+}
+
+module debug_copperhead_cooling_shroud() {
+    rotate([90, 0, 0])
+    tronxy_E3D_mount();
+
+    %translate([33.5, -20, -59.25])
+    rotate([0, 0, -90])
+    copperhead(block_rotation=90);
+
+    translate([33.5, -41, -56.25])
+    new_duct(supports=false);
+
+    translate([26.65, -53, 10.5])
+    rotate([-90,0,0])
+    tronxy_E3D_mount_cap();
+}
+
+module debug_tronxy_E3D_mount_M4() {
+    %rotate([-90, 0, 0])
+    translate([33.5, -20, -59.25])
+    rotate([0, 0, -90])
+    copperhead(block_rotation=90);
+
+//    translate([33.5, -57.05, 20])
+//    rotate([-90, 0, 0])
+//    e3dv6();
+
+    translate([26.65, 10.5, 52.6])
+    rotate([180, 0, 0])
+    tronxy_E3D_mount_cap();
+
+    translate([33.5, 16, 29.1])
+    rotate([180, 0, 0])
+    tronxy_E3D_M4_mount_cap();
+
+    intersection() {
+        tronxy_E3D_mount_M4();
+
+        translate([100/2 + 33.5, 0, 0])
+        cube([100, 100, 100], center=true);
+    }
+}
+
+module debug_bondtech_style_extruder_mount() {
+    // filament path
+    color("lightgrey")
+    translate([33.5, -20, 0])
+    cylinder(d=1.5, h=200, center=true, $fn=20);
+
+    render()
+    rotate([90, 0, 0])
+    tronxy_E3D_mount_bondtech_style_extruder();
+
+//    render()
+//    translate([33.5, -20, -59.25])
+//    rotate([0, 0, -90])
+//    copperhead(block_rotation=90);
+
+    render()
+    translate([38.05, -36.85, 45])
+    rotate([90, 0, 180])
+    union() {
+        translate([0, 0, 28.8])
+        rotate([0, 180, 0])
+        tronxy_bondtech_style_extruder_lid_M10(bridging=false);
+
+        tronxy_bondtech_style_extruder_base();
+
+        translate([0, 0, 3])
+        new_bondtech_latch();
+    }
+
+    render()
+    translate([33.5, -20, -49.75])
+    intersection() {
+        union() {
+//            %translate([0, 0, 32.65])
+//            rotate([0, 0, -90])
+//            _orig_bambu_v6_adapter();
+
+            translate([0, 0, 32.65])
+            rotate([0, 0, 90])
+            new_bambu_v6_adapter();
+
+            rotate([90, 0, -90])
+            _orig_bambulab_hotend();
+
+            %cylinder(d=0.3, h=20, $fn=30);
+        }
+
+//        translate([0, 100/2, 0])
+//        cube([100, 100, 200], center=true);
+    }
+
+//    translate([26.65, -53, 10.5])
+//    rotate([-90,0,0])
+//    tronxy_E3D_mount_cap();
+
+    translate([33.5, -33, -54.8])
+    union() {
+        translate([20.6, -6.7, 15.2])
+        rotate([-90, 0, 0])
+        tronxy_delta_p_fan_mount();
+
+        delta_p_duct_mockup();
+    }
+
+    color("grey")
+    translate([36.5, -40, -5.6])
+    rotate([90, 49, 0])
+    import(str(
+        stl_base_path, "50mm_Radial_fan/50mm_Fan.stl"
+    ));
+}
+
+module debug_bondtech_style_extruder() {
+    tronxy_bondtech_style_extruder_base();
+
+    translate([0, 0, 29])
+    rotate([0, 180, 0])
+    !tronxy_bondtech_style_extruder_lid_M10(bridging=false);
+}
 
 module round_tooth(height) {
     hull() {
@@ -414,45 +591,429 @@ module tronxy_E3D_M4_mount_cap() {
     }
 }
 
-module debug_copperhead_cooling_shroud() {
-    rotate([90, 0, 0])
-    tronxy_E3D_mount();
+module tronxy_E3D_mount_bondtech_style_extruder() {
+    difference() {
+        union() {
+            tronxy_E3D_mount();
 
-    %translate([33.5, -20, -59.25])
-    rotate([0, 0, -90])
-    copperhead(block_rotation=90);
+//            translate([35, 30 - 8/2, 25/2 + 7])
+//            rotate([90, 0, 0])
+//            chamfered_cube_side(
+//                60, 25, 8, 4, center=true
+//            );
+//
+//            translate([33, 30 - 14/2, 25/2 + 7])
+//            rotate([90, 0, 0])
+//            chamfered_cube_side(
+//                36, 25, 14, 2, center=true
+//            );
+//
+//            translate([33, 20 - 14/2, 15/2 + 7])
+//            rotate([90, 0, 0])
+//            chamfered_cube_side(
+//                30, 15, 14, 3, center=true
+//            );
 
-    translate([33.5, -41, -56.25])
-    new_duct(supports=false);
+            translate([45, 22, 24.7/2 + 4.1])
+            chamfered_cube_side(9, 10, 24.7, 2, center=true);
 
-    translate([26.65, -53, 10.5])
-    rotate([-90,0,0])
-    tronxy_E3D_mount_cap();
+            translate([33.5, 6.5, 19/2 + 4])
+            rotate([90, 0, 0])
+            chamfered_cube_side(25, 19, 2, 8, center=true);
+
+            translate([33.5, 9.5, 19/2 + 4])
+            rotate([90, 0, 0])
+            chamfered_cube_side(25, 19, 2, 8, center=true);
+
+            translate([33.5, 8.5 + 20/2, 19/2 + 4])
+            chamfered_cube(9, 20, 19, 2, center=true);
+        }
+
+        // extruder cut
+        translate([37.5, 40/2 + 23.9, 40/2 + 7.9])
+        chamfered_cube_side(
+            42.5, 40, 40, 3, center=true
+        );
+
+        // latch cuts
+        translate([16, 31, 15.4])
+        rotate([0, 0, 45])
+        cube([5, 10, 4], center=true);
+
+        translate([16, 31, 29.4])
+        rotate([0, 0, 45])
+        cube([5, 10, 11], center=true);
+
+        // top mount holes
+        translate([13.05, 30, 10.8])
+        rotate([90, 0, 0])
+        cylinder(d=3.1, h=30, center=true, $fn=30);
+
+        translate([60.05, 30, 16.8])
+        rotate([90, 0, 0])
+        cylinder(d=3.1, h=30, center=true, $fn=30);
+
+        translate([13.05, 23.5, 10.8 + 20/2 - 6/2])
+        cube([6, 2.2, 20], center=true);
+
+        translate([13.05, 23.5, 0])
+        cube([2.2, 2.2, 40], center=true);
+
+        translate([60.05, 23.5, 16.8 + 20/2 - 6/2])
+        cube([6, 2.2, 20], center=true);
+
+        translate([60.05, 23.5, 0])
+        cube([2.2, 2.2, 40], center=true);
+
+        // front mount hole
+        translate([45, 21, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=30);
+
+        translate([45, 21, -1])
+        M3_nut_tapering(7);
+
+        // filament path
+        translate([33.5, 0, 20])
+        rotate([90, 0, 0])
+        cylinder(d=2, h=200, center=true, $fn=30);
+
+        hull() {
+            translate([33.5, 6.5, 20])
+            rotate([90, 0, 0])
+            cylinder(d=4.3, h=4, $fn=30);
+
+            translate([33.5, 6.5, 30])
+            rotate([90, 0, 0])
+            cylinder(d=4.3, h=4, $fn=30);
+        }
+
+        translate([33.5, 9.5, 20])
+        rotate([-90, 0, 0])
+        cylinder(d=4.3, h=100, $fn=30);
+
+    }
 }
 
-module debug_tronxy_E3D_mount_M4() {
-    %rotate([-90, 0, 0])
-    translate([33.5, -20, -59.25])
-    rotate([0, 0, -90])
-    copperhead(block_rotation=90);
+module new_bambu_v6_adapter() {
+    difference() {
+        union() {
+            intersection() {
+                _orig_bambu_v6_adapter();
 
-//    translate([33.5, -57.05, 20])
-//    rotate([-90, 0, 0])
-//    e3dv6();
+                translate([0, 0, 60/2 + 1.2])
+                chamfered_cube_side(
+                    17, 16, 60, 1, center=true
+                );
+            }
 
-    translate([26.65, 10.5, 52.6])
-    rotate([180, 0, 0])
-    tronxy_E3D_mount_cap();
+            tube(7, 22.3, (7 - 4.4)/2, $fn=60);
 
-    translate([33.5, 16, 29.1])
-    rotate([180, 0, 0])
-    tronxy_E3D_M4_mount_cap();
+            translate([0, 0, 8.4/2 + 1.2])
+            chamfered_cube_side(
+                17, 16, 8.4, 0.8, center=true
+            );
+        }
 
-    intersection() {
-        tronxy_E3D_mount_M4();
+        translate([0, -3.95])
+        rotate([0, 90, 0])
+        chamfered_cube_side(15.6, 20, 7.7, 1, center=true);
 
-        translate([100/2 + 33.5, 0, 0])
-        cube([100, 100, 100], center=true);
+        translate([0, 0, 8])
+        cylinder(d=4.4, h=100, $fn=60);
+
+        translate([0, -3.3, 4.15])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=30, center=true, $fn=30);
+
+        translate([0, 4, 4.15])
+        rotate([0, 90, 0])
+        cylinder(d=3, h=30, center=true, $fn=30);
+
+        translate([16, -3.3, 4.15])
+        rotate([0, 90, 0])
+        cylinder(d=6.2, h=20, center=true, $fn=30);
+
+        translate([16, 4, 4.15])
+        rotate([0, 90, 0])
+        cylinder(d=6.2, h=20, center=true, $fn=30);
+
+        translate([-6, -3.3, 4.15])
+        rotate([0, -90, 0])
+        M3_nut(5);
+
+        translate([-6, 4, 4.15])
+        rotate([0, -90, 0])
+        M3_nut(5);
+    }
+}
+
+module tronxy_bondtech_style_extruder_base() {
+    difference() {
+        union() {
+            new_bondtech_base();
+
+            translate([-7, -23, 8/2])
+            chamfered_cube_side(9, 10, 8, 2, center=true);
+        }
+
+        translate([-7, -24, 0])
+        cylinder(d=3.2, h=100, center=true, $fn=30);
+
+        translate([-7, -24, 0])
+        chamfered_cylinder(6.2, 8, 1.5, center=true, $fn=30);
+    }
+}
+
+module tronxy_bondtech_style_extruder_lid_M10(bridging=true) {
+    module _lid() {
+        union () {
+            difference() {
+                new_bondtech_lid_M10(bridging=bridging);
+
+                hull() {
+                    translate([-23, -13.3, 5.6/2])
+                    cube([3, 4, 5.6], center=true);
+
+                    translate([-23, -11, 8.6/2])
+                    cube([3, 1, 8.6], center=true);
+                }
+            }
+
+            625zz_lid_part();
+        }
     }
 
+    difference() {
+        union () {
+            _lid();
+
+            // extra mount points
+            translate([-23.4, -10, 5.4/2])
+            rotate([90, 0, 0])
+            chamfered_cube_side(
+                10, 5.4, 10, 1, center=true
+            );
+
+            difference() {
+                hull() {
+                    translate([20, -12.5, 6/2 + 6.5])
+                    rotate([90, 0, 0])
+                    chamfered_cube_side(
+                        10, 6, 5, 1, center=true
+                    );
+
+                    translate([19, -12.5, 2.5])
+                    cube([1, 5, 1], center=true);
+                }
+
+                translate([17, 0, 1.2])
+                rotate([90, 0, 0])
+                cylinder(d=7, h=50, center=true, $fn=30);
+
+                translate([15.4, -15.4, 0])
+                cylinder(d=4, h=40, center=true, $fn=30);
+            }
+        }
+
+        translate([-25, 0, 5.4/2])
+        rotate([90, 0, 0])
+        cylinder(d=3.1, h=40, center=true, $fn=30);
+
+        translate([22, -12, 5.4/2 + 6])
+        rotate([90, 0, 0])
+        cylinder(d=3.1, h=20, center=true, $fn=30);
+    }
+}
+
+module _delta_p_fan_mount_form() {
+    union() {
+        hull() {
+            translate([18.65, 0, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([2, -5, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([-2, -7, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([14, -30, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+        }
+
+        hull() {
+            translate([-2, -6, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([-36, -4, 0])
+            chamfered_cylinder(
+                6, 4, 0.5, $fn=30
+            );
+
+            translate([-36, -6.5, 0])
+            chamfered_cylinder(
+                6, 4, 0.5, $fn=30
+            );
+        }
+
+        hull() {
+            translate([19.1, -57.5, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([14, -27.5, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+
+            translate([-9, -17.5, 0])
+            chamfered_cylinder(
+                10, 4, 0.5, $fn=30
+            );
+        }
+
+        translate([-15.4, -22, 4/2])
+        chamfered_cube(40, 34, 4, 0.5, center=true);
+    }
+}
+
+module tronxy_delta_p_fan_mount() {
+    //translate([-119.2, -93.23, 143.36])
+    //rotate([-90, 0, 0])
+//    !translate([-140, -150])
+//    import(str(
+//        stl_path,
+//        "X2 Delta P Duct V2R2.2/",
+//        "V2R2.2 Cover.stl"
+//    ), convexity=10);
+
+    module _infill() {
+        intersection() {
+            translate([-90, -60, 0])
+            for(i=[0:20]) {
+                for(j=[0:20]) {
+                    translate([
+                        i*8 + (j%2 ? 0 : 4),
+                        j*7,
+                        1
+                    ])
+                    rotate([0, 0, 30])
+                    hull() {
+                        cylinder(
+                            d=7, h=7,
+                            center=true, $fn=6
+                        );
+
+                        cylinder(
+                            d=1, h=11,
+                            center=true
+                        );
+                    }
+                }
+            }
+
+            difference() {
+                translate([0, 0, -11/2 + 1])
+                linear_extrude(11)
+                offset(-3)
+                projection(cut=true)
+                _delta_p_fan_mount_form();
+
+                translate([18.65, 0, 0])
+                cylinder(d=10, h=20, center=true, $fn=30);
+
+                translate([2, -5, 0])
+                cylinder(d=10, h=20, center=true, $fn=30);
+
+                translate([19.1, -57.5, 0])
+                cylinder(d=10, h=20, center=true, $fn=30);
+
+                translate([-31.15, -38.15, 0])
+                cylinder(d=9, h=30, center=true, $fn=30);
+
+                translate([-9.15, -38.15, 0])
+                cylinder(d=9, h=30, center=true, $fn=30);
+
+                translate([-34, -5.1, 0])
+                cylinder(
+                    d=10, h=20,
+                    center=true, $fn=30
+                );
+            }
+        }
+    }
+
+    difference() {
+        union() {
+            _delta_p_fan_mount_form();
+
+            translate([-27, -50.1, -13])
+            intersection() {
+                tronxy_E3D_mount_cap();
+
+                translate([7, 12, 28])
+                chamfered_cube(
+                    32, 15, 19, 5, center=true
+                );
+            }
+
+            translate([-31.15, -38.15, 0])
+            chamfered_cylinder(9, 10, 0.5, $fn=50);
+
+            translate([-9.15, -38.15, 0])
+            chamfered_cylinder(9, 10, 0.5, $fn=50);
+
+            translate([-20.15, -38.15, 10/2])
+            cube([22, 7, 10], center=true);
+        }
+
+        translate([-34, -5.1, 0])
+        cylinder(d=3.5, h=20, center=true, $fn=20);
+
+        translate([-34, -5.1, 2])
+        M3_nut();
+
+        translate([19.1, -57.5, 0])
+        cylinder(d=3.7, h=10, center=true, $fn=20);
+
+        translate([19.1, -57.5, 2])
+        M3_nut();
+
+        #translate([1.7, -5.2, 0])
+        cylinder(d=3.7, h=10, center=true, $fn=20);
+
+        translate([1.7, -5.2, 2])
+        M3_nut();
+
+        translate([18.65, 0, 0])
+        cylinder(d=3.7, h=10, center=true, $fn=20);
+
+        translate([18.65, 0, 2])
+        M3_nut();
+
+        translate([-31.15, -38.15, 0])
+        cylinder(d=3, h=30, center=true, $fn=30);
+
+        translate([-9.15, -38.15, 0])
+        cylinder(d=3, h=30, center=true, $fn=30);
+
+        translate([-31.15, -38.15, -8])
+        chamfered_cylinder(6.2, 10, 1.6, $fn=30);
+
+        translate([-9.15, -38.15, -8])
+        chamfered_cylinder(6.2, 10, 1.6, $fn=30);
+
+        _infill();
+    }
 }
