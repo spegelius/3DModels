@@ -15,11 +15,15 @@ spath = str(
 //_orig_right_spool_holder_ace();
 
 //assembly();
-debug_cylinder_silica();
+//debug_cylinder_silica();
 
 
 //cylinder_silica_gel_cap();
 //cylinder_silica_gel();
+
+//cylinder_silica_gel_cap(d=52.5);
+cylinder_silica_gel(d=52.5);
+
 
 //M4_rod_axle_nut();
 //M4_rod_axle_half();
