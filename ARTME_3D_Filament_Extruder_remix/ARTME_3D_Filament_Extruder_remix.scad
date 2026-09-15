@@ -13,9 +13,18 @@ spath = str(
     "ARTME_3D_MK3/"
 );
 
+sspath = str(
+    stl_base_path,
+    "ARTME_3D_MK3S/"
+);
+
 //_orig_MK3_ed_a() ;
 //_orig_MK3_ed_c();
+//_orig_MK3_ed_d();
+//_orig_MK3_ed_e();
+//_orig_MK3_ed_f();
 
+//_orig_MK3_el_e();
 //_orig_MK3_el_h();
 
 //_orig_MK3_en_a();
@@ -33,8 +42,21 @@ spath = str(
 
 //_orig_MK3_so_a();
 
+//_orig_MK3S_md_a();
+//_orig_MK3S_md_b();
+//_orig_MK3S_md_c();
+//_orig_MK3S_md_d();
+//_orig_MK3S_md_e();
+//_orig_MK3S_md_f();
+
+
 //mock_gearbox_plate();
 //mock_thrust_bearing();
+//mock_psu();
+
+//_MK3_assembly();
+//MK3S_measuring_device_assembly();
+//MK3S_measuring_device_s_r3_zz_assembly();
 
 //_MK3_ed_c_supports();
 //_623zz_bearing_hole();
@@ -42,6 +64,9 @@ spath = str(
 //debug_extruder_drive();
 //debug_gearbox();
 //debug_MK3_cheapass_filament_gauge();
+//debug_display_brackets();
+//debug_psu_brackets();
+//debug_hopper();
 
 //MK3_ed_c_supports();
 //MK3_ed_c_supports_soluble();
@@ -62,8 +87,24 @@ spath = str(
 //MK3_fixed_filament_hook();
 
 //MK3_ed_a_powder_guard_plate();
-MK3_ed_a_powder_guard();
+//MK3_ed_a_powder_guard();
 //MK3_ed_a_powder_guard_drill_jig();
+
+//MK3_display_cover_bracket();
+
+//MK3_psu_bracket_1();
+//MK3_psu_bracket_2();
+
+//MK3S_md_a_sr_3_zz();
+//MK3S_md_c_sr_3_zz();
+//MK3S_md_d_sr_3_zz();
+//MK3S_md_e_sr_3_zz();
+//MK3S_md_f_sr_3_zz();
+//MK3S_md_sr_3_zz_spacer();
+
+//MK3_ed_d_tall();
+MK3_ed_e_silica();
+//MK3_ed_e_medium();
 
 
 module _orig_MK3_ed_a() {
@@ -94,6 +135,50 @@ module _orig_MK3_ed_c() {
 //    %translate([0, 0, 20.25])
 //    rotate([90, 0, 0])
 //    cylinder(d=30.8, h=80, center=true, $fn=50);
+}
+
+module _orig_MK3_ed_d() {
+    import(
+        str(
+            spath,
+            "ED (Extruder Drive)/",
+            "ed-d.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3_ed_e() {
+    import(
+        str(
+            spath,
+            "ED (Extruder Drive)/",
+            "ed-e.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3_ed_f() {
+    import(
+        str(
+            spath,
+            "ED (Extruder Drive)/",
+            "ed-f.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3_el_e() {
+    import(
+        str(
+            spath,
+            "EL (Electronics)/",
+            "el-e.stl"
+        ),
+        convexity=10
+    );  
 }
 
 module _orig_MK3_el_h() {
@@ -234,6 +319,72 @@ module _orig_MK3_so_a() {
     );
 }
 
+module _orig_MK3S_md_a() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-a.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3S_md_b() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-b.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3S_md_c() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-c.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3S_md_d() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-d.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3S_md_e() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-e.stl"
+        ),
+        convexity=10
+    );
+}
+
+module _orig_MK3S_md_f() {
+    import(
+        str(
+            sspath,
+            "MD/",
+            "md-f.stl"
+        ),
+        convexity=10
+    );
+}
+
 module mock_gearbox_plate() {
     difference() {
         cube([60, 95, 10], center=true);
@@ -263,11 +414,58 @@ module mock_thrust_bearing() {
     }
 }
 
-module _MK3_assembly() {
+module mock_psu() {
+    difference() {
+        union() {
+            hull() {
+                translate([-65/2 + 12/2, 165/2 - 12/2, 0])
+                rounded_cylinder(12, 35, 4, center=true, $fn=30);
+
+                translate([65/2 - 12/2, 165/2 - 12/2, 0])
+                rounded_cylinder(12, 35, 4, center=true, $fn=30);
+
+                translate([-65/2 + 12/2, -165/2 + 12/2, 0])
+                rounded_cylinder(12, 35, 4, center=true, $fn=30);
+
+                translate([65/2 - 12/2, -165/2 + 12/2, 0])
+                rounded_cylinder(12, 35, 4, center=true, $fn=30);
+
+                translate([-67/2 + 12/2, 167/2 - 12/2, 0])
+                sphere(d=12, $fn=30);
+
+                translate([67/2 - 12/2, 167/2 - 12/2, 0])
+                sphere(d=12, $fn=30);
+
+                translate([-67/2 + 12/2, -167/2 + 12/2, 0])
+                sphere(d=12, $fn=30);
+
+                translate([67/2 - 12/2, -167/2 + 12/2, 0])
+                sphere(d=12, $fn=30);
+            }
+
+            translate([-67/2 + 13/2 + 14, 167/2 + 14, 0])
+            rotate([90, 0, 0])
+            cylinder(d=13, h=30, center=true, $fn=30);
+        }
+
+        hull() {
+            translate([0, -167/2, 0])
+            rotate([90, 0, 0])
+            rounded_cube_side(
+                24, 13, 20, 3, center=true, $fn=30
+            );
+
+            translate([0, -167/2, 8])
+            cube([16, 20, 2], center=true);
+        }
+    }
+}
+
+module _extrusion_3030(length=150) {
     color("darkslategrey")
     render()
-    translate([-75, -27, 40])
-    rotate([0, 90, 0])
+    scale([1, 1, length/150])
+    translate([-25, -27, 0])
     import(
         str(
             stl_base_path,
@@ -275,6 +473,14 @@ module _MK3_assembly() {
             "3030 X 150.stl"
         ), convexity=10
     );
+}
+
+//!_extrusion_3030(length=150);
+
+module _MK3_assembly() {
+    translate([-75, 0, 15])
+    rotate([0, 90, 0])
+    _extrusion_3030(length=150);
 
     // puller
     translate([6.5, -22, 34.4])
@@ -289,9 +495,13 @@ module _MK3_assembly() {
     rotate([-90, 0, 0])
     _orig_MK3_pu_c();
 
-    translate([7.4, -16, -5])
-    rotate([90, 0, 90])
-    _orig_MK3_pu_e();
+//    translate([7.4, -16, -5])
+//    rotate([90, 0, 90])
+//    _orig_MK3_pu_e();
+
+    translate([20, -15, 18])
+    rotate([90, 0, 0])
+    MK3S_measuring_device_assembly();
 
     translate([-20, -100, -70])
     rotate([80, 0, -90])
@@ -307,6 +517,154 @@ module _MK3_assembly() {
     translate([6.5, -45, 55.5])
     rotate([90, 0, 0])
     tube(13, 10, 4, $fn=60);
+
+    // display cover
+    translate([30, 9, -295])
+    rotate([37.5, 180, 180])
+    _orig_MK3_el_e();
+
+    translate([-275, 0, -364.5])
+    rotate([0, 90, 0])
+    _extrusion_3030(length=400);
+
+    translate([-290, 200, -364.5])
+    rotate([90, 0, 0])
+    _extrusion_3030(length=400);
+
+    translate([140, 200, -364.5])
+    rotate([90, 0, 0])
+    _extrusion_3030(length=400);
+
+    // psu
+    translate([-255.5, 110, -345])
+    rotate([0, 90, 180])
+    mock_psu();
+}
+
+module MK3S_measuring_device_assembly() {
+
+//    %cylinder(d=12, h=1, );
+
+//    %translate([-14.7, -1.5, 0])
+//    cylinder(d=3.8, h=1, $fn=10);
+
+//    %translate([0, 0, 0])
+//    cylinder(d=3.8, h=1, $fn=10);
+
+
+    intersection() {
+        translate([0, 1.3, 10.8])
+        _orig_MK3S_md_a();
+
+//        translate([0, 0, 100/2 + 22])
+//        cube([100, 100, 100], center=true);
+    }
+    //_orig_MK3S_md_b();
+
+    intersection() {
+        translate([0, 0, 49.7])
+        rotate([180, 0, 0])
+        translate([0, 26.7, 10.5])
+        _orig_MK3S_md_c();
+
+        translate([0, 100/2, 0])
+        cube([100, 100, 100], center=true);        
+    }
+
+//    intersection() {
+//        translate([0, -17, 1.1 + 35])
+//        rotate([180, 0, 0])
+//        _orig_MK3S_md_d();
+//
+////        translate([0, 0, 100/2 + 7])
+////        cube([100, 100, 100], center=true);
+//
+//    }
+
+//    intersection() {
+//        translate([0, -8.7, 15.5 + 26.7])
+//        _orig_MK3S_md_e();
+//
+////        translate([0, 0, -100/2 + 2])
+////        cube([100, 100, 100], center=true);
+//    }
+
+    //_orig_MK3S_md_f();
+
+    %translate([0, 0, 21.3])
+    SFK_624();
+
+    %translate([0, 0, 43.7])
+    SFK_624();
+
+    %translate([-14.7, -1.5, 32.5])
+    SFK_624();
+
+    %translate([0, -1.5, 32.5])
+    SFK_624();
+}
+
+module MK3S_measuring_device_s_r3_zz_assembly() {
+
+//    %cylinder(d=13.1, h=1, $fn=50);
+
+//    %translate([-14.7, -1.5, 0])
+//    cylinder(d=3.8, h=1, $fn=10);
+
+//    %translate([0, 0, 0])
+//    cylinder(d=3.8, h=1, $fn=10);
+
+
+    intersection() {
+        translate([0, 1.3, 10.8])
+        MK3S_md_a_sr_3_zz();
+
+        translate([0, 0, 100/2 + 22])
+        cube([100, 100, 100], center=true);
+    }
+    //_orig_MK3S_md_b();
+
+    intersection() {
+        translate([0, 0, 49.7])
+        rotate([180, 0, 0])
+        translate([0, 26.7, 10.5])
+        MK3S_md_c_sr_3_zz();
+
+        translate([0, 100/2, 0])
+        cube([100, 100, 100], center=true);        
+    }
+
+    intersection() {
+        translate([0, -17, 1.1 + 35])
+        rotate([180, 0, 0])
+        MK3S_md_d_sr_3_zz();
+
+//        translate([0, 0, 100/2 + 7])
+//        cube([100, 100, 100], center=true);
+
+    }
+
+    intersection() {
+        translate([0, -8.7, 15.5 + 26.7])
+        MK3S_md_e_sr_3_zz();
+
+//        translate([0, 0, -100/2 + 2])
+//        cube([100, 100, 100], center=true);
+    }
+
+    //_orig_MK3S_md_f();
+
+    %translate([0, 0, 21.3])
+    S_R3_ZZ();
+
+    %translate([0, 0, 43.7])
+    S_R3_ZZ();
+
+    %translate([-14.7 + 0.15, -1.5, 32.5])
+    S_R3_ZZ();
+
+    %translate([-0.15, -1.5, 32.5])
+    S_R3_ZZ();
 }
 
 module debug_extruder_drive() {
@@ -475,6 +833,56 @@ module debug_MK3_cheapass_filament_gauge() {
             bearings=bearings
         );
     }
+}
+
+module debug_display_brackets() {
+    _MK3_assembly();
+
+    translate([75, 0, -364.5])
+    rotate([90, 0, 90])
+    MK3_display_cover_bracket();
+}
+
+module debug_psu_brackets() {
+    _MK3_assembly();
+
+    translate([-255.5, 195, -345])
+    rotate([0, -90, 90])
+    MK3_psu_bracket_1();
+
+    translate([-255.5, 25, -345])
+    rotate([0, 90, 90])
+    MK3_psu_bracket_2();
+}
+
+module debug_hopper() {
+    #translate([0, 0, 155])
+    rotate([0, 180, 0])
+    _orig_MK3_ed_d();
+
+    translate([0, 0, 235.1])
+    rotate([0, 180, 0])
+    _orig_MK3_ed_e();
+
+    translate([-20.3, 0, 319.2])
+    rotate([0, 180, 0])
+    _orig_MK3_ed_f();
+
+    translate([200, 0, 55])
+    rotate([0, 180, 0])
+    MK3_ed_d_tall();
+
+    translate([200, 0, 163.2])
+    rotate([0, 180, 0])
+    MK3_ed_e_silica();
+
+    translate([200, 0, 110.1])
+    rotate([0, 180, 0])
+    MK3_ed_e_medium();
+
+    translate([200 - 20.3, 0, 372.2])
+    rotate([0, 180, 0])
+    _orig_MK3_ed_f();
 }
 
 module _623zz_bearing_hole() {
@@ -1054,4 +1462,359 @@ module MK3_ed_a_powder_guard_drill_jig() {
     }
     %translate([0, 17.5, -5])    
     mock_gearbox_plate();
+}
+
+module MK3_display_cover_bracket() {
+    difference() {
+        intersection() {
+            rounded_cube_side(
+                40, 40, 20, 8, center=true, $fn=30
+            );
+
+            translate([-5.2, 10, 0])
+            rounded_cube(
+                40, 40, 20, 8, center=true, $fn=30
+            );
+        }
+
+        translate([0, -0.6, 0])
+        cube([30.2, 30.2, 100], center=true);
+
+        translate([0, 40/2 + 10/2 - 0.6, 0])
+        cube([30.3, 10, 100], center=true);
+
+        rotate([0, 90, 0])
+        cylinder(d=4.3, h=100, center=true, $fn=30);
+
+        rotate([90, 0, 0])
+        cylinder(d=4, h=100, center=true, $fn=30);
+
+        translate([0, 30/2 + 2.8, 0])
+        rotate([90, 30, 0])
+        M4_nut(5, cone=false,);
+    }
+}
+
+module MK3_psu_bracket_1() {
+    difference() {
+        union() {
+            hull() {
+                translate([0, 0, 15/2])
+                rounded_cube_side(
+                    69, 39, 15, 8, center=true, $fn=30
+                );
+
+                translate([0, 0, 15/2])
+                cube([71, 4, 15], center=true);
+            }
+
+            translate([-2.5, 39/2 + 10, 15/2])
+            rotate([0, 90, 0])
+            rounded_cube_side(
+                15, 30, 4, 8, center=true, $fn=30
+            );
+
+            hull() {
+                translate([-2.5, 30/2 + 10, 2/2])
+                cube([3, 30, 2], center=true);
+
+                translate([-2.5 + 30/2, 38/2, 2/2])
+                cube([30, 1, 2], center=true);
+            }
+        }
+
+        rounded_cube_side(
+          55, 30, 50, 4, center=true, $fn=30
+        );
+
+        hull() {
+            translate([0, 0, 15/2 + 2])
+            rounded_cube_side(
+                65.5, 35.5, 15, 4, center=true, $fn=30
+            );
+
+            translate([0, 0, 15/2 + 2])
+            cube([67.5, 3, 15], center=true);
+        }
+
+        translate([0, 39/2 + 15, 15/2])
+        rotate([0, 90, 0])
+        cylinder(d=4.3, h=100, center=true, $fn=30);
+    }
+}
+
+module MK3_psu_bracket_2() {
+    mirror([1, 0, 0])
+    MK3_psu_bracket_1();
+}
+
+module MK3S_md_a_sr_3_zz() {
+    difference() {
+        union() {
+            difference() {
+                _orig_MK3S_md_a();
+
+//                translate([-14.7, -2.8, 21.3])
+//                cylinder(d=8, h=10);
+            }
+
+            translate([0, -1.3, -10.8])
+            tube(13, 21.4, 0.6, $fn=50);
+
+            translate([0, -1.3, -10.8])
+            tube(14.85, 26.3, 1, $fn=60);
+
+            translate([-14.7, -2.8, 0])
+            cylinder(d=7, h=21.7, $fn=30);
+        }
+
+        translate([-14.7 + 0.15, -2.8, 0])
+        cylinder(d=2.7, h=25, $fn=30);
+    }
+}
+
+module MK3S_md_c_sr_3_zz() {
+    union() {
+        _orig_MK3S_md_c();
+
+        translate([0, -26.7, -10.5])
+        tube(13, 1, 0.6, $fn=50);
+
+        translate([0, -26.7, -10.5])
+        tube(14.85, 6, 1, $fn=60);
+    }
+}
+
+module MK3S_md_d_sr_3_zz() {
+    union() {
+        difference() {
+            _orig_MK3S_md_d();
+
+            translate([-0, -15.5, -1.8])
+            cylinder(d=8, h=2);
+        }
+
+        hull() {
+            translate([-0.15, -15.5, -2])
+            cylinder(d=4.75, h=1.6, $fn=30);
+
+            translate([-0.15, -15.5, -2])
+            cylinder(d=4, h=2.6, $fn=30);
+        }
+
+        translate([-0.15, -15.5, -2])
+        cylinder(d=7, h=0.6, $fn=30);
+
+        translate([0, -17, -7.2])
+        tube(4.7, 5, 1, $fn=30);
+        
+    }
+}
+
+module MK3S_md_e_sr_3_zz() {
+    union() {
+        intersection() {
+            _orig_MK3S_md_e();
+
+            difference() {
+                cube([200, 100, 100], center=true);
+
+                translate([-0, 7.2, -10.1])
+                cylinder(d=8, h=20);
+            }
+        }
+
+        hull() {
+            translate([-0.15, 7.2, -10.3])
+            cylinder(d=4.75, h=1.6, $fn=30);
+
+            translate([-0.15, 7.2, -10.3])
+            cylinder(d=4, h=2.6, $fn=30);
+        }
+
+        translate([-0.15, 7.2, -10.3])
+        cylinder(d=7, h=0.6, $fn=30);
+
+        translate([0, 8.7, -15.5])
+        tube(4.7, 5, 1, $fn=30);
+        
+    }
+}
+
+module MK3S_md_f_sr_3_zz() {
+    %translate([0, 12.2, 2])
+    _orig_MK3S_md_f();
+
+    tube(7, 0.4, 2, $fn=30);
+}
+
+module MK3S_md_sr_3_zz_spacer() {
+    tube(4.75, 5, 1.6/2, $fn=30);
+}
+
+module MK3_ed_d_tall() {
+    difference() {
+        union() {
+            linear_extrude(25)
+            projection(cut=true)
+            translate([0, 0, -125])
+            _orig_MK3_ed_d();
+
+            translate([0, 0, -100])
+            _orig_MK3_ed_d();
+
+            translate([55, 34.5, 40])
+            cube([24, 1, 20], center=true);
+        }
+
+        translate([44, 34.5, 41])
+        rotate([-90, 0, 0])
+        linear_extrude(1)
+        text(size=8, "ED-D");
+    }
+}
+
+module MK3_ed_e_medium() {
+    difference() {
+        intersection() {
+            translate([0, 0, -204.9 + 55])
+            _orig_MK3_ed_e();
+
+            cylinder(d=1000, h=200);
+        }
+
+        translate([67.2, 35.5, 14.92])
+        cube([4, 2, 1], center=true);
+    }
+}
+
+module _hopper_join_clips() {
+    difference() {
+        union() {
+            intersection() {
+                translate([20.3, 0, -206.9])
+                _orig_MK3_ed_f();
+
+                difference() {
+                    translate([0, 0, 2.1])
+                    cylinder(d=300, h=20);
+
+                    translate([-63, -24, 0])
+                    cylinder(d=30, h=40);
+
+                    translate([63, -24, 0])
+                    cylinder(d=30, h=40);
+
+                }
+            }
+
+            intersection() {
+                tube(185, 5, 4.7, $fn=100);
+
+                translate([0, -200/2 + 32.7, 0])
+                cube([200, 200, 200], center=true);
+            }
+
+            intersection() {
+                translate([0, 14.5, 0])
+                tube(126, 5, 4.7, $fn=100);
+
+                translate([0, -200/2 + 32.7, 0])
+                cube([83, 100, 200], center=true);
+            }
+
+            translate([-62, 30.7, 5/2])
+            cube([46, 4, 5], center=true);
+
+            translate([62, 30.7, 5/2])
+            cube([46, 4, 5], center=true);
+
+            translate([-41.5 + 4/2, 0.25, 5/2])
+            cube([4, 65.5, 5], center=true);
+
+            translate([41.5 - 4/2, 0.25, 5/2])
+            cube([4, 65.5, 5], center=true);
+        }
+
+        difference() {
+            intersection() {
+                translate([0, 0, -16])
+                chamfered_cylinder(183, 20, 4, $fn=100);
+
+                translate([0, -200/2 + 32.2, -20/2 + 5])
+                chamfered_cube(200, 200, 20, 5, center=true);
+            }
+
+            cube([83, 150, 100], center=true);
+        }
+        translate([-45, -7.3, -15/2 + 3.5])
+        chamfered_cube(15, 80, 15, 4, center=true);
+
+        translate([45, -7.3, -15/2 + 3.5])
+        chamfered_cube(15, 80, 15, 4, center=true);
+
+        difference() {
+            intersection() {
+                translate([0, 14.5, -1])
+                cylinder(d=126.5, h=6, $fn=100);
+
+                translate([0, -46, 0])
+                cube([83, 30, 10], center=true);
+            }
+
+            translate([0, 14.5, -1])
+            chamfered_cylinder(126.5, 20, 5, $fn=100);
+        }
+        
+    }
+}
+
+module MK3_ed_e_silica() {
+    module _beams() {
+        intersection() {
+            union() {
+                for(i = [0:22]) {
+                    rotate([0, 0, 360/23 * i])
+                    translate([0, 0, 59])
+                    chamfered_cube(179, 2, 2, 0.7, center=true);
+                }
+            }
+
+            difference() {
+                translate([0, -200/2 + 30])
+                cube([200, 200, 120], center=true);
+
+                intersection() {
+                    translate([0, 14.5, 0])
+                    cylinder(d=125, h=62, $fn=50);
+
+                    cube([82, 200, 124], center=true);
+                }
+            }
+        }
+    }
+
+    difference() {
+        union() {
+            intersection() {
+                translate([0, 0, -125])
+                _orig_MK3_ed_e();
+
+                cylinder(d=300, h=53);
+            }
+
+            translate([0, 0, 48])
+            _hopper_join_clips();
+
+            _beams();
+        }
+
+        translate([67.2, 35.5, 39.814])
+        cube([4, 2, 1], center=true);
+
+        translate([47, 34.5, 51])
+        rotate([-90, 0, 0])
+        linear_extrude(1)
+        text(size=9, "silica");
+    }
 }
